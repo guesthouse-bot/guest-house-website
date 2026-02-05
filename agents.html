@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guest House for Real Estate Agents - Stage listings faster, sell for more. Premium staging services that help agents win more listings and close faster.">
+    <title>For Agents | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-error: #C4544C;
+            --color-sunflower: #D69B43;
+            --color-golden: #EBBC76;
+            --color-beige: #E1D7C3;
+            --color-rain: #CCD5D6;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+        }
+
+        /* Header - always dark text on this page */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        nav {
+            width: 100%;
+            padding: 0.75rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            height: 24px;
+            width: auto;
+        }
+
+        .logo svg path {
+            fill: #080808;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: rotate(45deg);
+            margin-top: -3px;
+        }
+
+        .nav-links a.no-dropdown::after {
+            content: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            margin-top: 0.5rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            min-width: 520px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .nav-links li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-header {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .dropdown-item::after {
+            content: none !important;
+        }
+
+        .dropdown-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface-secondary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dropdown-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-text-primary);
+            fill: none;
+        }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .dropdown-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-primary) !important;
+        }
+
+        .dropdown-desc {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary) !important;
+            line-height: 1.4;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 16px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #D4A85E;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(235, 188, 118, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-white);
+            color: var(--color-onyx);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 3rem 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .hero-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .hero-visual {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--color-paper);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-deep);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            max-width: 900px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 0 40px;
+            line-height: 1.6;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 32px;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Hero Logos */
+        .hero-logos {
+            margin-top: 40px;
+            animation: fadeInUp 0.6s ease-out 0.5s both;
+        }
+
+        .hero-logos-label {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .hero-logos-row {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-img {
+            height: 28px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            opacity: 0.6;
+            filter: grayscale(100%);
+            transition: opacity 0.2s;
+        }
+
+        .logo-img:hover {
+            opacity: 0.8;
+        }
+
+        .logo-agency {
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-logos {
+                text-align: center;
+            }
+
+            .hero-logos-row {
+                justify-content: center;
+                gap: 24px;
+            }
+
+            .logo-img {
+                height: 24px;
+                max-width: 100px;
+            }
+        }
+
+        /* Before/After Slider */
+        .before-after-slider {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .before-after-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .before-after-slider .before-image {
+            z-index: 1;
+            filter: grayscale(60%) brightness(0.95) saturate(0.5);
+        }
+
+        .before-after-slider .after-image {
+            z-index: 2;
+            clip-path: inset(0 0 0 50%);
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: white;
+            z-index: 10;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .slider-handle::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: var(--color-onyx);
+            z-index: 1;
+        }
+
+        .slider-label {
+            position: absolute;
+            bottom: 16px;
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 100px;
+            z-index: 5;
+        }
+
+        .slider-label.before {
+            left: 16px;
+        }
+
+        .slider-label.after {
+            right: 16px;
+        }
+
+        .before-after-slider.dragging {
+            cursor: ew-resize;
+        }
+
+        .before-after-slider.dragging .slider-handle {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Value Props Section */
+        .value-props {
+            padding: 80px 3rem;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .value-props-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-prop {
+            text-align: left;
+        }
+
+        .value-prop-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 20px;
+            color: var(--color-onyx);
+        }
+
+        .value-prop-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .value-prop h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-onyx);
+        }
+
+        .value-prop p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Section Headline */
+        .section-headline {
+            text-align: center;
+            padding: 120px 3rem 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-headline h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        /* Scrolling Testimonials */
+        .testimonials-scroll-section {
+            padding: 100px 0;
+            background: var(--color-mist);
+            overflow: hidden;
+        }
+
+        .testimonials-scroll-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0 3rem;
+        }
+
+        .testimonials-scroll-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--color-onyx);
+        }
+
+        .testimonials-scroll-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .testimonials-scroll-track {
+            display: flex;
+            gap: 24px;
+            animation: scrollTestimonials 40s linear infinite;
+            width: max-content;
+        }
+
+        .testimonials-scroll-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollTestimonials {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .testimonial-scroll-card {
+            flex-shrink: 0;
+            width: 400px;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .testimonial-scroll-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            margin-bottom: 24px;
+        }
+
+        .testimonial-scroll-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-scroll-avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--color-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .testimonial-scroll-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .testimonial-scroll-name {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--color-onyx);
+        }
+
+        .testimonial-scroll-role {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-scroll-section {
+                padding: 60px 0;
+            }
+
+            .testimonial-scroll-card {
+                width: 320px;
+                padding: 24px;
+            }
+        }
+
+        /* Deliverable Preview */
+        .deliverable-section {
+            padding: 0 3rem 120px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .deliverable-card {
+            background: var(--color-mist);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .deliverable-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .deliverable-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .deliverable-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--color-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .deliverable-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .deliverable-info p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        .deliverable-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #E8F5E9;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+
+        .deliverable-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+        }
+
+        .tip-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tip-card {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .tip-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-golden);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tip-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-onyx);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .tip-content {
+            flex: 1;
+        }
+
+        .tip-content h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .tip-content p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .tip-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: var(--color-bone);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-deep);
+        }
+
+        .tip-content .btn-small {
+            display: inline-flex;
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            margin-top: 16px;
+        }
+
+        .additional-services {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        .services-intro {
+            font-size: 1.125rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .service-pill {
+            padding: 0.625rem 1.25rem;
+            border: 1px solid #d1d5db;
+            border-radius: 100px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .service-pill:hover {
+            border-color: var(--color-text-primary);
+            color: var(--color-text-primary);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 100px 3rem;
+            background: var(--color-surface);
+        }
+
+        .benefits-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .benefits-headline {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -0.02em;
+            color: var(--color-onyx);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: var(--color-mist);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .benefit-card-large {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
+        }
+
+        .benefit-card-large .benefit-card-content {
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .benefit-card-large .benefit-card-visual {
+            background: var(--color-bone);
+            padding: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .benefit-card p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .benefits-grid .benefit-card-small {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 769px) {
+            .benefits-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .benefit-card-large {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .benefit-card-small .benefit-card-content {
+            padding: 32px 32px 24px;
+        }
+
+        .benefit-card-small h3 {
+            font-size: 1.25rem;
+        }
+
+        .benefit-card-visual-small {
+            background: var(--color-bone);
+            padding: 32px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        /* Visual Elements */
+        .visual-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--color-border);
+            flex-shrink: 0;
+        }
+
+        .timeline-dot.active {
+            background: #4CAF50;
+        }
+
+        .timeline-label {
+            flex: 1;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+        }
+
+        .timeline-date {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+        }
+
+        .invoice-preview {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 220px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .invoice-label {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+        }
+
+        .invoice-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4CAF50;
+            background: #E8F5E9;
+            padding: 4px 10px;
+            border-radius: 100px;
+        }
+
+        .invoice-amount {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 4px;
+        }
+
+        .invoice-detail {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        .status-updates {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 240px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .status-item.current {
+            border: 2px solid var(--color-golden);
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .status-icon.complete {
+            background: #E8F5E9;
+            color: #4CAF50;
+        }
+
+        .status-icon.current {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            font-size: 0.5rem;
+        }
+
+        .status-text {
+            font-size: 0.875rem;
+            color: var(--color-onyx);
+        }
+
+        .benefits-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-section {
+                padding: 60px 1.5rem;
+            }
+
+            .benefit-card-large {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .benefit-card-large .benefit-card-content {
+                padding: 32px;
+            }
+
+            .benefit-card-large .benefit-card-visual {
+                padding: 32px;
+            }
+
+            .benefit-card-small .benefit-card-content {
+                padding: 24px 24px 20px;
+            }
+
+            .benefit-card-visual-small {
+                padding: 24px;
+                min-height: 160px;
+            }
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: var(--color-white);
+        }
+
+        .how-it-works-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.02em;
+            color: var(--color-text-primary);
+        }
+
+        /* Timeline Pills Row */
+        .timeline-pills {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 0;
+            padding: 0 60px;
+        }
+
+        .timeline-pill {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            z-index: 2;
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: relative;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+        }
+
+        .timeline-line-bar {
+            width: 100%;
+            height: 2px;
+            background: var(--color-border);
+            position: relative;
+        }
+
+        .timeline-line-bar::before,
+        .timeline-line-bar::after,
+        .timeline-dot-middle {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-line-bar::before {
+            left: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .timeline-line-bar::after {
+            right: 0;
+            transform: translate(50%, -50%);
+            background: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+
+        .timeline-dot-middle {
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 0;
+        }
+
+        .step {
+            text-align: left;
+            position: relative;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+        }
+
+        .step-number {
+            display: none;
+        }
+
+        .step h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .step p {
+            display: none;
+        }
+
+        .step-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .step-checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-checklist li:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-checklist li svg {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Testimonial */
+        .testimonial-section {
+            padding: 120px 3rem;
+            background: var(--color-paper);
+        }
+
+        .testimonial-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            color: var(--color-onyx);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            background: var(--color-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .testimonial-info {
+            text-align: left;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .testimonial-role {
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 3rem;
+            text-align: center;
+            background: var(--color-surface);
+        }
+
+        .cta-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 500;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .cta-section .btn {
+            margin: 0 8px;
+        }
+
+        .cta-price {
+            margin-top: 24px;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+
+        .cta-price strong {
+            color: var(--color-onyx);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-onyx);
+            color: white;
+            padding: 60px 3rem 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 48px;
+        }
+
+        .footer-section h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .value-props-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 1.5rem 60px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                max-width: 100%;
+            }
+
+            .value-props {
+                padding: 60px 1.5rem;
+            }
+
+            .value-props-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .section-headline {
+                padding: 80px 1.5rem 60px;
+            }
+
+            .deliverable-section {
+                padding: 0 1.5rem 80px;
+            }
+
+            .deliverable-card {
+                padding: 24px;
+            }
+
+            .deliverable-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .how-it-works {
+                padding: 80px 1.5rem;
+            }
+
+            .timeline-pills {
+                padding: 0 20px;
+            }
+
+            .timeline-line {
+                padding: 0 20px;
+            }
+
+            .timeline-pill {
+                font-size: 0.8125rem;
+                padding: 0.375rem 0.875rem;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .services-list {
+                gap: 0.5rem;
+            }
+
+            .service-pill {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .testimonial-section {
+                padding: 80px 1.5rem;
+            }
+
+            .cta-section {
+                padding: 80px 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_logo)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_logo">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Prep a home</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Prep that works for any budget</h3>
+                        <div class="dropdown-grid">
+                            <a href="quick-design-advice.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Quick design<br>advice</span>
+                                    <span class="dropdown-desc">Expert tips in 24 hours.</span>
+                                </div>
+                            </a>
+                            <a href="style-for-you.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                        <line x1="16" y1="8" x2="2" y2="22"/>
+                                        <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">We'll style<br>for you</span>
+                                    <span class="dropdown-desc">Pro styling with your items.</span>
+                                </div>
+                            </a>
+                            <a href="full-service-staging.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Full-service<br>staging</span>
+                                    <span class="dropdown-desc">We handle everything.</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Customers</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Who we work with</h3>
+                        <div class="dropdown-grid-2col">
+                            <a href="agents.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Agents</span>
+                                    <span class="dropdown-desc">Tools for individual agents.</span>
+                                </div>
+                            </a>
+                            <a href="brokerages.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 21h18"/>
+                                        <path d="M9 8h1"/>
+                                        <path d="M9 12h1"/>
+                                        <path d="M9 16h1"/>
+                                        <path d="M14 8h1"/>
+                                        <path d="M14 12h1"/>
+                                        <path d="M14 16h1"/>
+                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Brokerages</span>
+                                    <span class="dropdown-desc">Solutions for your team.</span>
+                                </div>
+                            </a>
+                            
+                            <a href="homeowners.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Homeowners</span>
+                                    <span class="dropdown-desc">Prep your own home.</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Resources</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Resources</h3>
+                        <div class="dropdown-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            
+                            <a href="pay-at-close.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Pay at Close</span>
+                                    <span class="dropdown-desc">Defer costs until closing.</span>
+                                </div>
+                            </a>
+                            <a href="case-studies.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Case Studies</span>
+                                    <span class="dropdown-desc">Real success stories.</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+            <div class="nav-actions">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+                <a href="#" class="btn btn-secondary">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Built for agents
+            </div>
+            <h1>Your secret weapon<br>for selling homes</h1>
+            <p class="hero-subtitle">
+                Prep any listing in days, not weeks. From quick design advice to full-service staging to photoshoots and more, we automate the work to increase your success.
+            </p>
+            <div class="hero-cta">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">2,500+</span>
+                    <span class="stat-label">Homes staged</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">73%</span>
+                    <span class="stat-label">Faster sales</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">10%</span>
+                    <span class="stat-label">Higher sale price</span>
+                </div>
+            </div>
+            <div class="hero-logos">
+                <span class="hero-logos-label">Trusted by industry leaders</span>
+                <div class="hero-logos-row">
+                    <img src="compass-logo.webp" alt="Compass" class="logo-img">
+                    <img src="exp-realty-logo.webp" alt="eXp Realty" class="logo-img">
+                    <img src="agency-logo.png" alt="The Agency" class="logo-img logo-agency">
+                    <img src="douglas-elliman-logo.webp" alt="Douglas Elliman" class="logo-img">
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="before-after-slider" id="beforeAfterSlider">
+                <img src="staging-after.jpg" alt="Before staging" class="before-image">
+                <img src="staging-after.jpg" alt="After staging" class="after-image">
+                <div class="slider-handle" id="sliderHandle"></div>
+                <span class="slider-label before">Before</span>
+                <span class="slider-label after">After</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="value-props">
+        <div class="value-props-grid">
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <h3>Get instant quotes</h3>
+                <p>Build quotes for staging, cleaning, photos and more in seconds. Share with sellers for fast payment—no waiting for callbacks.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>List & sell faster</h3>
+                <p>Get listings market-ready in days, not weeks. Faster prep means more showings and quicker sales for your clients.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>Earn more per deal</h3>
+                <p>Staged homes sell for 6-10% more on average. On a $750K home, that's $45-75K more for your seller—and a bigger commission for you.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <h3>Zero hassle</h3>
+                <p>We coordinate everything—quotes, scheduling, delivery, photography. You just make the introduction and we handle the rest.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits-section">
+        <div class="benefits-inner">
+            <h2 class="benefits-headline">Your operating system for listing prep</h2>
+
+            <div class="benefits-grid">
+                <!-- Large featured card -->
+                <div class="benefit-card benefit-card-large">
+                    <div class="benefit-card-content">
+                        <h3>Automated scheduling that just works</h3>
+                        <p>Stop playing phone tag with vendors. We coordinate staging, cleaning, and photography automatically—services happen in the right order, on your timeline.</p>
+                    </div>
+                    <div class="benefit-card-visual">
+                        <div class="visual-timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-dot active"></span>
+                                <span class="timeline-label">Cleaning scheduled</span>
+                                <span class="timeline-date">Mon, Feb 10</span>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot active"></span>
+                                <span class="timeline-label">Staging install</span>
+                                <span class="timeline-date">Tue, Feb 11</span>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot"></span>
+                                <span class="timeline-label">Photography</span>
+                                <span class="timeline-date">Wed, Feb 12</span>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot"></span>
+                                <span class="timeline-label">Photos delivered</span>
+                                <span class="timeline-date">Thu, Feb 13</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two smaller cards -->
+                <div class="benefit-card benefit-card-small">
+                    <div class="benefit-card-content">
+                        <h3>Share invoice. Get sellers to pay fast.</h3>
+                        <p>Send professional invoices to sellers with one click. They pay online instantly—no more chasing checks or awkward conversations.</p>
+                    </div>
+                    <div class="benefit-card-visual-small">
+                        <div class="invoice-preview">
+                            <div class="invoice-header">
+                                <span class="invoice-label">Invoice #1247</span>
+                                <span class="invoice-status">Paid</span>
+                            </div>
+                            <div class="invoice-amount">$2,499</div>
+                            <div class="invoice-detail">Full-service staging</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benefit-card benefit-card-small">
+                    <div class="benefit-card-content">
+                        <h3>Real-time updates. No surprises.</h3>
+                        <p>Know exactly when your listing will be ready. Track every step in your dashboard and get notified the moment photos are delivered.</p>
+                    </div>
+                    <div class="benefit-card-visual-small">
+                        <div class="status-updates">
+                            <div class="status-item">
+                                <span class="status-icon complete">✓</span>
+                                <span class="status-text">Deep clean completed</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-icon complete">✓</span>
+                                <span class="status-text">Staging installed</span>
+                            </div>
+                            <div class="status-item current">
+                                <span class="status-icon current">●</span>
+                                <span class="status-text">Photographer on-site</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="benefits-cta">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-scroll-section">
+        <div class="testimonials-scroll-header">
+            <h2>Loved by top-producing agents</h2>
+        </div>
+        <div class="testimonials-scroll-container">
+            <div class="testimonials-scroll-track">
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"Guest House has become my competitive advantage. I include staging in every listing presentation now, and my win rate has doubled."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">RM</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Rachel Martinez</span>
+                            <span class="testimonial-scroll-role">Top Producer, RE/MAX Phoenix</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"The instant quotes save me hours every week. I can send a professional proposal to sellers in minutes instead of days."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">JT</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">James Thompson</span>
+                            <span class="testimonial-scroll-role">Broker, Compass Denver</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"My listings now sell 40% faster since using Guest House. The coordination is seamless—I just focus on selling."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">SK</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Sarah Kim</span>
+                            <span class="testimonial-scroll-role">Luxury Specialist, Sotheby's</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"Finally, one platform for staging, photos, and cleaning. No more juggling vendors or chasing invoices."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">MP</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Michael Patel</span>
+                            <span class="testimonial-scroll-role">Team Lead, Keller Williams</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"The ROI is obvious to sellers. When I show them the data, they get it immediately. Guest House closes deals."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">LB</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Lisa Bennett</span>
+                            <span class="testimonial-scroll-role">Top 1% Agent, Coldwell Banker</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"Guest House has become my competitive advantage. I include staging in every listing presentation now, and my win rate has doubled."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">RM</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Rachel Martinez</span>
+                            <span class="testimonial-scroll-role">Top Producer, RE/MAX Phoenix</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"The instant quotes save me hours every week. I can send a professional proposal to sellers in minutes instead of days."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">JT</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">James Thompson</span>
+                            <span class="testimonial-scroll-role">Broker, Compass Denver</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-scroll-card">
+                    <p class="testimonial-scroll-text">"My listings now sell 40% faster since using Guest House. The coordination is seamless—I just focus on selling."</p>
+                    <div class="testimonial-scroll-author">
+                        <div class="testimonial-scroll-avatar">SK</div>
+                        <div class="testimonial-scroll-info">
+                            <span class="testimonial-scroll-name">Sarah Kim</span>
+                            <span class="testimonial-scroll-role">Luxury Specialist, Sotheby's</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+        <div class="how-it-works-inner">
+            <h2>How it works</h2>
+            <div class="timeline-pills">
+                <span class="timeline-pill">1</span>
+                <span class="timeline-pill">2</span>
+                <span class="timeline-pill">3</span>
+            </div>
+            <div class="timeline-line">
+                <div class="timeline-line-bar">
+                    <span class="timeline-dot-middle"></span>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <h3>Tell us about your listing</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Answer a few questions
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Get smart service recommendations
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            See your quote in seconds
+                        </li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h3>We handle everything</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            We schedule vendors
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Staging and services are coordinated
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            You stay in the loop
+                        </li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h3>Go live and sell</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Receive MLS-ready photos
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Get more showings
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Close faster for more
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="testimonial-inner">
+            <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em;">Ready to prep your next listing?</h2>
+            <p style="font-size: 1.125rem; color: var(--color-text-secondary); margin-bottom: 40px;">Join thousands of agents who use Guest House to get listings market-ready and sell homes faster.</p>
+            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
+            <p style="margin-top: 24px; font-size: 0.9375rem; color: var(--color-text-secondary);">Starting at <strong style="color: var(--color-onyx); font-weight: 600;">$249</strong> per listing</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Vendor Partnerships</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Prep a Home</h4>
+                <ul>
+                    <li><a href="quick-design-advice.html">Quick design advice</a></li>
+                    <li><a href="style-for-you.html">We'll style for you</a></li>
+                    <li><a href="full-service-staging.html">Full-service staging</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>In-Person Locations</h4>
+                <ul>
+                    <li><a href="#">Denver</a></li>
+                    <li><a href="#">Boulder</a></li>
+                    <li><a href="#">San Diego</a></li>
+                    <li><a href="#">Orange County</a></li>
+                    <li><a href="#">Phoenix</a></li>
+                    <li><a href="#">Scottsdale</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="pay-at-close.html">Pay at Close</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customers</h4>
+                <ul>
+                    <li><a href="agents.html">Agents</a></li>
+                    <li><a href="brokerages.html">Brokerages</a></li>
+                    <li><a href="homeowners.html">Homeowners</a></li>
+                </ul>
+                <h4 style="margin-top: 24px;">Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Before/After Slider Functionality
+        const slider = document.getElementById('beforeAfterSlider');
+        const handle = document.getElementById('sliderHandle');
+        const afterImage = slider.querySelector('.after-image');
+
+        let isDragging = false;
+
+        function updateSliderPosition(x) {
+            const rect = slider.getBoundingClientRect();
+            let position = (x - rect.left) / rect.width;
+            position = Math.max(0, Math.min(1, position));
+
+            const percentage = position * 100;
+            afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+            handle.style.left = `${percentage}%`;
+        }
+
+        function handleStart(e) {
+            isDragging = true;
+            slider.classList.add('dragging');
+            const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            updateSliderPosition(x);
+        }
+
+        function handleMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            updateSliderPosition(x);
+        }
+
+        function handleEnd() {
+            isDragging = false;
+            slider.classList.remove('dragging');
+        }
+
+        // Mouse events
+        slider.addEventListener('mousedown', handleStart);
+        document.addEventListener('mousemove', handleMove);
+        document.addEventListener('mouseup', handleEnd);
+
+        // Touch events
+        slider.addEventListener('touchstart', handleStart);
+        document.addEventListener('touchmove', handleMove, { passive: false });
+        document.addEventListener('touchend', handleEnd);
+
+        // Click to position
+        slider.addEventListener('click', (e) => {
+            if (!isDragging) {
+                updateSliderPosition(e.clientX);
+            }
+        });
+    </script>
+</body>
+</html>
