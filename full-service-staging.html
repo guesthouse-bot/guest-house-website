@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Full-service staging - We furnish your vacant home with premium furniture and deliver MLS-ready photos. Complete staging solutions from Guest House.">
+    <title>Full-service staging | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-error: #C4544C;
+            --color-sunflower: #D69B43;
+            --color-golden: #EBBC76;
+            --color-beige: #E1D7C3;
+            --color-rain: #CCD5D6;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+        }
+
+        /* Header - always dark text on this page */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        nav {
+            width: 100%;
+            padding: 0.75rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            height: 24px;
+            width: auto;
+        }
+
+        .logo svg path {
+            fill: #080808;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: rotate(45deg);
+            margin-top: -3px;
+        }
+
+        .nav-links a.no-dropdown::after {
+            content: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            margin-top: 0.5rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            min-width: 520px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .nav-links li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-header {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .dropdown-item::after {
+            content: none !important;
+        }
+
+        .dropdown-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface-secondary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dropdown-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-text-primary);
+            fill: none;
+        }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .dropdown-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-primary) !important;
+        }
+
+        .dropdown-desc {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary) !important;
+            line-height: 1.4;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 16px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #D4A85E;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(235, 188, 118, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-white);
+            color: var(--color-onyx);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 3rem 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--color-paper);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-deep);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Value Props Section */
+        .value-props {
+            padding: 80px 3rem;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .value-props-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-prop {
+            text-align: left;
+        }
+
+        .value-prop-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 20px;
+            color: var(--color-onyx);
+        }
+
+        .value-prop-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .value-prop h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-onyx);
+        }
+
+        .value-prop p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Section Headline */
+        .section-headline {
+            text-align: center;
+            padding: 120px 3rem 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-headline h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        /* Deliverable Preview */
+        .deliverable-section {
+            padding: 0 3rem 120px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .deliverable-card {
+            background: var(--color-mist);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .deliverable-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .deliverable-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .deliverable-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--color-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .deliverable-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .deliverable-info p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        .deliverable-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #E8F5E9;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+
+        .deliverable-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+        }
+
+        .tip-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tip-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .tip-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-golden);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tip-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-onyx);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .tip-content {
+            flex: 1;
+        }
+
+        .tip-content h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .tip-content p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .tip-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: var(--color-bone);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-deep);
+            margin-top: 12px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 120px 3rem;
+            background: var(--color-onyx);
+            color: white;
+        }
+
+        .how-it-works-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 80px;
+            letter-spacing: -0.02em;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 64px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            background: var(--color-charcoal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 auto 24px;
+            color: var(--color-golden);
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        /* Testimonial */
+        .testimonial-section {
+            padding: 120px 3rem;
+            background: var(--color-paper);
+        }
+
+        .testimonial-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            color: var(--color-onyx);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            background: var(--color-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .testimonial-info {
+            text-align: left;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .testimonial-role {
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 3rem;
+            text-align: center;
+            background: var(--color-surface);
+        }
+
+        .cta-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 500;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .cta-section .btn {
+            margin: 0 8px;
+        }
+
+        .cta-price {
+            margin-top: 24px;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+
+        .cta-price strong {
+            color: var(--color-onyx);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-onyx);
+            color: white;
+            padding: 60px 3rem 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 48px;
+        }
+
+        .footer-section h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .value-props-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .hero {
+                padding: 140px 1.5rem 80px;
+            }
+
+            .value-props {
+                padding: 60px 1.5rem;
+            }
+
+            .value-props-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .section-headline {
+                padding: 80px 1.5rem 60px;
+            }
+
+            .deliverable-section {
+                padding: 0 1.5rem 80px;
+            }
+
+            .deliverable-card {
+                padding: 24px;
+            }
+
+            .deliverable-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .how-it-works {
+                padding: 80px 1.5rem;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .testimonial-section {
+                padding: 80px 1.5rem;
+            }
+
+            .cta-section {
+                padding: 80px 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_logo)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_logo">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Prep a home</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Prep that works for any budget</h3>
+                        <div class="dropdown-grid">
+                            <a href="quick-design-advice.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Quick design<br>advice</span>
+                                    <span class="dropdown-desc">Expert tips in 24 hours.</span>
+                                </div>
+                            </a>
+                            <a href="style-for-you.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                        <line x1="16" y1="8" x2="2" y2="22"/>
+                                        <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">We'll style<br>for you</span>
+                                    <span class="dropdown-desc">Pro styling with your items.</span>
+                                </div>
+                            </a>
+                            <a href="full-service-staging.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Full-service<br>staging</span>
+                                    <span class="dropdown-desc">We handle everything.</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Customers</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Who we work with</h3>
+                        <div class="dropdown-grid-2col">
+                            <a href="agents.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Agents</span>
+                                    <span class="dropdown-desc">Tools for individual agents</span>
+                                </div>
+                            </a>
+                            <a href="brokerages.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 21h18"/>
+                                        <path d="M9 8h1"/>
+                                        <path d="M9 12h1"/>
+                                        <path d="M9 16h1"/>
+                                        <path d="M14 8h1"/>
+                                        <path d="M14 12h1"/>
+                                        <path d="M14 16h1"/>
+                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Brokerages</span>
+                                    <span class="dropdown-desc">Solutions for your team</span>
+                                </div>
+                            </a>
+                            
+                            <a href="homeowners.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Homeowners</span>
+                                    <span class="dropdown-desc">Prep your own home</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Resources</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Resources</h3>
+                        <div class="dropdown-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            
+                            <a href="pay-at-close.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Pay at Close</span>
+                                    <span class="dropdown-desc">Defer costs until closing</span>
+                                </div>
+                            </a>
+                            <a href="case-studies.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Case Studies</span>
+                                    <span class="dropdown-desc">Real success stories</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+            <div class="nav-actions">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+                <a href="#" class="btn btn-secondary">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-badge">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            1-week delivery
+        </div>
+        <h1>Vacant to stunning,<br>completely handled</h1>
+        <p class="hero-subtitle">
+            We furnish your empty home with designer-curated furniture, style every room to perfection, and deliver professional MLS-ready photography—all coordinated for you.
+        </p>
+        <div class="hero-cta">
+            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your staging quote</a>
+            <a href="#how-it-works" class="btn btn-secondary btn-large">View our portfolio</a>
+        </div>
+    </section>
+
+    <section class="value-props">
+        <div class="value-props-grid">
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3>Premium furniture</h3>
+                <p>Designer-selected pieces from top brands. Modern, transitional, and luxury styles to match any home's architecture.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </div>
+                <h3>Full coordination</h3>
+                <p>We handle delivery, setup, styling, photography, and removal. You just hand us the keys.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>Flexible rental terms</h3>
+                <p>Stage for 30, 60, or 90 days. Extend anytime if needed. No penalties for early removal.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <h3>Proven ROI</h3>
+                <p>Staged homes sell for 6-10% more and 73% faster. Our staging pays for itself and then some.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-headline">
+        <h2>From empty rooms to buyer-ready spaces—see what full-service staging includes</h2>
+    </div>
+
+    <section class="deliverable-section">
+        <div class="deliverable-card">
+            <div class="deliverable-header">
+                <div class="deliverable-meta">
+                    <div class="deliverable-avatar">GH</div>
+                    <div class="deliverable-info">
+                        <h4>Your Staging Package</h4>
+                        <p>4521 Highland Drive, Seattle WA</p>
+                    </div>
+                </div>
+                <div class="deliverable-status">Installed</div>
+            </div>
+            <div class="tip-cards">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Living room</h5>
+                        <p>Sectional sofa, accent chairs, coffee table, area rug, floor lamp, artwork, throw pillows, and styled bookshelf. Creates an inviting space buyers can envision living in.</p>
+                        <span class="tip-badge">Furnished</span>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Primary suite</h5>
+                        <p>King bed with upholstered headboard, luxury bedding, nightstands, lamps, bench at foot, artwork above bed. Transforms the most important room in the house.</p>
+                        <span class="tip-badge">Furnished</span>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Dining room</h5>
+                        <p>Dining table with seating for 6-8, statement chandelier or pendant, buffet or bar cart, table setting with dishes and linens, centerpiece.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+        <div class="how-it-works-inner">
+            <h2>How it works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Get your quote</h3>
+                    <p>Share your listing details and photos. We'll create a custom staging proposal with furniture selections tailored to your home.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>We install everything</h3>
+                    <p>Our team delivers, assembles, and styles all furniture and décor. Typical install takes one day—you don't need to be there.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Get your staging quote</h3>
+                    <p>Professional photography within 48 hours of install. Your MLS-ready photos are delivered and your listing is ready to go live.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="testimonial-inner">
+            <p class="testimonial-quote">"The vacant home sat for 60 days with no offers. After Guest House staged it, we had 4 offers in the first weekend and sold $45K over asking. The staging literally paid for itself 10x over."</p>
+            <div class="testimonial-author">
+                <div class="testimonial-avatar">JW</div>
+                <div class="testimonial-info">
+                    <div class="testimonial-name">Jennifer Walsh</div>
+                    <div class="testimonial-role">Team Lead, Coldwell Banker Seattle</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Ready to stage your vacant listing?</h2>
+            <p>Premium furniture, professional styling, MLS-ready photos—everything coordinated and delivered in about a week.</p>
+            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your staging quote</a>
+            <p class="cta-price">Starting at <strong>$2,500</strong> per month</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Vendor Partnerships</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Prep a Home</h4>
+                <ul>
+                    <li><a href="quick-design-advice.html">Quick design advice</a></li>
+                    <li><a href="style-for-you.html">We'll style for you</a></li>
+                    <li><a href="full-service-staging.html">Full-service staging</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>In-Person Locations</h4>
+                <ul>
+                    <li><a href="#">Denver</a></li>
+                    <li><a href="#">Boulder</a></li>
+                    <li><a href="#">San Diego</a></li>
+                    <li><a href="#">Orange County</a></li>
+                    <li><a href="#">Phoenix</a></li>
+                    <li><a href="#">Scottsdale</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="pay-at-close.html">Pay at Close</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customers</h4>
+                <ul>
+                    <li><a href="agents.html">Agents</a></li>
+                    <li><a href="brokerages.html">Brokerages</a></li>
+                    <li><a href="homeowners.html">Homeowners</a></li>
+                </ul>
+                <h4 style="margin-top: 24px;">Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
