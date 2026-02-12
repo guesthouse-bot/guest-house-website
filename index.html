@@ -2115,21 +2115,22 @@
             }
 
             .mobile-menu-nav .dropdown {
-                display: none;
-                position: static;
-                transform: none;
-                opacity: 1;
-                visibility: visible;
-                min-width: 0;
-                box-shadow: none;
-                border-radius: 0;
+                display: none !important;
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                min-width: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                transition: none !important;
                 background: var(--color-mist);
                 padding: 1rem;
                 margin-bottom: 0.5rem;
             }
 
-            .mobile-menu-nav li.dropdown-open .dropdown {
-                display: block;
+            .mobile-menu-nav li.dropdown-open > .dropdown {
+                display: block !important;
             }
 
             .mobile-menu-nav .dropdown-header {
