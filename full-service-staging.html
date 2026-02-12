@@ -298,7 +298,9 @@
             padding: 180px 3rem 100px;
             max-width: 1400px;
             margin: 0 auto;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 60px;
         }
 
         .hero-badge {
@@ -322,15 +324,17 @@
             fill: none;
         }
 
+        .hero-content {
+            flex: 1;
+            min-width: 0;
+        }
+
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 500;
             line-height: 1.1;
             letter-spacing: -0.03em;
             margin-bottom: 24px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
             animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
@@ -338,27 +342,26 @@
             font-size: 1.25rem;
             color: var(--color-text-secondary);
             max-width: 600px;
-            margin: 0 auto 40px;
             line-height: 1.6;
+            margin-bottom: 40px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-cta {
             display: flex;
             gap: 16px;
-            justify-content: center;
             flex-wrap: wrap;
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
         .hero-image {
-            margin-top: 60px;
+            flex: 1;
+            min-width: 0;
             animation: fadeInUp 0.6s ease-out 0.4s both;
         }
 
         .hero-image img {
             width: 100%;
-            max-width: 1000px;
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-lg);
         }
@@ -817,6 +820,17 @@
 
             .hero {
                 padding: 140px 1.5rem 80px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-cta {
+                justify-content: center;
             }
 
             .value-props {
@@ -1037,20 +1051,22 @@
     </header>
 
     <section class="hero">
-        <div class="hero-badge">
-            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            1-week delivery
-        </div>
-        <h1>Vacant to stunning,<br>completely handled</h1>
-        <p class="hero-subtitle">
-            We furnish your empty home with designer-curated furniture, style every room to perfection, and deliver professional MLS-ready photography—all coordinated for you.
-        </p>
-        <div class="hero-cta">
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your staging quote</a>
-            <a href="#how-it-works" class="btn btn-secondary btn-large">View our portfolio</a>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                1-week delivery
+            </div>
+            <h1>Vacant to stunning,<br>completely handled</h1>
+            <p class="hero-subtitle">
+                We furnish your empty home with designer-curated furniture, style every room to perfection, and deliver professional MLS-ready photography—all coordinated for you.
+            </p>
+            <div class="hero-cta">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your staging quote</a>
+                <a href="#how-it-works" class="btn btn-secondary btn-large">View our portfolio</a>
+            </div>
         </div>
         <div class="hero-image">
             <img src="full-service-staging-hero.jpg" alt="Beautifully staged modern living room with natural light">
