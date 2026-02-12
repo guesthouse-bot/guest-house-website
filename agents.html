@@ -460,7 +460,6 @@
 
         .before-after-slider .before-image {
             z-index: 1;
-            filter: grayscale(60%) brightness(0.95) saturate(0.5);
         }
 
         .before-after-slider .after-image {
@@ -905,6 +904,280 @@
         .service-pill:hover {
             border-color: var(--color-text-primary);
             color: var(--color-text-primary);
+        }
+
+        /* Services/Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--color-white);
+        }
+
+        .features > * {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .prep-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+            align-items: stretch;
+        }
+
+        .prep-option-card {
+            background: var(--color-mist);
+            border: none;
+            border-radius: 16px;
+            padding: 2rem 2rem 0 2rem;
+            min-height: 580px;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .prep-option-card:hover {
+            background: var(--color-bone);
+        }
+
+        .prep-option-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-onyx);
+        }
+
+        .prep-option-card .prep-description {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .prep-option-card .prep-pricing {
+            margin-bottom: 1rem;
+        }
+
+        .prep-option-card .prep-pricing .price-prefix {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .prep-option-card .prep-pricing .prep-price {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+        }
+
+        .prep-option-card .card-visual {
+            margin-top: 2.5rem;
+            margin-left: -2rem;
+            margin-right: -2rem;
+            height: 320px;
+            background: var(--color-bone);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+
+        .prep-option-card .card-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prep-option-card .card-visual.illustration {
+            background: var(--color-mist);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 1rem;
+        }
+
+        .prep-option-card .card-visual.illustration img {
+            object-fit: contain;
+            object-position: top;
+            width: 95%;
+            height: 110%;
+        }
+
+        .prep-option-card .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            transition: gap 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link {
+            gap: 0.5rem;
+        }
+
+        .prep-option-card .learn-more-link::after {
+            content: '→';
+            transition: transform 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link::after {
+            transform: translateX(2px);
+        }
+
+        /* Laptop Mockup */
+        .laptop-mockup {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 2rem 0 2rem 2rem;
+            background: var(--color-bone);
+            overflow: hidden;
+        }
+
+        .laptop-frame {
+            width: 95%;
+            max-width: 380px;
+            transform: translateX(25%);
+        }
+
+        .laptop-screen {
+            background: #1a1a1a;
+            border-radius: 8px 8px 0 0;
+            padding: 6px;
+            aspect-ratio: 16/10;
+        }
+
+        .checklist-ui {
+            background: #fff;
+            border-radius: 4px;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .checklist-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 8px;
+        }
+
+        .checklist-avatar {
+            width: 20px;
+            height: 20px;
+            background: var(--color-onyx);
+            color: white;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist-title {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        .checklist-check {
+            width: 14px;
+            height: 14px;
+            background: var(--color-onyx);
+            color: white;
+            border-radius: 3px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist-text {
+            font-size: 8px;
+            color: var(--color-onyx);
+            flex: 1;
+        }
+
+        .checklist-badge {
+            font-size: 6px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .checklist-badge.high {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .checklist-badge.quick {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .laptop-base {
+            height: 8px;
+            background: #e5e5e5;
+            border-radius: 0 0 4px 4px;
+        }
+
+        @media (max-width: 900px) {
+            .prep-options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prep-option-card {
+                min-height: 400px;
+            }
+
+            .prep-option-card .card-visual {
+                height: 200px;
+            }
         }
 
         /* Benefits Section */
@@ -1682,25 +1955,6 @@
                                     <span class="dropdown-desc">Tools for individual agents.</span>
                                 </div>
                             </a>
-                            <a href="brokerages.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 21h18"/>
-                                        <path d="M9 8h1"/>
-                                        <path d="M9 12h1"/>
-                                        <path d="M9 16h1"/>
-                                        <path d="M14 8h1"/>
-                                        <path d="M14 12h1"/>
-                                        <path d="M14 16h1"/>
-                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Brokerages</span>
-                                    <span class="dropdown-desc">Solutions for your team.</span>
-                                </div>
-                            </a>
-                            
                             <a href="homeowners.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1769,25 +2023,25 @@
                 </svg>
                 Built for agents
             </div>
-            <h1>Your secret weapon<br>for selling homes</h1>
+            <h1>Quoted in seconds.<br>Scheduled in minutes.<br>Listed in days.</h1>
             <p class="hero-subtitle">
-                Prep any listing in days, not weeks. From quick design advice to full-service staging to photoshoots and more, we automate the work to increase your success.
+                Guest House coordinates every detail for staging, cleaning, photography and more, all in one place. So you can focus on what really matters — helping your clients sell their home.
             </p>
             <div class="hero-cta">
-                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started for free</a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-value">2,500+</span>
-                    <span class="stat-label">Homes staged</span>
+                    <span class="stat-value">2,500</span>
+                    <span class="stat-label">Homes prepped faster</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value">73%</span>
-                    <span class="stat-label">Faster sales</span>
+                    <span class="stat-value">20+</span>
+                    <span class="stat-label">Hours saved per listing</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value">10%</span>
-                    <span class="stat-label">Higher sale price</span>
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Happiness guaranteed</span>
                 </div>
             </div>
             <div class="hero-logos">
@@ -1802,8 +2056,8 @@
         </div>
         <div class="hero-visual">
             <div class="before-after-slider" id="beforeAfterSlider">
-                <img src="staging-after.jpg" alt="Before staging" class="before-image">
-                <img src="staging-after.jpg" alt="After staging" class="after-image">
+                <img src="agents-before.png" alt="Before staging" class="before-image">
+                <img src="agents-after.png" alt="After staging" class="after-image">
                 <div class="slider-handle" id="sliderHandle"></div>
                 <span class="slider-label before">Before</span>
                 <span class="slider-label after">After</span>
@@ -1839,8 +2093,8 @@
                         <path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h3>Earn more per deal</h3>
-                <p>Staged homes sell for 6-10% more on average. On a $750K home, that's $45-75K more for your seller—and a bigger commission for you.</p>
+                <h3>More time for clients & leads</h3>
+                <p>Stop chasing vendors and juggling schedules. Get hours back every week to focus on the things that actually grows your business.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -1849,15 +2103,86 @@
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>Zero hassle</h3>
-                <p>We coordinate everything—quotes, scheduling, delivery, photography. You just make the introduction and we handle the rest.</p>
+                <h3>White-glove, zero hassle</h3>
+                <p>Deliver a premium experience to every client without lifting a finger. We handle the details, you look like a hero.</p>
             </div>
+        </div>
+    </section>
+
+    <section class="features" id="services">
+        <div class="section-header">
+            <h2>Everything you need to boost home value, with $0 upfront</h2>
+            <p>Professional staging and design expertise, now accessible for any listing at any budget—with pay-at-close options available.</p>
+        </div>
+        <div class="prep-options-grid">
+            <a href="quick-design-advice.html" class="prep-option-card">
+                <h3>Quick design advice</h3>
+                <p class="prep-description">Expert guidance to make your home show-ready with what you already have.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$249</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual laptop-mockup">
+                    <div class="laptop-frame">
+                        <div class="laptop-screen">
+                            <div class="checklist-ui">
+                                <div class="checklist-header">
+                                    <div class="checklist-avatar">GH</div>
+                                    <div class="checklist-title">Your Instant Checklist</div>
+                                </div>
+                                <div class="checklist-items">
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Declutter entryway</div>
+                                        <span class="checklist-badge high">High Impact</span>
+                                    </div>
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Brighten living room</div>
+                                        <span class="checklist-badge quick">Quick Win</span>
+                                    </div>
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Stage kitchen for photos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="laptop-base"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="style-for-you.html" class="prep-option-card">
+                <h3>In-person styling</h3>
+                <p class="prep-description">Our designers visit, rearrange your furniture, and capture it all on camera.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$1,450</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual illustration">
+                    <img src="in-person-styling.png" alt="In-person styling">
+                </div>
+            </a>
+            <a href="full-service-staging.html" class="prep-option-card">
+                <h3>Full-service staging</h3>
+                <p class="prep-description">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$2,950</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual">
+                    <img src="full-service-staging.jpg" alt="Full-service staging">
+                </div>
+            </a>
         </div>
     </section>
 
     <section class="benefits-section">
         <div class="benefits-inner">
-            <h2 class="benefits-headline">Your operating system for listing prep</h2>
+            <h2 class="benefits-headline">Save 20+ hours on every listing</h2>
 
             <div class="benefits-grid">
                 <!-- Large featured card -->
@@ -1934,14 +2259,14 @@
                 </div>
             </div>
             <div class="benefits-cta">
-                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started for free</a>
             </div>
         </div>
     </section>
 
     <section class="testimonials-scroll-section">
         <div class="testimonials-scroll-header">
-            <h2>Loved by top-producing agents</h2>
+            <h2>Trusted by top agents and teams</h2>
         </div>
         <div class="testimonials-scroll-container">
             <div class="testimonials-scroll-track">
@@ -2032,7 +2357,7 @@
 
     <section class="how-it-works" id="how-it-works">
         <div class="how-it-works-inner">
-            <h2>How it works</h2>
+            <h2>Built to handle the busy work</h2>
             <div class="timeline-pills">
                 <span class="timeline-pill">1</span>
                 <span class="timeline-pill">2</span>
@@ -2101,10 +2426,9 @@
 
     <section class="testimonial-section">
         <div class="testimonial-inner">
-            <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em;">Ready to prep your next listing?</h2>
+            <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em;">Stop coordinating. Start delegating.</h2>
             <p style="font-size: 1.125rem; color: var(--color-text-secondary); margin-bottom: 40px;">Join thousands of agents who use Guest House to get listings market-ready and sell homes faster.</p>
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started free</a>
-            <p style="margin-top: 24px; font-size: 0.9375rem; color: var(--color-text-secondary);">Starting at <strong style="color: var(--color-onyx); font-weight: 600;">$249</strong> per listing</p>
+            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get started for free</a>
         </div>
     </section>
 
@@ -2149,7 +2473,6 @@
                 <h4>Customers</h4>
                 <ul>
                     <li><a href="agents.html">Agents</a></li>
-                    <li><a href="brokerages.html">Brokerages</a></li>
                     <li><a href="homeowners.html">Homeowners</a></li>
                 </ul>
                 <h4 style="margin-top: 24px;">Legal</h4>
