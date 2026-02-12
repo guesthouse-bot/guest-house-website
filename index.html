@@ -372,12 +372,14 @@
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--color-text-primary);
+            white-space: nowrap;
         }
 
         .dropdown-desc {
             font-size: 0.75rem;
             color: var(--color-text-secondary);
             line-height: 1.4;
+            white-space: nowrap;
         }
 
         /* Ensure dropdown links always have black text (override header white text) */
@@ -404,9 +406,15 @@
             flex-shrink: 0;
         }
 
+        /* Hide mobile nav actions and header on desktop */
+        .mobile-nav-actions,
+        .mobile-nav-header {
+            display: none !important;
+        }
+
         /* Hide mobile menu modal on desktop */
         .mobile-menu-modal {
-            display: none;
+            display: none !important;
         }
 
         .hamburger {
@@ -1032,7 +1040,7 @@
             gap: 4rem;
             align-items: center;
             flex-wrap: nowrap;
-            animation: scroll-logos 25s linear infinite;
+            animation: scroll-logos 15s linear infinite;
             position: absolute;
             left: 180px;
             z-index: 1;
@@ -1077,6 +1085,261 @@
 
         .partner-logo.exp-logo {
             height: 26px;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            padding: 5rem 2rem;
+            background: var(--color-mist);
+        }
+
+        .metrics-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .metrics-left {
+            text-align: left;
+        }
+
+        .metrics-headline {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            font-weight: 500;
+            color: var(--color-onyx);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .metrics-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .metrics-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .metric-card .metric-prefix {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-card .metric-value {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 500;
+            color: var(--color-onyx);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            min-width: 100px;
+        }
+
+        .metric-card .metric-description {
+            font-size: 1.25rem;
+            color: var(--color-onyx);
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        /* Before/After Slider */
+        .before-after-slider {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .before-after-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .before-after-slider .before-image {
+            z-index: 1;
+            filter: grayscale(60%) brightness(0.95) saturate(0.5);
+        }
+
+        .before-after-slider .after-image {
+            z-index: 2;
+            clip-path: inset(0 0 0 50%);
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: white;
+            z-index: 10;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .slider-handle::after {
+            content: '↔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: var(--color-onyx);
+            z-index: 1;
+        }
+
+        .slider-label {
+            position: absolute;
+            bottom: 16px;
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 100px;
+            z-index: 5;
+        }
+
+        .slider-label.before {
+            left: 16px;
+        }
+
+        .slider-label.after {
+            right: 16px;
+        }
+
+        .before-after-slider.dragging {
+            cursor: ew-resize;
+        }
+
+        .before-after-slider.dragging .slider-handle {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .metrics-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .metrics-left {
+                text-align: center;
+            }
+
+            .metric-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .metric-card .metric-value {
+                min-width: auto;
+            }
+        }
+
+        /* Smart Recommendations Section */
+        .smart-recommendations {
+            padding: 6rem 2rem;
+            background: var(--color-white);
+        }
+
+        .smart-recommendations-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .smart-recommendations .section-header {
+            flex: 1;
+            max-width: 560px;
+            text-align: left;
+            margin-bottom: 0;
+        }
+
+        .smart-recommendations .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .smart-recommendations .section-header p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 100%;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .smart-recommendations .section-header .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: gap 0.2s ease;
+        }
+
+        .smart-recommendations .section-header .learn-more-link:hover {
+            gap: 0.75rem;
+        }
+
+        .platform-screenshot {
+            flex: 1.2;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--color-border);
+        }
+
+        .platform-screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .pricing {
@@ -1212,9 +1475,13 @@
         /* Testimonials Section */
         .testimonials {
             padding: 5rem 2rem;
-            background: var(--color-surface);
+            background: var(--color-mist);
+        }
+
+        .testimonials > * {
             max-width: 1280px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .testimonials-header {
@@ -1407,44 +1674,74 @@
         }
 
         .features {
-            padding: 6rem 2rem;
+            padding: 5rem 2rem;
+            background: var(--color-white);
+        }
+
+        .features > * {
             max-width: 1280px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .section-header h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             font-weight: 700;
+            line-height: 1.2;
         }
 
         .section-header p {
             font-size: 1.125rem;
             color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+
+        .features-section-header {
+            text-align: center;
+            margin-top: 6rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-subheadline {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            margin-bottom: 1rem;
+        }
+
+        .features-section-subtitle {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .feature-card {
-            background: white;
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
+            background: var(--color-mist);
+            border: none;
+            border-radius: 16px;
             padding: 2rem;
             transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
         }
 
         .feature-card:hover {
-            border-color: var(--color-lake);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            background: var(--color-bone);
             transform: translateY(-2px);
         }
 
@@ -1469,12 +1766,420 @@
         .feature-card p {
             color: var(--color-text-secondary);
             line-height: 1.6;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        /* Prep Options Grid */
+        .prep-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+            align-items: stretch;
+        }
+
+        .prep-option-card {
+            background: var(--color-mist);
+            border: none;
+            border-radius: 16px;
+            padding: 2rem 2rem 0 2rem;
+            min-height: 580px;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .prep-option-card:hover {
+            background: var(--color-bone);
+        }
+
+        .prep-option-card .feature-icon {
+            display: none;
+        }
+
+        .prep-option-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-onyx);
+        }
+
+        .prep-option-card .prep-description {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .prep-option-card .prep-pricing {
+            margin-bottom: 1rem;
+        }
+
+        .prep-option-card .prep-pricing .price-prefix {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .prep-option-card .prep-pricing .prep-price {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+        }
+
+        .prep-option-card .card-visual {
+            margin-top: 2.5rem;
+            margin-left: -2rem;
+            margin-right: -2rem;
+            height: 320px;
+            background: var(--color-bone);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+
+        .prep-option-card .card-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prep-option-card .card-visual.illustration {
+            background: var(--color-mist);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 1rem;
+        }
+
+        .prep-option-card .card-visual.illustration img {
+            object-fit: contain;
+            object-position: top;
+            width: 95%;
+            height: 110%;
+        }
+
+        /* Laptop Mockup */
+        .laptop-mockup {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 2rem 0 2rem 2rem;
+            background: var(--color-bone);
+            overflow: hidden;
+        }
+
+        .laptop-frame {
+            width: 95%;
+            max-width: 380px;
+            transform: translateX(25%);
+        }
+
+        .laptop-screen {
+            background: #1a1a1a;
+            border-radius: 8px 8px 0 0;
+            padding: 6px;
+            aspect-ratio: 16/10;
+        }
+
+        .checklist-ui {
+            background: #fff;
+            border-radius: 4px;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .checklist-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 8px;
+        }
+
+        .checklist-avatar {
+            width: 20px;
+            height: 20px;
+            background: var(--color-onyx);
+            color: white;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist-title {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .checklist-check {
+            width: 14px;
+            height: 14px;
+            background: var(--color-sunflower);
+            border-radius: 50%;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-onyx);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .checklist-text {
+            font-size: 8px;
+            color: var(--color-onyx);
+            flex: 1;
+        }
+
+        .checklist-badge {
+            font-size: 6px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .checklist-badge.high {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .checklist-badge.quick {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .laptop-base {
+            background: linear-gradient(to bottom, #e0e0e0, #c0c0c0);
+            height: 12px;
+            border-radius: 0 0 4px 4px;
+            margin: 0 -5%;
+        }
+
+        .prep-option-card .learn-more-link,
+        .feature-card .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            margin-top: auto;
+            transition: gap 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link,
+        .feature-card:hover .learn-more-link {
+            gap: 0.5rem;
+        }
+
+        .prep-option-card .learn-more-link::after,
+        .feature-card .learn-more-link::after {
+            content: '→';
+            transition: transform 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link::after,
+        .feature-card:hover .learn-more-link::after {
+            transform: translateX(2px);
+        }
+
+        @media (max-width: 768px) {
+            .prep-options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prep-option-card {
+                min-height: 400px;
+            }
+
+            .prep-option-card .card-visual {
+                height: 200px;
+            }
+        }
+
+        /* Pay at Close Section */
+        .pay-at-close-section {
+            padding-top: 4rem;
+            padding-bottom: 0;
+        }
+
+        .pay-at-close-card {
+            background: var(--color-mist);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .pay-at-close-headline {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--color-onyx);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .pay-at-close-headline strong {
+            font-weight: 700;
+        }
+
+        .service-pills-scroll {
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .service-pills-track {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .service-pills-track .service-pill {
+            padding: 0.75rem 1.25rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .pay-at-close-divider {
+            height: 1px;
+            background: var(--color-border);
+            margin: 2rem 0;
+        }
+
+        .pay-at-close-example {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .example-content {
+            text-align: left;
+        }
+
+        .example-label {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .example-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            margin-bottom: 1rem;
+        }
+
+        .example-content p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .pay-at-close-section .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+
+        .pay-at-close-section .learn-more-link:hover {
+            gap: 0.75rem;
+        }
+
+        .example-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .example-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .roi-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .example-address {
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .pay-at-close-card {
+                padding: 2rem;
+            }
+
+            .pay-at-close-example {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .example-content {
+                text-align: center;
+            }
         }
 
         /* Additional Services Section */
         .additional-services {
-            padding: 4rem 2rem;
-            background: var(--color-surface);
+            padding: 3rem 2rem;
+            background: var(--color-paper);
+            border-top: 1px solid var(--color-border);
         }
 
         .services-content {
@@ -1527,79 +2232,72 @@
         /* ROI Calculator Section */
         .roi-section {
             padding: 6rem 2rem;
-            background: var(--color-onyx);
-            color: white;
+            background: #ffffff;
         }
 
         .roi-container {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
+            text-align: center;
         }
 
         .roi-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .roi-header h2 {
-            font-size: 2.5rem;
-            font-weight: 500;
-            color: white;
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: var(--color-onyx);
             margin-bottom: 1rem;
-            letter-spacing: -0.02em;
         }
 
         .roi-header p {
             font-size: 1.125rem;
-            color: rgba(255,255,255,0.7);
+            color: var(--color-text);
             max-width: 600px;
             margin: 0 auto;
         }
 
         .roi-calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
         }
 
         .roi-input-section {
-            background: var(--color-charcoal);
-            border-radius: var(--radius-xl);
-            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .roi-input-group {
-            margin-bottom: 2rem;
-        }
-
-        .roi-input-group:last-child {
-            margin-bottom: 0;
+            text-align: left;
         }
 
         .roi-input-label {
             display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
         }
 
         .roi-input-value {
-            font-size: 2.5rem;
+            font-size: 1.75rem;
             font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-            font-family: inherit;
+            color: var(--color-onyx);
+            margin-bottom: 0.75rem;
         }
 
         .roi-slider {
             width: 100%;
             height: 8px;
             border-radius: 4px;
-            background: rgba(255,255,255,0.15);
+            background: var(--color-div);
             outline: none;
             -webkit-appearance: none;
             cursor: pointer;
@@ -1610,9 +2308,9 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: var(--color-golden);
+            background: var(--color-sunflower);
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             transition: transform 0.2s;
         }
 
@@ -1624,81 +2322,75 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: var(--color-golden);
+            background: var(--color-sunflower);
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
         .roi-results-section {
-            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-div);
         }
 
         .roi-results-grid {
             display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
 
         .roi-result-card {
-            background: var(--color-charcoal);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            text-align: left;
-            transition: var(--transition);
+            text-align: center;
         }
 
-        .roi-result-card.highlight {
-            background: var(--color-golden);
-            color: var(--color-onyx);
+        .roi-result-card.highlight .roi-result-value {
+            color: var(--color-sunflower);
         }
 
         .roi-result-label {
-            font-size: 0.8125rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.7;
-            margin-bottom: 0.5rem;
-        }
-
-        .roi-result-card.highlight .roi-result-label {
-            color: var(--color-onyx);
-            opacity: 0.8;
+            font-size: 0.875rem;
+            color: var(--color-text);
+            margin-bottom: 0.25rem;
         }
 
         .roi-result-value {
-            font-size: 2.75rem;
-            font-weight: 600;
-            line-height: 1.1;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            display: block;
             transition: all 0.3s ease;
         }
 
         .roi-result-detail {
-            font-size: 0.9375rem;
-            margin-top: 0.5rem;
-            opacity: 0.7;
-        }
-
-        .roi-result-card.highlight .roi-result-detail {
-            opacity: 0.8;
+            font-size: 0.8125rem;
+            color: var(--color-text);
+            margin-top: 0.25rem;
         }
 
         .roi-footnote {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 2rem;
             font-size: 0.8125rem;
-            color: rgba(255,255,255,0.5);
+            color: var(--color-text);
         }
 
         .roi-footnote a {
-            color: rgba(255,255,255,0.7);
+            color: var(--color-deep);
             text-decoration: underline;
         }
 
-        @media (max-width: 900px) {
-            .roi-calculator {
+        @media (max-width: 768px) {
+            .roi-input-section {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+            }
+
+            .roi-results-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .roi-calculator {
+                padding: 2rem;
             }
 
             .roi-header h2 {
@@ -1706,7 +2398,7 @@
             }
 
             .roi-input-value {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
 
             .roi-result-value {
@@ -1716,7 +2408,7 @@
 
         .how-it-works {
             padding: 6rem 2rem;
-            background: var(--color-white);
+            background: white;
         }
 
         .how-it-works-content {
@@ -1726,6 +2418,86 @@
 
         .how-it-works .section-header h2 {
             color: var(--color-text-primary);
+        }
+
+        /* Comparison Columns */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .comparison-column {
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .comparison-column.old-way {
+            background: var(--color-mist);
+        }
+
+        .comparison-column.new-way {
+            background: var(--color-onyx);
+            color: var(--color-white);
+        }
+
+        .comparison-column h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-column.new-way h3 {
+            color: var(--color-white);
+        }
+
+        .comparison-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .comparison-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 1.0625rem;
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+        }
+
+        .comparison-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .comparison-list li svg {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+        }
+
+        .old-way .comparison-list li svg {
+            color: var(--color-text-secondary);
+        }
+
+        .new-way .comparison-list li svg {
+            color: var(--color-golden);
+        }
+
+        .old-way .comparison-list li {
+            color: var(--color-text-secondary);
+        }
+
+        .new-way .comparison-list li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Timeline Container */
@@ -1881,7 +2653,9 @@
 
         .cta-section {
             padding: 6rem 2rem;
-            background: var(--color-primary);
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
+            background-size: cover;
+            background-position: center 70%;
             color: white;
             text-align: center;
         }
@@ -1962,6 +2736,21 @@
                 font-size: 2.5rem;
             }
 
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            .hero {
+                min-height: 100vh;
+                padding-top: 100px;
+                display: flex;
+                align-items: center;
+            }
+
+            .hero-container {
+                padding-top: 2rem;
+            }
+
             .hero-subtitle {
                 font-size: 1.125rem;
             }
@@ -2001,32 +2790,21 @@
                 display: none;
             }
 
-            .nav-actions {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
             /* Mobile menu modal */
             .mobile-menu-modal {
-                display: none;
+                display: none !important;
                 position: fixed;
                 top: 0;
                 left: 0;
-                right: 0;
-                bottom: 0;
-                width: 100%;
-                height: 100%;
-                min-height: 100dvh;
-                min-height: -webkit-fill-available;
+                width: 100vw;
+                height: 100dvh;
+                max-height: -webkit-fill-available;
                 background: #FFFFFF;
                 z-index: 99999;
                 flex-direction: column;
                 padding: 1rem 1.5rem;
-                padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-                overflow-y: auto;
+                padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 1rem);
+                overflow: hidden;
                 box-sizing: border-box;
             }
 
@@ -2041,7 +2819,6 @@
                 padding-bottom: 1.5rem;
                 border-bottom: 1px solid var(--color-border);
                 margin-bottom: 1rem;
-                flex-shrink: 0;
             }
 
             .mobile-menu-logo svg {
@@ -2061,20 +2838,17 @@
                 list-style: none;
                 flex: 1;
                 overflow-y: auto;
+                min-height: 0;
             }
 
             .mobile-menu-nav li {
                 border-bottom: 1px solid var(--color-border);
             }
 
-            .mobile-menu-nav > li > .mobile-nav-row {
+            .mobile-menu-nav > li > a {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-            .mobile-menu-nav > li > .mobile-nav-row > a {
-                flex: 1;
                 padding: 1.25rem 0;
                 font-size: 1.125rem;
                 color: var(--color-onyx);
@@ -2082,55 +2856,34 @@
                 font-weight: 500;
             }
 
-            .mobile-menu-nav > li > .mobile-nav-row > a::after {
-                content: none;
-            }
-
-            .mobile-dropdown-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                background: none;
-                border: none;
-                cursor: pointer;
-                flex-shrink: 0;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            .mobile-dropdown-toggle::after {
+            .mobile-menu-nav > li > a::after {
                 content: '';
                 display: inline-block;
                 width: 8px;
                 height: 8px;
-                border-right: 2px solid var(--color-onyx);
-                border-bottom: 2px solid var(--color-onyx);
+                border-right: 1.5px solid var(--color-onyx);
+                border-bottom: 1.5px solid var(--color-onyx);
                 transform: rotate(45deg);
                 transition: transform 0.2s;
             }
 
-            .mobile-menu-nav li.dropdown-open > .mobile-nav-row > .mobile-dropdown-toggle::after {
+            .mobile-menu-nav > li > a.no-dropdown::after {
+                display: none;
+            }
+
+            .mobile-menu-nav li.dropdown-open > a::after {
                 transform: rotate(-135deg);
             }
 
             .mobile-menu-nav .dropdown {
-                display: none !important;
-                position: static !important;
-                transform: none !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                min-width: 0 !important;
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                transition: none !important;
+                display: none;
                 background: var(--color-mist);
                 padding: 1rem;
                 margin-bottom: 0.5rem;
             }
 
-            .mobile-menu-nav li.dropdown-open > .dropdown {
-                display: block !important;
+            .mobile-menu-nav li.dropdown-open .dropdown {
+                display: block;
             }
 
             .mobile-menu-nav .dropdown-header {
@@ -2187,10 +2940,11 @@
             .mobile-menu-actions {
                 display: flex;
                 gap: 1rem;
-                padding: 1.5rem 0 0;
+                padding: 1rem 0;
                 border-top: 1px solid var(--color-border);
                 margin-top: auto;
                 flex-shrink: 0;
+                padding-bottom: env(safe-area-inset-bottom, 0px);
             }
 
             .mobile-menu-actions .btn {
@@ -2213,8 +2967,155 @@
                 color: #FFFFFF;
             }
 
-            header {
-                position: relative;
+            /* Mobile nav header */
+            .mobile-nav-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 0 !important;
+                margin-bottom: 1rem;
+                border-bottom: 1px solid var(--color-border) !important;
+            }
+
+            .mobile-nav-logo {
+                display: flex;
+                align-items: center;
+            }
+
+            .mobile-nav-logo::after {
+                display: none !important;
+            }
+
+            .mobile-nav-close {
+                background: none;
+                border: none;
+                padding: 0.5rem;
+                cursor: pointer;
+                color: var(--color-onyx);
+            }
+
+            .nav-links li {
+                width: 100%;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .nav-links > li > a {
+                padding: 1.25rem 0;
+                width: 100%;
+                justify-content: space-between;
+                font-size: 1.125rem;
+                color: var(--color-onyx) !important;
+            }
+
+            .nav-links a {
+                color: var(--color-onyx) !important;
+            }
+
+            .nav-links a::after {
+                border-color: var(--color-onyx) !important;
+            }
+
+            .nav-links li .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+                background: var(--color-mist);
+                display: none;
+                margin-top: 0;
+                min-width: 100%;
+                padding: 1rem 0;
+            }
+
+            .nav-links li .dropdown .dropdown-header {
+                color: var(--color-text-secondary);
+                font-size: 0.875rem;
+                margin-bottom: 1rem;
+            }
+
+            .nav-links li .dropdown .dropdown-grid,
+            .nav-links li .dropdown .dropdown-grid-2col {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .nav-links li .dropdown .dropdown-item {
+                padding: 0.75rem 0;
+            }
+
+            .nav-links li .dropdown .dropdown-icon {
+                background: var(--color-border);
+            }
+
+            .nav-links li .dropdown .dropdown-icon svg {
+                stroke: var(--color-onyx);
+            }
+
+            .nav-links li .dropdown .dropdown-title {
+                color: var(--color-onyx) !important;
+            }
+
+            .nav-links li .dropdown .dropdown-desc {
+                color: var(--color-text-secondary) !important;
+            }
+
+            .nav-links li.dropdown-open .dropdown {
+                display: block;
+            }
+
+            /* Mobile nav actions */
+            .mobile-nav-actions {
+                display: flex !important;
+                flex-direction: row;
+                gap: 1rem;
+                padding: 1.5rem 0;
+                margin-top: auto;
+                border-top: 1px solid var(--color-border);
+                border-bottom: none;
+            }
+
+            .mobile-nav-actions .btn {
+                flex: 1;
+                justify-content: center;
+                padding: 1rem 1.5rem;
+            }
+
+            .mobile-nav-actions .btn-primary {
+                background: var(--color-golden);
+                color: var(--color-onyx);
+            }
+
+            .mobile-nav-actions .btn-secondary {
+                background: var(--color-onyx);
+                color: #FFFFFF;
+                border: none;
+            }
+
+            /* Mobile hamburger becomes X when active */
+            .hamburger.active {
+                position: fixed;
+                top: 1rem;
+                right: 1.25rem;
+                z-index: 10000;
+            }
+
+            .hamburger.active span {
+                background: var(--color-onyx);
+            }
+
+            .nav-actions {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
             }
 
             .features-grid {
@@ -2230,6 +3131,112 @@
             .logos {
                 flex-wrap: wrap;
                 gap: 1.5rem;
+                animation-duration: 8s;
+            }
+
+            /* Mobile comparison section */
+            .comparison-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .comparison-column {
+                padding: 2rem;
+            }
+
+            .comparison-column h3 {
+                font-size: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .comparison-list li {
+                font-size: 1rem;
+            }
+
+            /* Mobile smart recommendations */
+            .smart-recommendations {
+                padding: 4rem 1.5rem;
+            }
+
+            .smart-recommendations-content {
+                flex-direction: column;
+                gap: 2.5rem;
+            }
+
+            .smart-recommendations .section-header {
+                max-width: 100%;
+                text-align: left;
+            }
+
+            .smart-recommendations .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .features .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .platform-screenshot {
+                flex: none;
+                width: 100%;
+            }
+
+            /* Mobile features section */
+            .features {
+                padding: 4rem 1.5rem;
+            }
+
+            .prep-options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pay-at-close-section {
+                padding-top: 3rem;
+            }
+
+            .pay-at-close-card {
+                padding: 2rem;
+            }
+
+            .pay-at-close-headline {
+                font-size: 1.25rem;
+            }
+
+            .example-content h3 {
+                font-size: 1.25rem;
+            }
+
+            /* Mobile testimonials */
+            .testimonials {
+                padding: 4rem 1.5rem;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Mobile how it works */
+            .how-it-works {
+                padding: 4rem 1.5rem;
+            }
+
+            /* Mobile CTA section */
+            .cta-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.5rem;
+            }
+
+            /* Mobile footer */
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-section {
+                min-width: 100%;
             }
         }
     </style>
@@ -2265,7 +3272,7 @@
                 <li>
                     <a href="#products">Prep a home</a>
                     <div class="dropdown">
-                        <h3 class="dropdown-header">Prep that works for any budget</h3>
+                        <h3 class="dropdown-header">Prep a home</h3>
                         <div class="dropdown-grid">
                             <a href="quick-design-advice.html" class="dropdown-item">
                                 <div class="dropdown-icon">
@@ -2274,7 +3281,7 @@
                                     </svg>
                                 </div>
                                 <div class="dropdown-text">
-                                    <span class="dropdown-title">Quick design<br>advice</span>
+                                    <span class="dropdown-title">Expert design<br>advice</span>
                                     <span class="dropdown-desc">Expert tips in 24 hours</span>
                                 </div>
                             </a>
@@ -2287,7 +3294,7 @@
                                     </svg>
                                 </div>
                                 <div class="dropdown-text">
-                                    <span class="dropdown-title">We'll style<br>for you</span>
+                                    <span class="dropdown-title">In-person<br>styling</span>
                                     <span class="dropdown-desc">Pro styling with your items</span>
                                 </div>
                             </a>
@@ -2309,7 +3316,7 @@
                 <li>
                     <a href="#">Customers</a>
                     <div class="dropdown">
-                        <h3 class="dropdown-header">Who we work with</h3>
+                        <h3 class="dropdown-header">Customers</h3>
                         <div class="dropdown-grid-2col">
                             <a href="agents.html" class="dropdown-item">
                                 <div class="dropdown-icon">
@@ -2320,28 +3327,9 @@
                                 </div>
                                 <div class="dropdown-text">
                                     <span class="dropdown-title">Agents</span>
-                                    <span class="dropdown-desc">Tools for individual agents.</span>
+                                    <span class="dropdown-desc">Tools for individual agents</span>
                                 </div>
                             </a>
-                            <a href="brokerages.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 21h18"/>
-                                        <path d="M9 8h1"/>
-                                        <path d="M9 12h1"/>
-                                        <path d="M9 16h1"/>
-                                        <path d="M14 8h1"/>
-                                        <path d="M14 12h1"/>
-                                        <path d="M14 16h1"/>
-                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Brokerages</span>
-                                    <span class="dropdown-desc">Solutions for your team.</span>
-                                </div>
-                            </a>
-                            
                             <a href="homeowners.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2351,7 +3339,7 @@
                                 </div>
                                 <div class="dropdown-text">
                                     <span class="dropdown-title">Homeowners</span>
-                                    <span class="dropdown-desc">Prep your own home.</span>
+                                    <span class="dropdown-desc">Prep your own home</span>
                                 </div>
                             </a>
                         </div>
@@ -2371,28 +3359,13 @@
                                     </svg>
                                 </div>
                                 <div class="dropdown-text">
-                                    <span class="dropdown-title">Pay at Close</span>
-                                    <span class="dropdown-desc">Defer costs until closing.</span>
+                                    <span class="dropdown-title">Pay at close</span>
+                                    <span class="dropdown-desc">Defer costs for staging, photos and other services until closing</span>
                                 </div>
                             </a>
-                            <a href="case-studies.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14 2 14 8 20 8"/>
-                                        <line x1="16" y1="13" x2="8" y2="13"/>
-                                        <line x1="16" y1="17" x2="8" y2="17"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Case Studies</span>
-                                    <span class="dropdown-desc">Real success stories.</span>
-                                </div>
-                            </a>
-                        </div>
+                                                    </div>
                     </div>
                 </li>
-                
             </ul>
             <div class="nav-actions">
                 <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
@@ -2442,10 +3415,7 @@
         </div>
         <ul class="mobile-menu-nav">
             <li>
-                <div class="mobile-nav-row">
-                    <a href="#products">Prep a home</a>
-                    <button class="mobile-dropdown-toggle" aria-label="Expand Prep a home"></button>
-                </div>
+                <a href="#products">Prep a home</a>
                 <div class="dropdown">
                     <h3 class="dropdown-header">Prep a home</h3>
                     <div class="dropdown-grid">
@@ -2489,10 +3459,7 @@
                 </div>
             </li>
             <li>
-                <div class="mobile-nav-row">
-                    <a href="#">Customers</a>
-                    <button class="mobile-dropdown-toggle" aria-label="Expand Customers"></button>
-                </div>
+                <a href="#">Customers</a>
                 <div class="dropdown">
                     <h3 class="dropdown-header">Customers</h3>
                     <div class="dropdown-grid">
@@ -2524,10 +3491,7 @@
                 </div>
             </li>
             <li>
-                <div class="mobile-nav-row">
-                    <a href="#resources">Resources</a>
-                    <button class="mobile-dropdown-toggle" aria-label="Expand Resources"></button>
-                </div>
+                <a href="#resources">Resources</a>
                 <div class="dropdown">
                     <h3 class="dropdown-header">Resources</h3>
                     <div class="dropdown-grid">
@@ -2540,7 +3504,7 @@
                             </div>
                             <div class="dropdown-text">
                                 <span class="dropdown-title">Pay at close</span>
-                                <span class="dropdown-desc">Defer costs until closing</span>
+                                <span class="dropdown-desc">Defer costs for staging, photos and other services until closing</span>
                             </div>
                         </a>
                     </div>
@@ -2569,27 +3533,13 @@
                     <span class="hero-callout-number">2,500+</span>
                     <span class="hero-callout-text">homes prepped</span>
                 </div>
-                <h1>Your superpower for listing faster and earning more</h1>
+                <h1>List faster, sell for more</h1>
                 <p class="hero-subtitle">
-                    Automated listing prep that recommends services, schedules vendors and helps you maximize the sale of any property, every time.
+                    Automated listing prep that recommends services, schedules vendors & helps you maximize the sale of any property, every time.
                 </p>
                 <div class="hero-cta">
                     <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
                     <a href="https://guesthouseshop-8563089.hs-sites-na2.com/book-now?__hstc=245747035.80f192d2f82698a37bcdd1b0b2e27fef.1705686154634.1769798399619.1769805070510.736&__hssc=245747035.3.1769805070510&__hsfp=c30a9b67ce734ccc097889e396b65a93" class="btn btn-secondary">Speak with our team</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-value">$50k</span>
-                        <span class="stat-label">More earnings per home</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">3-Day</span>
-                        <span class="stat-label">Delivery options</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">100%</span>
-                        <span class="stat-label">On-time, guaranteed</span>
-                    </div>
                 </div>
             </div>
             <div class="hero-image">
@@ -2692,136 +3642,193 @@
         </div>
     </section>
 
-    <section class="pricing" id="pricing">
-        <div class="pricing-content">
-            <div class="pricing-header">
-                <h2>Maximum home value, however you prep</h2>
-                <p>Tell us about your listing. We'll share the smartest way to get it prepped and sold – instantly.</p>
+    <section class="metrics-section">
+        <div class="metrics-content">
+            <div class="metrics-left">
+                <h2 class="metrics-headline">The listing prep platform that does the work for you</h2>
+                <p class="metrics-subtitle">With over $2.5B transacted, our results make a real impact on US home sales. It's why we're trusted by top agents and were recently backed by the National Association of Realtors.</p>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <p class="metric-value">20+</p>
+                        <p class="metric-description">Hours saved per listing</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="metric-value">$50k</p>
+                        <p class="metric-description">More earnings per property</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="metric-value">2,500+</p>
+                        <p class="metric-description">Homes prepped faster</p>
+                    </div>
+                </div>
             </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Quick design advice</h3>
-                    <p class="description">Our designers visit, declutter, rearrange your furniture, and capture it all with professional photography.</p>
-                    <p class="price-note">Starting at</p>
-                    <p class="price">$249</p>
-                    <a href="quick-design-advice.html" class="btn btn-primary btn-card">Get Started</a>
-                </div>
-                <div class="pricing-card">
-                    <h3>We style for you</h3>
-                    <p class="description">Our designers visit, rearrange your furniture, and capture it all on camera.</p>
-                    <p class="price-note">Starting at</p>
-                    <p class="price">$1,499</p>
-                    <a href="style-for-you.html" class="btn btn-primary btn-card">Get Started</a>
-                </div>
-                <div class="pricing-card">
-                    <h3>Full-service staging</h3>
-                    <p class="description">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
-                    <p class="price-note">Starting at</p>
-                    <p class="price">$2,499</p>
-                    <a href="full-service-staging.html" class="btn btn-primary btn-card">Get Started</a>
+            <div class="metrics-right">
+                <div class="before-after-slider" id="beforeAfterSlider">
+                    <img src="staging-before.jpg" alt="Before staging" class="before-image">
+                    <img src="staging-after.jpg" alt="After staging" class="after-image">
+                    <div class="slider-handle" id="sliderHandle"></div>
+                    <span class="slider-label before">Before</span>
+                    <span class="slider-label after">After</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="additional-services">
-        <div class="services-content">
-            <p class="services-intro">Easily add services:</p>
-            <div class="services-list">
-                <span class="service-pill">Deep Cleaning</span>
-                <span class="service-pill">Moving</span>
-                <span class="service-pill">Handyman</span>
-                <span class="service-pill">Landscaping</span>
-                <span class="service-pill">MLS Photos</span>
-                <span class="service-pill">Video Tours</span>
-                <span class="service-pill">Drone Photos & Video</span>
-                <span class="service-pill">Matterport</span>
-                <span class="service-pill">3D Tours</span>
+    <section class="smart-recommendations">
+        <div class="smart-recommendations-content">
+            <div class="section-header">
+                <h2>Smart quotes to maximize sales price — instantly</h2>
+                <p>Tell us about your property. We'll share recommendations and pricing for the right services to maximize your sale in seconds.</p>
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="learn-more-link">Get your quote →</a>
             </div>
-        </div>
-    </section>
-
-    <section class="roi-section">
-        <div class="roi-container">
-            <div class="roi-header">
-                <h2>Calculate your ROI with Guest House</h2>
-                <p>Well-prepped homes sell for 5-10% more on average. See how much more you could earn.</p>
+            <div class="platform-screenshot">
+                <img src="smart-quotes-ui.png" alt="Guest House platform showing smart listing recommendations">
             </div>
-            <div class="roi-calculator">
-                <div class="roi-input-section">
-                    <div class="roi-input-group">
-                        <label class="roi-input-label">Home listing price</label>
-                        <div class="roi-input-value" id="homeValueDisplay">$1,200,000</div>
-                        <input type="range" class="roi-slider" id="homeValueSlider" min="200000" max="5000000" step="25000" value="1200000">
-                    </div>
-                    <div class="roi-input-group">
-                        <label class="roi-input-label">Prep investment</label>
-                        <div class="roi-input-value" id="stagingCostDisplay">$3,500</div>
-                        <input type="range" class="roi-slider" id="stagingCostSlider" min="250" max="10000" step="250" value="3500">
-                    </div>
-                </div>
-                <div class="roi-results-section">
-                    <div class="roi-results-grid">
-                        <div class="roi-result-card highlight">
-                            <div class="roi-result-label">Expected sale price increase</div>
-                            <div class="roi-result-value" id="priceIncrease">+$52,500</div>
-                            <div class="roi-result-detail">Based on price-tier analysis</div>
-                        </div>
-                        <div class="roi-result-card">
-                            <div class="roi-result-label">Net profit from prep</div>
-                            <div class="roi-result-value" id="netProfit">+$49,000</div>
-                            <div class="roi-result-detail">After prep costs</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p class="roi-footnote">Based on NAR and RESA research on staged home sale prices. <a href="https://www.nar.realtor/research-and-statistics/research-reports/profile-of-home-staging" target="_blank">View study</a></p>
         </div>
     </section>
 
     <section class="features" id="services">
         <div class="section-header">
-            <h2>All the coordination on auto-pilot</h2>
-            <p>We handle all the moving parts of listing prep, so you can focus on what matters most - getting the property sold.</p>
+            <h2>Every prep service you need, all in one place</h2>
+            <p>From staging to photos to cleaning and more, easily book proven options that fit any budget.</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Instant quotes</h3>
-                <p>No waiting for callbacks. Get your price with recommended services in seconds. Book immediately and move on with your day.</p>
+        <div class="prep-options-grid">
+            <a href="quick-design-advice.html" class="prep-option-card">
+                <h3>Expert design advice</h3>
+                <p class="prep-description">Expert guidance to make your home show-ready with what you already have.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$249</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual laptop-mockup">
+                    <div class="laptop-frame">
+                        <div class="laptop-screen">
+                            <div class="checklist-ui">
+                                <div class="checklist-header">
+                                    <div class="checklist-avatar">GH</div>
+                                    <div class="checklist-title">Your Instant Checklist</div>
+                                </div>
+                                <div class="checklist-items">
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Declutter entryway</div>
+                                        <span class="checklist-badge high">High Impact</span>
+                                    </div>
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Brighten living room</div>
+                                        <span class="checklist-badge quick">Quick Win</span>
+                                    </div>
+                                    <div class="checklist-item">
+                                        <div class="checklist-check">✓</div>
+                                        <div class="checklist-text">Stage kitchen for photos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="laptop-base"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="style-for-you.html" class="prep-option-card">
+                <h3>In-person styling</h3>
+                <p class="prep-description">Our designers visit, rearrange your furniture, and capture it all on camera.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$1,450</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual illustration">
+                    <img src="in-person-styling.png" alt="In-person styling">
+                </div>
+            </a>
+            <a href="full-service-staging.html" class="prep-option-card">
+                <h3>Full-service staging</h3>
+                <p class="prep-description">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
+                <div class="prep-pricing">
+                    <span class="price-prefix">Starting at</span>
+                    <span class="prep-price">$2,950</span>
+                </div>
+                <span class="learn-more-link">Get started</span>
+                <div class="card-visual">
+                    <img src="full-service-staging.jpg" alt="Full-service staging">
+                </div>
+            </a>
+        </div>
+        <div class="pay-at-close-section">
+            <div class="pay-at-close-card">
+                <p class="pay-at-close-headline">Increase property value now, <strong>pay nothing until close</strong></p>
+                <div class="service-pills-scroll">
+                    <div class="service-pills-track">
+                        <span class="service-pill">Staging</span>
+                        <span class="service-pill">Photos</span>
+                        <span class="service-pill">Deep Cleaning</span>
+                        <span class="service-pill">Moving</span>
+                        <span class="service-pill">3D Tours</span>
+                        <span class="service-pill">Drone Video</span>
+                        <span class="service-pill">Junk Removal</span>
+                        <span class="service-pill">Painting</span>
+                        <span class="service-pill">Landscaping</span>
+                        <span class="service-pill">Repairs</span>
+                    </div>
+                </div>
+                <div class="pay-at-close-divider"></div>
+                <div class="pay-at-close-example">
+                    <div class="example-content">
+                        <span class="example-label">Example</span>
+                        <h3>Staging + Deep Cleaning + Listing Photos</h3>
+                        <p>Get your home show-ready with professional staging, a deep clean, and stunning MLS photography—all coordinated and paid at closing.</p>
+                        <a href="pay-at-close.html" class="learn-more-link">Learn about pay at close →</a>
+                    </div>
+                    <div class="example-image">
+                        <span class="roi-badge">✓ Great ROI Potential</span>
+                        <img src="staging-example.jpg" alt="Beautifully staged living room">
+                        <p class="example-address">2448 Sagebrush Ct, La Jolla, CA</p>
+                    </div>
+                </div>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📄</div>
-                <h3>Easy invoice sharing</h3>
-                <p>Share invoices and get clients to pay instantly. Simple, professional billing that keeps everyone on the same page.</p>
+        </div>
+    </section>
+
+    <section class="smart-recommendations">
+        <div class="smart-recommendations-content">
+            <div class="section-header">
+                <h2>Simplify payment,<br>scheduling & coordination</h2>
+                <p>Guest House takes care of the details so you can list for sale faster and earn more.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">💳</div>
-                <h3>Pay at closing</h3>
-                <p>Manage cash flow by booking services now and paying later. Options available for agents and sellers.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📅</div>
-                <h3>Automated scheduling</h3>
-                <p>Stop playing phone tag. We coordinate all vendors automatically. Services happen in the right order, on your timeline.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Real-time updates</h3>
-                <p>Know exactly when your listing will be ready. Track every step in your dashboard. No surprises, ever.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>Communicate in one place</h3>
-                <p>Stop digging through texts and emails. Every message with every vendor lives in your dashboard. Find anything in seconds.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant quotes</h3>
+                    <p>No waiting for callbacks. Get your price with recommended services in seconds. Book immediately and move on with your day.</p>
+                    <span class="learn-more-link">Learn more</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Automated scheduling</h3>
+                    <p>Stop playing phone tag. We coordinate all vendors automatically. Services happen in the right order, on your timeline.</p>
+                    <span class="learn-more-link">Learn more</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time updates</h3>
+                    <p>Know exactly when your listing will be ready. Track every step in your dashboard. No surprises, ever.</p>
+                    <span class="learn-more-link">Learn more</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Communicate in one place</h3>
+                    <p>Stop digging through texts and emails. Every message with every vendor lives in your dashboard. Find anything in seconds.</p>
+                    <span class="learn-more-link">Learn more</span>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="testimonials">
         <div class="testimonials-header">
-            <h2>Backed by thousands of homes sold</h2>
-            <p>Join the many agents who have experienced the Guest House difference in prepping and selling homes faster.</p>
+            <h2>Trusted by thousands of agents & homeowners</h2>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial-card">
@@ -2941,80 +3948,64 @@
 
     <section class="how-it-works" id="how-it-works">
         <div class="how-it-works-content">
-            <div class="section-header">
-                <h2>Built for busy agents and homeowners</h2>
-            </div>
-            <div class="timeline-container">
-                <div class="timeline-pills">
-                    <span class="timeline-pill">1</span>
-                    <span class="timeline-pill">2</span>
-                    <span class="timeline-pill">3</span>
+            <div class="comparison-container">
+                <div class="comparison-column old-way">
+                    <h3>The old way to prep a listing 😴</h3>
+                    <ul class="comparison-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Call multiple vendors for quotes
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Compare pricing yourself
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Coordinate schedules manually
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Chase down updates
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Manage payments separately
+                        </li>
+                    </ul>
                 </div>
-                <div class="timeline-line">
-                    <div class="timeline-line-bar">
-                        <span class="timeline-dot-middle"></span>
-                    </div>
-                </div>
-                <div class="steps">
-                    <div class="step">
-                        <h3>Tell us about your listing</h3>
-                        <ul class="step-checklist">
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Answer a few questions
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Get smart service recommendations
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                See your quote in seconds
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="step">
-                        <h3>We handle everything</h3>
-                        <ul class="step-checklist">
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                We schedule vendors
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Staging and services are coordinated
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                You stay in the loop
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="step">
-                        <h3>Go live and sell</h3>
-                        <ul class="step-checklist">
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Receive MLS-ready photos
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Get more showings
-                            </li>
-                            <li>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                Close faster for more
-                            </li>
-                        </ul>
-                    </div>
+                <div class="comparison-column new-way">
+                    <h3>The new way (with Guest House) 🚀</h3>
+                    <ul class="comparison-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Get instant quotes in seconds
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Smart recommendations for your listing
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            We schedule and coordinate everything
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Real-time updates on progress
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            One simple payment at close
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
-        <h2>Time to level up your listings</h2>
-        <p>Join thousands of top agents who get listings market-ready in days.</p>
+        <h2>Save 20+ hours & earn more with every listing</h2>
+        <p>Join thousands of customers who get listings market-ready and beautiful effortlessly.</p>
         <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
     </section>
 
@@ -3032,8 +4023,8 @@
             <div class="footer-section">
                 <h4>Prep a Home</h4>
                 <ul>
-                    <li><a href="quick-design-advice.html">Quick design advice</a></li>
-                    <li><a href="style-for-you.html">We'll style for you</a></li>
+                    <li><a href="quick-design-advice.html">Expert design advice</a></li>
+                    <li><a href="style-for-you.html">In-person styling</a></li>
                     <li><a href="full-service-staging.html">Full-service staging</a></li>
                 </ul>
             </div>
@@ -3051,15 +4042,13 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="pay-at-close.html">Pay at Close</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="pay-at-close.html">Pay at close</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Customers</h4>
                 <ul>
                     <li><a href="agents.html">Agents</a></li>
-                    <li><a href="brokerages.html">Brokerages</a></li>
                     <li><a href="homeowners.html">Homeowners</a></li>
                 </ul>
                 <h4 style="margin-top: 24px;">Legal</h4>
@@ -3091,7 +4080,6 @@
     </footer>
 
     <script>
-        // Hamburger menu toggle
         // Mobile menu modal
         const hamburger = document.querySelector('.hamburger');
         const mobileMenuModal = document.getElementById('mobileMenuModal');
@@ -3107,12 +4095,14 @@
             document.body.style.overflow = '';
         });
 
-        // Mobile menu dropdown toggle — only the arrow button expands/collapses
-        document.querySelectorAll('.mobile-menu-nav .mobile-dropdown-toggle').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                btn.closest('li').classList.toggle('dropdown-open');
-            });
+        // Mobile menu dropdown toggle
+        document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => {
+            if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    link.parentElement.classList.toggle('dropdown-open');
+                });
+            }
         });
 
         // Scroll detection for nav color change
@@ -3120,7 +4110,7 @@
         const hero = document.querySelector('.hero');
         
         // Dark sections that need white header text
-        const darkSections = document.querySelectorAll('.roi-section, .how-it-works, footer');
+        const darkSections = document.querySelectorAll('.cta-section, footer');
 
         function isOverDarkSection() {
             const headerRect = header.getBoundingClientRect();
@@ -3220,6 +4210,50 @@
             homeValueSlider.addEventListener('input', calculateROI);
             stagingCostSlider.addEventListener('input', calculateROI);
             calculateROI();
+        }
+
+        // Before/After Slider Functionality
+        const slider = document.getElementById('beforeAfterSlider');
+        const handle = document.getElementById('sliderHandle');
+        if (slider && handle) {
+            const afterImage = slider.querySelector('.after-image');
+            let isDragging = false;
+
+            function updateSliderPosition(x) {
+                const rect = slider.getBoundingClientRect();
+                let position = (x - rect.left) / rect.width;
+                position = Math.max(0, Math.min(1, position));
+
+                const percentage = position * 100;
+                afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
+            }
+
+            function handleStart(e) {
+                isDragging = true;
+                slider.classList.add('dragging');
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleEnd() {
+                isDragging = false;
+                slider.classList.remove('dragging');
+            }
+
+            slider.addEventListener('mousedown', handleStart);
+            slider.addEventListener('touchstart', handleStart, { passive: true });
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', handleMove, { passive: false });
+            window.addEventListener('mouseup', handleEnd);
+            window.addEventListener('touchend', handleEnd);
         }
     </script>
 
