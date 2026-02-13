@@ -2796,9 +2796,10 @@
                 position: fixed;
                 top: 0;
                 left: 0;
-                width: 100vw;
-                height: 100dvh;
-                max-height: -webkit-fill-available;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
                 background: #FFFFFF;
                 z-index: 99999;
                 flex-direction: column;
@@ -2876,14 +2877,22 @@
             }
 
             .mobile-menu-nav .dropdown {
-                display: none;
-                background: var(--color-mist);
-                padding: 1rem;
-                margin-bottom: 0.5rem;
+                display: none !important;
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                min-width: 0 !important;
+                background: var(--color-mist) !important;
+                padding: 1rem !important;
+                margin-bottom: 0.5rem !important;
             }
 
             .mobile-menu-nav li.dropdown-open .dropdown {
-                display: block;
+                display: block !important;
             }
 
             .mobile-menu-nav .dropdown-header {
