@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guest House Support - Find answers to frequently asked questions about booking, billing, rescheduling, and accessing our staging platform.">
+    <title>Support | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-error: #C4544C;
+            --color-sunflower: #D69B43;
+            --color-golden: #EBBC76;
+            --color-beige: #E1D7C3;
+            --color-rain: #CCD5D6;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        nav {
+            width: 100%;
+            padding: 0.75rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            height: 24px;
+            width: auto;
+        }
+
+        .logo svg path {
+            fill: #080808;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: rotate(45deg);
+            margin-top: -3px;
+        }
+
+        .nav-links a.no-dropdown::after {
+            content: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            margin-top: 0.5rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            min-width: 520px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .nav-links li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-header {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .dropdown-item::after {
+            content: none !important;
+        }
+
+        .dropdown-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface-secondary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dropdown-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-text-primary);
+            fill: none;
+        }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .dropdown-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-primary) !important;
+        }
+
+        .dropdown-desc {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary) !important;
+            line-height: 1.4;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Hide mobile menu elements on desktop */
+        .hamburger {
+            display: none;
+        }
+
+        .mobile-menu-modal {
+            display: none !important;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 16px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #D4A85E;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(235, 188, 118, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-white);
+            color: var(--color-onyx);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-surface-secondary);
+        }
+
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 3rem 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+            color: var(--color-text-secondary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 0 3rem;
+        }
+
+        .category-select {
+            width: 100%;
+            padding: 16px 48px 16px 20px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .category-select:focus {
+            outline: none;
+            border-color: var(--color-golden);
+        }
+
+        /* FAQ Sections */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 3rem 100px;
+        }
+
+        .faq-section {
+            display: none;
+        }
+
+        .faq-section.active {
+            display: block;
+        }
+
+        .faq-section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            letter-spacing: -0.02em;
+        }
+
+        .faq-item {
+            border-top: 1px solid var(--color-border);
+        }
+
+        .faq-item:last-child {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            gap: 16px;
+        }
+
+        .faq-question:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .faq-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 600px;
+            padding-bottom: 24px;
+        }
+
+        .faq-answer p {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .faq-answer p + p {
+            margin-top: 12px;
+        }
+
+        .faq-answer a {
+            color: var(--color-text-primary);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .faq-answer a:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .faq-answer ul {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .faq-answer ul li::before {
+            content: "- ";
+        }
+
+        .billing-note {
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--color-surface-secondary);
+            border-radius: 12px;
+        }
+
+        .billing-note p {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        .billing-note a {
+            color: var(--color-text-primary);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .platform-info {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-top: 8px;
+        }
+
+        .platform-info a {
+            color: var(--color-text-primary);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-onyx);
+            color: white;
+            padding: 60px 3rem 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 48px;
+        }
+
+        .footer-section h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 32px; height: 32px; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; }
+            .hamburger span { display: block; width: 100%; height: 2px; background: var(--color-text-primary); border-radius: 2px; }
+            .mobile-menu-modal { display: none !important; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 99999; flex-direction: column; padding: 1rem 1.5rem; padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 1rem); overflow: hidden; box-sizing: border-box; }
+            .mobile-menu-modal.active { display: flex !important; }
+            .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); margin-bottom: 1rem; }
+            .mobile-menu-logo svg { height: 27px; width: auto; }
+            .mobile-menu-close { background: none; border: none; padding: 0.5rem; cursor: pointer; color: var(--color-onyx); }
+            .mobile-menu-nav { list-style: none; flex: 1; overflow-y: auto; min-height: 0; }
+            .mobile-menu-nav li { border-bottom: 1px solid var(--color-border); }
+            .mobile-menu-nav > li > a { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; font-size: 1.125rem; color: var(--color-onyx); text-decoration: none; font-weight: 500; }
+            .mobile-menu-nav > li > a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid var(--color-onyx); border-bottom: 1.5px solid var(--color-onyx); transform: rotate(45deg); transition: transform 0.2s; }
+            .mobile-menu-nav li.dropdown-open > a::after { transform: rotate(-135deg); }
+            .mobile-menu-nav .dropdown { display: none !important; position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; box-shadow: none !important; border: none !important; min-width: 0 !important; background: var(--color-mist) !important; padding: 1rem !important; margin-bottom: 0.5rem !important; }
+            .mobile-menu-nav li.dropdown-open .dropdown { display: block !important; }
+            .mobile-menu-nav .dropdown-header { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 1rem; font-weight: 500; }
+            .mobile-menu-nav .dropdown-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+            .mobile-menu-nav .dropdown-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; text-decoration: none; }
+            .mobile-menu-nav .dropdown-icon { width: 40px; height: 40px; background: var(--color-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+            .mobile-menu-nav .dropdown-icon svg { width: 20px; height: 20px; stroke: var(--color-onyx); fill: none; }
+            .mobile-menu-nav .dropdown-title { color: var(--color-onyx); font-weight: 500; font-size: 1rem; line-height: 1.3; }
+            .mobile-menu-nav .dropdown-desc { color: var(--color-text-secondary); font-size: 0.875rem; }
+            .mobile-menu-actions { display: flex; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-border); margin-top: auto; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+            .mobile-menu-actions .btn { flex: 1; justify-content: center; padding: 1rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; }
+            .mobile-menu-actions .btn-primary { background: var(--color-golden); color: var(--color-onyx); }
+            .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
+
+            .hero {
+                padding: 140px 1.5rem 60px;
+            }
+
+            .category-nav {
+                padding: 0 1.5rem;
+                margin-bottom: 40px;
+            }
+
+            .faq-container {
+                padding: 0 1.5rem 80px;
+            }
+
+            .faq-section-title {
+                font-size: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_logo)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_logo">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Prep a home</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Prep a home</h3>
+                        <div class="dropdown-grid">
+                            <a href="design-advice.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Expert design<br>advice</span>
+                                    <span class="dropdown-desc">Get expert guidance on-demand</span>
+                                </div>
+                            </a>
+                            <a href="style-for-you.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                        <line x1="16" y1="8" x2="2" y2="22"/>
+                                        <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">In-person<br>styling</span>
+                                    <span class="dropdown-desc">Pro styling with your furnishings</span>
+                                </div>
+                            </a>
+                            <a href="full-service-staging.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Full-service<br>staging</span>
+                                    <span class="dropdown-desc">We handle everything</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Customers</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Customers</h3>
+                        <div class="dropdown-grid-2col">
+                            <a href="agents.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Agents</span>
+                                    <span class="dropdown-desc">Tools for individual agents</span>
+                                </div>
+                            </a>
+                            <a href="homeowners.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Homeowners</span>
+                                    <span class="dropdown-desc">Prep your own home</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Resources</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Resources</h3>
+                        <div class="dropdown-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <a href="pay-at-close.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Pay at close</span>
+                                    <span class="dropdown-desc">Defer costs for staging, photos and other services until closing</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+                <a href="#" class="btn btn-secondary">Login</a>
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Modal -->
+    <div class="mobile-menu-modal" id="mobileMenuModal">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="mobile-menu-logo">
+                <svg width="180" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_mobile_menu)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_mobile_menu">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </a>
+            <button class="mobile-menu-close" aria-label="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <ul class="mobile-menu-nav">
+            <li>
+                <a href="#">Prep a home</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Prep a home</h3>
+                    <div class="dropdown-grid">
+                        <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert design advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
+                        <a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-person styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
+                        <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-service staging</span><span class="dropdown-desc">We handle everything</span></div></a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">Customers</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Customers</h3>
+                    <div class="dropdown-grid">
+                        <a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a>
+                        <a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">Resources</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Resources</h3>
+                    <div class="dropdown-grid">
+                        <a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay at close</span><span class="dropdown-desc">Defer costs until closing</span></div></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="mobile-menu-actions">
+            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+            <a href="#" class="btn btn-secondary">Login</a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>We're here to help</h1>
+    </section>
+
+    <!-- Category Selector -->
+    <div class="category-nav">
+        <select class="category-select" id="categorySelect">
+            <option value="booking">Booking A Staging</option>
+            <option value="current-staging">Questions About A Current Staging?</option>
+            <option value="rescheduling">Rescheduling Or Canceling</option>
+            <option value="billing">Billing</option>
+            <option value="platform">Accessing Our Platform</option>
+        </select>
+    </div>
+
+    <!-- FAQ Content -->
+    <div class="faq-container">
+
+        <!-- Booking A Staging -->
+        <div class="faq-section active" id="booking">
+            <h2 class="faq-section-title">Booking A Staging</h2>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Why should I stage?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Quality Staging highlights your home's best features and distracts from less desirable ones, increasing its perceived value leading to a higher sales price and will statistically sell 11 times faster than non-staged competition. At Guest House, our focus is on creating an emotional connection during a buyer's critical first impression through using quality, on-trend furnishings that create an inviting environment. Visit our <a href="https://www.instagram.com/guesthouseshop/" target="_blank">Instagram</a> to view our portfolio of work and see for yourself!</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What areas do you serve?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <ul>
+                        <li>Colorado: Denver, Boulder areas and surrounding cities</li>
+                        <li>Southern California: San Diego, Orange County, Temecula and surrounding cities</li>
+                        <li>Arizona: Phoenix, Scottsdale areas and surrounding cities</li>
+                        <li>We do offer extended staging packages for inquiries outside of the listed cities in each market but additional fees may apply</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What's your lead-time?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Our typical lead time is 7-10 business days. Need to list sooner? Our team will do our best to accommodate a shorter lead time based on our availability.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Do you offer other services to get homes ready for market?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! We make it easy to book cleaning, photos and other services, along with your staging in one place.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What type of homes do you stage?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>We stage all types of homes: single family homes, condos, townhomes and apartments.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Do you stage occupied listings?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>We do stage occupied listings, however additional fees and restrictions will apply as outlined in our Staging Agreement.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Can we tour the home before I book?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>If you'd like to schedule a tour before you book, we do charge a $250 deposit that will go toward your final staging costs.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How do I book a staging?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>To book a staging with Guest House, you can simply fill out our instant quote form at <a href="https://guesthouseshop.com/home-staging/get-a-quote">guesthouseshop.com/homestaging</a> where you'll enter your contact information and details about your listing. We will be in touch to review and discuss the project with you and make any necessary adjustments to your instant quote such as install dates or scope changes. You can then follow the checkout flow on your quote page to purchase your staging package and reserve a date.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions About A Current Staging? -->
+        <div class="faq-section" id="current-staging">
+            <h2 class="faq-section-title">Questions About A Current Staging?</h2>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Can I add more rooms to my staging after booking?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! You can add rooms to your staging up to 3 business days prior to install by messaging your Designer in the platform or contacting your market team through the email or phone number listed on our Support Page.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Who is my main contact at GH once I've booked?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Once you've booked, the General Manager in your market is your local contact for all inquiries, questions or concerns about your home. You can find your GM's contact info on our Support Page.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>When and how can I share specific design requests?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Please share all design requests upfront during the kick-off call or initial walkthrough and we will do our best to accommodate based on our inventory availability. Additional fees may apply for any changes after installation.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How should I prepare for Install?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Please confirm access information provided is valid. Be sure the home is clear of any items that will not be used in staging. The property should be clean and all interior construction complete and ready for staging.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Should I be present during install?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>You do not need to be present during the install. In fact, we ask that the home is vacant during our install so our design team can efficiently stage the home. Installs typically take 4-6 hours.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>When and how do I receive the photography?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>All assets will typically be ready within 2 business days after the shoot. Photos will be readily available to download from the staging platform and you'll receive email and text notifications if enabled.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Are the staging furnishings for sale?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! Many of the items you see used in our staging can be purchased new through Guest House and shipped to your address. In some cases, the staging furniture on-site can be purchased and left behind at de-install. Love our look and want to work with a Designer to customize your space? Simply <a href="style-for-you.html">submit an inquiry on our site</a> to be paired with a Designer for a Design Consultation.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How do I schedule a de-install?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>To schedule a de-install, you can simply request one in the staging platform or contact the general manager in your market. You can find your GM's contact info on our Support Page.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rescheduling Or Canceling -->
+        <div class="faq-section" id="rescheduling">
+            <h2 class="faq-section-title">Rescheduling Or Canceling</h2>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What's your rescheduling policy?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Requests to reschedule an install or de-install must be made at least 3 business days in advance. If you need to push an install date more than 3 weeks, we ask that you cancel and re-book the staging. A $750 restocking fee may apply to installs or de-installs scheduled with less than 3 days notice.</p>
+                    <p>The Client and Guest House both reserve the right to reschedule an install or de-install where a National Weather Service Severe Weather Advisory has been issued. In such event, weather cancellations can be made at least 24 hours in advance by Client without incurring restocking fee. Please ensure all driveways and walkways are safely accessible by Guest House, and removed of snow and ice. If Guest House cannot access the property, we will need to reschedule the install or de-install the day-of and a restocking fee may apply.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What's your cancellation policy?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Cancellation requests for an install, de-install or any service booked require 5 days notice in order to receive a full refund.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Who do I contact to reschedule or cancel?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Please call the General Manager in your market to reschedule or cancel a booked staging or service. You can find your GM's contact info on our Support Page.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing -->
+        <div class="faq-section" id="billing">
+            <h2 class="faq-section-title">Billing</h2>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>When and how am I charged?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Guest House requires payment at the time of booking. You have the option of using a credit card, debit card, ACH or Affirm financing.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How long is my staging renewal?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>After an initial 30 days, your recurring renewal begins. The card on file will be charged twice monthly until your staging de-install (which must be scheduled 5 business days in advance of the desired date).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Are there additional fees based on the location of the listing?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>If your listing is located outside our standard service area, additional fees may apply.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Can payments be split?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. If you wish to split your payment with another party, please mention this to your account manager and we can separate the quotes accordingly.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What happens if a staging item is damaged while in my possession?</span>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>All items are assessed upon entry and exit of each home. If damages occur while inventory is staged, you will be charged the full retail price of the item.</p>
+                </div>
+            </div>
+
+            <div class="billing-note">
+                <p>For other billing related inquiries, please email: <a href="mailto:orders@guesthouseshop.com">orders@guesthouseshop.com</a></p>
+            </div>
+        </div>
+
+        <!-- Accessing Our Platform -->
+        <div class="faq-section" id="platform">
+            <h2 class="faq-section-title">Accessing Our Platform</h2>
+            <p class="platform-info">After booking with Guest House, you gain access to our one-of-a-kind Platform. You'll use the credentials created at check-out to login and track your home's timeline, view messages and moodboards, and download photos when they're ready. Please note this is separate from our website and has its own URL.</p>
+            <p class="platform-info" style="margin-top: 16px;">Staging Platform - <a href="https://app.guesthouseshop.com" target="_blank">app.guesthouseshop.com</a></p>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="#">Vendor Partnerships</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Prep a Home</h4>
+                <ul>
+                    <li><a href="design-advice.html">Quick design advice</a></li>
+                    <li><a href="style-for-you.html">In-person styling</a></li>
+                    <li><a href="full-service-staging.html">Full-service staging</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>In-Person Locations</h4>
+                <ul>
+                    <li><a href="#">Denver</a></li>
+                    <li><a href="#">Boulder</a></li>
+                    <li><a href="#">San Diego</a></li>
+                    <li><a href="#">Orange County</a></li>
+                    <li><a href="#">Phoenix</a></li>
+                    <li><a href="#">Scottsdale</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="pay-at-close.html">Pay at Close</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customers</h4>
+                <ul>
+                    <li><a href="agents.html">Agents</a></li>
+                    <li><a href="brokerages.html">Brokerages</a></li>
+                    <li><a href="homeowners.html">Homeowners</a></li>
+                </ul>
+                <h4 style="margin-top: 24px;">Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Category selector
+        const categorySelect = document.getElementById('categorySelect');
+        const faqSections = document.querySelectorAll('.faq-section');
+
+        categorySelect.addEventListener('change', () => {
+            faqSections.forEach(section => section.classList.remove('active'));
+            document.getElementById(categorySelect.value).classList.add('active');
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const wasOpen = item.classList.contains('open');
+                // Close all items in the same section
+                item.closest('.faq-section').querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                // Toggle clicked item
+                if (!wasOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // Handle hash navigation
+        function handleHash() {
+            const hash = window.location.hash.slice(1).toLowerCase();
+            if (hash) {
+                const sectionMap = {
+                    'booking a staging': 'booking',
+                    'booking': 'booking',
+                    'questions about a current staging?': 'current-staging',
+                    'current-staging': 'current-staging',
+                    'rescheduling or canceling': 'rescheduling',
+                    'rescheduling': 'rescheduling',
+                    'billing': 'billing',
+                    'accessing our platform': 'platform',
+                    'platform': 'platform'
+                };
+                const sectionId = sectionMap[decodeURIComponent(hash)] || hash;
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    faqSections.forEach(s => s.classList.remove('active'));
+                    section.classList.add('active');
+                    categorySelect.value = sectionId;
+                }
+            }
+        }
+        handleHash();
+        window.addEventListener('hashchange', handleHash);
+
+        // Mobile menu modal
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenuModal = document.getElementById('mobileMenuModal');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenuModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenuModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Mobile menu dropdown toggle
+        document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => {
+            if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    link.parentElement.classList.toggle('dropdown-open');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
