@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="In-person styling - Professional designers transform your occupied home using your existing furniture and decor. Fast turnaround, market-ready results.">
-    <title>In-person styling | Guest House</title>
+    <meta name="description" content="Careers at Guest House - Join the home staging disruptor. We're hiring Staging Stylists in Denver, San Diego, Orange County, and Phoenix.">
+    <title>Careers | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -63,7 +63,6 @@
             background: var(--color-surface);
         }
 
-        /* Header - always dark text on this page */
         header {
             position: fixed;
             top: 0;
@@ -248,6 +247,7 @@
             align-items: center;
             flex-shrink: 0;
         }
+
         /* Hide mobile menu elements on desktop */
         .hamburger {
             display: none;
@@ -301,77 +301,31 @@
             font-size: 1rem;
         }
 
+        .btn-dark {
+            background: var(--color-onyx);
+            color: var(--color-white);
+        }
+
+        .btn-dark:hover {
+            background: var(--color-charcoal);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         /* Hero Section */
         .hero {
-            padding: 180px 3rem 100px;
+            padding: 160px 3rem 60px;
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 60px;
         }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-paper);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-deep);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .hero-badge svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-        }
-
-        .hero-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        .hero-eyebrow {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 500;
             line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
             color: var(--color-text-secondary);
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 0;
-            animation: fadeInUp 0.6s ease-out 0.4s both;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
+            animation: fadeInUp 0.6s ease-out both;
         }
 
         @keyframes fadeInUp {
@@ -385,360 +339,131 @@
             }
         }
 
-        /* Value Props Section */
-        .value-props {
-            padding: 80px 3rem;
-            background: var(--color-surface);
-            border-top: 1px solid var(--color-border);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .value-props-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 48px;
-            max-width: 1200px;
+        /* Intro Section */
+        .intro-section {
+            max-width: 800px;
             margin: 0 auto;
+            padding: 0 3rem 60px;
         }
 
-        .value-prop {
-            text-align: left;
-        }
-
-        .value-prop-icon {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 20px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .value-prop h3 {
-            font-size: 1rem;
+        .intro-section h2 {
+            font-size: 2rem;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Section Headline */
-        .section-headline {
-            text-align: center;
-            padding: 120px 3rem 80px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .section-headline h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-            line-height: 1.15;
             letter-spacing: -0.02em;
+            margin-bottom: 16px;
         }
 
-        /* Deliverable Preview */
-        .deliverable-section {
-            padding: 0 3rem 120px;
-            max-width: 1100px;
-            margin: 0 auto;
+        .intro-section p {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.7;
         }
 
-        .deliverable-card {
-            background: var(--color-mist);
-            border-radius: 24px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
+        .intro-section a {
+            color: var(--color-text-primary);
+            font-weight: 500;
         }
 
-        .deliverable-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .deliverable-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .deliverable-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .deliverable-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .deliverable-info p {
-            font-size: 0.875rem;
+        .intro-section a:hover {
             color: var(--color-text-secondary);
         }
 
-        .deliverable-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #E8F5E9;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #2E7D32;
+        /* Values Grid */
+        .values-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 3rem 80px;
         }
 
-        .deliverable-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
-        }
-
-        .tip-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tip-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .tip-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        .value-card {
+            background: var(--color-surface-secondary);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
         }
 
-        .tip-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-golden);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+        .value-emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            line-height: 1;
         }
 
-        .tip-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--color-onyx);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .tip-content {
-            flex: 1;
-        }
-
-        .tip-content h5 {
-            font-size: 1rem;
+        .value-text {
+            font-size: 1.0625rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            color: var(--color-text-primary);
         }
 
-        .tip-content p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        .tip-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--color-bone);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-deep);
-            margin-top: 12px;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 120px 3rem;
-            background: var(--color-onyx);
-            color: white;
-        }
-
-        .how-it-works-inner {
-            max-width: 1200px;
+        /* Divider */
+        .section-divider {
+            max-width: 800px;
             margin: 0 auto;
+            padding: 0 3rem;
         }
 
-        .how-it-works h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 80px;
-            letter-spacing: -0.02em;
+        .section-divider hr {
+            border: none;
+            border-top: 1px solid var(--color-border);
         }
 
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 64px;
+        /* Open Roles */
+        .roles-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 3rem 100px;
         }
 
-        .step {
-            text-align: center;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--color-charcoal);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        .roles-section h2 {
+            font-size: 2rem;
             font-weight: 600;
-            margin: 0 auto 24px;
-            color: var(--color-golden);
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
         }
 
-        .step h3 {
-            font-size: 1.25rem;
+        .role-card {
+            border-top: 1px solid var(--color-border);
+            padding: 40px 0;
+        }
+
+        .role-card:last-child {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .role-card h3 {
+            font-size: 1.375rem;
             font-weight: 600;
             margin-bottom: 12px;
+            letter-spacing: -0.01em;
         }
 
-        .step p {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-        }
-
-        /* Testimonial */
-        .testimonial-section {
-            padding: 120px 3rem;
-            background: var(--color-paper);
-        }
-
-        .testimonial-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .testimonial-quote {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 400;
-            line-height: 1.5;
-            margin-bottom: 40px;
-            color: var(--color-onyx);
-        }
-
-        .testimonial-author {
-            display: flex;
+        .role-location {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .testimonial-avatar {
-            width: 56px;
-            height: 56px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.125rem;
-        }
-
-        .testimonial-info {
-            text-align: left;
-        }
-
-        .testimonial-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .testimonial-role {
+            gap: 6px;
             color: var(--color-text-secondary);
-            font-size: 0.9375rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 120px 3rem;
-            text-align: center;
-            background: var(--color-surface);
-        }
-
-        .cta-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-size: 0.875rem;
             font-weight: 500;
             margin-bottom: 16px;
-            letter-spacing: -0.02em;
         }
 
-        .cta-section p {
-            font-size: 1.125rem;
+        .role-location svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .role-description {
             color: var(--color-text-secondary);
-            margin-bottom: 40px;
-        }
-
-        .cta-section .btn {
-            margin: 0 8px;
-        }
-
-        .cta-price {
-            margin-top: 24px;
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-        }
-
-        .cta-price strong {
-            color: var(--color-onyx);
-            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
         }
 
         /* Footer */
@@ -746,6 +471,7 @@
             background: var(--color-onyx);
             color: white;
             padding: 60px 3rem 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .footer-content {
@@ -781,6 +507,7 @@
         .footer-section a:hover {
             color: white;
         }
+
         .social-links {
             display: flex;
             gap: 16px;
@@ -809,14 +536,7 @@
             height: 20px;
         }
 
-
         /* Responsive */
-        @media (max-width: 1024px) {
-            .value-props-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         @media (max-width: 768px) {
             nav {
                 padding: 0.75rem 1.5rem;
@@ -853,62 +573,40 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
-                padding: 140px 1.5rem 80px;
-                flex-direction: column;
-                text-align: center;
+                padding: 130px 1.5rem 40px;
             }
 
-            .hero-subtitle {
-                margin-left: auto;
-                margin-right: auto;
+            .intro-section {
+                padding: 0 1.5rem 48px;
             }
 
-            .hero-cta {
-                justify-content: center;
+            .intro-section h2 {
+                font-size: 1.5rem;
             }
 
-            .value-props {
-                padding: 60px 1.5rem;
+            .values-section {
+                padding: 0 1.5rem 60px;
             }
 
-            .value-props-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
+            .values-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
             }
 
-            .section-headline {
-                padding: 80px 1.5rem 60px;
+            .value-card {
+                padding: 24px 16px;
             }
 
-            .deliverable-section {
-                padding: 0 1.5rem 80px;
+            .section-divider {
+                padding: 0 1.5rem;
             }
 
-            .deliverable-card {
-                padding: 24px;
+            .roles-section {
+                padding: 60px 1.5rem 80px;
             }
 
-            .deliverable-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .how-it-works {
-                padding: 80px 1.5rem;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .testimonial-section {
-                padding: 80px 1.5rem;
-            }
-
-            .cta-section {
-                padding: 80px 1.5rem;
+            .roles-section h2 {
+                font-size: 1.5rem;
             }
 
             .footer-content {
@@ -944,7 +642,7 @@
                     </defs>
                 </svg>
             </a>
-                        <ul class="nav-links">
+            <ul class="nav-links">
                 <li>
                     <a href="#">Prep a home</a>
                     <div class="dropdown">
@@ -1026,7 +724,6 @@
                     <div class="dropdown">
                         <h3 class="dropdown-header">Resources</h3>
                         <div class="dropdown-grid" style="grid-template-columns: repeat(3, 1fr);">
-                            
                             <a href="pay-at-close.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1039,7 +736,7 @@
                                     <span class="dropdown-desc">Defer costs for staging, photos and other services until closing</span>
                                 </div>
                             </a>
-                                                    </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -1127,184 +824,73 @@
         </div>
     </div>
 
+    <!-- Hero -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                3-day turnaround
-            </div>
-            <h1>Your furniture, our<br>designer's eye</h1>
-            <p class="hero-subtitle">
-                Our designers visit your occupied home, de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.
-            </p>
-            <div class="hero-cta">
-                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Book your styling session</a>
-                <a href="#how-it-works" class="btn btn-secondary btn-large">See how it works</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img src="style-for-you-hero.webp" alt="Designer styling a dining room with modern furniture">
-        </div>
+        <h1 class="hero-eyebrow">Let's work together</h1>
     </section>
 
-    <section class="value-props">
-        <div class="value-props-grid">
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <h3>On-site styling</h3>
-                <p>Our designers will de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.</p>
+    <!-- Intro -->
+    <section class="intro-section">
+        <h2>We're hiring</h2>
+        <p>Are you passionate about making lives easier and the world a more beautiful place? We'd love to meet you. We're always posting new roles below. If you don't see a position and still want to chat, send us a note at <a href="mailto:careers@guesthouseshop.com">careers@guesthouseshop.com</a></p>
+    </section>
+
+    <!-- Values -->
+    <section class="values-section">
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-emoji">&#128161;</div>
+                <div class="value-text">Never stop learning</div>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-                        <line x1="16" y1="8" x2="2" y2="22"/>
-                        <line x1="17.5" y1="15" x2="9" y2="15"/>
-                    </svg>
-                </div>
-                <h3>Fresh perspective</h3>
-                <p>A professional eye spots what homeowners miss—small changes that make a big difference to buyers.</p>
+            <div class="value-card">
+                <div class="value-emoji">&#128293;</div>
+                <div class="value-text">Own it</div>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <h3>Fast turnaround</h3>
-                <p>From booking to a market-ready home—fast enough for any listing timeline.</p>
+            <div class="value-card">
+                <div class="value-emoji">&#127939;</div>
+                <div class="value-text">Run toward problems</div>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                </div>
-                <h3>Use what you have</h3>
-                <p>No rental furniture needed. We transform your space using items already in the home, saving thousands.</p>
+            <div class="value-card">
+                <div class="value-emoji">&#129309;</div>
+                <div class="value-text">Win as a team</div>
             </div>
         </div>
     </section>
 
-    <div class="section-headline">
-        <h2>See what our designers accomplish in a single visit—real transformations using your existing items</h2>
-    </div>
+    <div class="section-divider"><hr></div>
 
-    <section class="deliverable-section">
-        <div class="deliverable-card">
-            <div class="deliverable-header">
-                <div class="deliverable-meta">
-                    <div class="deliverable-avatar">GH</div>
-                    <div class="deliverable-info">
-                        <h4>Your Styling Session Results</h4>
-                        <p>2234 Oak Street, Austin TX</p>
-                    </div>
-                </div>
-                <div class="deliverable-status">Delivered</div>
+    <!-- Open Roles -->
+    <section class="roles-section">
+        <h2>Open Roles</h2>
+
+        <div class="role-card">
+            <h3>Staging Stylist</h3>
+            <div class="role-location">
+                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Denver / Boulder
             </div>
-            <div class="tip-cards">
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Living room transformation</h5>
-                        <p>De-cluttered surfaces, re-styled with existing throw pillows and blankets, adjusted accent pieces to create a warm, inviting space.</p>
-                        <span class="tip-badge">Before & After</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Kitchen styling</h5>
-                        <p>Cleared counters completely, styled with cutting board, ceramic bowl with lemons, and single herb plant. Removed fridge magnets and organized open shelving.</p>
-                        <span class="tip-badge">Styled</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Primary bedroom refresh</h5>
-                        <p>Re-made the bed with only the homeowners crisp white linens and select pillows for a tailored look. Removed clutter and personal photos from nightstands, leaving just the matching lamps and small plants for symmetry.</p>
-                    </div>
-                </div>
-            </div>
+            <p class="role-description">Passionate about design and creating stunning spaces in Colorado? As a Stylist at Guest House, you'll transform properties into breathtaking, market-ready homes with expertly curated furnishings and decor. If you have an eye for detail, a love for aesthetics, and a knack for making any space shine, we want you on our team!</p>
+            <a href="mailto:careers@guesthouseshop.com?subject=Staging Stylist – Denver/Boulder" class="btn btn-dark">Submit my info</a>
         </div>
-    </section>
 
-    <section class="how-it-works" id="how-it-works">
-        <div class="how-it-works-inner">
-            <h2>How it works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Book your session</h3>
-                    <p>Choose a date that works for you. Our designers are available 7 days a week with next-day appointments often available.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Designer visits</h3>
-                    <p>A professional designer spends 2-3 hours in your home, de-cluttering, lightly re-arranging, and re-styling each room with existing decor.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Market-ready home</h3>
-                    <p>Walk into a transformed space—de-cluttered, re-styled, and ready for showings and photos.</p>
-                </div>
+        <div class="role-card">
+            <h3>Staging Stylist</h3>
+            <div class="role-location">
+                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                San Diego / Orange County
             </div>
+            <p class="role-description">Passionate about design and creating stunning spaces in Southern California? As a Stylist at Guest House, you'll transform properties into breathtaking, market-ready homes with expertly curated furnishings and decor. If you have an eye for detail, a love for aesthetics, and a knack for making any space shine, we want you on our team!</p>
+            <a href="mailto:careers@guesthouseshop.com?subject=Staging Stylist – San Diego/Orange County" class="btn btn-dark">Submit my info</a>
         </div>
-    </section>
 
-    <section class="testimonial-section">
-        <div class="testimonial-inner">
-            <p class="testimonial-quote">"The transformation was incredible. Same furniture, completely different feel. My clients couldn't believe it was their own home in the photos. We had multiple offers within 48 hours of listing."</p>
-            <div class="testimonial-author">
-                <div class="testimonial-avatar">MT</div>
-                <div class="testimonial-info">
-                    <div class="testimonial-name">Marcus Thompson</div>
-                    <div class="testimonial-role">Broker, Keller Williams Austin</div>
-                </div>
+        <div class="role-card">
+            <h3>Staging Stylist</h3>
+            <div class="role-location">
+                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Phoenix / Scottsdale
             </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="cta-inner">
-            <h2>Ready to show your listing at its best?</h2>
-            <p>Professional styling using your existing furniture and decor—the smart way to prep occupied homes.</p>
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Book your styling session</a>
-            <p class="cta-price">Starting at <strong>$599</strong> per property</p>
+            <p class="role-description">Passionate about design and creating stunning spaces in Arizona? As a Stylist at Guest House, you'll transform properties into breathtaking, market-ready homes with expertly curated furnishings and decor. If you have an eye for detail, a love for aesthetics, and a knack for making any space shine, we want you on our team!</p>
+            <a href="mailto:careers@guesthouseshop.com?subject=Staging Stylist – Phoenix/Scottsdale" class="btn btn-dark">Submit my info</a>
         </div>
     </section>
 
