@@ -378,7 +378,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 48px;
             max-width: 1200px;
             margin: 0 auto;
@@ -549,123 +549,25 @@
             display: block;
         }
 
-        /* Before After Section */
-        .before-after-section {
-            padding: 120px 3rem;
-            background: var(--color-paper);
-        }
-
-        .before-after-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .before-after-header {
-            text-align: center;
-            margin-bottom: 64px;
-        }
-
-        .before-after-header h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 500;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-        }
-
-        .before-after-header p {
-            font-size: 1.125rem;
-            color: var(--color-text-secondary);
-        }
-
-        .before-after-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
-        }
-
-        .before-after-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-        }
-
-        .before-after-images {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .before-after-image {
-            aspect-ratio: 4/3;
-            background: var(--color-mist);
-            position: relative;
+        .case-study-highlight {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--color-paper) 0%, var(--color-bone) 100%);
+            border-radius: 12px;
         }
 
-        .before-after-image.before {
-            background: linear-gradient(135deg, #d0d0d0 0%, #e8e8e8 100%);
+        .case-study-highlight-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-golden);
+            line-height: 1;
         }
 
-        .before-after-image.after {
-            background: linear-gradient(135deg, var(--color-bone) 0%, var(--color-paper) 100%);
-        }
-
-        .before-after-image svg {
-            width: 40px;
-            height: 40px;
-            stroke: var(--color-moss);
-            fill: none;
-            stroke-width: 1;
-        }
-
-        .before-after-label {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .before-after-content {
-            padding: 24px;
-        }
-
-        .before-after-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .before-after-location {
-            font-size: 0.875rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .before-after-result {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .case-study-highlight-label {
             font-size: 0.9375rem;
-        }
-
-        .before-after-result svg {
-            width: 20px;
-            height: 20px;
-            stroke: #2E7D32;
-            fill: none;
-        }
-
-        .before-after-result strong {
-            color: #2E7D32;
+            color: var(--color-text-secondary);
         }
 
         /* Testimonial */
@@ -754,27 +656,24 @@
 
         /* Footer */
         footer {
-            background: var(--color-onyx);
-            color: white;
-            padding: 60px 3rem 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem 2rem;
+            background: var(--color-surface-secondary);
+            border-top: 1px solid var(--color-border);
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 48px;
+            gap: 2rem;
         }
 
         .footer-section h4 {
             font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255,255,255,0.5);
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            font-weight: 700;
         }
 
         .footer-section ul {
@@ -782,23 +681,24 @@
         }
 
         .footer-section li {
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9375rem;
-            padding: 6px 0;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
         }
 
         .footer-section a {
-            color: rgba(255,255,255,0.8);
+            color: var(--color-text-secondary);
             text-decoration: none;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             display: block;
-            padding: 6px 0;
+            margin-bottom: 0.5rem;
             transition: color 0.2s;
         }
 
         .footer-section a:hover {
-            color: white;
+            color: var(--color-text-primary);
         }
+
         .social-links {
             display: flex;
             gap: 16px;
@@ -812,14 +712,14 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.8);
+            background: var(--color-border);
+            color: var(--color-text-secondary);
             transition: all 0.2s;
         }
 
         .social-link:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
+            background: var(--color-bone);
+            color: var(--color-text-primary);
         }
 
         .social-link svg {
@@ -839,11 +739,6 @@
             }
             .case-study:nth-child(even) {
                 direction: ltr;
-            }
-            .before-after-grid {
-                grid-template-columns: 1fr;
-                max-width: 500px;
-                margin: 0 auto;
             }
         }
 
@@ -905,10 +800,6 @@
             .case-study-stats {
                 grid-template-columns: 1fr;
                 gap: 16px;
-            }
-
-            .before-after-section {
-                padding: 80px 1.5rem;
             }
 
             .testimonial-section {
@@ -1052,7 +943,7 @@
                 </li>
             </ul>
             <div class="nav-actions">
-                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
                 <a href="#" class="btn btn-secondary">Login</a>
             </div>
             <button class="hamburger" aria-label="Toggle menu">
@@ -1130,7 +1021,7 @@
             </li>
         </ul>
         <div class="mobile-menu-actions">
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
             <a href="#" class="btn btn-secondary">Login</a>
         </div>
     </div>
@@ -1145,10 +1036,10 @@
         </div>
         <h1>Staging that sells—<br>the proof is in the numbers</h1>
         <p class="hero-subtitle">
-            See how Guest House has helped agents and homeowners sell faster and for more money. Real listings, real results.
+            See how Guest House has helped agents sell faster and for more money with professional staging. Real listings, real results.
         </p>
         <div class="hero-cta">
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your quote</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
             <a href="#case-studies" class="btn btn-secondary btn-large">See the results</a>
         </div>
     </section>
@@ -1163,13 +1054,9 @@
                 <div class="stat-value">8.2%</div>
                 <div class="stat-label">Avg. price increase</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value">12 days</div>
-                <div class="stat-label">Avg. days on market</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">97%</div>
-                <div class="stat-label">Client satisfaction</div>
+<div class="stat-item">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Happiness guaranteed</div>
             </div>
         </div>
     </section>
@@ -1182,243 +1069,65 @@
         <div class="case-studies-grid">
             <div class="case-study">
                 <div class="case-study-image">
-                    <div class="case-study-image-placeholder">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="case-study-badge">Full-Service</div>
+                    <img src="images/836-carlsbad.webp" alt="836 Carlsbad St staged living room" style="width:100%;height:100%;object-fit:cover;">
+                    <div class="case-study-badge">Full-Service Staging</div>
                 </div>
                 <div class="case-study-content">
-                    <h3>The Cherry Hills Flip</h3>
-                    <div class="case-study-location">Cherry Hills Village, CO</div>
+                    <h3>836 Carlsbad St</h3>
+                    <div class="case-study-location">San Diego, CA 92114 &middot; Listed by Cody Stamm</div>
                     <div class="case-study-stats">
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value">$1.85M</div>
+                            <div class="case-study-stat-value">$810K</div>
                             <div class="case-study-stat-label">Sale price</div>
                         </div>
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">+$142K</div>
-                            <div class="case-study-stat-label">Over asking</div>
+                            <div class="case-study-stat-value highlight">8 days</div>
+                            <div class="case-study-stat-label">On market</div>
                         </div>
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value">3 days</div>
-                            <div class="case-study-stat-label">On market</div>
+                            <div class="case-study-stat-value highlight">+$75K</div>
+                            <div class="case-study-stat-label">Over asking</div>
                         </div>
                     </div>
                     <p class="case-study-description">
-                        This vacant luxury home sat for 45 days before the seller called Guest House. After full staging with premium furniture, it went under contract in 3 days with multiple offers—$142K over asking.
+                        The home was listed at $734,998. It sold for $810,000. And it went into escrow in 8 days. That's a $75,002 lift on a $2,950 staging investment—roughly a 25x return—while minimizing days on market and keeping momentum strong from day one. Buyers didn't need to "imagine" living there. It already felt move-in ready, dialed, and worth acting on.
                     </p>
-                    <blockquote class="case-study-quote">
-                        "The transformation was unbelievable. We went from crickets to a bidding war."
-                        <span class="case-study-quote-author">— Marcus T., Listing Agent</span>
-                    </blockquote>
+                    <div class="case-study-highlight">
+                        <span class="case-study-highlight-value">25x</span>
+                        <span class="case-study-highlight-label">return on a $2,950 staging investment</span>
+                    </div>
                 </div>
             </div>
 
             <div class="case-study">
                 <div class="case-study-image">
-                    <div class="case-study-image-placeholder">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="case-study-badge">In-person styling</div>
+                    <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area" style="width:100%;height:100%;object-fit:cover;">
+                    <div class="case-study-badge">Full-Service Staging</div>
                 </div>
                 <div class="case-study-content">
-                    <h3>The Occupied Ranch</h3>
-                    <div class="case-study-location">Scottsdale, AZ</div>
+                    <h3>3640 Lipan St</h3>
+                    <div class="case-study-location">Denver, CO &middot; Listed by Connor Cole, The Agency</div>
                     <div class="case-study-stats">
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value">$725K</div>
+                            <div class="case-study-stat-value">$1M</div>
                             <div class="case-study-stat-label">Sale price</div>
                         </div>
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">+$58K</div>
-                            <div class="case-study-stat-label">Over comps</div>
+                            <div class="case-study-stat-value highlight">3 days</div>
+                            <div class="case-study-stat-label">On market</div>
                         </div>
                         <div class="case-study-stat">
-                            <div class="case-study-stat-value">8 days</div>
-                            <div class="case-study-stat-label">On market</div>
+                            <div class="case-study-stat-value highlight">36 hrs</div>
+                            <div class="case-study-stat-label">To multiple offers</div>
                         </div>
                     </div>
                     <p class="case-study-description">
-                        The sellers were living in the home and couldn't afford to move out. Our team restyled using their existing furniture, depersonalized, and added key accessories. Professional photos made it shine.
+                        Connor Cole staged a listing for the first time in his real estate career—aiming to sell faster and stand out. As part of the Elise Losasso Group, which had already seen success staging with Guest House, Connor partnered with us for full-service listing prep. We handled everything from custom design moodboards and furniture installation to styling, pickup, and MLS-ready photography.
                     </p>
                     <blockquote class="case-study-quote">
-                        "I didn't think staging was possible while we lived there. Guest House made it happen."
-                        <span class="case-study-quote-author">— Jennifer & David S., Sellers</span>
+                        "We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."
+                        <span class="case-study-quote-author">— Connor Cole, The Agency</span>
                     </blockquote>
-                </div>
-            </div>
-
-            <div class="case-study">
-                <div class="case-study-image">
-                    <div class="case-study-image-placeholder">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="case-study-badge">Quick design advice</div>
-                </div>
-                <div class="case-study-content">
-                    <h3>The First-Time Seller</h3>
-                    <div class="case-study-location">Austin, TX</div>
-                    <div class="case-study-stats">
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value">$485K</div>
-                            <div class="case-study-stat-label">Sale price</div>
-                        </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">+$31K</div>
-                            <div class="case-study-stat-label">Over asking</div>
-                        </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value">5 days</div>
-                            <div class="case-study-stat-label">On market</div>
-                        </div>
-                    </div>
-                    <p class="case-study-description">
-                        Budget was tight, so the seller opted for our $249 Quick design advice. They implemented our tips themselves over a weekend—decluttering, rearranging, and adding a few accessories. Multiple offers followed.
-                    </p>
-                    <blockquote class="case-study-quote">
-                        "The tips were so specific and actionable. Best $249 I ever spent."
-                        <span class="case-study-quote-author">— Amanda R., First-Time Seller</span>
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="before-after-section">
-        <div class="before-after-inner">
-            <div class="before-after-header">
-                <h2>See the transformation</h2>
-                <p>Every home has potential. Here's how we unlock it.</p>
-            </div>
-            <div class="before-after-grid">
-                <div class="before-after-card">
-                    <div class="before-after-images">
-                        <div class="before-after-image before">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">Before</span>
-                        </div>
-                        <div class="before-after-image after">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">After</span>
-                        </div>
-                    </div>
-                    <div class="before-after-content">
-                        <div class="before-after-title">Living Room Revival</div>
-                        <div class="before-after-location">Denver, CO</div>
-                        <div class="before-after-result">
-                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                            Sold <strong>$67K over asking</strong> in 6 days
-                        </div>
-                    </div>
-                </div>
-                <div class="before-after-card">
-                    <div class="before-after-images">
-                        <div class="before-after-image before">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">Before</span>
-                        </div>
-                        <div class="before-after-image after">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">After</span>
-                        </div>
-                    </div>
-                    <div class="before-after-content">
-                        <div class="before-after-title">Kitchen Refresh</div>
-                        <div class="before-after-location">Phoenix, AZ</div>
-                        <div class="before-after-result">
-                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                            Sold <strong>at asking price</strong> in 4 days
-                        </div>
-                    </div>
-                </div>
-                <div class="before-after-card">
-                    <div class="before-after-images">
-                        <div class="before-after-image before">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">Before</span>
-                        </div>
-                        <div class="before-after-image after">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">After</span>
-                        </div>
-                    </div>
-                    <div class="before-after-content">
-                        <div class="before-after-title">Master Bedroom Suite</div>
-                        <div class="before-after-location">Seattle, WA</div>
-                        <div class="before-after-result">
-                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                            Sold <strong>$89K over asking</strong> in 2 days
-                        </div>
-                    </div>
-                </div>
-                <div class="before-after-card">
-                    <div class="before-after-images">
-                        <div class="before-after-image before">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">Before</span>
-                        </div>
-                        <div class="before-after-image after">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <span class="before-after-label">After</span>
-                        </div>
-                    </div>
-                    <div class="before-after-content">
-                        <div class="before-after-title">Outdoor Living Space</div>
-                        <div class="before-after-location">Austin, TX</div>
-                        <div class="before-after-result">
-                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                            Sold <strong>$45K over asking</strong> in 7 days
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1426,12 +1135,12 @@
 
     <section class="testimonial-section">
         <div class="testimonial-inner">
-            <p class="testimonial-quote">"I've been in real estate for 15 years, and Guest House has the best track record of any staging company I've worked with. The numbers don't lie—staged listings sell faster and for more money. Every time."</p>
+            <p class="testimonial-quote">"We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."</p>
             <div class="testimonial-author">
-                <div class="testimonial-avatar">MP</div>
+                <div class="testimonial-avatar">CC</div>
                 <div class="testimonial-info">
-                    <div class="testimonial-name">Michael Park</div>
-                    <div class="testimonial-role">Broker/Owner, Park Realty Group</div>
+                    <div class="testimonial-name">Connor Cole</div>
+                    <div class="testimonial-role">Real Estate Agent, The Agency</div>
                 </div>
             </div>
         </div>
@@ -1441,7 +1150,7 @@
         <div class="cta-inner">
             <h2>Ready to add your success story?</h2>
             <p>Join the thousands of agents and homeowners who have sold faster and for more with Guest House staging.</p>
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Get your quote</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
         </div>
     </section>
 
@@ -1453,7 +1162,7 @@
                     <li><a href="support.html">Support</a></li>
                     <li><a href="#">Vendor partnerships</a></li>
                     <li><a href="careers.html">Careers</a></li>
-                    <li><a href="#">Press</a></li>
+                    <li><a href="press.html">Press</a></li>
                 </ul>
             </div>
             <div class="footer-section">

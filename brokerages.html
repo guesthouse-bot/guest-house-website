@@ -728,26 +728,24 @@
 
         /* Footer */
         footer {
-            background: var(--color-onyx);
-            color: white;
-            padding: 60px 3rem 40px;
+            padding: 3rem 2rem;
+            background: var(--color-surface-secondary);
+            border-top: 1px solid var(--color-border);
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 48px;
+            gap: 2rem;
         }
 
         .footer-section h4 {
             font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255,255,255,0.5);
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            font-weight: 700;
         }
 
         .footer-section ul {
@@ -755,23 +753,24 @@
         }
 
         .footer-section li {
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9375rem;
-            padding: 6px 0;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
         }
 
         .footer-section a {
-            color: rgba(255,255,255,0.8);
+            color: var(--color-text-secondary);
             text-decoration: none;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             display: block;
-            padding: 6px 0;
+            margin-bottom: 0.5rem;
             transition: color 0.2s;
         }
 
         .footer-section a:hover {
-            color: white;
+            color: var(--color-text-primary);
         }
+
         .social-links {
             display: flex;
             gap: 16px;
@@ -785,14 +784,14 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.8);
+            background: var(--color-border);
+            color: var(--color-text-secondary);
             transition: all 0.2s;
         }
 
         .social-link:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
+            background: var(--color-text-tertiary);
+            color: var(--color-text-primary);
         }
 
         .social-link svg {
@@ -800,11 +799,13 @@
             height: 20px;
         }
 
-
         /* Responsive */
         @media (max-width: 1024px) {
             .value-props-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -1024,7 +1025,7 @@
                 </li>
             </ul>
             <div class="nav-actions">
-                <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
                 <a href="#" class="btn btn-secondary">Login</a>
             </div>
             <button class="hamburger" aria-label="Toggle menu">
@@ -1102,7 +1103,7 @@
             </li>
         </ul>
         <div class="mobile-menu-actions">
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary">Get your quote</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
             <a href="#" class="btn btn-secondary">Login</a>
         </div>
     </div>
@@ -1120,7 +1121,7 @@
             Equip your team with premium staging services at volume pricing. Dedicated account management, consolidated billing, and tools that help agents win more listings.
         </p>
         <div class="hero-cta">
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Schedule a demo</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Schedule a demo</a>
             <a href="#how-it-works" class="btn btn-secondary btn-large">View enterprise pricing</a>
         </div>
     </section>
@@ -1278,7 +1279,7 @@
         <div class="cta-inner">
             <h2>Ready to empower your team?</h2>
             <p>Schedule a demo to see how Guest House enterprise solutions can help your brokerage grow.</p>
-            <a href="https://guesthouseshop.com/home-staging/get-a-quote" class="btn btn-primary btn-large">Schedule a demo</a>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Schedule a demo</a>
             <p class="cta-price">Custom pricing for teams of 10+</p>
         </div>
     </section>
@@ -1291,7 +1292,7 @@
                     <li><a href="support.html">Support</a></li>
                     <li><a href="#">Vendor partnerships</a></li>
                     <li><a href="careers.html">Careers</a></li>
-                    <li><a href="#">Press</a></li>
+                    <li><a href="press.html">Press</a></li>
                 </ul>
             </div>
             <div class="footer-section">
