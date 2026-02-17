@@ -1809,7 +1809,7 @@
         </div>
         <div class="hero-visual">
             <div class="before-after-slider" id="beforeAfterSlider">
-                <img src="staging-after.jpg" alt="Before staging" class="before-image">
+                <img src="staging-before.jpg" alt="Before staging" class="before-image">
                 <img src="staging-after.jpg" alt="After staging" class="after-image">
                 <div class="slider-handle" id="sliderHandle"></div>
                 <span class="slider-label before">Before</span>
@@ -2190,56 +2190,46 @@
         // Before/After Slider Functionality
         const slider = document.getElementById('beforeAfterSlider');
         const handle = document.getElementById('sliderHandle');
-        const afterImage = slider.querySelector('.after-image');
+        if (slider && handle) {
+            const afterImage = slider.querySelector('.after-image');
+            let isDragging = false;
 
-        let isDragging = false;
+            function updateSliderPosition(x) {
+                const rect = slider.getBoundingClientRect();
+                let position = (x - rect.left) / rect.width;
+                position = Math.max(0, Math.min(1, position));
 
-        function updateSliderPosition(x) {
-            const rect = slider.getBoundingClientRect();
-            let position = (x - rect.left) / rect.width;
-            position = Math.max(0, Math.min(1, position));
-
-            const percentage = position * 100;
-            afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
-            handle.style.left = `${percentage}%`;
-        }
-
-        function handleStart(e) {
-            isDragging = true;
-            slider.classList.add('dragging');
-            const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            updateSliderPosition(x);
-        }
-
-        function handleMove(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            updateSliderPosition(x);
-        }
-
-        function handleEnd() {
-            isDragging = false;
-            slider.classList.remove('dragging');
-        }
-
-        // Mouse events
-        slider.addEventListener('mousedown', handleStart);
-        document.addEventListener('mousemove', handleMove);
-        document.addEventListener('mouseup', handleEnd);
-
-        // Touch events
-        slider.addEventListener('touchstart', handleStart);
-        document.addEventListener('touchmove', handleMove, { passive: false });
-        document.addEventListener('touchend', handleEnd);
-
-        // Click to position
-        slider.addEventListener('click', (e) => {
-            if (!isDragging) {
-                updateSliderPosition(e.clientX);
+                const percentage = position * 100;
+                afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
             }
-        });
 
+            function handleStart(e) {
+                isDragging = true;
+                slider.classList.add('dragging');
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleEnd() {
+                isDragging = false;
+                slider.classList.remove('dragging');
+            }
+
+            slider.addEventListener('mousedown', handleStart);
+            slider.addEventListener('touchstart', handleStart, { passive: true });
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', handleMove, { passive: false });
+            window.addEventListener('mouseup', handleEnd);
+            window.addEventListener('touchend', handleEnd);
+        }
     </script>
 
     <script>
