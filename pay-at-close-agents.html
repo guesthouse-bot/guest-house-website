@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Full-service staging - We furnish your vacant home with premium furniture and deliver MLS-ready photos. Complete staging solutions from Guest House.">
-    <title>Full-service staging | Guest House</title>
+    <meta name="description" content="Guest House Pay at Close for Agents - Finance staging, cleaning, photography and more with Affirm. As low as $175/month with 0% APR available.">
+    <title>Pay at Close for Agents | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -63,7 +63,6 @@
             background: var(--color-surface);
         }
 
-        /* Header - always dark text on this page */
         header {
             position: fixed;
             top: 0;
@@ -306,9 +305,7 @@
             padding: 180px 3rem 100px;
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 60px;
+            text-align: center;
         }
 
         .hero-badge {
@@ -332,17 +329,15 @@
             fill: none;
         }
 
-        .hero-content {
-            flex: 1;
-            min-width: 0;
-        }
-
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 500;
             line-height: 1.1;
             letter-spacing: -0.03em;
             margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
             animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
@@ -350,28 +345,17 @@
             font-size: 1.25rem;
             color: var(--color-text-secondary);
             max-width: 600px;
+            margin: 0 auto 40px;
             line-height: 1.6;
-            margin-bottom: 40px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-cta {
             display: flex;
             gap: 16px;
+            justify-content: center;
             flex-wrap: wrap;
             animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 0;
-            animation: fadeInUp 0.6s ease-out 0.4s both;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
         }
 
         @keyframes fadeInUp {
@@ -395,20 +379,20 @@
 
         .value-props-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 48px;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .value-prop {
-            text-align: left;
+            text-align: center;
         }
 
         .value-prop-icon {
             width: 32px;
             height: 32px;
-            margin-bottom: 20px;
+            margin: 0 auto 20px;
             color: var(--color-onyx);
         }
 
@@ -421,10 +405,10 @@
         }
 
         .value-prop h3 {
-            font-size: 1rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 8px;
-            color: var(--color-onyx);
+            color: var(--color-golden);
         }
 
         .value-prop p {
@@ -448,147 +432,23 @@
             letter-spacing: -0.02em;
         }
 
-        /* Deliverable Preview */
-        .deliverable-section {
+        /* Comparison Section */
+        .comparison-section {
             padding: 0 3rem 120px;
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .deliverable-card {
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .comparison-card {
             background: var(--color-mist);
             border-radius: 24px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .deliverable-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .deliverable-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .deliverable-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .deliverable-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .deliverable-info p {
-            font-size: 0.875rem;
-            color: var(--color-text-secondary);
-        }
-
-        .deliverable-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #E8F5E9;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #2E7D32;
-        }
-
-        .deliverable-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
-        }
-
-        .tip-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tip-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .tip-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-        }
-
-        .tip-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-golden);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .tip-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--color-onyx);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .tip-content {
-            flex: 1;
-        }
-
-        .tip-content h5 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .tip-content p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        .tip-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--color-bone);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-deep);
-            margin-top: 12px;
+            padding: 40px;
         }
 
         /* How It Works */
@@ -645,6 +505,79 @@
             font-size: 1rem;
             color: rgba(255,255,255,0.7);
             line-height: 1.6;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 120px 3rem;
+            background: var(--color-surface);
+        }
+
+        .services-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .services-header h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 500;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .services-header p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--color-mist);
+            padding: 24px 32px;
+            border-radius: 16px;
+        }
+
+        .service-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--color-golden);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--color-onyx);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .service-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .service-text p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
         }
 
         /* Testimonial */
@@ -730,15 +663,25 @@
             margin: 0 8px;
         }
 
-        .cta-price {
+        .cta-highlight {
             margin-top: 24px;
-            font-size: 0.9375rem;
+            font-size: 1rem;
             color: var(--color-text-secondary);
         }
 
-        .cta-price strong {
+        .cta-highlight strong {
             color: var(--color-onyx);
             font-weight: 600;
+        }
+
+        .fine-print {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 3rem 80px;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            text-align: center;
         }
 
         /* Footer */
@@ -817,7 +760,10 @@
         /* Responsive */
         @media (max-width: 1024px) {
             .value-props-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .comparison-grid {
+                grid-template-columns: 1fr;
             }
             .footer-content {
                 grid-template-columns: repeat(3, 1fr);
@@ -861,17 +807,6 @@
 
             .hero {
                 padding: 140px 1.5rem 80px;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-subtitle {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .hero-cta {
-                justify-content: center;
             }
 
             .value-props {
@@ -887,18 +822,12 @@
                 padding: 80px 1.5rem 60px;
             }
 
-            .deliverable-section {
+            .comparison-section {
                 padding: 0 1.5rem 80px;
             }
 
-            .deliverable-card {
-                padding: 24px;
-            }
-
-            .deliverable-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
+            .comparison-card {
+                padding: 32px 24px;
             }
 
             .how-it-works {
@@ -910,6 +839,14 @@
                 gap: 48px;
             }
 
+            .services-section {
+                padding: 80px 1.5rem;
+            }
+
+            .service-item {
+                padding: 20px 24px;
+            }
+
             .testimonial-section {
                 padding: 80px 1.5rem;
             }
@@ -918,9 +855,10 @@
                 padding: 80px 1.5rem;
             }
 
-        }
+            .fine-print {
+                padding: 0 1.5rem 60px;
+            }
 
-        @media (max-width: 600px) {
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1036,7 +974,6 @@
                     <div class="dropdown">
                         <h3 class="dropdown-header">Resources</h3>
                         <div class="dropdown-grid" style="grid-template-columns: repeat(3, 1fr);">
-                            
                             <a href="pay-at-close.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1061,7 +998,6 @@
                                     <span class="dropdown-desc">Finance staging and services with flexible monthly payments</span>
                                 </div>
                             </a>
-
                             <a href="case-studies.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1074,7 +1010,7 @@
                                     <span class="dropdown-desc">Real results from staged homes</span>
                                 </div>
                             </a>
-                                                    </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -1153,7 +1089,6 @@
                     <div class="dropdown-grid">
                         <a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay at close<br>(homeowners)</span><span class="dropdown-desc">Defer costs until closing</span></div></a>
                         <a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay at close<br>(agents)</span><span class="dropdown-desc">Finance with monthly payments</span></div></a>
-
                         <a href="case-studies.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Case studies</span><span class="dropdown-desc">Real results from staged homes</span></div></a>
                     </div>
                 </div>
@@ -1166,25 +1101,20 @@
     </div>
 
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                1-week delivery
-            </div>
-            <h1>Vacant to stunning,<br>completely handled</h1>
-            <p class="hero-subtitle">
-                We furnish your empty home with designer-curated furniture, style every room to perfection, and deliver professional MLS-ready photography—all coordinated for you.
-            </p>
-            <div class="hero-cta">
-                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-                <a href="mailto:colorado@guesthouseshop.com" class="btn btn-secondary btn-large">Speak with our team</a>
-            </div>
+        <div class="hero-badge">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <line x1="2" y1="10" x2="22" y2="10"/>
+            </svg>
+            Flexible financing for agents
         </div>
-        <div class="hero-image">
-            <img src="full-service-staging-hero.jpg" alt="Beautifully staged modern living room with natural light">
+        <h1>List now. Pay later.</h1>
+        <p class="hero-subtitle">
+            Finance staging, cleaning, photography and more for as low as $175/month when you checkout with Affirm.
+        </p>
+        <div class="hero-cta">
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get an instant quote</a>
+            <a href="#how-it-works" class="btn btn-secondary btn-large">See how it works</a>
         </div>
     </section>
 
@@ -1193,110 +1123,59 @@
             <div class="value-prop">
                 <div class="value-prop-icon">
                     <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <h3>Premium furniture</h3>
-                <p>Designer-selected pieces from top brands. Modern, transitional, and luxury styles to match any home's architecture.</p>
-            </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
-                    </svg>
-                </div>
-                <h3>Full coordination</h3>
-                <p>We handle delivery, setup, styling, photography, and removal. You just hand us the keys.</p>
-            </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <h3>Flexible rental terms</h3>
-                <p>Stage for 30, 60, or 90 days. Extend anytime if needed. No penalties for early removal.</p>
-            </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="1" x2="12" y2="23"/>
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>Proven ROI</h3>
-                <p>Staged homes sell for 6-10% more and 73% faster. Our staging pays for itself and then some.</p>
+                <h3>$175/mo</h3>
+                <p>Finance a base staging package for as low as $175 per month. Predictable payments, no surprises.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <h3>0% APR</h3>
+                <p>Qualify for 0% APR financing. Pay over time with zero interest on eligible orders.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <h3>12-24 months</h3>
+                <p>Choose a term length that works for you—12, 18, or 24 months available.</p>
             </div>
         </div>
     </section>
 
     <div class="section-headline">
-        <h2>From empty rooms to buyer-ready spaces—see what full-service staging includes</h2>
+        <h2>Staging pays for itself</h2>
     </div>
 
-    <section class="deliverable-section">
-        <div class="deliverable-card">
-            <div class="deliverable-header">
-                <div class="deliverable-meta">
-                    <div class="deliverable-avatar">GH</div>
-                    <div class="deliverable-info">
-                        <h4>Your Staging Package</h4>
-                        <p>836 Carlsbad St, San Diego CA</p>
-                    </div>
-                </div>
-                <div class="deliverable-status">Installed</div>
+    <section class="comparison-section">
+        <div class="comparison-grid">
+            <div class="comparison-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="comparison-title" style="font-size: 3rem; font-weight: 600; color: var(--color-golden); margin-bottom: 8px;">73%</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem;">Staged homes spend approx. 73% less time on the market.</p>
             </div>
-            <div class="tip-cards">
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Living room</h5>
-                        <p>Sectional sofa, accent chairs, coffee table, area rug, floor lamp, artwork, throw pillows, and styled bookshelf. Creates an inviting space buyers can envision living in.</p>
-                        <span class="tip-badge">Furnished</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Primary suite</h5>
-                        <p>King bed with upholstered headboard, luxury bedding, nightstands, lamps, bench at foot, artwork above bed. Transforms the most important room in the house.</p>
-                        <span class="tip-badge">Furnished</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Dining room</h5>
-                        <p>Dining table with seating for 6-8, statement chandelier or pendant, buffet or bar cart, table setting with dishes and linens, centerpiece.</p>
-                    </div>
-                </div>
+            <div class="comparison-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="comparison-title" style="font-size: 3rem; font-weight: 600; color: var(--color-golden); margin-bottom: 8px;">$11K</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem;">Bathroom remodels result in $11K higher sale on avg.</p>
+            </div>
+            <div class="comparison-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="comparison-title" style="font-size: 3rem; font-weight: 600; color: var(--color-golden); margin-bottom: 8px;">25%</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem;">Staged homes on the market can sell for approx. 25% more.</p>
+            </div>
+            <div class="comparison-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="comparison-title" style="font-size: 3rem; font-weight: 600; color: var(--color-golden); margin-bottom: 8px;">94%</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem;">Of home buyers are looking for move-in ready properties.</p>
             </div>
         </div>
     </section>
@@ -1307,18 +1186,84 @@
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Get your quote</h3>
-                    <p>Share your listing details and photos. We'll create a custom staging proposal with furniture selections tailored to your home.</p>
+                    <h3>Pre-qualify at checkout</h3>
+                    <p>Complete a quick application when you place your order. Get an instant decision with no impact to your credit score.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>We install everything</h3>
-                    <p>Our team delivers, assembles, and styles all furniture and décor. Typical install takes one day—you don't need to be there.</p>
+                    <h3>Choose your terms</h3>
+                    <p>Pick a payment plan that works for you—12, 18, or 24 months. Make simple monthly payments with no hidden fees.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Get your staging quote</h3>
-                    <p>Professional photography within 48 hours of install. Your MLS-ready photos are delivered and your listing is ready to go live.</p>
+                    <h3>Get your listing market-ready</h3>
+                    <p>We handle staging, cleaning, photography and more while you focus on selling. Pay off your balance at closing or continue monthly payments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="services-inner">
+            <div class="services-header">
+                <h2>Finance any service</h2>
+                <p>Use Affirm to finance any combination of Guest House services.</p>
+            </div>
+            <div class="services-list">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="service-text">
+                        <h4>Home Staging</h4>
+                        <p>Full-service staging with premium furniture and decor to showcase your listing at its best.</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="service-text">
+                        <h4>Cleaning</h4>
+                        <p>Professional deep cleaning to get every room sparkling before showings and photos.</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="service-text">
+                        <h4>MLS Photography</h4>
+                        <p>Professional real estate photography that makes your listing stand out online.</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="service-text">
+                        <h4>3D Tours</h4>
+                        <p>Immersive virtual tours that let buyers explore the home from anywhere.</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="service-text">
+                        <h4>Moving</h4>
+                        <p>Coordination of moving services to get the home cleared and ready for staging.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1326,12 +1271,12 @@
 
     <section class="testimonial-section">
         <div class="testimonial-inner">
-            <p class="testimonial-quote">"The vacant home sat for 60 days with no offers. After Guest House staged it, we had 4 offers in the first weekend and sold $45K over asking. The staging literally paid for itself 10x over."</p>
+            <p class="testimonial-quote">"I love being able to buy with Affirm. Having more stability in my monthly expenses gives me confidence and freedom. I can pay off my balance at closing, or continue to reinvest in my business to win more listings with my earnings."</p>
             <div class="testimonial-author">
-                <div class="testimonial-avatar">JW</div>
+                <div class="testimonial-avatar">HK</div>
                 <div class="testimonial-info">
-                    <div class="testimonial-name">Jennifer Walsh</div>
-                    <div class="testimonial-role">Team Lead, Coldwell Banker Seattle</div>
+                    <div class="testimonial-name">Heidi Kuker</div>
+                    <div class="testimonial-role">Compass Real Estate, Denver</div>
                 </div>
             </div>
         </div>
@@ -1339,12 +1284,16 @@
 
     <section class="cta-section">
         <div class="cta-inner">
-            <h2>Ready to stage your vacant listing?</h2>
-            <p>Premium furniture, professional styling, MLS-ready photos—everything coordinated and delivered in about a week.</p>
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-            <p class="cta-price">Starting at <strong>$2,500</strong> per month</p>
+            <h2>Ready to list now and pay later?</h2>
+            <p>Finance your next listing with simple monthly payments. Pre-qualify in seconds at checkout.</p>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get an instant quote</a>
+            <p class="cta-highlight"><strong>As low as $175/mo</strong> • 0% APR available • 12-24 month terms</p>
         </div>
     </section>
+
+    <div class="fine-print">
+        *Finance a base staging package with Affirm for as low as $175 over 12 months at 0% APR based on full price of $2,100. Subject to credit check and approval. Down payment may be required. Your rate will be 0-36% APR based on credit, and is subject to an eligibility check. Payment options through Affirm are provided by these lending partners: affirm.com/lenders. Options depend on your purchase amount.
+    </div>
 
     <footer>
         <div class="footer-content">
