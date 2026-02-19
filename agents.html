@@ -1055,95 +1055,123 @@
         }
 
         .features > * {
-            max-width: 1280px;
+            max-width: 1100px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
         }
 
         .section-header p {
-            font-size: 1.125rem;
+            font-size: 1.0625rem;
             color: var(--color-text-secondary);
-            max-width: 600px;
+            max-width: 560px;
             margin: 0 auto;
         }
 
         .prep-options-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 3rem;
-            align-items: stretch;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 0;
         }
 
         .prep-option-card {
             background: var(--color-mist);
             border: none;
             border-radius: 16px;
-            padding: 2rem 2rem 0 2rem;
-            min-height: 580px;
-            transition: all 0.3s ease-in-out;
+            padding: 0;
+            transition: all 0.25s ease;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 280px;
             overflow: hidden;
+            min-height: 0;
         }
 
         .prep-option-card:hover {
             background: var(--color-bone);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        .prep-card-content {
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .prep-option-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--color-onyx);
         }
 
         .prep-option-card .prep-description {
-            font-size: 1rem;
+            font-size: 0.9375rem;
             color: var(--color-text-secondary);
-            line-height: 1.5;
-            margin-bottom: 0.75rem;
-        }
-
-        .prep-option-card .prep-pricing {
+            line-height: 1.55;
             margin-bottom: 1rem;
         }
 
+        .prep-option-card .prep-pricing {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
         .prep-option-card .prep-pricing .price-prefix {
-            display: block;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             font-weight: 500;
             color: var(--color-text-secondary);
-            margin-bottom: 0.25rem;
         }
 
         .prep-option-card .prep-pricing .prep-price {
-            display: block;
-            font-size: 1.5rem;
+            font-size: 1.375rem;
             font-weight: 700;
             color: var(--color-onyx);
         }
 
+        .prep-option-card .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            transition: gap 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link {
+            gap: 0.625rem;
+        }
+
+        .prep-option-card .learn-more-link::after {
+            content: '→';
+            transition: transform 0.2s ease;
+        }
+
+        .prep-option-card:hover .learn-more-link::after {
+            transform: translateX(2px);
+        }
+
         .prep-option-card .card-visual {
-            margin-top: 2.5rem;
-            margin-left: -2rem;
-            margin-right: -2rem;
-            height: 320px;
-            background: var(--color-bone);
-            border-radius: 12px 12px 0 0;
+            height: 100%;
+            min-height: 220px;
             overflow: hidden;
         }
 
@@ -1156,55 +1184,29 @@
         .prep-option-card .card-visual.illustration {
             background: var(--color-mist);
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding-top: 1rem;
         }
 
         .prep-option-card .card-visual.illustration img {
             object-fit: contain;
-            object-position: top;
-            width: 95%;
-            height: 110%;
-        }
-
-        .prep-option-card .learn-more-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--color-onyx);
-            transition: gap 0.2s ease;
-        }
-
-        .prep-option-card:hover .learn-more-link {
-            gap: 0.5rem;
-        }
-
-        .prep-option-card .learn-more-link::after {
-            content: '→';
-            transition: transform 0.2s ease;
-        }
-
-        .prep-option-card:hover .learn-more-link::after {
-            transform: translateX(2px);
+            width: 85%;
+            height: 85%;
         }
 
         /* Laptop Mockup */
         .laptop-mockup {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            padding: 2rem 0 2rem 2rem;
+            justify-content: center;
+            padding: 1.5rem;
             background: var(--color-bone);
             overflow: hidden;
         }
 
         .laptop-frame {
-            width: 95%;
-            max-width: 380px;
-            transform: translateX(25%);
+            width: 90%;
+            max-width: 280px;
         }
 
         .laptop-screen {
@@ -1309,16 +1311,17 @@
         }
 
         @media (max-width: 900px) {
-            .prep-options-grid {
+            .prep-option-card {
                 grid-template-columns: 1fr;
             }
 
-            .prep-option-card {
-                min-height: 400px;
+            .prep-card-content {
+                padding: 1.5rem 1.5rem 0.5rem;
             }
 
             .prep-option-card .card-visual {
-                height: 200px;
+                min-height: 200px;
+                max-height: 240px;
             }
         }
 
@@ -2407,13 +2410,15 @@
         </div>
         <div class="prep-options-grid">
             <a href="design-advice.html" class="prep-option-card">
-                <h3>Expert Design Advice</h3>
-                <p class="prep-description">Expert guidance to make your home show-ready with what you already have.</p>
-                <div class="prep-pricing">
-                    <span class="price-prefix">Starting at</span>
-                    <span class="prep-price">$249</span>
+                <div class="prep-card-content">
+                    <h3>Expert Design Advice</h3>
+                    <p class="prep-description">Expert guidance to make your home show-ready with what you already have.</p>
+                    <div class="prep-pricing">
+                        <span class="price-prefix">Starting at</span>
+                        <span class="prep-price">$249</span>
+                    </div>
+                    <span class="learn-more-link">Get started</span>
                 </div>
-                <span class="learn-more-link">Get started</span>
                 <div class="card-visual laptop-mockup">
                     <div class="laptop-frame">
                         <div class="laptop-screen">
@@ -2445,25 +2450,29 @@
                 </div>
             </a>
             <a href="style-for-you.html" class="prep-option-card">
-                <h3>In-Person Styling</h3>
-                <p class="prep-description">Our designers declutter and stage your existing furnishings to create a fresh, photo-ready interior.</p>
-                <div class="prep-pricing">
-                    <span class="price-prefix">Starting at</span>
-                    <span class="prep-price">$1,450</span>
+                <div class="prep-card-content">
+                    <h3>In-Person Styling</h3>
+                    <p class="prep-description">Our designers declutter and stage your existing furnishings to create a fresh, photo-ready interior.</p>
+                    <div class="prep-pricing">
+                        <span class="price-prefix">Starting at</span>
+                        <span class="prep-price">$1,450</span>
+                    </div>
+                    <span class="learn-more-link">Get started</span>
                 </div>
-                <span class="learn-more-link">Get started</span>
                 <div class="card-visual illustration">
                     <img src="in-person-styling.png" alt="In-person styling">
                 </div>
             </a>
             <a href="full-service-staging.html" class="prep-option-card">
-                <h3>Full-Service Staging</h3>
-                <p class="prep-description">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
-                <div class="prep-pricing">
-                    <span class="price-prefix">Starting at</span>
-                    <span class="prep-price">$2,950</span>
+                <div class="prep-card-content">
+                    <h3>Full-Service Staging</h3>
+                    <p class="prep-description">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
+                    <div class="prep-pricing">
+                        <span class="price-prefix">Starting at</span>
+                        <span class="prep-price">$2,950</span>
+                    </div>
+                    <span class="learn-more-link">Get started</span>
                 </div>
-                <span class="learn-more-link">Get started</span>
                 <div class="card-visual">
                     <img src="full-service-staging.jpg" alt="Full-service staging">
                 </div>
