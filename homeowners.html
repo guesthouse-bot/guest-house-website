@@ -1593,6 +1593,40 @@
             width: 100%;
         }
 
+        .dropdown-connect {
+            width: 160px;
+            flex-shrink: 0;
+            border-left: 1px solid var(--color-border);
+            padding-left: 1.5rem;
+        }
+
+        .dropdown-connect-header {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            display: block;
+            margin-bottom: 1.25rem;
+        }
+
+        .dropdown-connect-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-connect-item:hover {
+            background: transparent;
+        }
+
+        .dropdown-connect-item::after {
+            content: none !important;
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             .download-guide-section {
                 padding: 4rem 1.5rem;
@@ -1724,7 +1758,7 @@
                 </li>
                 <li>
                     <a href="#">Resources</a>
-                    <div class="dropdown" style="min-width: 620px;">
+                    <div class="dropdown" style="min-width: 780px;">
                         <div class="dropdown-resources-layout">
                             <div class="dropdown-resources-left">
                                 <h3 class="dropdown-header">Resources</h3>
@@ -1775,6 +1809,22 @@
                                     <img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img">
                                     <span class="dropdown-featured-title">Smart quotes</span>
                                     <span class="dropdown-featured-desc">Get instant pricing and advice for prepping your listings</span>
+                                </a>
+                            </div>
+                            <div class="dropdown-connect">
+                                <span class="dropdown-connect-header">Connect</span>
+                                <a href="support.html" class="dropdown-connect-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Support</span>
+                                        <span class="dropdown-desc">Get help from our team</span>
+                                    </div>
                                 </a>
                             </div>
                         </div>
