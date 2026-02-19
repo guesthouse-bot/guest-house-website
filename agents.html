@@ -1791,42 +1791,33 @@
 
         /* CTA Section */
         .cta-section {
-            padding: 120px 3rem;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
+            background-size: cover;
+            background-position: center 70%;
+            color: white;
             text-align: center;
-            background: var(--color-surface);
-        }
-
-        .cta-inner {
-            max-width: 700px;
-            margin: 0 auto;
         }
 
         .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 500;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
         }
 
         .cta-section p {
             font-size: 1.125rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 40px;
+            opacity: 0.9;
+            margin-bottom: 2rem;
         }
 
-        .cta-section .btn {
-            margin: 0 8px;
+        .cta-section .btn-primary {
+            background: var(--color-white);
+            color: var(--color-primary);
         }
 
-        .cta-price {
-            margin-top: 24px;
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-        }
-
-        .cta-price strong {
-            color: var(--color-onyx);
-            font-weight: 600;
+        .cta-section .btn-primary:hover {
+            background: var(--color-bone);
         }
 
         /* Footer */
@@ -2738,12 +2729,10 @@
         </div>
     </section>
 
-    <section class="testimonial-section">
-        <div class="testimonial-inner">
-            <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em;">Stop coordinating. Start delegating.</h2>
-            <p style="font-size: 1.125rem; color: var(--color-text-secondary); margin-bottom: 40px;">Join thousands of agents who use Guest House to get listings market-ready and sell homes faster.</p>
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get started for free</a>
-        </div>
+    <section class="cta-section">
+        <h2>Save 20+ hours &amp; earn more with every listing</h2>
+        <p>Join thousands of customers who get listings market-ready and beautiful effortlessly.</p>
+        <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
     </section>
 
     <footer>
