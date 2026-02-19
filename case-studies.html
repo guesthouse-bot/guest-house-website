@@ -403,62 +403,111 @@
             font-size: 1rem;
         }
 
-        /* Hero Section */
+        /* Hero Section — Full-bleed image */
         .hero {
-            padding: 180px 3rem 100px;
-            max-width: 1400px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
+            position: relative;
+            min-height: 85vh;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            background: var(--color-paper);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-deep);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease-out;
+            justify-content: center;
+            text-align: center;
+            background: url('staging-example.jpg') center/cover no-repeat;
+            color: white;
         }
 
-        .hero-badge svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(8,8,8,0.45) 0%, rgba(8,8,8,0.6) 100%);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 160px 3rem 100px;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.75rem, 6vw, 4.5rem);
             font-weight: 500;
-            line-height: 1.1;
+            line-height: 1.08;
             letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 20px;
             animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
         .hero-subtitle {
             font-size: 1.25rem;
-            color: var(--color-text-secondary);
-            max-width: 600px;
-            margin: 0 auto 40px;
+            color: rgba(255,255,255,0.85);
+            max-width: 520px;
+            margin: 0 auto 36px;
             line-height: 1.6;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+        /* Gallery Section */
+        .gallery-section {
+            padding: 100px 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .gallery-header h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .gallery-card {
+            cursor: default;
+        }
+
+        .gallery-card-img {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .gallery-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card:hover .gallery-card-img img {
+            transform: scale(1.04);
+        }
+
+        .gallery-card:hover .gallery-card-img {
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .gallery-card-address {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            line-height: 1.4;
+        }
+
+        .gallery-card-city {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
         }
 
         @keyframes fadeInUp {
@@ -836,6 +885,10 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
             .case-study {
                 grid-template-columns: 1fr;
                 gap: 32px;
@@ -881,7 +934,20 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
+                min-height: 70vh;
+            }
+
+            .hero-inner {
                 padding: 140px 1.5rem 80px;
+            }
+
+            .gallery-section {
+                padding: 80px 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
             }
 
             .stats-bar {
@@ -1175,20 +1241,10 @@
     </div>
 
     <section class="hero">
-        <div class="hero-badge">
-            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            Real results
-        </div>
-        <h1>Staging that sells—<br>the proof is in the numbers</h1>
-        <p class="hero-subtitle">
-            See how Guest House has helped agents sell faster and for more money with professional staging. Real listings, real results.
-        </p>
-        <div class="hero-cta">
+        <div class="hero-inner">
+            <h1>Our work</h1>
+            <p class="hero-subtitle">Real results from professionally staged homes</p>
             <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-            <a href="#case-studies" class="btn btn-secondary btn-large">See the results</a>
         </div>
     </section>
 
@@ -1209,9 +1265,73 @@
         </div>
     </section>
 
+    <section class="gallery-section">
+        <div class="gallery-header">
+            <h2>Browse our properties</h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="images/836-carlsbad.webp" alt="836 Carlsbad St, San Diego" loading="lazy">
+                </div>
+                <div class="gallery-card-address">836 Carlsbad St</div>
+                <div class="gallery-card-city">San Diego, CA</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="images/3640-lipan.jpg" alt="3640 Lipan St, Denver" loading="lazy">
+                </div>
+                <div class="gallery-card-address">3640 Lipan St</div>
+                <div class="gallery-card-city">Denver, CO</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Dr, Boulder" loading="lazy">
+                </div>
+                <div class="gallery-card-address">500 Manhattan Dr</div>
+                <div class="gallery-card-city">Boulder, CO</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="full-service-staging-hero.jpg" alt="944 Arapahoe Ave, Boulder" loading="lazy">
+                </div>
+                <div class="gallery-card-address">944 Arapahoe Ave</div>
+                <div class="gallery-card-city">Boulder, CO</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="full-service-staging.jpg" alt="1842 Grove St, Denver" loading="lazy">
+                </div>
+                <div class="gallery-card-address">1842 Grove St</div>
+                <div class="gallery-card-city">Denver, CO</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="944ArapahoeAve-33.jpg" alt="944 Arapahoe Ave, Boulder" loading="lazy">
+                </div>
+                <div class="gallery-card-address">944 Arapahoe Ave</div>
+                <div class="gallery-card-city">Boulder, CO</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="staging-after.jpg" alt="Tonopah St, San Diego" loading="lazy">
+                </div>
+                <div class="gallery-card-address">Tonopah St</div>
+                <div class="gallery-card-city">San Diego, CA</div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-img">
+                    <img src="staging-example.jpg" alt="4221 Cordoba Ct, San Diego" loading="lazy">
+                </div>
+                <div class="gallery-card-address">4221 Cordoba Ct</div>
+                <div class="gallery-card-city">San Diego, CA</div>
+            </div>
+        </div>
+    </section>
+
     <section class="case-studies-section" id="case-studies">
         <div class="case-studies-header">
-            <h2>Featured case studies</h2>
+            <h2>Featured projects</h2>
             <p>Dive into the details of how staging transformed these listings.</p>
         </div>
         <div class="case-studies-grid">
