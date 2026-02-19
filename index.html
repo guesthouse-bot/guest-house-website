@@ -394,13 +394,10 @@
         }
 
         .dropdown-featured {
-            width: 220px;
+            flex: 0 0 220px;
             max-width: 220px;
-            min-width: 0;
-            flex-shrink: 0;
             border-left: 1px solid var(--color-border);
             padding-left: 1.5rem;
-            overflow: hidden;
         }
 
         .dropdown-featured-label {
@@ -412,8 +409,10 @@
         }
 
         .dropdown-featured-card {
-            display: block;
-            text-decoration: none;
+            display: flex !important;
+            flex-direction: column !important;
+            text-decoration: none !important;
+            max-width: 196px;
         }
 
         .dropdown-featured-card:hover .dropdown-featured-img {
@@ -426,12 +425,12 @@
         }
 
         .dropdown-featured-img {
-            width: 100%;
-            max-width: 100%;
+            width: 196px;
+            max-width: 196px;
             height: auto;
             border-radius: var(--radius-md);
             margin-bottom: 0.75rem;
-            display: block;
+            display: block !important;
             transition: transform 0.2s ease;
         }
 
@@ -439,9 +438,10 @@
             font-size: 0.9375rem;
             font-weight: 700;
             color: var(--color-text-primary) !important;
-            display: block;
+            display: block !important;
             margin-bottom: 0.25rem;
             white-space: normal;
+            width: 100%;
         }
 
         .dropdown-featured-desc {
@@ -449,6 +449,8 @@
             color: var(--color-text-secondary) !important;
             line-height: 1.5;
             white-space: normal;
+            display: block !important;
+            width: 100%;
         }
 
         /* Ensure dropdown links always have black text (override header white text) */
