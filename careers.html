@@ -240,6 +240,98 @@
             color: var(--color-text-secondary) !important;
             line-height: 1.4;
         }
+        /* Featured section in Resources dropdown */
+        .dropdown-resources-layout {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .dropdown-resources-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dropdown-featured {
+            width: 200px;
+            flex-shrink: 0;
+            border-left: 1px solid var(--color-border);
+            padding-left: 1.5rem;
+        }
+
+        .dropdown-featured-label {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-secondary);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .dropdown-featured-card {
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-featured-card:hover {
+            opacity: 0.8;
+        }
+
+        .dropdown-featured-card::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .dropdown-featured-preview {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--color-bone) 0%, var(--color-paper) 50%, var(--color-pistachio) 100%);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.625rem;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .sq-preview-question {
+            font-size: 0.5625rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 0.125rem;
+        }
+
+        .sq-preview-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1875rem;
+        }
+
+        .sq-preview-opt {
+            font-size: 0.4375rem;
+            color: var(--color-text-secondary);
+            background: white;
+            border-radius: 3px;
+            padding: 0.1875rem 0.3125rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .dropdown-featured-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-primary) !important;
+            display: block;
+            margin-bottom: 0.125rem;
+        }
+
+        .dropdown-featured-desc {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary) !important;
+            line-height: 1.4;
+        }
+
 
         .nav-actions {
             display: flex;
@@ -736,9 +828,12 @@
                 </li>
                 <li>
                     <a href="#">Resources</a>
-                    <div class="dropdown">
-                        <h3 class="dropdown-header">Resources</h3>
-                        <div class="dropdown-grid" style="grid-template-columns: 1fr;">
+                    <div class="dropdown" style="min-width: 580px;">
+                        <div class="dropdown-resources-layout">
+                            <div class="dropdown-resources-left">
+                                <h3 class="dropdown-header">Resources</h3>
+                                <div class="dropdown-grid" style="grid-template-columns: 1fr;">
+
                             <a href="pay-at-close.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -776,6 +871,23 @@
                                     <span class="dropdown-desc">Real results from staged homes</span>
                                 </div>
                             </a>
+                                                    </div>
+                            </div>
+                            <div class="dropdown-featured">
+                                <span class="dropdown-featured-label">Featured</span>
+                                <a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card">
+                                    <div class="dropdown-featured-preview">
+                                        <div class="sq-preview-question">What's the plan for this home?</div>
+                                        <div class="sq-preview-options">
+                                            <div class="sq-preview-opt">Keeping items</div>
+                                            <div class="sq-preview-opt">Taking everything out</div>
+                                            <div class="sq-preview-opt">Exploring options</div>
+                                        </div>
+                                    </div>
+                                    <span class="dropdown-featured-title">Smart quotes</span>
+                                    <span class="dropdown-featured-desc">Instant pricing for your listing</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </li>
