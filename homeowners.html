@@ -1534,16 +1534,16 @@
         }
 
         .dropdown-featured {
-            width: 250px;
+            width: 240px;
             flex-shrink: 0;
             border-left: 1px solid var(--color-border);
             padding-left: 1.5rem;
         }
 
         .dropdown-featured-label {
-            font-size: 1rem;
+            font-size: 1.0625rem;
             font-weight: 400;
-            color: var(--color-text-secondary);
+            color: var(--color-text-primary);
             display: block;
             margin-bottom: 1rem;
         }
@@ -1551,11 +1551,10 @@
         .dropdown-featured-card {
             display: block;
             text-decoration: none;
-            transition: var(--transition);
         }
 
-        .dropdown-featured-card:hover {
-            opacity: 0.8;
+        .dropdown-featured-card:hover .dropdown-featured-img {
+            transform: scale(1.02);
         }
 
         .dropdown-featured-card::after {
@@ -1563,49 +1562,12 @@
             display: none !important;
         }
 
-        .dropdown-featured-preview {
+        .dropdown-featured-img {
             width: 100%;
-            aspect-ratio: 5/4;
-            background: linear-gradient(180deg, #d4dce8 0%, #c8d4e4 40%, #bfcde0 100%);
             border-radius: var(--radius-md);
             margin-bottom: 0.875rem;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            gap: 0.25rem;
-            overflow: hidden;
-        }
-
-        .sq-preview-question {
-            font-size: 0.5rem;
-            font-weight: 500;
-            color: var(--color-text-primary);
-            background: white;
-            border-radius: 4px 4px 0 0;
-            padding: 0.375rem 0.375rem 0.25rem;
-            border: 1px solid var(--color-border);
-            border-bottom: none;
-        }
-
-        .sq-preview-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .sq-preview-opt {
-            font-size: 0.4375rem;
-            color: var(--color-text-secondary);
-            background: white;
-            border-radius: 0;
-            padding: 0.25rem 0.375rem;
-            border: 1px solid var(--color-border);
-            border-top: none;
-        }
-
-        .sq-preview-opt:last-child {
-            border-radius: 0 0 4px 4px;
+            display: block;
+            transition: transform 0.2s ease;
         }
 
         .dropdown-featured-title {
@@ -1801,14 +1763,7 @@
                             <div class="dropdown-featured">
                                 <span class="dropdown-featured-label">Featured</span>
                                 <a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card">
-                                    <div class="dropdown-featured-preview">
-                                        <div class="sq-preview-question">What's the plan for this home?</div>
-                                        <div class="sq-preview-options">
-                                            <div class="sq-preview-opt">Keeping items</div>
-                                            <div class="sq-preview-opt">Taking everything out</div>
-                                            <div class="sq-preview-opt">Exploring options</div>
-                                        </div>
-                                    </div>
+                                    <img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img">
                                     <span class="dropdown-featured-title">Smart quotes</span>
                                     <span class="dropdown-featured-desc">Get instant pricing &amp; recommendations for your listings</span>
                                 </a>
