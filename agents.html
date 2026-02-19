@@ -1017,6 +1017,138 @@
             color: var(--color-text-primary);
         }
 
+        /* Pay at Close Section */
+        .pay-at-close-section {
+            padding-top: 4rem;
+            padding-bottom: 0;
+        }
+
+        .pay-at-close-card {
+            background: var(--color-mist);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .pay-at-close-headline {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--color-onyx);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .pay-at-close-headline strong {
+            font-weight: 700;
+        }
+
+        .service-pills-scroll {
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .service-pills-track {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .service-pills-track .service-pill {
+            padding: 0.75rem 1.25rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .pay-at-close-divider {
+            height: 1px;
+            background: var(--color-border);
+            margin: 2rem 0;
+        }
+
+        .pay-at-close-example {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .example-content {
+            text-align: left;
+        }
+
+        .example-label {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .example-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            margin-bottom: 1rem;
+        }
+
+        .example-content p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .pay-at-close-section .learn-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+
+        .pay-at-close-section .learn-more-link:hover {
+            gap: 0.75rem;
+        }
+
+        .example-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .example-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .roi-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .example-address {
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-align: center;
+        }
+
         /* Services/Features Section */
         .features {
             padding: 6rem 2rem;
@@ -1996,6 +2128,31 @@
                 font-size: 0.875rem;
             }
 
+            .pay-at-close-section {
+                padding-top: 3rem;
+            }
+
+            .pay-at-close-card {
+                padding: 2rem;
+            }
+
+            .pay-at-close-headline {
+                font-size: 1.25rem;
+            }
+
+            .pay-at-close-example {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .example-content {
+                text-align: center;
+            }
+
+            .example-content h3 {
+                font-size: 1.25rem;
+            }
+
             .testimonial-section {
                 padding: 80px 1.5rem;
             }
@@ -2442,6 +2599,39 @@
                     <img src="full-service-staging.jpg" alt="Full-service staging">
                 </div>
             </a>
+        </div>
+        <div class="pay-at-close-section">
+            <div class="pay-at-close-card">
+                <p class="pay-at-close-headline">Increase property value now, <strong>pay nothing until close</strong></p>
+                <div class="service-pills-scroll">
+                    <div class="service-pills-track">
+                        <span class="service-pill">Staging</span>
+                        <span class="service-pill">Photos</span>
+                        <span class="service-pill">Deep Cleaning</span>
+                        <span class="service-pill">Moving</span>
+                        <span class="service-pill">3D Tours</span>
+                        <span class="service-pill">Drone Video</span>
+                        <span class="service-pill">Junk Removal</span>
+                        <span class="service-pill">Painting</span>
+                        <span class="service-pill">Landscaping</span>
+                        <span class="service-pill">Repairs</span>
+                    </div>
+                </div>
+                <div class="pay-at-close-divider"></div>
+                <div class="pay-at-close-example">
+                    <div class="example-content">
+                        <span class="example-label">Example</span>
+                        <h3>Staging + Deep Cleaning + Listing Photos</h3>
+                        <p>Get your home show-ready with professional staging, a deep clean, and stunning MLS photography—all coordinated and paid at closing.</p>
+                        <a href="pay-at-close.html" class="learn-more-link">Learn about pay at close →</a>
+                    </div>
+                    <div class="example-image">
+                        <span class="roi-badge">✓ Great ROI Potential</span>
+                        <img src="staging-example.jpg" alt="Beautifully staged living room">
+                        <p class="example-address">2448 Sagebrush Ct, La Jolla, CA</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
