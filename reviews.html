@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="In-person styling - Professional designers transform your occupied home using your existing furniture and decor. Fast turnaround, market-ready results.">
-    <title>In-person styling | Guest House</title>
+    <meta name="description" content="Guest House Reviews - Trusted by thousands of agents and homeowners. Read real reviews from our customers across Colorado and California.">
+    <title>Reviews | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -63,7 +63,6 @@
             background: var(--color-surface);
         }
 
-        /* Header - always dark text on this page */
         header {
             position: fixed;
             top: 0;
@@ -409,35 +408,7 @@
             padding: 180px 3rem 100px;
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-paper);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-deep);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .hero-badge svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-        }
-
-        .hero-content {
-            flex: 1;
-            min-width: 0;
+            text-align: center;
         }
 
         .hero h1 {
@@ -446,6 +417,9 @@
             line-height: 1.1;
             letter-spacing: -0.03em;
             margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
             animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
@@ -453,28 +427,9 @@
             font-size: 1.25rem;
             color: var(--color-text-secondary);
             max-width: 600px;
+            margin: 0 auto;
             line-height: 1.6;
-            margin-bottom: 40px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 0;
-            animation: fadeInUp 0.6s ease-out 0.4s both;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
         }
 
         @keyframes fadeInUp {
@@ -488,360 +443,92 @@
             }
         }
 
-        /* Value Props Section */
-        .value-props {
-            padding: 80px 3rem;
-            background: var(--color-surface);
-            border-top: 1px solid var(--color-border);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .value-props-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .value-prop {
-            text-align: left;
-        }
-
-        .value-prop-icon {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 20px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .value-prop h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Section Headline */
-        .section-headline {
-            text-align: center;
-            padding: 120px 3rem 80px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .section-headline h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-        }
-
-        /* Deliverable Preview */
-        .deliverable-section {
+        /* Reviews Grid */
+        .reviews-section {
             padding: 0 3rem 120px;
-            max-width: 1100px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
-        .deliverable-card {
-            background: var(--color-mist);
-            border-radius: 24px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
+        .testimonials-grid {
+            column-count: 4;
+            column-gap: 1.25rem;
         }
 
-        .deliverable-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .deliverable-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .deliverable-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .deliverable-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .deliverable-info p {
-            font-size: 0.875rem;
-            color: var(--color-text-secondary);
-        }
-
-        .deliverable-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #E8F5E9;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #2E7D32;
-        }
-
-        .deliverable-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
-        }
-
-        .tip-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tip-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .tip-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-        }
-
-        .tip-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-golden);
+        .testimonial-card {
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
             border-radius: 12px;
+            padding: 1.5rem;
+            break-inside: avoid;
+            margin-bottom: 1.25rem;
+        }
+
+        .testimonial-stars {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+            gap: 2px;
+            margin-bottom: 0.75rem;
         }
 
-        .tip-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--color-onyx);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .tip-content {
-            flex: 1;
-        }
-
-        .tip-content h5 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .tip-content p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        .tip-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--color-bone);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-deep);
-            margin-top: 12px;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 120px 3rem;
-            background: var(--color-onyx);
-            color: white;
-        }
-
-        .how-it-works-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .how-it-works h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 80px;
-            letter-spacing: -0.02em;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 64px;
-        }
-
-        .step {
-            text-align: center;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--color-charcoal);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0 auto 24px;
-            color: var(--color-golden);
-        }
-
-        .step h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .step p {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-        }
-
-        /* Testimonial */
-        .testimonial-section {
-            padding: 120px 3rem;
-            background: var(--color-paper);
-        }
-
-        .testimonial-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .testimonial-quote {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 400;
-            line-height: 1.5;
-            margin-bottom: 40px;
-            color: var(--color-onyx);
+        .testimonial-stars svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-deep);
         }
 
         .testimonial-author {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        .testimonial-avatar {
-            width: 56px;
-            height: 56px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.125rem;
-        }
-
-        .testimonial-info {
-            text-align: left;
-        }
-
-        .testimonial-name {
-            font-weight: 600;
+        .testimonial-author .name {
             font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
         }
 
-        .testimonial-role {
+        .testimonial-author .location {
+            font-size: 0.875rem;
             color: var(--color-text-secondary);
+        }
+
+        .testimonial-text {
             font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
         }
 
         /* CTA Section */
         .cta-section {
-            padding: 120px 3rem;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
+            background-size: cover;
+            background-position: center 70%;
+            color: white;
             text-align: center;
-            background: var(--color-surface);
-        }
-
-        .cta-inner {
-            max-width: 700px;
-            margin: 0 auto;
         }
 
         .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 500;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
         }
 
         .cta-section p {
             font-size: 1.125rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 40px;
+            opacity: 0.9;
+            margin-bottom: 2rem;
         }
 
-        .cta-section .btn {
-            margin: 0 8px;
+        .cta-section .btn-primary {
+            background: var(--color-white);
+            color: var(--color-primary);
         }
 
-        .cta-price {
-            margin-top: 24px;
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-        }
-
-        .cta-price strong {
-            color: var(--color-onyx);
-            font-weight: 600;
+        .cta-section .btn-primary:hover {
+            background: var(--color-bone);
         }
 
         /* Footer */
@@ -896,7 +583,7 @@
         }
 
         .social-link {
-            display: flex !important;
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 40px;
@@ -908,7 +595,7 @@
         }
 
         .social-link:hover {
-            background: var(--color-text-tertiary);
+            background: var(--color-bone);
             color: var(--color-text-primary);
         }
 
@@ -918,12 +605,9 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .value-props-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .footer-content {
-                grid-template-columns: repeat(3, 1fr);
+        @media (max-width: 1100px) {
+            .testimonials-grid {
+                column-count: 2;
             }
         }
 
@@ -947,6 +631,7 @@
             .mobile-menu-nav li { border-bottom: 1px solid var(--color-border); }
             .mobile-menu-nav > li > a { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; font-size: 1.125rem; color: var(--color-onyx); text-decoration: none; font-weight: 500; }
             .mobile-menu-nav > li > a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid var(--color-onyx); border-bottom: 1.5px solid var(--color-onyx); transform: rotate(45deg); transition: transform 0.2s; }
+            .mobile-menu-nav > li > a.no-dropdown::after { content: none; }
             .mobile-menu-nav li.dropdown-open > a::after { transform: rotate(-135deg); }
             .mobile-menu-nav .dropdown { display: none !important; position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; box-shadow: none !important; border: none !important; min-width: 0 !important; background: var(--color-mist) !important; padding: 1rem !important; margin-bottom: 0.5rem !important; }
             .mobile-menu-nav li.dropdown-open .dropdown { display: block !important; }
@@ -964,66 +649,20 @@
 
             .hero {
                 padding: 140px 1.5rem 80px;
-                flex-direction: column;
-                text-align: center;
             }
 
-            .hero-subtitle {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .hero-cta {
-                justify-content: center;
-            }
-
-            .value-props {
-                padding: 60px 1.5rem;
-            }
-
-            .value-props-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .section-headline {
-                padding: 80px 1.5rem 60px;
-            }
-
-            .deliverable-section {
+            .reviews-section {
                 padding: 0 1.5rem 80px;
             }
 
-            .deliverable-card {
-                padding: 24px;
-            }
-
-            .deliverable-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .how-it-works {
-                padding: 80px 1.5rem;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .testimonial-section {
-                padding: 80px 1.5rem;
+            .testimonials-grid {
+                column-count: 1;
             }
 
             .cta-section {
                 padding: 80px 1.5rem;
             }
 
-        }
-
-        @media (max-width: 600px) {
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1299,183 +938,131 @@
     </div>
 
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                3-day turnaround
-            </div>
-            <h1>Your furniture, our<br>designer's eye</h1>
-            <p class="hero-subtitle">
-                Our designers visit your occupied home, de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.
-            </p>
-            <div class="hero-cta">
-                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-                <a href="mailto:colorado@guesthouseshop.com" class="btn btn-secondary btn-large">Speak with our team</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img src="style-for-you-hero.webp" alt="Designer styling a dining room with modern furniture">
-        </div>
+        <h1>Reviews</h1>
+        <p class="hero-subtitle">Trusted by thousands of agents &amp; homeowners</p>
     </section>
 
-    <section class="value-props">
-        <div class="value-props-grid">
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
+    <section class="reviews-section">
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <h3>On-site styling</h3>
-                <p>Our designers will de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.</p>
+                <div class="testimonial-author">
+                    <span class="name">Patti G.</span>
+                    <span class="location">San Diego, CA</span>
+                </div>
+                <p class="testimonial-text">On time, great to work with, staging looks great!</p>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-                        <line x1="16" y1="8" x2="2" y2="22"/>
-                        <line x1="17.5" y1="15" x2="9" y2="15"/>
-                    </svg>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <h3>Fresh perspective</h3>
-                <p>A professional eye spots what homeowners miss—small changes that make a big difference to buyers.</p>
+                <div class="testimonial-author">
+                    <span class="name">Amanda F.</span>
+                    <span class="location">Englewood, CO</span>
+                </div>
+                <p class="testimonial-text">Guest House has been a staging company extremely easy to schedule and delivering excellent results.</p>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <h3>Fast turnaround</h3>
-                <p>From booking to a market-ready home—fast enough for any listing timeline.</p>
+                <div class="testimonial-author">
+                    <span class="name">Theresa L.</span>
+                    <span class="location">Denver, CO</span>
+                </div>
+                <p class="testimonial-text">Everyone was super professional and helpful! They got everything done in timely manner with great communication!</p>
             </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <h3>Use what you have</h3>
-                <p>No rental furniture needed. We transform your space using items already in the home, saving thousands.</p>
+                <div class="testimonial-author">
+                    <span class="name">Caleb F.</span>
+                    <span class="location">El Cajon, CA</span>
+                </div>
+                <p class="testimonial-text">Guest House was able to accommodate the quick staging that I needed on my recent project. I'm always so grateful of the quality and professional experience.</p>
             </div>
-        </div>
-    </section>
-
-    <div class="section-headline">
-        <h2>See what our designers accomplish in a single visit—real transformations using your existing items</h2>
-    </div>
-
-    <section class="deliverable-section">
-        <div class="deliverable-card">
-            <div class="deliverable-header">
-                <div class="deliverable-meta">
-                    <div class="deliverable-avatar">GH</div>
-                    <div class="deliverable-info">
-                        <h4>Your Styling Session Results</h4>
-                        <p>4821 E Calle Redonda, Scottsdale AZ</p>
-                    </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <div class="deliverable-status">Delivered</div>
+                <div class="testimonial-author">
+                    <span class="name">Andrea O.</span>
+                    <span class="location">Ward, CO</span>
+                </div>
+                <p class="testimonial-text">Our experience was excellent, 10/10. The team really went above and beyond and the quality of design/composition was impressive!</p>
             </div>
-            <div class="tip-cards">
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Living room transformation</h5>
-                        <p>De-cluttered surfaces, re-styled with existing throw pillows and blankets, adjusted accent pieces to create a warm, inviting space.</p>
-                        <span class="tip-badge">Before & After</span>
-                    </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Kitchen styling</h5>
-                        <p>Cleared counters completely, styled with cutting board, ceramic bowl with lemons, and single herb plant. Removed fridge magnets and organized open shelving.</p>
-                        <span class="tip-badge">Styled</span>
-                    </div>
+                <div class="testimonial-author">
+                    <span class="name">Ashley B.</span>
+                    <span class="location">Denver, CO</span>
                 </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Primary bedroom refresh</h5>
-                        <p>Re-made the bed with only the homeowners crisp white linens and select pillows for a tailored look. Removed clutter and personal photos from nightstands, leaving just the matching lamps and small plants for symmetry.</p>
-                    </div>
-                </div>
+                <p class="testimonial-text">My experience with Guest House was top notch. The team communicated well, did an amazing job making my home look beautiful, and I'm convinced that the staging is what made my home sell.</p>
             </div>
-        </div>
-    </section>
-
-    <section class="how-it-works" id="how-it-works">
-        <div class="how-it-works-inner">
-            <h2>How it works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Book your session</h3>
-                    <p>Choose a date that works for you. Our designers are available 7 days a week with next-day appointments often available.</p>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Designer visits</h3>
-                    <p>A professional designer spends 2-3 hours in your home, de-cluttering, lightly re-arranging, and re-styling each room with existing decor.</p>
+                <div class="testimonial-author">
+                    <span class="name">Cody S.</span>
+                    <span class="location">San Marcos, CA</span>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Market-ready home</h3>
-                    <p>Walk into a transformed space—de-cluttered, re-styled, and ready for showings and photos.</p>
-                </div>
+                <p class="testimonial-text">The home shows great and the team absolutely hit the mark on what my vision was.</p>
             </div>
-        </div>
-    </section>
-
-    <section class="testimonial-section">
-        <div class="testimonial-inner">
-            <p class="testimonial-quote">"The transformation was incredible. Same furniture, completely different feel. My clients couldn't believe it was their own home in the photos. We had multiple offers within 48 hours of listing."</p>
-            <div class="testimonial-author">
-                <div class="testimonial-avatar">MT</div>
-                <div class="testimonial-info">
-                    <div class="testimonial-name">Marcus Thompson</div>
-                    <div class="testimonial-role">Broker, Keller Williams Austin</div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
+                <div class="testimonial-author">
+                    <span class="name">John B.</span>
+                    <span class="location">Lakewood, CO</span>
+                </div>
+                <p class="testimonial-text">The process was really easy and we're really happy with the results.</p>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
-        <div class="cta-inner">
-            <h2>Ready to show your listing at its best?</h2>
-            <p>Professional styling using your existing furniture and decor—the smart way to prep occupied homes.</p>
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-        </div>
+        <h2>Ready to get started?</h2>
+        <p>Join thousands of customers who get listings market-ready and beautiful effortlessly.</p>
+        <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
     </section>
 
     <footer>
@@ -1514,12 +1101,14 @@
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
                     <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
                     <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="#">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Customers</h4>
                 <ul>
                     <li><a href="agents.html">Agents</a></li>
+                    <li><a href="brokerages.html">Brokerages</a></li>
                     <li><a href="homeowners.html">Homeowners</a></li>
                 </ul>
                 <h4 style="margin-top: 24px;">Legal</h4>
