@@ -780,7 +780,9 @@
         .cta-section {
             padding: 120px 3rem;
             text-align: center;
-            background: var(--color-onyx);
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
+            background-size: cover;
+            background-position: center 70%;
             color: white;
         }
 
@@ -804,6 +806,15 @@
 
         .cta-section .btn {
             margin: 0 8px;
+        }
+
+        .cta-section .btn-primary {
+            background: var(--color-white);
+            color: var(--color-primary);
+        }
+
+        .cta-section .btn-primary:hover {
+            background: var(--color-bone);
         }
 
         /* Footer */
