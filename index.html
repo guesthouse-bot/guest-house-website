@@ -3733,7 +3733,7 @@
             }
 
             .smart-recommendations-content {
-                flex-direction: column;
+                flex-direction: column !important;
                 gap: 2.5rem;
             }
 
@@ -3753,6 +3753,42 @@
             .platform-screenshot {
                 flex: none;
                 width: 100%;
+            }
+
+            /* Hide hard line breaks on mobile */
+            br.desktop-only {
+                display: none;
+            }
+
+            /* Mobile tile overlay cards */
+            .tile-floating-card {
+                width: 180px;
+                padding: 16px;
+                top: 16px;
+                right: 16px;
+            }
+
+            .tile-finance-card {
+                width: 170px;
+                padding: 14px;
+            }
+
+            /* Mobile metrics section */
+            .metrics-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .metrics-headline {
+                font-size: 1.75rem;
+            }
+
+            .metrics-subtitle {
+                font-size: 1rem;
+            }
+
+            .metrics-grid {
+                flex-direction: column;
+                gap: 1rem;
             }
 
             /* Mobile features section */
@@ -4270,7 +4306,7 @@
     </section>
 
     <section class="section-headline" style="padding-bottom: 2rem;">
-        <h2>Every prep service you need,<br>all in one place</h2>
+        <h2>Every prep service you need,<br class="desktop-only"> all in one place</h2>
     </section>
     <section class="deliverable-section" id="services">
         <div class="service-tiles">
@@ -4320,7 +4356,7 @@
                 <img src="944ArapahoeAve-33.jpg" alt="Listing photos and media" class="tile-bg" decoding="async" loading="lazy" width="384" height="300">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
-                    <h3 class="tile-name">Listing Photos, 3D Tours,<br>&amp; Content</h3>
+                    <h3 class="tile-name">Listing Photos, 3D Tours,<br class="desktop-only"> &amp; Content</h3>
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
@@ -4369,7 +4405,7 @@
     <section class="metrics-section">
         <div class="metrics-content">
             <div class="metrics-left">
-                <h2 class="metrics-headline">The listing prep platform that<br>does the work for you</h2>
+                <h2 class="metrics-headline">The listing prep platform that<br class="desktop-only"> does the work for you</h2>
                 <p class="metrics-subtitle">With over $2.5B transacted, our results make a real impact on US home sales. It's why we're trusted by top agents and were recently backed by the National Association of Realtors.</p>
                 <div class="metrics-grid">
                     <div class="metric-card">
@@ -4534,7 +4570,7 @@
     <section class="smart-recommendations">
         <div class="smart-recommendations-content" style="flex-direction: row-reverse;">
             <div class="section-header">
-                <h2>Simplify payment,<br>scheduling &amp;&nbsp;coordination</h2>
+                <h2>Simplify payment,<br class="desktop-only"> scheduling &amp; coordination</h2>
                 <p>Guest House takes care of the details so you can list for sale faster and earn more.</p>
             </div>
             <div class="features-grid">
