@@ -406,10 +406,38 @@
 
         /* Hero Section */
         .hero {
-            padding: 180px 3rem 100px;
+            padding: 180px 3rem 80px;
             max-width: 1400px;
             margin: 0 auto;
             text-align: center;
+        }
+
+        .hero-rating-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--color-onyx);
+            border-radius: 100px;
+            padding: 14px 32px;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-rating-stars {
+            display: flex;
+            gap: 4px;
+        }
+
+        .hero-rating-stars svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--color-golden);
+        }
+
+        .hero-rating-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
         }
 
         .hero h1 {
@@ -421,7 +449,7 @@
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-subtitle {
@@ -430,7 +458,7 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
         @keyframes fadeInUp {
@@ -650,6 +678,20 @@
 
             .hero {
                 padding: 140px 1.5rem 80px;
+            }
+
+            .hero-rating-bar {
+                padding: 12px 24px;
+                gap: 12px;
+            }
+
+            .hero-rating-stars svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .hero-rating-text {
+                font-size: 0.875rem;
             }
 
             .reviews-section {
@@ -926,8 +968,18 @@
     </div>
 
     <section class="hero">
-        <h1>Reviews</h1>
-        <p class="hero-subtitle">Trusted by thousands of agents &amp; homeowners</p>
+        <div class="hero-rating-bar">
+            <div class="hero-rating-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <span class="hero-rating-text">4.7/5 based on 2,500+ homes prepped</span>
+        </div>
+        <h1>Guest House Reviews</h1>
+        <p class="hero-subtitle">See why thousands of agents and homeowners trust Guest House with their listing prep.</p>
     </section>
 
     <section class="reviews-section">
