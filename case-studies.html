@@ -511,6 +511,79 @@
             color: var(--color-text-secondary);
         }
 
+        /* Case Study Image Cards */
+        .case-study-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16/7;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            cursor: default;
+        }
+
+        .case-study-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .case-study-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .case-study-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.65) 100%);
+            pointer-events: none;
+        }
+
+        .case-study-card-content {
+            position: relative;
+            z-index: 1;
+            padding: 48px;
+            color: white;
+        }
+
+        .case-study-card-agent {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+        }
+
+        .case-study-card-address {
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 32px;
+        }
+
+        .case-study-card-kpis {
+            display: flex;
+            gap: 48px;
+        }
+
+        .case-study-card-kpi-value {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .case-study-card-kpi-label {
+            font-size: 0.8125rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -908,6 +981,15 @@
             .case-study:nth-child(even) {
                 direction: ltr;
             }
+            .case-study-card {
+                aspect-ratio: 16/9;
+            }
+            .case-study-card-content {
+                padding: 32px;
+            }
+            .case-study-card-kpis {
+                gap: 32px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -981,6 +1063,23 @@
             .case-study-stats {
                 grid-template-columns: 1fr;
                 gap: 16px;
+            }
+
+            .case-study-card {
+                aspect-ratio: 3/4;
+            }
+
+            .case-study-card-content {
+                padding: 24px;
+            }
+
+            .case-study-card-kpis {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .case-study-card-address {
+                margin-bottom: 24px;
             }
 
             .testimonial-section {
@@ -1283,103 +1382,69 @@
             <p>Dive into the details of how staging transformed these listings.</p>
         </div>
         <div class="case-studies-grid">
-            <div class="case-study">
-                <div class="case-study-image">
-                    <img src="images/836-carlsbad.webp" alt="836 Carlsbad St staged living room" style="width:100%;height:100%;object-fit:cover;">
-                    <div class="case-study-badge">Full-Service Staging</div>
-                </div>
-                <div class="case-study-content">
-                    <h3>836 Carlsbad St</h3>
-                    <div class="case-study-location">San Diego, CA 92114 &middot; Listed by Cody Stamm</div>
-                    <div class="case-study-stats">
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value">$810K</div>
-                            <div class="case-study-stat-label">Sale price</div>
+            <div class="case-study-card">
+                <img src="images/836-carlsbad.webp" alt="836 Carlsbad St staged living room">
+                <div class="case-study-card-content">
+                    <div class="case-study-card-agent">Listed by Cody Stamm</div>
+                    <div class="case-study-card-address">836 Carlsbad St, San Diego, CA</div>
+                    <div class="case-study-card-kpis">
+                        <div>
+                            <div class="case-study-card-kpi-value">$810K</div>
+                            <div class="case-study-card-kpi-label">sale price</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">8 days</div>
-                            <div class="case-study-stat-label">On market</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">8 days</div>
+                            <div class="case-study-card-kpi-label">on market</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">+$75K</div>
-                            <div class="case-study-stat-label">Over asking</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">+$75K</div>
+                            <div class="case-study-card-kpi-label">over asking</div>
                         </div>
                     </div>
-                    <p class="case-study-description">
-                        The home was listed at $734,998. It sold for $810,000. And it went into escrow in 8 days. That's a $75,002 lift on a single staging investment—roughly a 25x return—while minimizing days on market and keeping momentum strong from day one. Buyers didn't need to "imagine" living there. It already felt move-in ready, dialed, and worth acting on.
-                    </p>
-                    <div class="case-study-highlight">
-                        <span class="case-study-highlight-value">25x</span>
-                        <span class="case-study-highlight-label">return on staging investment</span>
-                    </div>
-                    <blockquote class="case-study-quote">
-                        "The home shows great and the team absolutely hit the mark on what my vision was."
-                        <span class="case-study-quote-author">— Cody Stamm</span>
-                    </blockquote>
                 </div>
             </div>
 
-            <div class="case-study">
-                <div class="case-study-image">
-                    <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area" style="width:100%;height:100%;object-fit:cover;">
-                    <div class="case-study-badge">Full-Service Staging</div>
-                </div>
-                <div class="case-study-content">
-                    <h3>3640 Lipan St</h3>
-                    <div class="case-study-location">Denver, CO &middot; Listed by Connor Cole, The Agency</div>
-                    <div class="case-study-stats">
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value">$1M</div>
-                            <div class="case-study-stat-label">Sale price</div>
+            <div class="case-study-card">
+                <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
+                <div class="case-study-card-content">
+                    <div class="case-study-card-agent">Listed by Connor Cole, The Agency</div>
+                    <div class="case-study-card-address">3640 Lipan St, Denver, CO</div>
+                    <div class="case-study-card-kpis">
+                        <div>
+                            <div class="case-study-card-kpi-value">$1M</div>
+                            <div class="case-study-card-kpi-label">sale price</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">3 days</div>
-                            <div class="case-study-stat-label">On market</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">3 days</div>
+                            <div class="case-study-card-kpi-label">on market</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">36 hrs</div>
-                            <div class="case-study-stat-label">To multiple offers</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">36 hrs</div>
+                            <div class="case-study-card-kpi-label">to multiple offers</div>
                         </div>
                     </div>
-                    <p class="case-study-description">
-                        Connor Cole staged a listing for the first time in his real estate career—aiming to sell faster and stand out. As part of the Elise Losasso Group, which had already seen success staging with Guest House, Connor partnered with us for full-service listing prep. We handled everything from custom design moodboards and furniture installation to styling, pickup, and MLS-ready photography.
-                    </p>
-                    <blockquote class="case-study-quote">
-                        "We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."
-                        <span class="case-study-quote-author">— Connor Cole, The Agency</span>
-                    </blockquote>
                 </div>
             </div>
 
-            <div class="case-study">
-                <div class="case-study-image">
-                    <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area" style="width:100%;height:100%;object-fit:cover;">
-                    <div class="case-study-badge">Full-Service Staging</div>
-                </div>
-                <div class="case-study-content">
-                    <h3>500 Manhattan Drive, Unit A2</h3>
-                    <div class="case-study-location">Boulder, CO 80303 &middot; Listed by Dorothy Pacheco, Compass</div>
-                    <div class="case-study-stats">
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value">$415K</div>
-                            <div class="case-study-stat-label">Sale price</div>
+            <div class="case-study-card">
+                <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area">
+                <div class="case-study-card-content">
+                    <div class="case-study-card-agent">Listed by Dorothy Pacheco, Compass</div>
+                    <div class="case-study-card-address">500 Manhattan Dr, Boulder, CO</div>
+                    <div class="case-study-card-kpis">
+                        <div>
+                            <div class="case-study-card-kpi-value">$415K</div>
+                            <div class="case-study-card-kpi-label">sale price</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">20 days</div>
-                            <div class="case-study-stat-label">Staging turnaround</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">Same day</div>
+                            <div class="case-study-card-kpi-label">offer after photos</div>
                         </div>
-                        <div class="case-study-stat">
-                            <div class="case-study-stat-value highlight">Same day</div>
-                            <div class="case-study-stat-label">Offer after photos</div>
+                        <div>
+                            <div class="case-study-card-kpi-value">25x</div>
+                            <div class="case-study-card-kpi-label">return on staging</div>
                         </div>
                     </div>
-                    <p class="case-study-description">
-                        Strategic staging and same-day photography helped turn interest into action. Guest House partnered with the agent to deliver a seamless, end-to-end experience: from curated mood boards and thoughtful design selections to a beautifully finished install completed the same day as photography. Buyers toured the home and an offer was secured that very afternoon.
-                    </p>
-                    <blockquote class="case-study-quote">
-                        "The staging team truly delivered—from the initial mood boards to the beautifully finished product. The presentation made a meaningful impact and helped create immediate momentum. Guest House did an amazing job from consult to finished product!"
-                        <span class="case-study-quote-author">— Dorothy Pacheco, Compass</span>
-                    </blockquote>
                 </div>
             </div>
         </div>
