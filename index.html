@@ -1863,6 +1863,21 @@
             flex-grow: 1;
         }
 
+        /* Section Headline */
+        .section-headline {
+            text-align: center;
+            padding: 120px 3rem 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-headline h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
         /* Deliverable Section (agents-style) */
         .deliverable-section {
             padding: 0 3rem 120px;
@@ -2038,6 +2053,10 @@
         }
 
         @media (max-width: 900px) {
+            .section-headline {
+                padding: 80px 1.5rem 60px;
+            }
+
             .deliverable-section {
                 padding: 0 1.5rem 80px;
             }
@@ -4077,6 +4096,10 @@
         </div>
     </section>
 
+    <section class="section-headline" style="padding-bottom: 2rem;">
+        <h2>Every prep service you need,<br>all in one place</h2>
+        <p style="font-size: 1.0625rem; color: var(--color-text-secondary); max-width: 560px; margin: 0.75rem auto 0;">Professional staging and design expertise, now accessible for any listing at any budget—with pay-at-close options available.</p>
+    </section>
     <section class="deliverable-section" id="services">
         <div class="deliverable-card">
             <div class="tip-cards">
