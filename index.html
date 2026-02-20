@@ -1800,8 +1800,9 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
             align-items: stretch;
+            flex: 1.2;
         }
 
         .features-section-header {
@@ -4300,19 +4301,6 @@
         </div>
     </section>
 
-    <section class="smart-recommendations">
-        <div class="smart-recommendations-content">
-            <div class="section-header">
-                <h2>Smart quotes to maximize sales price — instantly</h2>
-                <p>Tell us about your property. We'll share recommendations and pricing for the right services to maximize your sale in seconds.</p>
-                <a href="https://guesthouseshop.com/smart-quote" class="learn-more-link">Get your quote →</a>
-            </div>
-            <div class="platform-screenshot">
-                <img src="smart-quotes-ui.png" alt="Guest House platform showing smart listing recommendations">
-            </div>
-        </div>
-    </section>
-
     <section class="section-headline" style="padding-bottom: 2rem;">
         <h2>Every prep service you need,<br>all in one place</h2>
     </section>
@@ -4410,44 +4398,21 @@
         </div>
     </section>
 
-    <section class="features" style="padding-top: 0; padding-bottom: 0;">
-        <div class="pay-at-close-section">
-            <div class="pay-at-close-card">
-                <p class="pay-at-close-headline">Increase property value now, <strong>pay nothing until close</strong></p>
-                <div class="service-pills-scroll">
-                    <div class="service-pills-track">
-                        <span class="service-pill">Staging</span>
-                        <span class="service-pill">Photos</span>
-                        <span class="service-pill">Deep Cleaning</span>
-                        <span class="service-pill">Moving</span>
-                        <span class="service-pill">3D Tours</span>
-                        <span class="service-pill">Drone Video</span>
-                        <span class="service-pill">Junk Removal</span>
-                        <span class="service-pill">Painting</span>
-                        <span class="service-pill">Landscaping</span>
-                        <span class="service-pill">Repairs</span>
-                    </div>
-                </div>
-                <div class="pay-at-close-divider"></div>
-                <div class="pay-at-close-example">
-                    <div class="example-content">
-                        <span class="example-label">Example</span>
-                        <h3>Staging + Deep Cleaning + Listing Photos</h3>
-                        <p>Get your home show-ready with professional staging, a deep clean, and stunning MLS photography—all coordinated and paid at closing.</p>
-                        <a href="pay-at-close.html" class="learn-more-link">Learn about pay at close →</a>
-                    </div>
-                    <div class="example-image">
-                        <span class="roi-badge">✓ Great ROI Potential</span>
-                        <img src="staging-example.jpg" alt="Beautifully staged living room">
-                        <p class="example-address">2448 Sagebrush Ct, La Jolla, CA</p>
-                    </div>
-                </div>
+    <section class="smart-recommendations">
+        <div class="smart-recommendations-content">
+            <div class="section-header">
+                <h2>Smart quotes to maximize sales price — instantly</h2>
+                <p>Tell us about your property. We'll share recommendations and pricing for the right services to maximize your sale in seconds.</p>
+                <a href="https://guesthouseshop.com/smart-quote" class="learn-more-link">Get your quote →</a>
+            </div>
+            <div class="platform-screenshot">
+                <img src="smart-quotes-ui.png" alt="Guest House platform showing smart listing recommendations">
             </div>
         </div>
     </section>
 
     <section class="smart-recommendations">
-        <div class="smart-recommendations-content">
+        <div class="smart-recommendations-content" style="flex-direction: row-reverse;">
             <div class="section-header">
                 <h2>Simplify payment,<br>scheduling &amp;&nbsp;coordination</h2>
                 <p>Guest House takes care of the details so you can list for sale faster and earn more.</p>
