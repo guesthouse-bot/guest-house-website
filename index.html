@@ -1276,7 +1276,6 @@
 
         .before-after-slider .before-image {
             z-index: 1;
-            filter: grayscale(60%) brightness(0.95) saturate(0.5);
         }
 
         .before-after-slider .after-image {
@@ -4388,12 +4387,13 @@
             </div>
             <div class="metrics-right">
                 <div class="before-after-slider" id="beforeAfterSlider">
-                    <img src="staging-before.jpg" alt="Before staging" class="before-image">
-                    <img src="staging-after.jpg" alt="After staging" class="after-image">
+                    <img src="staging-after.jpg" alt="After staging" class="before-image">
+                    <img src="staging-before.jpg" alt="Before staging" class="after-image">
                     <div class="slider-handle" id="sliderHandle"></div>
-                    <span class="slider-label before">Before</span>
-                    <span class="slider-label after">After</span>
+                    <span class="slider-label before">After</span>
+                    <span class="slider-label after">Before</span>
                 </div>
+                <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 12px;">6056 Winfield Ave, La Mesa, CA</p>
             </div>
         </div>
     </section>
