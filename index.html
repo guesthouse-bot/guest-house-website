@@ -4886,7 +4886,7 @@
                 position = Math.max(0, Math.min(1, position));
 
                 const percentage = position * 100;
-                afterImage.style.clipPath = `inset(0 0 0 ${100 - percentage}%)`;
+                afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
                 handle.style.left = `${percentage}%`;
             }
 
