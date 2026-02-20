@@ -4388,8 +4388,8 @@
             </div>
             <div class="metrics-right">
                 <div class="before-after-slider" id="beforeAfterSlider">
-                    <img src="staging-before.jpg" alt="Before staging" class="before-image">
-                    <img src="staging-after.jpg" alt="After staging" class="after-image">
+                    <img src="staging-before.jpg?v=2" alt="Before staging" class="before-image">
+                    <img src="staging-after.jpg?v=2" alt="After staging" class="after-image">
                     <div class="slider-handle" id="sliderHandle"></div>
                     <span class="slider-label before">Before</span>
                     <span class="slider-label after">After</span>
@@ -4850,7 +4850,7 @@
                 position = Math.max(0, Math.min(1, position));
 
                 const percentage = position * 100;
-                afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                afterImage.style.clipPath = `inset(0 0 0 ${100 - percentage}%)`;
                 handle.style.left = `${percentage}%`;
             }
 
