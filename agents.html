@@ -2105,6 +2105,216 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Book a Demo Modal */
+        .demo-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .demo-modal-overlay.active {
+            display: flex;
+        }
+
+        .demo-modal {
+            background: var(--color-surface);
+            border-radius: 24px;
+            max-width: 860px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideUp 0.35s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .demo-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-mist);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            z-index: 1;
+        }
+
+        .demo-modal-close:hover {
+            background: var(--color-border);
+        }
+
+        .demo-modal-close svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--color-onyx);
+        }
+
+        .demo-modal-header {
+            padding: 48px 48px 24px;
+            text-align: center;
+        }
+
+        .demo-modal-header h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .demo-modal-header p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .demo-modal-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 24px 48px 48px;
+        }
+
+        .demo-market-card {
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .demo-market-card:hover {
+            border-color: var(--color-golden);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+        }
+
+        .demo-market-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--color-paper);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .demo-market-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-deep);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .demo-market-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--color-onyx);
+        }
+
+        .demo-market-card .demo-market-locations {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .demo-market-card .btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .demo-modal-overlay {
+                padding: 1rem;
+                align-items: flex-end;
+            }
+
+            .demo-modal {
+                border-radius: 20px 20px 0 0;
+                max-height: 85vh;
+            }
+
+            .demo-modal-header {
+                padding: 36px 24px 16px;
+            }
+
+            .demo-modal-cards {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 16px 24px 32px;
+            }
+
+            .demo-market-card {
+                padding: 24px 20px;
+                flex-direction: row;
+                text-align: left;
+                gap: 16px;
+            }
+
+            .demo-market-icon {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+
+            .demo-market-card h3 {
+                font-size: 1.0625rem;
+                margin-bottom: 2px;
+            }
+
+            .demo-market-card .demo-market-locations {
+                margin-bottom: 12px;
+                font-size: 0.8125rem;
+            }
+
+            .demo-market-card .btn {
+                width: auto;
+                align-self: flex-start;
+                padding: 12px 20px;
+            }
+
+            .demo-card-content {
+                display: flex;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2376,7 +2586,7 @@
                 Guest House coordinates every detail for staging, cleaning, photography and more, all in one place. So you can focus on what really matters — helping your clients sell their home.
             </p>
             <div class="hero-cta">
-                <a href="book-a-demo.html" class="btn btn-primary btn-large">Book a demo</a>
+                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
@@ -2643,7 +2853,7 @@
                 </div>
             </div>
             <div class="benefits-cta">
-                <a href="book-a-demo.html" class="btn btn-primary btn-large">Book a demo</a>
+                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
             </div>
         </div>
     </section>
@@ -2886,6 +3096,64 @@
         </div>
     </footer>
 
+    <!-- Book a Demo Modal -->
+    <div class="demo-modal-overlay" id="demoModal">
+        <div class="demo-modal">
+            <button class="demo-modal-close" id="demoModalClose" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="demo-modal-header">
+                <h2>Schedule a call with our team</h2>
+                <p>Pick your market below to book time with the right person.</p>
+            </div>
+            <div class="demo-modal-cards">
+                <div class="demo-market-card">
+                    <div class="demo-market-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="10" r="3"/>
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/>
+                        </svg>
+                    </div>
+                    <div class="demo-card-content">
+                        <h3>California</h3>
+                        <p class="demo-market-locations">San Diego, Orange County, Los Angeles &amp; surrounding areas</p>
+                        <a href="https://meetings-na2.hubspot.com/ashleigh-stumler" class="btn btn-primary" target="_blank">Schedule a call</a>
+                    </div>
+                </div>
+                <div class="demo-market-card">
+                    <div class="demo-market-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="10" r="3"/>
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/>
+                        </svg>
+                    </div>
+                    <div class="demo-card-content">
+                        <h3>Colorado</h3>
+                        <p class="demo-market-locations">Denver, Boulder, Fort Collins &amp; surrounding areas</p>
+                        <a href="https://meetings-na2.hubspot.com/sarah-lebuhn" class="btn btn-primary" target="_blank">Schedule a call</a>
+                    </div>
+                </div>
+                <div class="demo-market-card">
+                    <div class="demo-market-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <div class="demo-card-content">
+                        <h3>Nationwide</h3>
+                        <p class="demo-market-locations">Virtual design advice available everywhere across the U.S.</p>
+                        <a href="https://meetings-na2.hubspot.com/alex-ryden" class="btn btn-primary" target="_blank">Schedule a call</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Before/After Slider Functionality
         const slider = document.getElementById('beforeAfterSlider');
@@ -2956,6 +3224,27 @@
                     link.parentElement.classList.toggle('dropdown-open');
                 });
             }
+        });
+    </script>
+
+    <script>
+        // Demo modal
+        const demoModal = document.getElementById('demoModal');
+        const demoModalClose = document.getElementById('demoModalClose');
+
+        function closeDemoModal() {
+            demoModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        demoModalClose.addEventListener('click', closeDemoModal);
+
+        demoModal.addEventListener('click', (e) => {
+            if (e.target === demoModal) closeDemoModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && demoModal.classList.contains('active')) closeDemoModal();
         });
     </script>
 </body>
