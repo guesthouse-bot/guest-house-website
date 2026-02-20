@@ -2160,6 +2160,103 @@
             color: #92400e;
         }
 
+        /* Pay At Close financing card */
+        .tile-finance-card {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            width: 210px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .tile-finance-card .fin-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .tile-finance-card .fin-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--color-golden);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+        }
+
+        .tile-finance-card .fin-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .tile-finance-card .fin-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .tile-finance-card .fin-sublabel {
+            font-size: 0.65rem;
+            color: #888;
+            margin-bottom: 14px;
+        }
+
+        .tile-finance-card .fin-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 0.7rem;
+            color: var(--color-onyx);
+        }
+
+        .tile-finance-card .fin-row .fin-service {
+            font-weight: 400;
+        }
+
+        .tile-finance-card .fin-row .fin-price {
+            font-weight: 600;
+        }
+
+        .tile-finance-card .fin-divider {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 8px 0;
+        }
+
+        .tile-finance-card .fin-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0 0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+        }
+
+        .tile-finance-card .fin-badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
         @media (max-width: 900px) {
             .section-headline {
                 padding: 80px 1.5rem 60px;
@@ -4279,8 +4376,33 @@
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
-            <a href="pay-at-close.html" class="service-tile tile-bottom-3">
-                <img src="pay-at-close-tile.jpg" alt="Pay at close" class="tile-bg">
+            <a href="pay-at-close.html" class="service-tile tile-ui tile-bottom-3">
+                <div class="tile-finance-card">
+                    <div class="fin-header">
+                        <div class="fin-icon">GH</div>
+                        <div class="fin-title">Pay At Close</div>
+                    </div>
+                    <div class="fin-amount">$0 due today</div>
+                    <div class="fin-sublabel">Paid from proceeds at closing</div>
+                    <div class="fin-row">
+                        <span class="fin-service">Staging</span>
+                        <span class="fin-price">$2,400</span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-service">Listing Photos</span>
+                        <span class="fin-price">$350</span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-service">Deep Cleaning</span>
+                        <span class="fin-price">$450</span>
+                    </div>
+                    <hr class="fin-divider">
+                    <div class="fin-total-row">
+                        <span>Total at close</span>
+                        <span>$3,200</span>
+                    </div>
+                    <span class="fin-badge">$0 upfront</span>
+                </div>
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Pay At Close</h3>
