@@ -2053,8 +2053,8 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 65%;
-            height: 80%;
+            width: 75%;
+            height: 95%;
             object-fit: contain;
             object-position: top right;
         }
@@ -2083,6 +2083,18 @@
 
         .service-tile.tile-ui .tile-arrow svg {
             stroke: var(--color-onyx);
+        }
+
+        .service-tile.tile-ui .tile-bg-img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 85%;
+            object-fit: contain;
+            object-position: top right;
+            border-radius: 12px;
+            margin: 16px 16px 0 0;
         }
 
         @media (max-width: 900px) {
@@ -4150,16 +4162,15 @@
                 <img src="full-service-staging.jpg" alt="Full-service staging" class="tile-bg">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
-                    <span class="tile-badge">Most Popular</span>
                     <h3 class="tile-name">Full-Service Staging</h3>
                     <p class="tile-desc">We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
             <a href="design-advice.html" class="service-tile tile-ui tile-top-right">
+                <img src="smart-quotes-ui.png" alt="Design checklist UI" class="tile-bg-img">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
-                    <span class="tile-badge">Budget-Friendly</span>
                     <h3 class="tile-name">Expert Design Advice</h3>
                     <p class="tile-desc">Expert guidance to make your home show-ready with what you already have.</p>
                 </div>
