@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="address=no">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Guest House Case Studies - See real results from staged homes. Before and after photos, sale prices, and days on market from real Guest House clients.">
-    <title>Case Studies | Guest House</title>
+    <meta name="description" content="How Connor Cole at The Agency secured a $1M sale on 3640 Lipan St with multiple offers in 36 hours using Guest House staging.">
+    <title>3640 Lipan St Case Study | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -242,7 +242,7 @@
             color: var(--color-text-secondary) !important;
             line-height: 1.4;
         }
-        /* Featured section in Resources dropdown */
+
         .dropdown-resources-layout {
             display: flex;
             gap: 1.5rem;
@@ -287,7 +287,7 @@
             width: 196px;
             max-width: 196px;
             height: auto;
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             margin-bottom: 0.75rem;
             display: block !important;
             transition: transform 0.2s ease;
@@ -345,14 +345,13 @@
             display: none !important;
         }
 
-
         .nav-actions {
             display: flex;
             gap: 1.5rem;
             align-items: center;
             flex-shrink: 0;
         }
-        /* Hide mobile menu elements on desktop */
+
         .hamburger {
             display: none;
         }
@@ -405,475 +404,190 @@
             font-size: 1rem;
         }
 
-        /* Hero Section — Full-bleed image */
-        .hero {
+        /* Case Study Hero */
+        .cs-hero {
             position: relative;
             min-height: 85vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: url('staging-example.jpg') center/cover no-repeat;
-            color: white;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(8,8,8,0.45) 0%, rgba(8,8,8,0.6) 100%);
-        }
-
-        .hero-inner {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            padding: 160px 3rem 100px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.75rem, 6vw, 4.5rem);
-            font-weight: 500;
-            line-height: 1.08;
-            letter-spacing: -0.03em;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: rgba(255,255,255,0.85);
-            max-width: 520px;
-            margin: 0 auto 36px;
-            line-height: 1.6;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-
-        /* Gallery Section */
-        .gallery-section {
-            padding: 0 1.5rem 100px;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .gallery-header {
-            text-align: center;
-            margin-bottom: 56px;
-        }
-
-        .gallery-header h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 500;
-            letter-spacing: -0.02em;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .gallery-card {
-            cursor: default;
-        }
-
-        .gallery-card-img {
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 14px;
-        }
-
-        .gallery-card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .gallery-card:hover .gallery-card-img img {
-            transform: scale(1.04);
-        }
-
-        .gallery-card:hover .gallery-card-img {
-            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-        }
-
-        .gallery-card-address {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--color-text-primary);
-            line-height: 1.4;
-        }
-
-        .gallery-card-city {
-            font-size: 0.875rem;
-            color: var(--color-text-secondary);
-        }
-
-        /* Case Study Image Cards */
-        .case-study-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 16/7;
-            display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
+            overflow: hidden;
         }
 
-        .case-study-card img {
+        .cs-hero img {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center 40%;
-            transition: transform 0.5s ease;
         }
 
-        .case-study-card:hover img {
-            transform: scale(1.03);
-        }
-
-        .case-study-card::after {
+        .cs-hero::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.65) 100%);
-            pointer-events: none;
+            background: linear-gradient(180deg, rgba(8,8,8,0.15) 0%, rgba(8,8,8,0.7) 100%);
         }
 
-        .case-study-card-content {
+        .cs-hero-content {
             position: relative;
             z-index: 1;
-            padding: 48px;
+            padding: 0 3rem 80px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
             color: white;
         }
 
-        .case-study-card-agent {
+        .cs-hero-label {
             font-size: 0.875rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 8px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
-        .case-study-card-address {
-            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+        .cs-hero-headline {
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
             font-weight: 500;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-            margin-bottom: 32px;
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            margin-bottom: 48px;
+            max-width: 800px;
         }
 
-        .case-study-card-kpis {
+        .cs-hero-kpis {
             display: flex;
-            gap: 48px;
+            gap: 64px;
         }
 
-        .case-study-card-kpi-value {
-            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+        .cs-hero-kpi-value {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
             font-weight: 600;
             line-height: 1.2;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .case-study-card-kpi-label {
-            font-size: 0.8125rem;
-            color: rgba(255,255,255,0.7);
+        .cs-hero-kpi-label {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
             font-weight: 400;
         }
 
-        .case-study-card-quote {
+        /* Quote Section */
+        .cs-quote-section {
+            padding: 80px 3rem;
+            background: var(--color-surface);
+        }
+
+        .cs-quote-inner {
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            padding: 64px 3rem;
+        }
+
+        .cs-quote-inner blockquote {
+            font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--color-onyx);
+            margin-bottom: 28px;
+        }
+
+        .cs-quote-author {
+            font-size: 1rem;
+            color: var(--color-text-primary);
+        }
+
+        .cs-quote-author strong {
+            font-weight: 600;
+        }
+
+        .cs-quote-author span {
+            color: var(--color-text-secondary);
+        }
+
+        /* Article Content */
+        .cs-article {
+            padding: 0 3rem 100px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        .case-study-card-quote blockquote {
-            font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-            font-weight: 500;
-            line-height: 1.5;
-            color: var(--color-onyx);
-            margin-bottom: 24px;
-        }
-
-        .case-study-card-quote-author {
-            font-size: 0.9375rem;
-            color: var(--color-text-primary);
-        }
-
-        .case-study-card-quote-author strong {
-            font-weight: 600;
-        }
-
-        .case-study-card-quote-author span {
-            color: var(--color-text-secondary);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            padding: 60px 3rem;
-            background: var(--color-onyx);
-            color: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .stat-value {
-            font-size: 3rem;
-            font-weight: 600;
-            color: var(--color-golden);
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.7);
-        }
-
-        /* Case Studies Grid */
-        .case-studies-section {
-            padding: 120px 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .case-studies-header {
-            text-align: center;
-            margin-bottom: 56px;
-        }
-
-        .case-studies-header h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
+        .cs-article h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 500;
             letter-spacing: -0.02em;
-        }
-
-        .case-studies-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 80px;
-        }
-
-        .case-study {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        .case-study:nth-child(even) {
-            direction: rtl;
-        }
-
-        .case-study:nth-child(even) > * {
-            direction: ltr;
-        }
-
-        .case-study-image {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            background: var(--color-mist);
-        }
-
-        .case-study-image-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--color-bone) 0%, var(--color-paper) 100%);
-        }
-
-        .case-study-image-placeholder svg {
-            width: 64px;
-            height: 64px;
-            stroke: var(--color-moss);
-            fill: none;
-            stroke-width: 1;
-        }
-
-        .case-study-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--color-golden);
+            margin-bottom: 20px;
             color: var(--color-onyx);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 600;
         }
 
-        .case-study-content h3 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .case-study-location {
-            font-size: 1rem;
+        .cs-article p {
+            font-size: 1.0625rem;
+            line-height: 1.75;
             color: var(--color-text-secondary);
             margin-bottom: 24px;
         }
 
-        .case-study-stats {
+        .cs-article-divider {
+            width: 48px;
+            height: 2px;
+            background: var(--color-golden);
+            margin: 48px 0;
+        }
+
+        .cs-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            margin-bottom: 24px;
-            padding: 24px;
+            margin: 40px 0;
+            padding: 32px;
             background: var(--color-mist);
             border-radius: 16px;
         }
 
-        .case-study-stat {
+        .cs-stat {
             text-align: center;
         }
 
-        .case-study-stat-value {
-            font-size: 1.5rem;
+        .cs-stat-value {
+            font-size: 1.75rem;
             font-weight: 600;
             color: var(--color-onyx);
             margin-bottom: 4px;
         }
 
-        .case-study-stat-value.highlight {
-            color: var(--color-golden);
-        }
-
-        .case-study-stat-label {
+        .cs-stat-label {
             font-size: 0.8125rem;
             color: var(--color-text-secondary);
         }
 
-        .case-study-description {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .case-study-quote {
-            font-style: italic;
-            font-size: 1rem;
-            color: var(--color-text-primary);
-            padding-left: 20px;
-            border-left: 3px solid var(--color-golden);
-        }
-
-        .case-study-quote-author {
-            font-style: normal;
-            font-weight: 600;
-            margin-top: 8px;
-            display: block;
-        }
-
-        .case-study-highlight {
-            display: flex;
+        /* Back Link */
+        .cs-back {
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            background: linear-gradient(135deg, var(--color-paper) 0%, var(--color-bone) 100%);
-            border-radius: 12px;
-        }
-
-        .case-study-highlight-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-golden);
-            line-height: 1;
-        }
-
-        .case-study-highlight-label {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-        }
-
-        /* Testimonial */
-        .testimonial-section {
-            padding: 120px 3rem;
-            background: var(--color-surface);
-        }
-
-        .testimonial-inner {
-            max-width: 900px;
+            gap: 8px;
+            padding: 24px 3rem;
+            max-width: 800px;
             margin: 0 auto;
-            text-align: center;
-        }
-
-        .testimonial-quote {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 400;
-            line-height: 1.5;
-            margin-bottom: 40px;
-            color: var(--color-onyx);
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .testimonial-avatar {
-            width: 56px;
-            height: 56px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.125rem;
-        }
-
-        .testimonial-info {
-            text-align: left;
-        }
-
-        .testimonial-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .testimonial-role {
-            color: var(--color-text-secondary);
+            width: 100%;
             font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .cs-back:hover {
+            color: var(--color-text-primary);
+        }
+
+        .cs-back svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
         }
 
         /* CTA Section */
@@ -902,10 +616,6 @@
             font-size: 1.125rem;
             opacity: 0.9;
             margin-bottom: 40px;
-        }
-
-        .cta-section .btn {
-            margin: 0 8px;
         }
 
         .cta-section .btn-primary {
@@ -990,31 +700,23 @@
             height: 20px;
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cs-hero-content { animation: fadeInUp 0.6s ease-out 0.2s both; }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 24px;
-            }
-            .case-study {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            .case-study:nth-child(even) {
-                direction: ltr;
-            }
-            .case-study-card {
-                aspect-ratio: 16/9;
-            }
-            .case-study-card-content {
-                padding: 32px;
-            }
-            .case-study-card-kpis {
-                gap: 32px;
+            .cs-hero-kpis {
+                gap: 40px;
             }
         }
 
@@ -1053,71 +755,46 @@
             .mobile-menu-actions .btn-primary { background: var(--color-golden); color: var(--color-onyx); }
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
-            .hero {
-                min-height: 70vh;
+            .cs-hero {
+                min-height: 75vh;
             }
 
-            .hero-inner {
-                padding: 140px 1.5rem 80px;
+            .cs-hero-content {
+                padding: 0 1.5rem 60px;
             }
 
-            .gallery-section {
-                padding: 80px 1.5rem;
+            .cs-hero-headline {
+                font-size: 1.75rem;
+                margin-bottom: 32px;
             }
 
-            .gallery-grid {
-                grid-template-columns: 1fr;
+            .cs-hero-kpis {
                 gap: 24px;
             }
 
-            .stats-bar {
-                padding: 40px 1.5rem;
+            .cs-hero-kpi-value {
+                font-size: 1.25rem;
             }
 
-            .stats-grid {
-                gap: 32px;
+            .cs-hero-kpi-label {
+                font-size: 0.75rem;
             }
 
-            .stat-value {
-                font-size: 2rem;
+            .cs-quote-section {
+                padding: 60px 1.5rem;
             }
 
-            .case-studies-section {
-                padding: 80px 1.5rem;
+            .cs-article {
+                padding: 0 1.5rem 80px;
             }
 
-            .case-study-stats {
+            .cs-back {
+                padding: 20px 1.5rem;
+            }
+
+            .cs-stats-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
-            }
-
-            .case-study-card {
-                aspect-ratio: 3/4;
-            }
-
-            .case-study-card-content {
-                padding: 24px;
-            }
-
-            .case-study-card-kpis {
-                gap: 16px;
-            }
-
-            .case-study-card-kpi-value {
-                font-size: 1rem;
-            }
-
-            .case-study-card-kpi-label {
-                font-size: 0.6875rem;
-            }
-
-            .case-study-card-address {
-                font-size: 1.25rem;
-                margin-bottom: 20px;
-            }
-
-            .testimonial-section {
-                padding: 80px 1.5rem;
             }
 
             .cta-section {
@@ -1157,48 +834,15 @@
                     </defs>
                 </svg>
             </a>
-                        <ul class="nav-links">
+            <ul class="nav-links">
                 <li>
                     <a href="#">Prep a home</a>
                     <div class="dropdown">
                         <h3 class="dropdown-header">Prep a home</h3>
                         <div class="dropdown-grid">
-                            <a href="design-advice.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Expert Design<br>Advice</span>
-                                    <span class="dropdown-desc">Get expert guidance on-demand</span>
-                                </div>
-                            </a>
-                            <a href="style-for-you.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-                                        <line x1="16" y1="8" x2="2" y2="22"/>
-                                        <line x1="17.5" y1="15" x2="9" y2="15"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">In-Person<br>Styling</span>
-                                    <span class="dropdown-desc">Pro styling with your furnishings</span>
-                                </div>
-                            </a>
-                            <a href="full-service-staging.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                        <polyline points="9 22 9 12 15 12 15 22"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Full-Service<br>Staging</span>
-                                    <span class="dropdown-desc">We handle everything</span>
-                                </div>
-                            </a>
+                            <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design<br>Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
+                            <a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person<br>Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
+                            <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service<br>Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
                         </div>
                     </div>
                 </li>
@@ -1207,30 +851,8 @@
                     <div class="dropdown">
                         <h3 class="dropdown-header">Customers</h3>
                         <div class="dropdown-grid-2col">
-                            <a href="agents.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="12" cy="7" r="4"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Agents</span>
-                                    <span class="dropdown-desc">Tools for individual agents</span>
-                                </div>
-                            </a>
-                            <a href="homeowners.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                        <polyline points="9 22 9 12 15 12 15 22"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Homeowners</span>
-                                    <span class="dropdown-desc">Prep your own home</span>
-                                </div>
-                            </a>
+                            <a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a>
+                            <a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a>
                         </div>
                     </div>
                 </li>
@@ -1243,56 +865,17 @@
                             <div class="dropdown-resources-left">
                                 <h3 class="dropdown-header">Resources</h3>
                                 <div class="dropdown-grid" style="grid-template-columns: 1fr;">
-
-                            <a href="pay-at-close.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
-                                        <line x1="2" y1="10" x2="22" y2="10"/>
-                                    </svg>
+                                    <a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a>
+                                    <a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a>
                                 </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Pay At Close<br>(Homeowners)</span>
-                                    <span class="dropdown-desc">Stage now, pay at closing</span>
-                                </div>
-                            </a>
-                            <a href="pay-at-close-agents.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
-                                        <line x1="2" y1="10" x2="22" y2="10"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Pay At Close<br>(Agents)</span>
-                                    <span class="dropdown-desc">Flexible monthly payments</span>
-                                </div>
-                            </a>
-                                                    </div>
                             </div>
                             <div class="dropdown-connect">
                                 <span class="dropdown-connect-header">Company</span>
-                                <a href="support.html" class="dropdown-connect-item">
-                                    <div class="dropdown-icon">
-                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                        </svg>
-                                    </div>
-                                    <div class="dropdown-text">
-                                        <span class="dropdown-title">Support</span>
-                                        <span class="dropdown-desc">Get help from our team</span>
-                                    </div>
-                                </a>
+                                <a href="support.html" class="dropdown-connect-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a>
                             </div>
                             <div class="dropdown-featured">
                                 <span class="dropdown-featured-label">Featured</span>
-                                <a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card">
-                                    <img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img">
-                                    <span class="dropdown-featured-title">Smart Quotes</span>
-                                    <span class="dropdown-featured-desc">Get instant pricing and advice for prepping your listings</span>
-                                </a>
+                                <a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card"><img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img"><span class="dropdown-featured-title">Smart Quotes</span><span class="dropdown-featured-desc">Get instant pricing and advice for prepping your listings</span></a>
                             </div>
                         </div>
                     </div>
@@ -1345,41 +928,11 @@
             </button>
         </div>
         <ul class="mobile-menu-nav">
-            <li>
-                <a href="#">Prep a home</a>
-                <div class="dropdown">
-                    <h3 class="dropdown-header">Prep a home</h3>
-                    <div class="dropdown-grid">
-                        <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
-                        <a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
-                        <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <a href="#">Customers</a>
-                <div class="dropdown">
-                    <h3 class="dropdown-header">Customers</h3>
-                    <div class="dropdown-grid">
-                        <a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a>
-                        <a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a>
-                    </div>
-                </div>
-            </li>
+            <li><a href="#">Prep a home</a><div class="dropdown"><h3 class="dropdown-header">Prep a home</h3><div class="dropdown-grid"><a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a><a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a><a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a></div></div></li>
+            <li><a href="#">Customers</a><div class="dropdown"><h3 class="dropdown-header">Customers</h3><div class="dropdown-grid"><a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a><a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a></div></div></li>
             <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
             <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
-            <li>
-                <a href="#">Resources</a>
-                <div class="dropdown">
-                    <h3 class="dropdown-header">Resources</h3>
-                    <div class="dropdown-grid">
-                        <a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a>
-                        <a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a>
-                        <a href="support.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a>
-                        <a href="https://guesthouseshop.com/smart-quote" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Smart Quotes</span><span class="dropdown-desc">Get instant pricing and advice</span></div></a>
-                    </div>
-                </div>
-            </li>
+            <li><a href="#">Resources</a><div class="dropdown"><h3 class="dropdown-header">Resources</h3><div class="dropdown-grid"><a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a><a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a><a href="support.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a><a href="https://guesthouseshop.com/smart-quote" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Smart Quotes</span><span class="dropdown-desc">Get instant pricing and advice</span></div></a></div></div></li>
         </ul>
         <div class="mobile-menu-actions">
             <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
@@ -1387,206 +940,72 @@
         </div>
     </div>
 
-    <section class="hero">
-        <div class="hero-inner">
-            <h1>Our work</h1>
-            <p class="hero-subtitle">Real results from our professionally prepped homes</p>
-        </div>
-    </section>
-
-    <section class="stats-bar">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-value">2,500+</div>
-                <div class="stat-label">Homes staged</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">8.2%</div>
-                <div class="stat-label">Avg. price increase</div>
-            </div>
-<div class="stat-item">
-                <div class="stat-value">100%</div>
-                <div class="stat-label">Happiness guaranteed</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="case-studies-section" id="case-studies">
-        <div class="case-studies-header">
-            <h2>Featured listings</h2>
-        </div>
-        <div class="case-studies-grid">
-            <a href="case-study-836-carlsbad.html" class="case-study-card">
-                <img src="images/836-carlsbad.webp" alt="836 Carlsbad St staged living room">
-                <div class="case-study-card-content">
-                    <div class="case-study-card-agent">Listed by Cody Stamm</div>
-                    <div class="case-study-card-address">836 Carlsbad St, San Diego, CA</div>
-                    <div class="case-study-card-kpis">
-                        <div>
-                            <div class="case-study-card-kpi-value">$810K</div>
-                            <div class="case-study-card-kpi-label">sale price</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">8 days</div>
-                            <div class="case-study-card-kpi-label">on market</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">+$75K</div>
-                            <div class="case-study-card-kpi-label">over asking</div>
-                        </div>
-                    </div>
+    <section class="cs-hero">
+        <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
+        <div class="cs-hero-content">
+            <div class="cs-hero-label">Guest House</div>
+            <h1 class="cs-hero-headline">How Connor Cole secured a $1M sale with multiple offers in 36 hours</h1>
+            <div class="cs-hero-kpis">
+                <div>
+                    <div class="cs-hero-kpi-value">$1M</div>
+                    <div class="cs-hero-kpi-label">sale price</div>
                 </div>
-            </a>
-            <div class="case-study-card-quote">
-                <blockquote>"The home shows great and the team absolutely hit the mark on what my vision was."</blockquote>
-                <div class="case-study-card-quote-author"><strong>Cody Stamm</strong> <span>Listing Agent</span></div>
-            </div>
-
-            <a href="case-study-3640-lipan.html" class="case-study-card">
-                <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
-                <div class="case-study-card-content">
-                    <div class="case-study-card-agent">Listed by Connor Cole, The Agency</div>
-                    <div class="case-study-card-address">3640 Lipan St, Denver, CO</div>
-                    <div class="case-study-card-kpis">
-                        <div>
-                            <div class="case-study-card-kpi-value">$1M</div>
-                            <div class="case-study-card-kpi-label">sale price</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">3 days</div>
-                            <div class="case-study-card-kpi-label">on market</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">36 hrs</div>
-                            <div class="case-study-card-kpi-label">to multiple offers</div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="cs-hero-kpi-value">3 days</div>
+                    <div class="cs-hero-kpi-label">on market</div>
                 </div>
-            </a>
-            <div class="case-study-card-quote">
-                <blockquote>"We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."</blockquote>
-                <div class="case-study-card-quote-author"><strong>Connor Cole</strong> <span>The Agency</span></div>
-            </div>
-
-            <a href="case-study-500-manhattan.html" class="case-study-card">
-                <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area">
-                <div class="case-study-card-content">
-                    <div class="case-study-card-agent">Listed by Dorothy Pacheco, Compass</div>
-                    <div class="case-study-card-address">500 Manhattan Dr, Boulder, CO</div>
-                    <div class="case-study-card-kpis">
-                        <div>
-                            <div class="case-study-card-kpi-value">$415K</div>
-                            <div class="case-study-card-kpi-label">sale price</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">Same day</div>
-                            <div class="case-study-card-kpi-label">offer after photos</div>
-                        </div>
-                        <div>
-                            <div class="case-study-card-kpi-value">25x</div>
-                            <div class="case-study-card-kpi-label">return on staging</div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="cs-hero-kpi-value">36 hrs</div>
+                    <div class="cs-hero-kpi-label">to multiple offers</div>
                 </div>
-            </a>
-            <div class="case-study-card-quote">
-                <blockquote>"The staging team truly delivered—from the initial mood boards to the beautifully finished product. The presentation made a meaningful impact and helped create immediate momentum."</blockquote>
-                <div class="case-study-card-quote-author"><strong>Dorothy Pacheco</strong> <span>Compass</span></div>
             </div>
         </div>
     </section>
 
-    <section class="gallery-section">
-        <div class="gallery-header">
-            <h2>See more homes</h2>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/2448-sagebrush.jpg" alt="2448 Sagebrush Ct, La Jolla" loading="lazy">
-                </div>
-                <div class="gallery-card-address">2448 Sagebrush Ct</div>
-                <div class="gallery-card-city">La Jolla, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/9957-strobe.jpg" alt="9957 E Strobe Ave, Mesa" loading="lazy">
-                </div>
-                <div class="gallery-card-address">9957 E Strobe Ave</div>
-                <div class="gallery-card-city">Mesa, AZ</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/3236-felton.jpg" alt="3236 Felton St, San Diego" loading="lazy">
-                </div>
-                <div class="gallery-card-address">3236 Felton St</div>
-                <div class="gallery-card-city">San Diego, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/2738-mackinnon.jpg" alt="2738 MacKinnon Ranch Rd, Cardiff" loading="lazy">
-                </div>
-                <div class="gallery-card-address">2738 MacKinnon Ranch Rd</div>
-                <div class="gallery-card-city">Cardiff, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/959-eldorado.jpg" alt="959 Eldorado Ln, Louisville" loading="lazy">
-                </div>
-                <div class="gallery-card-address">959 Eldorado Ln</div>
-                <div class="gallery-card-city">Louisville, CO</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/1184-williams.jpg" alt="1184 S Williams St, Denver" loading="lazy">
-                </div>
-                <div class="gallery-card-address">1184 S Williams St</div>
-                <div class="gallery-card-city">Denver, CO</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/6056-winfield.jpg" alt="6056 Winfield Ave, La Mesa" loading="lazy">
-                </div>
-                <div class="gallery-card-address">6056 Winfield Ave</div>
-                <div class="gallery-card-city">La Mesa, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/5851-box-canyon.jpg" alt="5851 Box Canyon Rd, La Jolla" loading="lazy">
-                </div>
-                <div class="gallery-card-address">5851 Box Canyon Rd</div>
-                <div class="gallery-card-city">La Jolla, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/1320-judson.jpg" alt="1320 Judson Dr, Boulder" loading="lazy">
-                </div>
-                <div class="gallery-card-address">1320 Judson Dr</div>
-                <div class="gallery-card-city">Boulder, CO</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/11729-elmer-linn.jpg" alt="11729 Elmer Linn Dr, Longmont" loading="lazy">
-                </div>
-                <div class="gallery-card-address">11729 Elmer Linn Dr</div>
-                <div class="gallery-card-city">Longmont, CO</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/550-amphitheatre.jpg" alt="550 Amphitheatre Dr, Del Mar" loading="lazy">
-                </div>
-                <div class="gallery-card-address">550 Amphitheatre Dr</div>
-                <div class="gallery-card-city">Del Mar, CA</div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-card-img">
-                    <img src="images/11673-w28th.jpg" alt="11673 W 28th Ave, Lakewood" loading="lazy">
-                </div>
-                <div class="gallery-card-address">11673 W 28th Ave</div>
-                <div class="gallery-card-city">Lakewood, CO</div>
-            </div>
+    <section class="cs-quote-section">
+        <div class="cs-quote-inner">
+            <blockquote>"We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."</blockquote>
+            <div class="cs-quote-author"><strong>Connor Cole</strong> <span>The Agency</span></div>
         </div>
     </section>
+
+    <a href="case-studies.html" class="cs-back">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to case studies
+    </a>
+
+    <article class="cs-article">
+        <h2>The challenge</h2>
+        <p>When Connor Cole at The Agency listed 3640 Lipan St in Denver's sought-after LoHi neighborhood, the stakes were high. The property was a beautifully renovated home in one of the city's most competitive markets, where buyers expect move-in ready perfection and listings can stall without the right first impression.</p>
+        <p>Connor needed to ensure the home stood out from the moment it hit the MLS. In a market where well-staged properties consistently outperform the competition, he turned to Guest House to help create a presentation that matched the caliber of the home.</p>
+
+        <div class="cs-article-divider"></div>
+
+        <h2>The approach</h2>
+        <p>Guest House developed a staging concept that leaned into the home's modern renovation while keeping the space warm and inviting. The team selected pieces that complemented the open-concept layout, emphasizing the flow between the kitchen, dining, and living areas that make LoHi properties so desirable.</p>
+        <p>The staging highlighted key selling points—the chef's kitchen with its breakfast nook, the generous primary suite, and the indoor-outdoor living spaces. Every detail was intentional, designed to help buyers envision hosting, entertaining, and living their best Denver lifestyle.</p>
+
+        <div class="cs-stats-grid">
+            <div class="cs-stat">
+                <div class="cs-stat-value">$1M</div>
+                <div class="cs-stat-label">Final sale price</div>
+            </div>
+            <div class="cs-stat">
+                <div class="cs-stat-value">3 days</div>
+                <div class="cs-stat-label">Days on market</div>
+            </div>
+            <div class="cs-stat">
+                <div class="cs-stat-value">36 hrs</div>
+                <div class="cs-stat-label">To multiple offers</div>
+            </div>
+        </div>
+
+        <div class="cs-article-divider"></div>
+
+        <h2>The results</h2>
+        <p>The results exceeded even Connor's expectations. Within 36 hours of listing, the property had generated multiple competitive offers. The home went under contract in just 3 days, closing at the milestone $1M mark.</p>
+        <p>For Connor, the outcome validated the power of doing everything right from the start. Listing preparation, professional staging, and top-tier marketing all worked together to create urgency in the market and maximize the return for his client.</p>
+    </article>
 
     <section class="cta-section">
         <div class="cta-inner">
@@ -1650,18 +1069,10 @@
                 <h4>Follow Us</h4>
                 <div class="social-links">
                     <a href="https://www.instagram.com/guesthousestaging" class="social-link" aria-label="Instagram" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
                     <a href="https://www.linkedin.com/company/guest-house-staging" class="social-link" aria-label="LinkedIn" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
-                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
             </div>
@@ -1669,30 +1080,12 @@
     </footer>
 
     <script>
-        // Mobile menu modal
         const hamburger = document.querySelector('.hamburger');
         const mobileMenuModal = document.getElementById('mobileMenuModal');
         const mobileMenuClose = document.querySelector('.mobile-menu-close');
-
-        hamburger.addEventListener('click', () => {
-            mobileMenuModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        mobileMenuClose.addEventListener('click', () => {
-            mobileMenuModal.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        // Mobile menu dropdown toggle
-        document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => {
-            if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    link.parentElement.classList.toggle('dropdown-open');
-                });
-            }
-        });
+        hamburger.addEventListener('click', () => { mobileMenuModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        mobileMenuClose.addEventListener('click', () => { mobileMenuModal.classList.remove('active'); document.body.style.overflow = ''; });
+        document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => { if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) { link.addEventListener('click', (e) => { e.preventDefault(); link.parentElement.classList.toggle('dropdown-open'); }); } });
     </script>
 </body>
 </html>
