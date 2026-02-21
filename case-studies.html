@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="address=no">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="Guest House Case Studies - See real results from staged homes. Before and after photos, sale prices, and days on market from real Guest House clients.">
     <title>Case Studies | Guest House</title>
@@ -667,19 +668,13 @@
 
         .case-studies-header {
             text-align: center;
-            margin-bottom: 64px;
+            margin-bottom: 56px;
         }
 
         .case-studies-header h2 {
             font-size: clamp(2rem, 4vw, 2.75rem);
             font-weight: 500;
-            margin-bottom: 16px;
             letter-spacing: -0.02em;
-        }
-
-        .case-studies-header p {
-            font-size: 1.125rem;
-            color: var(--color-text-secondary);
         }
 
         .case-studies-grid {
@@ -1103,12 +1098,20 @@
             }
 
             .case-study-card-kpis {
-                flex-wrap: wrap;
-                gap: 20px;
+                gap: 16px;
+            }
+
+            .case-study-card-kpi-value {
+                font-size: 1rem;
+            }
+
+            .case-study-card-kpi-label {
+                font-size: 0.6875rem;
             }
 
             .case-study-card-address {
-                margin-bottom: 24px;
+                font-size: 1.25rem;
+                margin-bottom: 20px;
             }
 
             .testimonial-section {
@@ -1409,7 +1412,6 @@
     <section class="case-studies-section" id="case-studies">
         <div class="case-studies-header">
             <h2>Featured listings</h2>
-            <p>Dive into the details of how staging transformed these listings.</p>
         </div>
         <div class="case-studies-grid">
             <div class="case-study-card">
