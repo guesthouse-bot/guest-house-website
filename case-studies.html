@@ -405,48 +405,33 @@
             font-size: 1rem;
         }
 
-        /* Hero Section — Full-bleed image */
+        /* Hero Section — Text only, matching Reviews page */
         .hero {
-            position: relative;
-            min-height: 85vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 180px 3rem 80px;
+            max-width: 1400px;
+            margin: 0 auto;
             text-align: center;
-            background: url('staging-example.jpg') center/cover no-repeat;
-            color: white;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(8,8,8,0.45) 0%, rgba(8,8,8,0.6) 100%);
-        }
-
-        .hero-inner {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            padding: 160px 3rem 100px;
         }
 
         .hero h1 {
-            font-size: clamp(2.75rem, 6vw, 4.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 500;
-            line-height: 1.08;
+            line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-subtitle {
             font-size: 1.25rem;
-            color: rgba(255,255,255,0.85);
-            max-width: 520px;
-            margin: 0 auto 36px;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
             line-height: 1.6;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
         /* Gallery Section */
@@ -1038,11 +1023,7 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
-                min-height: 70vh;
-            }
-
-            .hero-inner {
-                padding: 140px 1.5rem 80px;
+                padding: 140px 1.5rem 60px;
             }
 
             .gallery-section {
@@ -1373,7 +1354,10 @@
         </div>
     </div>
 
-    <div style="height: 73px;"></div>
+    <section class="hero">
+        <h1>Our Work</h1>
+        <p class="hero-subtitle">Real results from our professionally staged homes across the country.</p>
+    </section>
 
     <section class="case-studies-section" id="case-studies">
         <div class="case-studies-grid">
