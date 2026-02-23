@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -490,6 +490,12 @@
         .testimonial-banner-author span {
             color: rgba(255,255,255,0.6);
             margin-left: 4px;
+        }
+
+        .see-more-btn {
+            grid-column: 2;
+            justify-self: start;
+            margin-top: 4px;
         }
 
         /* Gallery Section */
@@ -1128,6 +1134,10 @@
                 gap: 16px;
             }
 
+            .see-more-btn {
+                grid-column: 1;
+            }
+
             .case-study-card-large {
                 grid-row: auto;
                 aspect-ratio: 3/4;
@@ -1454,6 +1464,7 @@
                     <div class="case-study-card-agent">Listed by Dorothy Pacheco / Compass</div>
                 </div>
             </a>
+            <a href="#see-more-homes" class="btn btn-secondary see-more-btn">See more homes</a>
         </div>
     </section>
 
@@ -1465,7 +1476,7 @@
         </div>
     </section>
 
-    <section class="gallery-section">
+    <section class="gallery-section" id="see-more-homes">
         <div class="gallery-header">
             <h2>See more homes</h2>
         </div>
