@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="In-person styling - Professional designers transform your occupied home using your existing furniture and decor. Fast turnaround, market-ready results.">
-    <title>In-person styling | Guest House</title>
+    <meta name="description" content="Become a Guest House vendor partner. Stagers, photographers, movers, and cleaners get jobs for free, faster payments, and less admin.">
+    <title>Vendor Partnerships | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -64,7 +64,6 @@
             background: var(--color-surface);
         }
 
-        /* Header - always dark text on this page */
         header {
             position: fixed;
             top: 0;
@@ -352,6 +351,7 @@
             align-items: center;
             flex-shrink: 0;
         }
+
         /* Hide mobile menu elements on desktop */
         .hamburger {
             display: none;
@@ -405,40 +405,23 @@
             font-size: 1rem;
         }
 
+        .btn-dark {
+            background: var(--color-onyx);
+            color: var(--color-white);
+        }
+
+        .btn-dark:hover {
+            background: var(--color-charcoal);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         /* Hero Section */
         .hero {
-            padding: 180px 3rem 100px;
+            padding: 180px 3rem 80px;
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-paper);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-deep);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .hero-badge svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-        }
-
-        .hero-content {
-            flex: 1;
-            min-width: 0;
+            text-align: center;
         }
 
         .hero h1 {
@@ -447,35 +430,19 @@
             line-height: 1.1;
             letter-spacing: -0.03em;
             margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-subtitle {
             font-size: 1.25rem;
             color: var(--color-text-secondary);
             max-width: 600px;
+            margin: 0 auto;
             line-height: 1.6;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
             animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 0;
-            animation: fadeInUp 0.6s ease-out 0.4s both;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
         }
 
         @keyframes fadeInUp {
@@ -491,347 +458,206 @@
 
         /* Value Props Section */
         .value-props {
-            padding: 80px 3rem;
-            background: var(--color-surface);
-            border-top: 1px solid var(--color-border);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .value-props-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .value-prop {
-            text-align: left;
-        }
-
-        .value-prop-icon {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 20px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .value-prop h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--color-onyx);
-        }
-
-        .value-prop p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Section Headline */
-        .section-headline {
-            text-align: center;
-            padding: 120px 3rem 80px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .section-headline h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-        }
-
-        /* Deliverable Preview */
-        .deliverable-section {
-            padding: 0 3rem 120px;
             max-width: 1100px;
             margin: 0 auto;
+            padding: 0 3rem 100px;
         }
-
-        .deliverable-card {
-            background: var(--color-mist);
-            border-radius: 24px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
+        .value-props-header {
+            text-align: center;
+            margin-bottom: 48px;
         }
-
-        .deliverable-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--color-border);
+        .value-props-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
         }
-
-        .deliverable-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .value-props-header p {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
         }
-
-        .deliverable-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--color-deep);
-            border-radius: 50%;
+        .value-props-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .value-prop-card {
+            background: var(--color-surface-secondary);
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .value-prop-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
+            margin: 0 auto 20px;
         }
-
-        .deliverable-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
+        .value-prop-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--color-onyx);
+            fill: none;
         }
-
-        .deliverable-info p {
-            font-size: 0.875rem;
+        .value-prop-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+        .value-prop-card p {
             color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
-        .deliverable-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #E8F5E9;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
+        /* Who We Work With */
+        .vendors-section {
+            background: var(--color-surface-secondary);
+            padding: 100px 3rem;
+        }
+        .vendors-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .vendors-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .vendors-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
             font-weight: 500;
-            color: #2E7D32;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
         }
-
-        .deliverable-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
+        .vendors-header p {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
         }
-
-        .tip-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tip-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
+        .vendors-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .tip-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        .vendor-card {
+            background: var(--color-white);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 1px solid var(--color-border);
         }
-
-        .tip-icon {
+        .vendor-card-icon {
             width: 48px;
             height: 48px;
-            background: var(--color-golden);
+            background: var(--color-surface-secondary);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            margin: 0 auto 16px;
         }
-
-        .tip-icon svg {
+        .vendor-card-icon svg {
             width: 24px;
             height: 24px;
             stroke: var(--color-onyx);
             fill: none;
-            stroke-width: 1.5;
         }
-
-        .tip-content {
-            flex: 1;
-        }
-
-        .tip-content h5 {
-            font-size: 1rem;
+        .vendor-card h3 {
+            font-size: 1.0625rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
-
-        .tip-content p {
-            font-size: 0.9375rem;
+        .vendor-card p {
             color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        .tip-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--color-bone);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-deep);
-            margin-top: 12px;
+            font-size: 0.9375rem;
+            line-height: 1.6;
         }
 
         /* How It Works */
         .how-it-works {
-            padding: 120px 3rem;
-            background: var(--color-onyx);
-            color: white;
+            padding: 100px 3rem;
         }
-
         .how-it-works-inner {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-
         .how-it-works h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2rem, 4vw, 2.5rem);
             font-weight: 500;
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 3rem;
             letter-spacing: -0.02em;
         }
-
         .steps {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 64px;
+            gap: 24px;
         }
-
         .step {
-            text-align: center;
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 32px;
         }
-
         .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--color-charcoal);
-            border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            width: 32px;
+            height: 32px;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border-radius: 50%;
+            font-size: 0.875rem;
             font-weight: 600;
-            margin: 0 auto 24px;
-            color: var(--color-golden);
+            margin-bottom: 16px;
         }
-
         .step h3 {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 12px;
         }
-
         .step p {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-        }
-
-        /* Testimonial */
-        .testimonial-section {
-            padding: 120px 3rem;
-            background: var(--color-paper);
-        }
-
-        .testimonial-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .testimonial-quote {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 400;
-            line-height: 1.5;
-            margin-bottom: 40px;
-            color: var(--color-onyx);
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .testimonial-avatar {
-            width: 56px;
-            height: 56px;
-            background: var(--color-deep);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.125rem;
-        }
-
-        .testimonial-info {
-            text-align: left;
-        }
-
-        .testimonial-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .testimonial-role {
             color: var(--color-text-secondary);
-            font-size: 0.9375rem;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
         /* CTA Section */
         .cta-section {
-            padding: 120px 3rem;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
+            background-size: cover;
+            background-position: center 70%;
+            color: white;
             text-align: center;
-            background: var(--color-surface);
         }
-
-        .cta-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
         .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 500;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
-
         .cta-section p {
             font-size: 1.125rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 40px;
+            opacity: 0.9;
+            margin-bottom: 2rem;
         }
-
-        .cta-section .btn {
-            margin: 0 8px;
+        .cta-section .btn-primary {
+            background: var(--color-white);
+            color: var(--color-primary);
+        }
+        .cta-section .btn-primary:hover {
+            background: var(--color-bone);
         }
 
         /* Footer */
@@ -886,7 +712,7 @@
         }
 
         .social-link {
-            display: flex !important;
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 40px;
@@ -907,16 +733,20 @@
             height: 20px;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
-            .value-props-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
             .footer-content {
                 grid-template-columns: repeat(3, 1fr);
             }
+            .vendors-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
+        @media (max-width: 600px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             nav {
                 padding: 0.75rem 1.5rem;
@@ -953,67 +783,18 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
-                padding: 140px 1.5rem 80px;
-                flex-direction: column;
-                text-align: center;
+                padding: 140px 1.5rem 60px;
             }
 
-            .hero-subtitle {
-                margin-left: auto;
-                margin-right: auto;
-            }
+            .value-props { padding: 0 1.5rem 80px; }
+            .value-props-grid { grid-template-columns: 1fr; gap: 16px; }
+            .vendors-section { padding: 80px 1.5rem; }
+            .vendors-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .how-it-works { padding: 80px 1.5rem; }
+            .steps { grid-template-columns: 1fr; gap: 16px; }
+            .cta-section { padding: 4rem 1.5rem; }
+            .cta-section h2 { font-size: 1.75rem; }
 
-            .hero-cta {
-                justify-content: center;
-            }
-
-            .value-props {
-                padding: 60px 1.5rem;
-            }
-
-            .value-props-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .section-headline {
-                padding: 80px 1.5rem 60px;
-            }
-
-            .deliverable-section {
-                padding: 0 1.5rem 80px;
-            }
-
-            .deliverable-card {
-                padding: 24px;
-            }
-
-            .deliverable-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .how-it-works {
-                padding: 80px 1.5rem;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .testimonial-section {
-                padding: 80px 1.5rem;
-            }
-
-            .cta-section {
-                padding: 80px 1.5rem;
-            }
-
-        }
-
-        @media (max-width: 600px) {
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1047,7 +828,7 @@
                     </defs>
                 </svg>
             </a>
-                        <ul class="nav-links">
+            <ul class="nav-links">
                 <li>
                     <a href="#">Prep a home</a>
                     <div class="dropdown">
@@ -1277,185 +1058,112 @@
         </div>
     </div>
 
+    <!-- Hero -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                3-day turnaround
-            </div>
-            <h1>Your furniture, our<br>designer's eye</h1>
-            <p class="hero-subtitle">
-                Our designers visit your occupied home, de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.
-            </p>
-            <div class="hero-cta">
-                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-                <a href="mailto:colorado@guesthouseshop.com" class="btn btn-secondary btn-large">Speak with our team</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img src="style-for-you-hero.webp" alt="Designer styling a dining room with modern furniture">
-            <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 12px;">3527 W 45th Ave, Denver, CO</p>
-        </div>
+        <h1>Vendor partnerships</h1>
+        <p class="hero-subtitle">We help stagers, photographers, movers, and cleaners grow their business — so they can focus on the work they love.</p>
     </section>
 
+    <!-- Value Props -->
     <section class="value-props">
+        <div class="value-props-header">
+            <h2>Why vendors love working with us</h2>
+            <p>We handle the business side so you can focus on delivering amazing work.</p>
+        </div>
         <div class="value-props-grid">
-            <div class="value-prop">
+            <div class="value-prop-card">
                 <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                 </div>
-                <h3>On-site styling</h3>
-                <p>Our designers will de-clutter spaces, do some light re-arranging, and re-style rooms with existing decor to create a fresh, market-ready home.</p>
+                <h3>Get jobs for free</h3>
+                <p>No marketing spend, no chasing leads. We bring the jobs directly to you — at zero cost.</p>
             </div>
-            <div class="value-prop">
+            <div class="value-prop-card">
                 <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-                        <line x1="16" y1="8" x2="2" y2="22"/>
-                        <line x1="17.5" y1="15" x2="9" y2="15"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
-                <h3>Fresh perspective</h3>
-                <p>A professional eye spots what homeowners miss—small changes that make a big difference to buyers.</p>
+                <h3>Get paid faster</h3>
+                <p>We pay on time, every time. No more chasing invoices or waiting on checks to clear.</p>
             </div>
-            <div class="value-prop">
+            <div class="value-prop-card">
                 <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </div>
-                <h3>Fast turnaround</h3>
-                <p>From booking to a market-ready home—fast enough for any listing timeline.</p>
-            </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                </div>
-                <h3>Use what you have</h3>
-                <p>No rental furniture needed. We transform your space using items already in the home, saving thousands.</p>
+                <h3>Focus on work you love</h3>
+                <p>We handle the scheduling, coordination, and admin. You just show up and do great work.</p>
             </div>
         </div>
     </section>
 
-    <div class="section-headline">
-        <h2>See what our designers accomplish in a single visit—real transformations using your existing items</h2>
-    </div>
-
-    <section class="deliverable-section">
-        <div class="deliverable-card">
-            <div class="deliverable-header">
-                <div class="deliverable-meta">
-                    <div class="deliverable-avatar">GH</div>
-                    <div class="deliverable-info">
-                        <h4>Your Styling Session Results</h4>
-                        <p>4821 E Calle Redonda, Scottsdale AZ</p>
-                    </div>
-                </div>
-                <div class="deliverable-status">Delivered</div>
+    <!-- Who We Work With -->
+    <section class="vendors-section">
+        <div class="vendors-inner">
+            <div class="vendors-header">
+                <h2>Who we work with</h2>
+                <p>We partner with top-tier vendors across home preparation services.</p>
             </div>
-            <div class="tip-cards">
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-card-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     </div>
-                    <div class="tip-content">
-                        <h5>Living room transformation</h5>
-                        <p>De-cluttered surfaces, re-styled with existing throw pillows and blankets, adjusted accent pieces to create a warm, inviting space.</p>
-                        <span class="tip-badge">Before & After</span>
-                    </div>
+                    <h3>Stagers</h3>
+                    <p>Home staging professionals who transform spaces to sell faster and for more.</p>
                 </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
+                <div class="vendor-card">
+                    <div class="vendor-card-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
-                    <div class="tip-content">
-                        <h5>Kitchen styling</h5>
-                        <p>Cleared counters completely, styled with cutting board, ceramic bowl with lemons, and single herb plant. Removed fridge magnets and organized open shelving.</p>
-                        <span class="tip-badge">Styled</span>
-                    </div>
+                    <h3>Photographers</h3>
+                    <p>Real estate photographers who capture stunning listing photos and virtual tours.</p>
                 </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                        </svg>
+                <div class="vendor-card">
+                    <div class="vendor-card-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                     </div>
-                    <div class="tip-content">
-                        <h5>Primary bedroom refresh</h5>
-                        <p>Re-made the bed with only the homeowners crisp white linens and select pillows for a tailored look. Removed clutter and personal photos from nightstands, leaving just the matching lamps and small plants for symmetry.</p>
+                    <h3>Movers</h3>
+                    <p>Furniture movers who deliver and install staging inventory efficiently and on time.</p>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-card-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     </div>
+                    <h3>Cleaners</h3>
+                    <p>Cleaning professionals who make homes sparkle before showings and photo shoots.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="how-it-works" id="how-it-works">
+    <!-- How It Works -->
+    <section class="how-it-works">
         <div class="how-it-works-inner">
             <h2>How it works</h2>
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Book your session</h3>
-                    <p>Choose a date that works for you. Our designers are available 7 days a week with next-day appointments often available.</p>
+                    <h3>Apply to join</h3>
+                    <p>Fill out a quick application with your service area, availability, and specialties. We review every submission personally.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Designer visits</h3>
-                    <p>A professional designer spends 2-3 hours in your home, de-cluttering, lightly re-arranging, and re-styling each room with existing decor.</p>
+                    <h3>Get matched with jobs</h3>
+                    <p>When a customer books through Guest House, we match the right vendor based on location, skill, and availability.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Market-ready home</h3>
-                    <p>Walk into a transformed space—de-cluttered, re-styled, and ready for showings and photos.</p>
+                    <h3>Do the work, get paid</h3>
+                    <p>Complete the job, confirm it in our system, and get paid fast. We handle invoicing and collections so you never have to.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="testimonial-section">
-        <div class="testimonial-inner">
-            <p class="testimonial-quote">"My experience with Guest House was top notch. The team communicated well, did an amazing job making my home look beautiful, and I'm convinced that the staging is what made my home sell."</p>
-            <div class="testimonial-author">
-                <div class="testimonial-avatar">AB</div>
-                <div class="testimonial-info">
-                    <div class="testimonial-name">Ashley B.</div>
-                    <div class="testimonial-role">Denver, CO</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- CTA -->
     <section class="cta-section">
-        <div class="cta-inner">
-            <h2>Ready to show your listing at its best?</h2>
-            <p>Professional styling using your existing furniture and decor—the smart way to prep occupied homes.</p>
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-        </div>
+        <h2>Ready to grow your business?</h2>
+        <p>Apply today and start getting matched with jobs in your area.</p>
+        <a href="mailto:vendors@guesthouseshop.com?subject=Vendor Partnership Application" class="btn btn-primary btn-large">Apply to become a partner</a>
     </section>
 
     <footer>
@@ -1494,12 +1202,14 @@
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
                     <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
                     <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="#">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Customers</h4>
                 <ul>
                     <li><a href="agents.html">Agents</a></li>
+                    <li><a href="brokerages.html">Brokerages</a></li>
                     <li><a href="homeowners.html">Homeowners</a></li>
                 </ul>
                 <h4 style="margin-top: 24px;">Legal</h4>
