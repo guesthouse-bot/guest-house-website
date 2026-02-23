@@ -633,6 +633,396 @@
             line-height: 1.7;
         }
 
+        /* ─── Application Modal ─── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(8, 8, 8, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-card {
+            background: var(--color-white);
+            border-radius: 20px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+            width: 100%;
+            max-width: 640px;
+            max-height: calc(100vh - 48px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: modalIn 0.25s ease-out;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-header {
+            border-bottom: 1px solid var(--color-border);
+            padding: 28px 32px 16px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .modal-header p {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-surface-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .modal-close:hover {
+            background: var(--color-border);
+        }
+        .modal-close svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--color-text-secondary);
+        }
+        .modal-body {
+            padding: 24px 32px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-footer {
+            border-top: 1px solid var(--color-border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        /* Form step indicators */
+        .form-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .form-step-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .form-step-dot.done { background: var(--color-onyx); color: var(--color-white); }
+        .form-step-dot.active { background: var(--color-golden); color: var(--color-onyx); }
+        .form-step-dot.upcoming { background: var(--color-surface-secondary); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+        .form-step-label {
+            font-size: 0.6875rem;
+            margin: 0 4px;
+            font-weight: 500;
+        }
+        .form-step-label.active { color: var(--color-onyx); }
+        .form-step-label.muted { color: var(--color-text-secondary); }
+        .form-step-line {
+            width: 28px;
+            height: 2px;
+            flex-shrink: 0;
+            border-radius: 1px;
+        }
+        .form-step-line.done { background: var(--color-onyx); }
+        .form-step-line.upcoming { background: var(--color-border); }
+
+        /* Form controls */
+        .form-field {
+            margin-bottom: 16px;
+        }
+        .form-field label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 6px;
+        }
+        .form-field label .req {
+            color: var(--color-error);
+        }
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: var(--color-white);
+            color: var(--color-text-primary);
+        }
+        .form-field input:focus,
+        .form-field select:focus,
+        .form-field textarea:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.08);
+        }
+        .form-field textarea {
+            resize: none;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Yes/No toggles */
+        .form-yesno {
+            display: flex;
+            gap: 10px;
+        }
+        .form-yesno button {
+            padding: 8px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            background: var(--color-white);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .form-yesno button.selected {
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border-color: var(--color-onyx);
+        }
+        .form-yesno button:hover:not(.selected) {
+            border-color: var(--color-text-secondary);
+        }
+
+        /* Role selection cards */
+        .form-roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .form-role-card {
+            text-align: left;
+            padding: 18px;
+            border-radius: 14px;
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .form-role-card:hover {
+            border-color: var(--color-text-secondary);
+        }
+        .form-role-card.selected {
+            border-color: var(--color-onyx);
+            background: var(--color-surface-secondary);
+        }
+        .form-role-card .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .form-role-card .role-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .form-role-card .role-desc {
+            font-size: 0.6875rem;
+            color: var(--color-text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Form buttons */
+        .form-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .form-btn-next {
+            background: var(--color-onyx);
+            color: var(--color-white);
+        }
+        .form-btn-next:hover {
+            background: var(--color-charcoal);
+        }
+        .form-btn-next:disabled {
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+            cursor: not-allowed;
+        }
+        .form-btn-back {
+            background: transparent;
+            color: var(--color-text-secondary);
+        }
+        .form-btn-back:hover {
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+        }
+        .form-btn-submit {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            font-weight: 600;
+        }
+        .form-btn-submit:hover {
+            background: #D4A85E;
+        }
+        .form-btn-submit:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+        .form-btn-invisible {
+            visibility: hidden;
+        }
+
+        /* Review blocks */
+        .form-review-block {
+            background: var(--color-surface-secondary);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .form-review-block h3 {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .form-review-block .rv {
+            color: var(--color-onyx);
+            font-size: 0.875rem;
+        }
+        .form-review-block .rs {
+            color: var(--color-text-secondary);
+            font-size: 0.8125rem;
+        }
+        .form-rate-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            padding: 2px 0;
+        }
+        .form-rate-row .rl {
+            color: var(--color-text-secondary);
+        }
+        .form-rate-row .ra {
+            font-weight: 500;
+            color: var(--color-onyx);
+        }
+
+        .form-section-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 20px 0 12px;
+        }
+        .form-step-heading {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .form-step-sub {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+        }
+        .form-error-banner {
+            margin-top: 16px;
+            padding: 12px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            color: var(--color-error);
+            font-size: 0.8125rem;
+        }
+        .form-success-wrap {
+            text-align: center;
+            padding: 48px 32px;
+        }
+        .form-success-wrap .big-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--color-golden);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .form-success-wrap .big-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--color-onyx);
+            fill: none;
+        }
+        .form-success-wrap h2 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .form-success-wrap p {
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 500px) {
+            .form-roles { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-step-label { display: none; }
+            .modal-body { padding: 20px; }
+            .modal-header { padding: 24px 20px 12px; }
+            .modal-footer { padding: 12px 20px; }
+            .modal-card { max-height: 100vh; border-radius: 0; }
+            .modal-overlay { padding: 0; }
+        }
+
         /* CTA Section */
         .cta-section {
             padding: 6rem 2rem;
@@ -1062,7 +1452,7 @@
     <section class="hero">
         <h1>Vendor partnerships</h1>
         <p class="hero-subtitle">We help stagers, photographers, movers, and cleaners grow their business — so they can focus on the work they love.</p>
-        <a href="mailto:vendors@guesthouseshop.com?subject=Vendor Partnership Application" class="btn btn-primary btn-large" style="margin-top: 32px;">Apply to become a partner</a>
+        <button onclick="openApplicationModal()" class="btn btn-primary btn-large" style="margin-top: 32px;">Apply to become a partner</button>
     </section>
 
     <!-- Value Props -->
@@ -1164,7 +1554,7 @@
     <section class="cta-section">
         <h2>Ready to grow your business?</h2>
         <p>Apply today and start getting matched with jobs in your area.</p>
-        <a href="mailto:vendors@guesthouseshop.com?subject=Vendor Partnership Application" class="btn btn-primary btn-large">Apply to become a partner</a>
+        <button onclick="openApplicationModal()" class="btn btn-primary btn-large">Apply to become a partner</button>
     </section>
 
     <footer>
@@ -1241,6 +1631,11 @@
         </div>
     </footer>
 
+    <!-- Application Modal -->
+    <div class="modal-overlay" id="applicationModal">
+        <div class="modal-card" id="modalCard"></div>
+    </div>
+
     <script>
         // Mobile menu modal
         const hamburger = document.querySelector('.hamburger');
@@ -1266,6 +1661,371 @@
                 });
             }
         });
+    </script>
+
+    <script>
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // ⚙️  Google Apps Script Web App URL — paste yours here:
+    const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    const ROLES = [
+      { id:"stager", label:"Stager", icon:"\u{1F3E0}", desc:"Home staging & design services" },
+      { id:"photographer", label:"Photographer", icon:"\u{1F4F8}", desc:"Real estate & property photography" },
+      { id:"mover", label:"Mover", icon:"\u{1F69A}", desc:"Moving & furniture delivery services" },
+      { id:"cleaner", label:"Cleaner", icon:"\u2728", desc:"Residential & turnover cleaning" },
+    ];
+
+    const SERVICES = {
+      stager: {
+        title: "Staging services & rates",
+        services: [
+          { key:"consultation", label:"Initial Consultation (per visit)", ph:"e.g. $150" },
+          { key:"occupied_staging", label:"Occupied Staging (per room)", ph:"e.g. $300" },
+          { key:"vacant_staging", label:"Vacant Staging — Full Home (per month)", ph:"e.g. $2,500" },
+          { key:"partial_staging", label:"Partial / Vignette Staging (per area)", ph:"e.g. $500" },
+          { key:"destaging", label:"De-staging / Removal Fee", ph:"e.g. $400" },
+        ],
+        extras: [
+          { key:"inventory_owned", label:"Do you own your own furniture inventory?", type:"yesno" },
+          { key:"style_specialties", label:"Design style specialties (e.g. modern, farmhouse, luxury)", type:"text" },
+          { key:"max_sqft", label:"Maximum square footage you can stage", type:"text", ph:"e.g. 4,000 sq ft" },
+          { key:"turnaround", label:"Typical turnaround time for a full staging", type:"text", ph:"e.g. 3–5 business days" },
+        ],
+      },
+      photographer: {
+        title: "Photography services & rates",
+        services: [
+          { key:"standard_shoot", label:"Standard Photo Shoot (up to 2,500 sq ft)", ph:"e.g. $200" },
+          { key:"large_shoot", label:"Large Property Shoot (2,500+ sq ft)", ph:"e.g. $350" },
+          { key:"twilight", label:"Twilight / Golden Hour Shoot", ph:"e.g. $250" },
+          { key:"aerial_drone", label:"Aerial / Drone Photography", ph:"e.g. $200" },
+          { key:"video_walkthrough", label:"Video Walkthrough", ph:"e.g. $400" },
+          { key:"virtual_tour", label:"3D Virtual Tour (e.g. Matterport)", ph:"e.g. $300" },
+          { key:"floor_plans", label:"Floor Plans", ph:"e.g. $100" },
+        ],
+        extras: [
+          { key:"equipment", label:"Primary camera equipment (brand/model)", type:"text" },
+          { key:"drone_licensed", label:"Do you have an FAA Part 107 drone license?", type:"yesno" },
+          { key:"editing_included", label:"Is professional editing included in your rates?", type:"yesno" },
+          { key:"delivery_time", label:"Typical photo delivery time", type:"text", ph:"e.g. 24–48 hours" },
+        ],
+      },
+      mover: {
+        title: "Moving services & rates",
+        services: [
+          { key:"hourly_2person", label:"Hourly Rate — 2 Person Crew", ph:"e.g. $120/hr" },
+          { key:"hourly_3person", label:"Hourly Rate — 3 Person Crew", ph:"e.g. $160/hr" },
+          { key:"hourly_additional", label:"Each Additional Mover (per hour)", ph:"e.g. $40/hr" },
+          { key:"truck_fee", label:"Truck / Vehicle Fee", ph:"e.g. $75 flat" },
+          { key:"staging_delivery", label:"Staging Furniture Delivery & Setup", ph:"e.g. $250" },
+          { key:"staging_pickup", label:"Staging Furniture Pickup & Return", ph:"e.g. $200" },
+          { key:"minimum_hours", label:"Minimum Hours Required", ph:"e.g. 2 hours" },
+        ],
+        extras: [
+          { key:"truck_sizes", label:"Truck sizes available (e.g. 16 ft, 26 ft)", type:"text" },
+          { key:"crew_size", label:"Maximum crew size available", type:"text", ph:"e.g. 5" },
+          { key:"insurance_coverage", label:"Cargo / transit insurance coverage amount", type:"text", ph:"e.g. $50,000" },
+          { key:"stairs_elevator", label:"Do you charge extra for stairs or elevator-only buildings?", type:"yesno" },
+        ],
+      },
+      cleaner: {
+        title: "Cleaning services & rates",
+        services: [
+          { key:"standard_clean", label:"Standard Clean (up to 2,000 sq ft)", ph:"e.g. $180" },
+          { key:"deep_clean", label:"Deep Clean (up to 2,000 sq ft)", ph:"e.g. $300" },
+          { key:"turnover_clean", label:"Post-Staging Turnover Clean", ph:"e.g. $250" },
+          { key:"move_out_clean", label:"Move-Out Clean", ph:"e.g. $350" },
+          { key:"window_cleaning", label:"Window Cleaning (per window)", ph:"e.g. $8" },
+          { key:"carpet_cleaning", label:"Carpet Cleaning (per room)", ph:"e.g. $60" },
+          { key:"additional_sqft", label:"Rate per Additional 500 sq ft", ph:"e.g. $50" },
+        ],
+        extras: [
+          { key:"supplies_included", label:"Do you provide your own cleaning supplies?", type:"yesno" },
+          { key:"eco_friendly", label:"Do you offer eco-friendly / green cleaning products?", type:"yesno" },
+          { key:"team_size", label:"Typical team size per job", type:"text", ph:"e.g. 2–3 people" },
+          { key:"same_day", label:"Can you accommodate same-day or next-day requests?", type:"yesno" },
+        ],
+      },
+    };
+
+    const US_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"];
+
+    let appStep = 0;
+    let appRole = null;
+    let appForm = {};
+    let appSubmitting = false;
+    let appSubmitError = null;
+
+    const qs = (s, el) => (el || document).querySelector(s);
+    const qsa = (s, el) => [...(el || document).querySelectorAll(s)];
+    const card = () => document.getElementById("modalCard");
+    const fv = k => appForm[k] || "";
+    const fs = (k, val) => { appForm[k] = val; };
+    function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    function openApplicationModal() {
+        appStep = 0; appRole = null; appForm = {}; appSubmitting = false; appSubmitError = null;
+        document.getElementById("applicationModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+        renderForm();
+    }
+
+    function closeApplicationModal() {
+        document.getElementById("applicationModal").classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    // Close on overlay click
+    document.getElementById("applicationModal").addEventListener("click", function(e) {
+        if (e.target === this) closeApplicationModal();
+    });
+    // Close on Escape
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && document.getElementById("applicationModal").classList.contains("active")) {
+            closeApplicationModal();
+        }
+    });
+
+    function formStepsHTML() {
+        const labels = ["Role","Contact","Legal","Services","Review"];
+        return '<div class="form-steps">' + labels.map((l,i) => {
+            const dotCls = i < appStep ? "done" : i === appStep ? "active" : "upcoming";
+            const lblCls = i === appStep ? "active" : "muted";
+            const lineCls = i < appStep ? "done" : "upcoming";
+            return '<div class="form-step-dot ' + dotCls + '">' + (i < appStep ? "\u2713" : i+1) + '</div><span class="form-step-label ' + lblCls + '">' + l + '</span>' + (i < 4 ? '<div class="form-step-line ' + lineCls + '"></div>' : '');
+        }).join("") + '</div>';
+    }
+
+    function ffHTML(label, key, opts) {
+        opts = opts || {};
+        var req = opts.required ? '<span class="req">*</span>' : "";
+        var ph = opts.placeholder || "";
+        var type = opts.type || "text";
+        return '<div class="form-field"><label>' + label + ' ' + req + '</label><input type="' + type + '" data-key="' + key + '" value="' + esc(fv(key)) + '" placeholder="' + esc(ph) + '" /></div>';
+    }
+
+    function fselectHTML(label, key, options, opts) {
+        opts = opts || {};
+        var req = opts.required ? '<span class="req">*</span>' : "";
+        var optHTML = options.map(function(o) {
+            var val = typeof o === "string" ? o : o.value;
+            var lbl = typeof o === "string" ? o : o.label;
+            return '<option value="' + esc(val) + '" ' + (fv(key)===val?"selected":"") + '>' + esc(lbl) + '</option>';
+        }).join("");
+        return '<div class="form-field"><label>' + label + ' ' + req + '</label><select data-key="' + key + '"><option value="">Select...</option>' + optHTML + '</select></div>';
+    }
+
+    function fyesnoHTML(label, key) {
+        return '<div class="form-field"><label>' + label + '</label><div class="form-yesno"><button type="button" data-yn="' + key + '" data-val="Yes" class="' + (fv(key)==="Yes"?"selected":"") + '">Yes</button><button type="button" data-yn="' + key + '" data-val="No" class="' + (fv(key)==="No"?"selected":"") + '">No</button></div></div>';
+    }
+
+    function ftextareaHTML(label, key, ph) {
+        return '<div class="form-field"><label>' + label + '</label><textarea data-key="' + key + '" rows="3" placeholder="' + esc(ph || "") + '">' + esc(fv(key)) + '</textarea></div>';
+    }
+
+    function renderFormStep0() {
+        return '<div class="form-step-heading">What type of service do you provide?</div>' +
+            '<div class="form-step-sub">Select the role that best describes your primary service.</div>' +
+            '<div class="form-roles">' + ROLES.map(function(r) {
+                return '<div class="form-role-card ' + (appRole===r.id?"selected":"") + '" data-role="' + r.id + '">' +
+                    '<div class="role-icon">' + r.icon + '</div>' +
+                    '<div class="role-name">' + r.label + '</div>' +
+                    '<div class="role-desc">' + r.desc + '</div></div>';
+            }).join("") + '</div>';
+    }
+
+    function renderFormStep1() {
+        return '<div class="form-step-heading">Contact information</div>' +
+            '<div class="form-step-sub">Tell us how to reach you.</div>' +
+            '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>' +
+            ffHTML("Email address","email",{required:true,type:"email"}) +
+            ffHTML("Phone number","phone",{required:true,type:"tel",placeholder:"(555) 123-4567"}) +
+            '<div class="form-row">' + ffHTML("City","city",{required:true}) + fselectHTML("State","state",US_STATES,{required:true}) + '</div>' +
+            ffHTML("Website or portfolio URL","website",{placeholder:"https://"});
+    }
+
+    function renderFormStep2() {
+        var extra = "";
+        if (appRole === "stager" || appRole === "cleaner") {
+            extra = ffHTML("Relevant license number (if applicable)","license_number",{placeholder:"e.g. contractor license"});
+        }
+        if (appRole === "mover") {
+            extra = ffHTML("DOT / USDOT number","dot_number",{placeholder:"If applicable"}) + ffHTML("MC number","mc_number",{placeholder:"If applicable"});
+        }
+        return '<div class="form-step-heading">Business & legal information</div>' +
+            '<div class="form-step-sub">We need a few details for compliance and payments.</div>' +
+            ffHTML("Business / company name","business_name",{required:true}) +
+            fselectHTML("Business entity type","entity_type",[
+                {value:"Sole Proprietorship",label:"Sole Proprietorship"},
+                {value:"LLC",label:"LLC"},
+                {value:"S-Corp",label:"S-Corp"},
+                {value:"C-Corp",label:"C-Corp"},
+                {value:"Partnership",label:"Partnership"},
+                {value:"Other",label:"Other"},
+            ],{required:true}) +
+            ffHTML("EIN / Tax ID number","tax_id",{required:true,placeholder:"XX-XXXXXXX"}) +
+            fyesnoHTML("Are you able to provide a W-9?","w9") +
+            ffHTML("Insurance provider","insurance_provider",{placeholder:"e.g. State Farm, Hartford"}) +
+            ffHTML("Insurance policy / certificate number","insurance_number",{placeholder:"Optional"}) +
+            extra;
+    }
+
+    function renderFormStep3() {
+        var cfg = SERVICES[appRole];
+        var html = '<div class="form-step-heading">' + cfg.title + '</div>' +
+            '<div class="form-step-sub">Enter your rates for the services you offer. Leave blank for any you don\'t provide.</div>' +
+            '<div class="form-section-title">Pricing</div>';
+        cfg.services.forEach(function(s) {
+            html += ffHTML(s.label, "rate_" + s.key, {placeholder: s.ph});
+        });
+        html += '<div class="form-section-title">Additional details</div>';
+        cfg.extras.forEach(function(ex) {
+            if (ex.type === "yesno") html += fyesnoHTML(ex.label, "extra_" + ex.key);
+            else html += ffHTML(ex.label, "extra_" + ex.key, {placeholder: ex.ph || ""});
+        });
+        html += ftextareaHTML("Anything else you'd like us to know?", "notes", "Years of experience, certifications, service area radius, availability, etc.");
+        return html;
+    }
+
+    function renderFormStep4() {
+        var cfg = SERVICES[appRole];
+        var r = ROLES.find(function(r) { return r.id === appRole; });
+        var filledRates = cfg.services.filter(function(s) { return fv("rate_" + s.key); });
+        var ratesHTML = filledRates.length
+            ? filledRates.map(function(s) { return '<div class="form-rate-row"><span class="rl">' + s.label + '</span><span class="ra">' + esc(fv("rate_" + s.key)) + '</span></div>'; }).join("")
+            : '<div style="color:var(--color-text-secondary);font-style:italic;font-size:0.8125rem">No rates entered</div>';
+        return '<div class="form-step-heading">Review your application</div>' +
+            '<div class="form-step-sub">Please confirm everything looks correct before submitting.</div>' +
+            '<div class="form-review-block"><h3>Role</h3><div class="rv">' + r.icon + ' ' + r.label + '</div></div>' +
+            '<div class="form-review-block"><h3>Contact</h3><div class="rv">' + esc(fv("first_name")) + ' ' + esc(fv("last_name")) + '</div><div class="rs">' + esc(fv("email")) + ' &middot; ' + esc(fv("phone")) + '</div><div class="rs">' + esc(fv("city")) + ', ' + esc(fv("state")) + '</div></div>' +
+            '<div class="form-review-block"><h3>Business</h3><div class="rv">' + esc(fv("business_name")) + '</div><div class="rs">Tax ID: ' + esc(fv("tax_id")) + ' &middot; W-9: ' + esc(fv("w9") || "\u2014") + '</div></div>' +
+            '<div class="form-review-block"><h3>Rates provided</h3>' + ratesHTML + '</div>' +
+            (appSubmitError ? '<div class="form-error-banner">' + appSubmitError + '</div>' : '');
+    }
+
+    function renderFormSuccess() {
+        var r = ROLES.find(function(r) { return r.id === appRole; });
+        card().innerHTML = '<div class="form-success-wrap">' +
+            '<div class="big-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+            '<h2>Application submitted</h2>' +
+            '<p>Thanks, ' + esc(fv("first_name")) + '! We\u2019ve received your ' + r.label.toLowerCase() + ' application. Our team will review your information and reach out within 2\u20133 business days.</p>' +
+            '<button class="form-btn form-btn-next" id="formClose">Close</button>' +
+            '</div>';
+        qs("#formClose").onclick = closeApplicationModal;
+    }
+
+    function canAdvance() {
+        switch (appStep) {
+            case 0: return !!appRole;
+            case 1: return fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
+            case 2: return fv("business_name") && fv("entity_type") && fv("tax_id");
+            default: return true;
+        }
+    }
+
+    function renderForm(success) {
+        if (success) { renderFormSuccess(); return; }
+        var bodyHTML = [renderFormStep0, renderFormStep1, renderFormStep2, renderFormStep3, renderFormStep4][appStep]();
+        var nextLabel = appStep < 4 ? 'Continue \u2192' : (appSubmitting ? 'Submitting...' : 'Submit application');
+        var nextCls = appStep < 4 ? 'form-btn form-btn-next' : 'form-btn form-btn-submit';
+        var nextDisabled = appStep < 4 ? !canAdvance() : appSubmitting;
+
+        card().innerHTML =
+            '<div class="modal-header">' +
+                '<button class="modal-close" onclick="closeApplicationModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' +
+                '<h2>Vendor partner application</h2>' +
+                '<p>Join our network of trusted home service professionals</p>' +
+                formStepsHTML() +
+            '</div>' +
+            '<div class="modal-body">' + bodyHTML + '</div>' +
+            '<div class="modal-footer">' +
+                '<button class="form-btn form-btn-back ' + (appStep===0?"form-btn-invisible":"") + '" id="formPrev">\u2190 Back</button>' +
+                '<button class="' + nextCls + '" id="formNext" ' + (nextDisabled?"disabled":"") + '>' + nextLabel + '</button>' +
+            '</div>';
+
+        bindFormEvents();
+    }
+
+    function bindFormEvents() {
+        // Role cards
+        qsa("[data-role]", card()).forEach(function(el) {
+            el.onclick = function() { appRole = el.dataset.role; renderForm(); };
+        });
+        // Inputs & selects
+        qsa("[data-key]", card()).forEach(function(el) {
+            var ev = el.tagName === "SELECT" ? "change" : "input";
+            el.addEventListener(ev, function() { fs(el.dataset.key, el.value); updateFormNext(); });
+        });
+        // Yes/No
+        qsa("[data-yn]", card()).forEach(function(el) {
+            el.onclick = function() {
+                fs(el.dataset.yn, el.dataset.val);
+                qsa('[data-yn="' + el.dataset.yn + '"]', card()).forEach(function(b) {
+                    b.classList.toggle("selected", b.dataset.val === el.dataset.val);
+                });
+            };
+        });
+        // Nav
+        qs("#formPrev", card()).onclick = function() { if (appStep > 0) { appStep--; renderForm(); } };
+        qs("#formNext", card()).onclick = function() {
+            if (appStep < 4 && canAdvance()) { appStep++; renderForm(); }
+            else if (appStep === 4) handleFormSubmit();
+        };
+    }
+
+    function updateFormNext() {
+        var btn = qs("#formNext", card());
+        if (btn && appStep < 4) btn.disabled = !canAdvance();
+    }
+
+    async function handleFormSubmit() {
+        appSubmitting = true;
+        appSubmitError = null;
+        renderForm();
+
+        try {
+            var payload = buildFormPayload();
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+            } else {
+                console.warn("Google Script URL not configured — logging payload:");
+                console.table(payload);
+            }
+            appSubmitting = false;
+            renderForm(true);
+        } catch (err) {
+            appSubmitting = false;
+            appSubmitError = "Something went wrong. Please try again.";
+            console.error(err);
+            renderForm();
+        }
+    }
+
+    function buildFormPayload() {
+        var cfg = SERVICES[appRole];
+        var r = ROLES.find(function(r) { return r.id === appRole; });
+        var payload = {
+            timestamp: new Date().toISOString(),
+            role: r.label,
+            first_name: fv("first_name"), last_name: fv("last_name"),
+            email: fv("email"), phone: fv("phone"),
+            city: fv("city"), state: fv("state"), website: fv("website"),
+            business_name: fv("business_name"), entity_type: fv("entity_type"),
+            tax_id: fv("tax_id"), w9: fv("w9"),
+            insurance_provider: fv("insurance_provider"), insurance_number: fv("insurance_number"),
+            license_number: fv("license_number"), dot_number: fv("dot_number"), mc_number: fv("mc_number"),
+            notes: fv("notes"),
+        };
+        cfg.services.forEach(function(s) { payload[s.label] = fv("rate_" + s.key); });
+        cfg.extras.forEach(function(ex) { payload[ex.label] = fv("extra_" + ex.key); });
+        return payload;
+    }
     </script>
 </body>
 </html>
