@@ -434,6 +434,64 @@
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
+        /* Testimonial Banner */
+        .testimonial-banner {
+            position: relative;
+            width: 100%;
+            min-height: 520px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .testimonial-banner img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        .testimonial-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(8,8,8,0.25) 0%, rgba(8,8,8,0.65) 100%);
+            pointer-events: none;
+        }
+
+        .testimonial-banner-content {
+            position: relative;
+            z-index: 1;
+            padding: 60px clamp(2rem, 5vw, 5rem) 56px;
+            max-width: 900px;
+        }
+
+        .testimonial-banner-quote {
+            font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+            font-weight: 500;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-banner-author {
+            font-size: 0.9375rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .testimonial-banner-author strong {
+            font-weight: 600;
+            color: white;
+        }
+
+        .testimonial-banner-author span {
+            color: rgba(255,255,255,0.6);
+            margin-left: 4px;
+        }
+
         /* Gallery Section */
         .gallery-section {
             padding: 0 1.5rem 100px;
@@ -1026,6 +1084,14 @@
                 padding: 140px 1.5rem 60px;
             }
 
+            .testimonial-banner {
+                min-height: 400px;
+            }
+
+            .testimonial-banner-content {
+                padding: 40px 1.5rem 36px;
+            }
+
             .gallery-section {
                 padding: 80px 1.5rem;
             }
@@ -1388,6 +1454,14 @@
                     <div class="case-study-card-agent">Listed by Dorothy Pacheco / Compass</div>
                 </div>
             </a>
+        </div>
+    </section>
+
+    <section class="testimonial-banner">
+        <img src="images/3640-lipan.jpg" alt="Staged home interior">
+        <div class="testimonial-banner-content">
+            <div class="testimonial-banner-quote">"We did everything right with this one: listing preparation, staging, and top-tier marketing. We received multiple offers within 36 hours."</div>
+            <div class="testimonial-banner-author"><strong>Connor Cole</strong> <span>The Agency</span></div>
         </div>
     </section>
 
