@@ -470,6 +470,7 @@
         }
 
         .market-card {
+            display: block;
             background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 16px;
@@ -477,6 +478,8 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
         }
 
         .market-card:hover {
@@ -1257,7 +1260,7 @@
     <!-- Market Selection Cards -->
     <section class="market-cards-section">
         <div class="market-cards-grid">
-            <div class="market-card" onclick="openDeinstallForm('colorado')">
+            <a href="mailto:colorado@guesthouseshop.com?subject=De-install%20Request" class="market-card">
                 <div class="market-card-icon">
                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -1265,9 +1268,9 @@
                     </svg>
                 </div>
                 <h3>Colorado</h3>
-                <p>Denver and Boulder<br><a href="tel:720-255-1683">720-255-1683</a><br><a href="mailto:colorado@guesthouseshop.com">colorado@guesthouseshop.com</a></p>
-            </div>
-            <div class="market-card" onclick="openDeinstallForm('california')">
+                <p>Denver and Boulder<br>720-255-1683<br>colorado@guesthouseshop.com</p>
+            </a>
+            <a href="mailto:california@guesthouseshop.com?subject=De-install%20Request" class="market-card">
                 <div class="market-card-icon">
                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -1275,9 +1278,9 @@
                     </svg>
                 </div>
                 <h3>California</h3>
-                <p>San Diego, Orange County &amp; Los Angeles<br><a href="tel:858-215-2592">858-215-2592</a><br><a href="mailto:california@guesthouseshop.com">california@guesthouseshop.com</a></p>
-            </div>
-            <div class="market-card" onclick="openDeinstallForm('arizona')">
+                <p>San Diego, Orange County &amp; Los Angeles<br>858-215-2592<br>california@guesthouseshop.com</p>
+            </a>
+            <a href="mailto:arizona@guesthouseshop.com?subject=De-install%20Request" class="market-card">
                 <div class="market-card-icon">
                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -1285,8 +1288,8 @@
                     </svg>
                 </div>
                 <h3>Arizona</h3>
-                <p>Phoenix/Scottsdale<br><a href="tel:602-492-2317">602-492-2317</a><br><a href="mailto:arizona@guesthouseshop.com">arizona@guesthouseshop.com</a></p>
-            </div>
+                <p>Phoenix/Scottsdale<br>602-492-2317<br>arizona@guesthouseshop.com</p>
+            </a>
         </div>
     </section>
 
