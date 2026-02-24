@@ -1200,6 +1200,22 @@
         </div>
     </div>
 
+    <!-- Password Gate -->
+    <div id="authGate" style="display:none; position:fixed; inset:0; z-index:10000; background:#0a0a0a; display:flex; align-items:center; justify-content:center; font-family:'Circular',sans-serif;">
+        <div style="text-align:center; max-width:360px; width:90%;">
+            <div style="margin-bottom:32px;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h2 style="color:#fff; font-size:20px; font-weight:500; margin-bottom:8px;">Motherboard</h2>
+            <p style="color:#666; font-size:14px; margin-bottom:24px;">Enter password to continue</p>
+            <form id="authForm" style="display:flex; flex-direction:column; gap:12px;">
+                <input type="password" id="authPassword" placeholder="Password" autocomplete="current-password" style="padding:12px 16px; border-radius:8px; border:1px solid #333; background:#161616; color:#fff; font-size:15px; font-family:inherit; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'">
+                <button type="submit" style="padding:12px 16px; border-radius:8px; border:none; background:#fff; color:#0a0a0a; font-size:15px; font-weight:500; font-family:inherit; cursor:pointer; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Continue</button>
+                <p id="authError" style="color:#ef4444; font-size:13px; margin:0; display:none;">Incorrect password</p>
+            </form>
+        </div>
+    </div>
+
     <!-- Hero -->
     <section class="hero">
         <h1>Motherboard</h1>
@@ -1495,6 +1511,51 @@
     </footer>
 
     <script>
+        // --- Password Gate ---
+        (function() {
+            var PASS_HASH = 'd9ef38492123ff233641cf22c0ee4038714303a4abc3ec74e10a2fc8b7a8c867';
+            var gate = document.getElementById('authGate');
+            var mainContent = document.querySelectorAll('nav, .hero, .filters-bar, .kpi-section, .mobile-menu-modal, footer');
+
+            async function sha256(str) {
+                var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+                return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+            }
+
+            function hideContent() {
+                mainContent.forEach(function(el) { el.style.display = 'none'; });
+                gate.style.display = 'flex';
+            }
+
+            function showContent() {
+                gate.style.display = 'none';
+                mainContent.forEach(function(el) { el.style.display = ''; });
+            }
+
+            if (sessionStorage.getItem('mb_auth') === '1') {
+                gate.style.display = 'none';
+            } else {
+                hideContent();
+                document.getElementById('authPassword').focus();
+            }
+
+            document.getElementById('authForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var pw = document.getElementById('authPassword').value;
+                var hash = await sha256(pw);
+                if (hash === PASS_HASH) {
+                    sessionStorage.setItem('mb_auth', '1');
+                    showContent();
+                    window.dispatchEvent(new Event('mb-authenticated'));
+                } else {
+                    var err = document.getElementById('authError');
+                    err.style.display = 'block';
+                    document.getElementById('authPassword').value = '';
+                    document.getElementById('authPassword').focus();
+                }
+            });
+        })();
+
         // Mobile menu modal
         const hamburger = document.querySelector('.hamburger');
         const mobileMenuModal = document.getElementById('mobileMenuModal');
@@ -2207,8 +2268,15 @@
             fetchAllKPIs({ market: market, period: period, dateFrom: dateFrom, dateTo: dateTo });
         });
 
-        // Auto-load on page load with default filters
-        fetchAllKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
+        // Auto-load on page load with default filters (after auth)
+        function loadDashboard() {
+            fetchAllKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
+        }
+        if (sessionStorage.getItem('mb_auth') === '1') {
+            loadDashboard();
+        } else {
+            window.addEventListener('mb-authenticated', loadDashboard);
+        }
     </script>
 </body>
 </html>
