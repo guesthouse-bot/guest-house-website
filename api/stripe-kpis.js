@@ -249,6 +249,20 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
+    if (req.query.debug === 'true') {
+      result.charges = filtered.map(function(c) {
+        return {
+          id: c.id,
+          amount: (c.amount_captured || 0) / 100,
+          description: c.description || '',
+          state: getChargeState(c),
+          is_renewal: renewalChargeIds.has(c.id),
+          customer: c.customer || '',
+          billing_email: (c.billing_details && c.billing_details.email || ''),
+          created: new Date(c.created * 1000).toISOString().slice(0, 10),
+        };
+      });
+    }
     return res.status(200).json(result);
 
   } catch (err) {
