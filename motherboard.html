@@ -1135,7 +1135,7 @@
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-label">Active Users</div>
-                    <div class="kpi-value">&mdash;</div>
+                    <div class="kpi-value" id="kpi-active-users">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes / User</div>
@@ -1285,6 +1285,7 @@
         var latestBookings = null;
         var latestQuotes = null;
         var latestUniqueAccounts = null;
+        var latestAccounts = null;
 
         function updateCrossSourceKPIs() {
             // Conversion rate (HubSpot bookings / HubSpot quotes)
@@ -1303,15 +1304,30 @@
                 var el2 = document.getElementById('kpi-aov-total');
                 if (el2) el2.style.opacity = '1';
             }
-            // Revenue / User and ARPU (Stripe revenue / Stripe unique accounts)
-            if (latestRevenue !== null && latestUniqueAccounts !== null) {
-                setKPI('kpi-rev-user', latestUniqueAccounts > 0 ? formatCurrency(latestRevenue / latestUniqueAccounts) : '$0');
-                setKPI('kpi-arpu', latestUniqueAccounts > 0 ? formatCurrency(latestRevenue / latestUniqueAccounts) : '$0');
+            // Customer KPIs — all use Firebase agent accounts as denominator
+            if (latestAccounts !== null) {
+                var accts = latestAccounts > 0 ? latestAccounts : 1;
+                // Quotes / User
+                if (latestQuotes !== null) {
+                    setKPI('kpi-quotes-user', (latestQuotes / accts).toFixed(1));
+                }
+                // Bookings / User
+                if (latestBookings !== null) {
+                    setKPI('kpi-bookings-user', (latestBookings / accts).toFixed(2));
+                }
+                // Revenue / User
+                if (latestRevenue !== null) {
+                    setKPI('kpi-rev-user', formatCurrency(latestRevenue / accts));
+                }
+                // ARPU
+                if (latestRevenue !== null) {
+                    setKPI('kpi-arpu', formatCurrency(latestRevenue / accts));
+                }
             }
         }
 
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev', 'kpi-aov-total'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
@@ -1350,8 +1366,6 @@
                 setKPI('kpi-bookings-rev', 'Error');
                 setKPI('kpi-renewal-rev', 'Error');
                 setKPI('kpi-aov-total', 'Error');
-                setKPI('kpi-rev-user', 'Error');
-                setKPI('kpi-arpu', 'Error');
             }
             clearStripeLoading();
         }
@@ -1399,8 +1413,10 @@
         }
 
         async function fetchFirebaseKPIs(filters) {
-            var el = document.getElementById('kpi-accounts');
-            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            ['kpi-accounts', 'kpi-active-users', 'kpi-quotes-user', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            });
             try {
                 var params = new URLSearchParams({
                     market: filters.market,
@@ -1414,11 +1430,22 @@
                 var data = await response.json();
 
                 setKPI('kpi-accounts', formatNumber(data.accounts_created));
+                setKPI('kpi-active-users', formatNumber(data.accounts_created));
+                latestAccounts = data.accounts_created;
+                updateCrossSourceKPIs();
             } catch (err) {
                 console.error('Firebase KPI fetch error:', err);
                 setKPI('kpi-accounts', 'Error');
+                setKPI('kpi-active-users', 'Error');
+                setKPI('kpi-quotes-user', 'Error');
+                setKPI('kpi-bookings-user', 'Error');
+                setKPI('kpi-rev-user', 'Error');
+                setKPI('kpi-arpu', 'Error');
             }
-            if (el) el.style.opacity = '1';
+            ['kpi-accounts', 'kpi-active-users', 'kpi-quotes-user', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.style.opacity = '1';
+            });
         }
 
         function fetchAllKPIs(filters) {
@@ -1426,6 +1453,7 @@
             latestBookings = null;
             latestQuotes = null;
             latestUniqueAccounts = null;
+            latestAccounts = null;
             fetchStripeKPIs(filters);
             fetchHubSpotKPIs(filters);
             fetchFirebaseKPIs(filters);
