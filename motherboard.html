@@ -1240,15 +1240,15 @@
             <div class="compare-toggle-group">
                 <span class="filter-label">Compare</span>
                 <label class="compare-switch">
-                    <input type="checkbox" id="compareToggle">
+                    <input type="checkbox" id="compareToggle" checked>
                     <span class="compare-slider"></span>
                 </label>
             </div>
-            <div class="compare-options" id="compareOptions">
+            <div class="compare-options visible" id="compareOptions">
                 <select class="filter-select" id="compareMode">
                     <option value="previous_period">Previous period</option>
                     <option value="previous_month">Previous month</option>
-                    <option value="previous_year">Previous year</option>
+                    <option value="previous_year" selected>Previous year</option>
                     <option value="custom">Custom</option>
                 </select>
                 <div class="filter-group" id="compareCustomRange" style="display: none;">
