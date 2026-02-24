@@ -157,6 +157,63 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Cross-reference with HubSpot contacts to only count Agent accounts
+    var HUBSPOT_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
+    var agentEmails = new Set();
+
+    if (HUBSPOT_TOKEN && filtered.length > 0) {
+      // Extract emails from Firebase users
+      var emails = [];
+      filtered.forEach(function(item) {
+        var fields = item.document.fields;
+        if (fields.email && fields.email.stringValue) {
+          emails.push(fields.email.stringValue.toLowerCase());
+        }
+      });
+
+      var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
+
+      // Batch lookup emails in HubSpot (100 at a time)
+      for (var i = 0; i < emails.length; i += 100) {
+        var batch = emails.slice(i, i + 100);
+        var batchBody = {
+          properties: ['email', 'jobtitle', 'role'],
+          idProperty: 'email',
+          inputs: batch.map(function(email) { return { id: email }; })
+        };
+
+        var hsResponse = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(batchBody),
+        });
+
+        if (hsResponse.ok) {
+          var hsData = await hsResponse.json();
+          (hsData.results || []).forEach(function(contact) {
+            var props = contact.properties || {};
+            var role = ((props.jobtitle || '') + ' ' + (props.role || '')).toLowerCase();
+            var isAgent = agentKeywords.some(function(keyword) {
+              return role.indexOf(keyword) !== -1;
+            });
+            if (isAgent) {
+              agentEmails.add((props.email || '').toLowerCase());
+            }
+          });
+        }
+      }
+
+      // Filter to only agent accounts
+      filtered = filtered.filter(function(item) {
+        var fields = item.document.fields;
+        var email = (fields.email && fields.email.stringValue || '').toLowerCase();
+        return agentEmails.has(email);
+      });
+    }
+
     var accountsCreated = filtered.length;
 
     return res.status(200).json({
