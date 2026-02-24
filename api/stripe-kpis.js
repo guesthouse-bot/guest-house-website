@@ -108,7 +108,12 @@ module.exports = async function handler(req, res) {
 
     // Use amount_captured to match Stripe's Gross volume (excludes uncaptured authorizations)
     const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
-    const bookings = filtered.length;
+
+    // Bookings = charges with description starting with "Staging -"
+    const bookingCharges = filtered.filter(function(c) {
+      return c.description && c.description.indexOf('Staging -') === 0;
+    });
+    const bookings = bookingCharges.length;
     const aov = bookings > 0 ? totalRevenue / bookings : 0;
 
     // Get unique customers for ARPU and bookings per account

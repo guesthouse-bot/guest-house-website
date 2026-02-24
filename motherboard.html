@@ -1092,7 +1092,7 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings</div>
-                    <div class="kpi-value">&mdash;</div>
+                    <div class="kpi-value" id="kpi-bookings">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Revenue</div>
@@ -1289,13 +1289,17 @@
         }
 
         function setStripeLoading() {
-            var el = document.getElementById('kpi-revenue');
-            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            ['kpi-revenue', 'kpi-bookings'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            });
         }
 
         function clearStripeLoading() {
-            var el = document.getElementById('kpi-revenue');
-            if (el) el.style.opacity = '1';
+            ['kpi-revenue', 'kpi-bookings'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.style.opacity = '1';
+            });
         }
 
         async function fetchStripeKPIs(filters) {
@@ -1313,9 +1317,11 @@
                 var data = await response.json();
 
                 setKPI('kpi-revenue', formatCurrency(data.revenue));
+                setKPI('kpi-bookings', formatNumber(data.bookings));
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
                 setKPI('kpi-revenue', 'Error');
+                setKPI('kpi-bookings', 'Error');
             }
             clearStripeLoading();
         }
