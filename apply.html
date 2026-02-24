@@ -1526,12 +1526,12 @@
 
     /* ── Step labels: Role, Contact, About, Services, Legal ── */
     function formStepsHTML() {
-        const labels = ["Role","Contact","About","Services","Legal"];
+        const labels = ["Role","Contact","About","Services"];
         return '<div class="form-steps">' + labels.map((l,i) => {
             const dotCls = i < appStep ? "done" : i === appStep ? "active" : "upcoming";
             const lblCls = i === appStep ? "active" : "muted";
             const lineCls = i < appStep ? "done" : "upcoming";
-            return '<div class="form-step-dot ' + dotCls + '">' + (i < appStep ? "\u2713" : i+1) + '</div><span class="form-step-label ' + lblCls + '">' + l + '</span>' + (i < 4 ? '<div class="form-step-line ' + lineCls + '"></div>' : '');
+            return '<div class="form-step-dot ' + dotCls + '">' + (i < appStep ? "\u2713" : i+1) + '</div><span class="form-step-label ' + lblCls + '">' + l + '</span>' + (i < 3 ? '<div class="form-step-line ' + lineCls + '"></div>' : '');
         }).join("") + '</div>';
     }
 
@@ -1575,7 +1575,7 @@
         return html;
     }
 
-    /* ── Step 0: Choose provider type ── */
+    /* ── Step 0: Choose provider type + business name ── */
     function renderFormStep0() {
         return '<div class="form-step-heading">Choose your provider type</div>' +
             '<div class="form-step-sub">Select the role that best describes your primary service.</div>' +
@@ -1584,7 +1584,8 @@
                     '<div class="role-icon">' + r.icon + '</div>' +
                     '<div class="role-name">' + r.label + '</div>' +
                     '<div class="role-desc">' + r.desc + '</div></div>';
-            }).join("") + '</div>';
+            }).join("") + '</div>' +
+            '<div style="margin-top:20px">' + ffHTML("Business / company name","business_name",{required:true}) + '</div>';
     }
 
     /* ── Step 1: Contact (same for all roles) ── */
@@ -1637,35 +1638,11 @@
             html += ftextareaHTML("Do you offer any other services we should consider?", "other_services", "");
         }
 
-        return html;
-    }
+        if (appSubmitError) {
+            html += '<div class="form-error-banner">' + appSubmitError + '</div>';
+        }
 
-    /* ── Step 4: Legal (moved to after Services) ── */
-    function renderFormStep4() {
-        var extra = "";
-        if (appRole === "stager" || appRole === "cleaner") {
-            extra = ffHTML("Relevant license number (if applicable)","license_number",{placeholder:"e.g. contractor license"});
-        }
-        if (appRole === "mover") {
-            extra = ffHTML("DOT / USDOT number","dot_number",{placeholder:"If applicable"}) + ffHTML("MC number","mc_number",{placeholder:"If applicable"});
-        }
-        return '<div class="form-step-heading">Business & legal information</div>' +
-            '<div class="form-step-sub">We need a few details for compliance and payments.</div>' +
-            ffHTML("Business / company name","business_name",{required:true}) +
-            fselectHTML("Business entity type","entity_type",[
-                {value:"Sole Proprietorship",label:"Sole Proprietorship"},
-                {value:"LLC",label:"LLC"},
-                {value:"S-Corp",label:"S-Corp"},
-                {value:"C-Corp",label:"C-Corp"},
-                {value:"Partnership",label:"Partnership"},
-                {value:"Other",label:"Other"},
-            ],{required:true}) +
-            ffHTML("EIN / Tax ID number","tax_id",{required:true,placeholder:"XX-XXXXXXX"}) +
-            fyesnoHTML("Are you able to provide a W-9?","w9") +
-            ffHTML("Insurance provider","insurance_provider",{placeholder:"e.g. State Farm, Hartford"}) +
-            ffHTML("Insurance policy / certificate number","insurance_number",{placeholder:"Optional"}) +
-            extra +
-            (appSubmitError ? '<div class="form-error-banner">' + appSubmitError + '</div>' : '');
+        return html;
     }
 
     /* ── Success screen ── */
@@ -1681,21 +1658,20 @@
 
     function canAdvance() {
         switch (appStep) {
-            case 0: return !!appRole;
+            case 0: return !!appRole && fv("business_name");
             case 1: return fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
             case 2: return fv("locations");
             case 3: return SERVICES_CONFIG[appRole].jobs ? fvArr("jobs").length > 0 : true;
-            case 4: return fv("business_name") && fv("entity_type") && fv("tax_id");
             default: return true;
         }
     }
 
     function renderForm(success) {
         if (success) { renderFormSuccess(); return; }
-        var bodyHTML = [renderFormStep0, renderFormStep1, renderFormStep2, renderFormStep3, renderFormStep4][appStep]();
-        var nextLabel = appStep < 4 ? 'Continue \u2192' : (appSubmitting ? 'Submitting\u2026' : 'Submit application');
-        var nextCls = appStep < 4 ? 'form-btn form-btn-next' : 'form-btn form-btn-submit';
-        var nextDisabled = appStep < 4 ? !canAdvance() : appSubmitting;
+        var bodyHTML = [renderFormStep0, renderFormStep1, renderFormStep2, renderFormStep3][appStep]();
+        var nextLabel = appStep < 3 ? 'Continue \u2192' : (appSubmitting ? 'Submitting\u2026' : 'Submit application');
+        var nextCls = appStep < 3 ? 'form-btn form-btn-next' : 'form-btn form-btn-submit';
+        var nextDisabled = appStep < 3 ? !canAdvance() : (appSubmitting || !canAdvance());
 
         card().innerHTML =
             '<div class="modal-header">' +
@@ -1741,14 +1717,14 @@
         // Nav
         qs("#formPrev", card()).onclick = function() { if (appStep > 0) { appStep--; renderForm(); } };
         qs("#formNext", card()).onclick = function() {
-            if (appStep < 4 && canAdvance()) { appStep++; renderForm(); }
-            else if (appStep === 4) handleFormSubmit();
+            if (appStep < 3 && canAdvance()) { appStep++; renderForm(); }
+            else if (appStep === 3 && canAdvance()) handleFormSubmit();
         };
     }
 
     function updateFormNext() {
         var btn = qs("#formNext", card());
-        if (btn && appStep < 4) btn.disabled = !canAdvance();
+        if (btn) btn.disabled = appStep < 3 ? !canAdvance() : (appSubmitting || !canAdvance());
     }
 
     async function handleFormSubmit() {
@@ -1791,11 +1767,7 @@
             first_name: fv("first_name"), last_name: fv("last_name"),
             email: fv("email"), phone: fv("phone"),
             city: fv("city"), state: fv("state"), website: fv("website"),
-            // Legal
-            business_name: fv("business_name"), entity_type: fv("entity_type"),
-            tax_id: fv("tax_id"), w9: fv("w9"),
-            insurance_provider: fv("insurance_provider"), insurance_number: fv("insurance_number"),
-            license_number: fv("license_number"), dot_number: fv("dot_number"), mc_number: fv("mc_number"),
+            business_name: fv("business_name"),
         };
 
         // About fields
