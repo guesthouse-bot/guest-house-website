@@ -1099,8 +1099,16 @@
                     <div class="kpi-value" id="kpi-conversion">&mdash;</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-label">Total Revenue</div>
                     <div class="kpi-value" id="kpi-revenue">&mdash;</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings Revenue</div>
+                    <div class="kpi-value" id="kpi-bookings-rev">&mdash;</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Renewal Revenue</div>
+                    <div class="kpi-value" id="kpi-renewal-rev">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (at close)</div>
@@ -1303,7 +1311,7 @@
         }
 
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
@@ -1331,12 +1339,16 @@
                 var data = await response.json();
 
                 setKPI('kpi-revenue', formatCurrency(data.revenue));
+                setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
+                setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
                 latestRevenue = data.revenue;
                 latestUniqueAccounts = data.unique_accounts;
                 updateCrossSourceKPIs();
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
                 setKPI('kpi-revenue', 'Error');
+                setKPI('kpi-bookings-rev', 'Error');
+                setKPI('kpi-renewal-rev', 'Error');
                 setKPI('kpi-aov-total', 'Error');
                 setKPI('kpi-rev-user', 'Error');
                 setKPI('kpi-arpu', 'Error');

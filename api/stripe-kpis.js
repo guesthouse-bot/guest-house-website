@@ -109,13 +109,12 @@ module.exports = async function handler(req, res) {
     // Use amount_captured to match Stripe's Gross volume (excludes uncaptured authorizations)
     const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
 
-    // Bookings = charges with description starting with "Staging -"
-    const bookingCharges = filtered.filter(function(c) {
-      return c.description && c.description.indexOf('Staging -') === 0;
+    // Split revenue: "Furniture Renewal" charges go to renewal, everything else to bookings revenue
+    const renewalCharges = filtered.filter(function(c) {
+      return c.description && c.description.indexOf('Furniture Renewal') !== -1;
     });
-    const bookings = bookingCharges.length;
-    const bookingRevenue = bookingCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
-    const aovAtClose = bookings > 0 ? bookingRevenue / bookings : 0;
+    const renewalRevenue = renewalCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
+    const bookingsRevenue = totalRevenue - renewalRevenue;
 
     // Get unique customers for ARPU and bookings per account
     const customerSet = new Set();
@@ -128,6 +127,8 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({
       revenue: totalRevenue,
+      bookings_revenue: bookingsRevenue,
+      renewal_revenue: renewalRevenue,
       bookings: bookings,
       aov_at_close: aovAtClose,
       arpu: arpu,
