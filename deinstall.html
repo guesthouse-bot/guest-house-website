@@ -473,15 +473,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 16px;
-            padding: 40px 32px;
+            padding: 32px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
             color: inherit;
+            gap: 16px;
         }
 
         .market-card:hover {
@@ -534,8 +536,6 @@
 
         .market-card-cta {
             display: inline-block;
-            margin-top: auto;
-            padding-top: 16px;
             font-size: 0.875rem;
             font-weight: 600;
             color: var(--color-onyx);
@@ -1275,43 +1275,22 @@
     <!-- Hero -->
     <section class="hero">
         <h1>Request a deinstall</h1>
-        <p class="hero-subtitle">Ready to remove staging? We're here to help. Select your market below to send us an email and request your deinstall.</p>
+        <p class="hero-subtitle">Ready to remove staging? We're here to help. Select your state below to send us an email and request your deinstall.</p>
     </section>
 
     <!-- Market Selection Cards -->
     <section class="market-cards-section">
         <div class="market-cards-grid">
             <a href="mailto:colorado@guesthouseshop.com?subject=Deinstall%20Request" class="market-card">
-                <div class="market-card-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                </div>
                 <h3>Colorado</h3>
-                <p>Denver and Boulder</p>
                 <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
             <a href="mailto:california@guesthouseshop.com?subject=Deinstall%20Request" class="market-card">
-                <div class="market-card-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                </div>
                 <h3>California</h3>
-                <p>San Diego, Orange County &amp; Los Angeles</p>
                 <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
             <a href="mailto:arizona@guesthouseshop.com?subject=Deinstall%20Request" class="market-card">
-                <div class="market-card-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                </div>
                 <h3>Arizona</h3>
-                <p>Phoenix/Scottsdale</p>
                 <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
         </div>
