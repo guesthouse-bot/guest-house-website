@@ -52,6 +52,24 @@ module.exports = async function handler(req, res) {
     california: { states: ['CA'], markets: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] },
   };
 
+  // Retry helper for HubSpot rate limiting and transient errors
+  async function fetchWithRetry(url, options, retries) {
+    retries = retries || 3;
+    var lastResp;
+    for (var attempt = 0; attempt <= retries; attempt++) {
+      lastResp = await fetch(url, options);
+      if (lastResp.ok) return lastResp;
+      var retryable = lastResp.status === 429 || lastResp.status >= 500;
+      if (retryable && attempt < retries) {
+        var delay = Math.pow(2, attempt) * 1000;
+        await new Promise(function(r) { setTimeout(r, delay); });
+        continue;
+      }
+      return lastResp;
+    }
+    return lastResp;
+  }
+
   try {
     // Search for deals in Sales Pipeline created in date range
     let allDeals = [];
@@ -72,7 +90,7 @@ module.exports = async function handler(req, res) {
         after: after,
       };
 
-      const response = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+      const response = await fetchWithRetry('https://api.hubapi.com/crm/v3/objects/deals/search', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + TOKEN,
@@ -137,7 +155,7 @@ module.exports = async function handler(req, res) {
         after: cwAfter,
       };
 
-      const cwResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+      const cwResponse = await fetchWithRetry('https://api.hubapi.com/crm/v3/objects/deals/search', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + TOKEN,

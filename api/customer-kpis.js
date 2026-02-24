@@ -61,6 +61,24 @@ module.exports = async function handler(req, res) {
 
   var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
 
+  // Retry helper for HubSpot rate limiting and transient errors
+  async function fetchWithRetry(url, options, retries) {
+    retries = retries || 3;
+    var lastResp;
+    for (var attempt = 0; attempt <= retries; attempt++) {
+      lastResp = await fetch(url, options);
+      if (lastResp.ok) return lastResp;
+      var retryable = lastResp.status === 429 || lastResp.status >= 500;
+      if (retryable && attempt < retries) {
+        var delay = Math.pow(2, attempt) * 1000;
+        await new Promise(function(resolve) { setTimeout(resolve, delay); });
+        continue;
+      }
+      return lastResp;
+    }
+    return lastResp;
+  }
+
   // Helper: paginated HubSpot deal search
   async function searchDeals(filters) {
     var allDeals = [];
@@ -75,7 +93,7 @@ module.exports = async function handler(req, res) {
         after: after,
       };
 
-      var resp = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+      var resp = await fetchWithRetry('https://api.hubapi.com/crm/v3/objects/deals/search', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
@@ -143,7 +161,7 @@ module.exports = async function handler(req, res) {
 
     for (var i = 0; i < dealIdArray.length; i += 100) {
       var batch = dealIdArray.slice(i, i + 100);
-      var assocResp = await fetch('https://api.hubapi.com/crm/v4/associations/deal/contact/batch/read', {
+      var assocResp = await fetchWithRetry('https://api.hubapi.com/crm/v4/associations/deal/contact/batch/read', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
@@ -175,7 +193,7 @@ module.exports = async function handler(req, res) {
 
     for (var i = 0; i < contactIdArray.length; i += 100) {
       var batch = contactIdArray.slice(i, i + 100);
-      var contactResp = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+      var contactResp = await fetchWithRetry('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,

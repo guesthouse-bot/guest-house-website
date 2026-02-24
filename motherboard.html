@@ -2145,16 +2145,17 @@
 
             clearAllComparisons();
 
-            // Fire current-period fetches
-            var currentPromises = [
+            // Stagger fetches: Stripe + Firebase first (no HubSpot), then HubSpot + Customer
+            // This prevents concurrent HubSpot rate limiting
+            var wave1 = [
                 fetchStripeKPIs(filters, false),
-                fetchHubSpotKPIs(filters, false),
                 fetchFirebaseKPIs(filters, false),
+            ];
+            var wave2 = [
+                fetchHubSpotKPIs(filters, false),
                 fetchCustomerKPIs(filters, false),
             ];
 
-            // If compare is on, fire comparison fetches in parallel
-            var comparePromises = [];
             if (compareToggle.checked) {
                 var cmpDates = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
                 var cmpFilters = {
@@ -2163,15 +2164,14 @@
                     dateFrom: cmpDates.dateFrom,
                     dateTo: cmpDates.dateTo,
                 };
-                comparePromises = [
-                    fetchStripeKPIs(cmpFilters, true),
-                    fetchHubSpotKPIs(cmpFilters, true),
-                    fetchFirebaseKPIs(cmpFilters, true),
-                    fetchCustomerKPIs(cmpFilters, true),
-                ];
+                wave1.push(fetchStripeKPIs(cmpFilters, true));
+                wave1.push(fetchFirebaseKPIs(cmpFilters, true));
+                wave2.push(fetchHubSpotKPIs(cmpFilters, true));
+                wave2.push(fetchCustomerKPIs(cmpFilters, true));
             }
 
-            await Promise.all(currentPromises.concat(comparePromises));
+            await Promise.all(wave1);
+            await Promise.all(wave2);
 
             // Render sparklines (always, they show daily trends)
             renderAllSparklines();
