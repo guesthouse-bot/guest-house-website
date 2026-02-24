@@ -530,6 +530,24 @@
             text-decoration: underline;
         }
 
+        .market-card-cta {
+            display: inline-block;
+            margin-top: 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            background: var(--color-golden);
+            padding: 10px 20px;
+            border-radius: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .market-card:hover .market-card-cta {
+            background: #D4A85E;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(235, 188, 118, 0.4);
+        }
+
         /* ─── Deinstall Modal ─── */
         .modal-overlay {
             display: none;
@@ -1269,6 +1287,7 @@
                 </div>
                 <h3>Colorado</h3>
                 <p>Denver and Boulder</p>
+                <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
             <a href="mailto:california@guesthouseshop.com?subject=Deinstall%20Request" class="market-card">
                 <div class="market-card-icon">
@@ -1279,6 +1298,7 @@
                 </div>
                 <h3>California</h3>
                 <p>San Diego, Orange County &amp; Los Angeles</p>
+                <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
             <a href="mailto:arizona@guesthouseshop.com?subject=Deinstall%20Request" class="market-card">
                 <div class="market-card-icon">
@@ -1289,6 +1309,7 @@
                 </div>
                 <h3>Arizona</h3>
                 <p>Phoenix/Scottsdale</p>
+                <span class="market-card-cta">Request deinstall &rarr;</span>
             </a>
         </div>
     </section>
