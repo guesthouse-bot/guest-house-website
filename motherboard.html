@@ -578,6 +578,21 @@
             .compare-options .filter-select {
                 flex: 1;
             }
+            .section-filters {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .section-filters .filter-divider {
+                display: none;
+            }
+            .section-filters .filter-select,
+            .section-filters .filter-date {
+                flex: 1;
+            }
+            .section-filters .filter-btn {
+                width: 100%;
+                padding: 10px 14px;
+            }
         }
 
         /* KPI Sections */
@@ -596,11 +611,56 @@
             margin-bottom: 32px;
             padding-bottom: 16px;
             border-bottom: 1px solid var(--color-border);
+            flex-wrap: wrap;
+            gap: 16px;
         }
         .kpi-section-header h2 {
             font-size: 1.5rem;
             font-weight: 600;
             letter-spacing: -0.02em;
+        }
+        .section-filters {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .section-filters .filter-select {
+            font-size: 0.8125rem;
+            padding: 6px 28px 6px 10px;
+        }
+        .section-filters .compare-switch {
+            transform: scale(0.85);
+        }
+        .section-filters .filter-btn {
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            margin-left: 0;
+        }
+        .section-filters .filter-date {
+            font-size: 0.8125rem;
+            padding: 6px 10px;
+        }
+        .section-filters .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-filters .filter-label {
+            font-size: 0.6875rem;
+        }
+        .section-filters .filter-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--color-border);
+        }
+        .section-filters .compare-options {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-filters .compare-options.visible {
+            display: flex;
         }
         .kpi-grid {
             display: grid;
@@ -1383,6 +1443,52 @@
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Customer KPIs</h2>
+                <div class="section-filters" data-section="customer">
+                    <div class="filter-group">
+                        <span class="filter-label">Market</span>
+                        <select class="filter-select sync-market">
+                            <option value="all">All markets</option>
+                            <option value="colorado">Colorado</option>
+                            <option value="california">California</option>
+                            <option value="nationwide">Nationwide</option>
+                        </select>
+                    </div>
+                    <div class="filter-divider"></div>
+                    <div class="filter-group">
+                        <span class="filter-label">Period</span>
+                        <select class="filter-select sync-period">
+                            <option value="mtd">Month to date</option>
+                            <option value="last30">Last 30 days</option>
+                            <option value="qtd">Quarter to date</option>
+                            <option value="ytd">Year to date</option>
+                            <option value="last_month">Last month</option>
+                            <option value="last_quarter">Last quarter</option>
+                            <option value="custom">Custom range</option>
+                        </select>
+                    </div>
+                    <div class="filter-group sync-custom-range" style="display: none;">
+                        <input type="date" class="filter-date sync-date-from">
+                        <span class="filter-label" style="text-transform: none;">to</span>
+                        <input type="date" class="filter-date sync-date-to">
+                    </div>
+                    <div class="filter-divider"></div>
+                    <div class="compare-toggle-group">
+                        <span class="filter-label">Compare</span>
+                        <label class="compare-switch">
+                            <input type="checkbox" class="sync-compare" checked>
+                            <span class="compare-slider"></span>
+                        </label>
+                    </div>
+                    <div class="compare-options visible sync-compare-options">
+                        <select class="filter-select sync-compare-mode">
+                            <option value="previous_period">Previous period</option>
+                            <option value="previous_month">Previous month</option>
+                            <option value="previous_year" selected>Previous year</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <button class="filter-btn sync-apply">Apply</button>
+                </div>
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
@@ -1439,61 +1545,107 @@
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Ops KPIs</h2>
+                <div class="section-filters" data-section="ops">
+                    <div class="filter-group">
+                        <span class="filter-label">Market</span>
+                        <select class="filter-select sync-market">
+                            <option value="all">All markets</option>
+                            <option value="colorado">Colorado</option>
+                            <option value="california">California</option>
+                            <option value="nationwide">Nationwide</option>
+                        </select>
+                    </div>
+                    <div class="filter-divider"></div>
+                    <div class="filter-group">
+                        <span class="filter-label">Period</span>
+                        <select class="filter-select sync-period">
+                            <option value="mtd">Month to date</option>
+                            <option value="last30">Last 30 days</option>
+                            <option value="qtd">Quarter to date</option>
+                            <option value="ytd">Year to date</option>
+                            <option value="last_month">Last month</option>
+                            <option value="last_quarter">Last quarter</option>
+                            <option value="custom">Custom range</option>
+                        </select>
+                    </div>
+                    <div class="filter-group sync-custom-range" style="display: none;">
+                        <input type="date" class="filter-date sync-date-from">
+                        <span class="filter-label" style="text-transform: none;">to</span>
+                        <input type="date" class="filter-date sync-date-to">
+                    </div>
+                    <div class="filter-divider"></div>
+                    <div class="compare-toggle-group">
+                        <span class="filter-label">Compare</span>
+                        <label class="compare-switch">
+                            <input type="checkbox" class="sync-compare" checked>
+                            <span class="compare-slider"></span>
+                        </label>
+                    </div>
+                    <div class="compare-options visible sync-compare-options">
+                        <select class="filter-select sync-compare-mode">
+                            <option value="previous_period">Previous period</option>
+                            <option value="previous_month">Previous month</option>
+                            <option value="previous_year" selected>Previous year</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <button class="filter-btn sync-apply">Apply</button>
+                </div>
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">NPS Score</div>
+                    <div class="kpi-label">Installs</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-installs">&mdash;</span>
+                        <span class="kpi-change" id="kpi-installs-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-installs-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-installs-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quote-to-Install (days)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quote-to-install">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quote-to-install-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quote-to-install-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quote-to-install-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ops-revenue">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ops-revenue-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ops-revenue-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ops-revenue-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">COGs</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-cogs">&mdash;</span>
+                        <span class="kpi-change" id="kpi-cogs-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-cogs-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-cogs-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Operating Margin</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-op-margin">&mdash;</span>
+                        <span class="kpi-change" id="kpi-op-margin-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-op-margin-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-op-margin-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">NPS</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-nps">&mdash;</span>
                         <span class="kpi-change" id="kpi-nps-change"></span>
                     </div>
                     <div class="kpi-prev" id="kpi-nps-prev"></div>
                     <div class="kpi-sparkline" id="kpi-nps-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Avg Response Time</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-response-time">&mdash;</span>
-                        <span class="kpi-change" id="kpi-response-time-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-response-time-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-response-time-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quote-to-Stage (days)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quote-to-stage">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quote-to-stage-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-quote-to-stage-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quote-to-stage-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">On-Time Delivery Rate</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ontime-delivery">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ontime-delivery-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ontime-delivery-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ontime-delivery-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Support Tickets</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-support-tickets">&mdash;</span>
-                        <span class="kpi-change" id="kpi-support-tickets-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-support-tickets-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-support-tickets-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Repeat Customer Rate</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-repeat-customer">&mdash;</span>
-                        <span class="kpi-change" id="kpi-repeat-customer-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-repeat-customer-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-repeat-customer-sparkline"></div>
                 </div>
             </div>
         </div>
@@ -1666,6 +1818,113 @@
         compareMode.addEventListener('change', function() {
             compareCustomRange.style.display = this.value === 'custom' ? 'flex' : 'none';
         });
+
+        // ---- Sync section-level filters with global filter bar ----
+        (function() {
+            var globalMarket = document.getElementById('filterMarket');
+            var globalPeriod = document.getElementById('filterPeriod');
+            var globalCustomRange = document.getElementById('customDateRange');
+            var globalDateFrom = document.getElementById('filterDateFrom');
+            var globalDateTo = document.getElementById('filterDateTo');
+            var globalCompare = document.getElementById('compareToggle');
+            var globalCompareOpts = document.getElementById('compareOptions');
+            var globalCompareMode = document.getElementById('compareMode');
+            var globalApply = document.getElementById('applyFilters');
+
+            var allSyncMarkets = document.querySelectorAll('.sync-market');
+            var allSyncPeriods = document.querySelectorAll('.sync-period');
+            var allSyncCustomRanges = document.querySelectorAll('.sync-custom-range');
+            var allSyncDateFroms = document.querySelectorAll('.sync-date-from');
+            var allSyncDateTos = document.querySelectorAll('.sync-date-to');
+            var allSyncCompares = document.querySelectorAll('.sync-compare');
+            var allSyncCompareOpts = document.querySelectorAll('.sync-compare-options');
+            var allSyncCompareModes = document.querySelectorAll('.sync-compare-mode');
+            var allSyncApplys = document.querySelectorAll('.sync-apply');
+
+            function syncFromGlobal() {
+                allSyncMarkets.forEach(function(el) { el.value = globalMarket.value; });
+                allSyncPeriods.forEach(function(el) { el.value = globalPeriod.value; });
+                allSyncCustomRanges.forEach(function(el) {
+                    el.style.display = globalPeriod.value === 'custom' ? 'flex' : 'none';
+                });
+                allSyncDateFroms.forEach(function(el) { el.value = globalDateFrom.value; });
+                allSyncDateTos.forEach(function(el) { el.value = globalDateTo.value; });
+                allSyncCompares.forEach(function(el) { el.checked = globalCompare.checked; });
+                allSyncCompareOpts.forEach(function(el) {
+                    el.classList.toggle('visible', globalCompare.checked);
+                });
+                allSyncCompareModes.forEach(function(el) { el.value = globalCompareMode.value; });
+            }
+
+            function syncToGlobal(source) {
+                var container = source.closest('.section-filters');
+                var market = container.querySelector('.sync-market');
+                var period = container.querySelector('.sync-period');
+                var dateFrom = container.querySelector('.sync-date-from');
+                var dateTo = container.querySelector('.sync-date-to');
+                var compare = container.querySelector('.sync-compare');
+                var cmpMode = container.querySelector('.sync-compare-mode');
+
+                globalMarket.value = market.value;
+                globalPeriod.value = period.value;
+                globalCustomRange.style.display = period.value === 'custom' ? 'flex' : 'none';
+                globalDateFrom.value = dateFrom.value;
+                globalDateTo.value = dateTo.value;
+                globalCompare.checked = compare.checked;
+                globalCompareOpts.classList.toggle('visible', compare.checked);
+                globalCompareMode.value = cmpMode.value;
+
+                // Sync all other section filters too
+                syncFromGlobal();
+            }
+
+            // When global changes, sync down
+            globalMarket.addEventListener('change', syncFromGlobal);
+            globalPeriod.addEventListener('change', syncFromGlobal);
+            globalDateFrom.addEventListener('change', syncFromGlobal);
+            globalDateTo.addEventListener('change', syncFromGlobal);
+            globalCompare.addEventListener('change', syncFromGlobal);
+            globalCompareMode.addEventListener('change', syncFromGlobal);
+
+            // When global Apply clicked, sync down
+            globalApply.addEventListener('click', function() {
+                syncFromGlobal();
+            });
+
+            // Section filter change events
+            allSyncPeriods.forEach(function(el) {
+                el.addEventListener('change', function() {
+                    syncToGlobal(this);
+                });
+            });
+            allSyncMarkets.forEach(function(el) {
+                el.addEventListener('change', function() {
+                    syncToGlobal(this);
+                });
+            });
+            allSyncCompares.forEach(function(el) {
+                el.addEventListener('change', function() {
+                    syncToGlobal(this);
+                    if (!this.checked) clearAllComparisons();
+                });
+            });
+            allSyncCompareModes.forEach(function(el) {
+                el.addEventListener('change', function() {
+                    syncToGlobal(this);
+                });
+            });
+
+            // Section Apply buttons trigger the global Apply
+            allSyncApplys.forEach(function(el) {
+                el.addEventListener('click', function() {
+                    syncToGlobal(this);
+                    globalApply.click();
+                });
+            });
+
+            // Initial sync on load
+            syncFromGlobal();
+        })();
 
         function formatCurrency(n) {
             return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
