@@ -3972,11 +3972,12 @@
             width: 56px;
             height: 56px;
             background: var(--color-paper);
-            border-radius: 14px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
+            overflow: hidden;
         }
 
         .demo-market-icon svg {
@@ -3985,6 +3986,12 @@
             stroke: var(--color-deep);
             fill: none;
             stroke-width: 1.5;
+        }
+
+        .demo-market-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .demo-market-card h3 {
@@ -5174,10 +5181,7 @@
             <div class="demo-modal-cards">
                 <div class="demo-market-card">
                     <div class="demo-market-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="10" r="3"/>
-                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/>
-                        </svg>
+                        <img src="images/team-california.jpg" alt="California team">
                     </div>
                     <div class="demo-card-content">
                         <h3>California</h3>
@@ -5187,10 +5191,7 @@
                 </div>
                 <div class="demo-market-card">
                     <div class="demo-market-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="10" r="3"/>
-                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/>
-                        </svg>
+                        <img src="images/team-colorado.jpg" alt="Colorado team">
                     </div>
                     <div class="demo-card-content">
                         <h3>Colorado</h3>
