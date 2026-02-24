@@ -1110,6 +1110,10 @@
                     <div class="kpi-label">AOV (total)</div>
                     <div class="kpi-value" id="kpi-aov-total">&mdash;</div>
                 </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Sales cycle</div>
+                    <div class="kpi-value" id="kpi-sales-cycle">&mdash;</div>
+                </div>
             </div>
         </div>
     </section>
@@ -1337,8 +1341,10 @@
         }
 
         async function fetchHubSpotKPIs(filters) {
-            var el = document.getElementById('kpi-quotes');
-            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            ['kpi-quotes', 'kpi-sales-cycle'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            });
             try {
                 var params = new URLSearchParams({
                     market: filters.market,
@@ -1352,13 +1358,22 @@
                 var data = await response.json();
 
                 setKPI('kpi-quotes', formatNumber(data.quotes_requested));
+                if (data.sales_cycle_days !== null) {
+                    setKPI('kpi-sales-cycle', Math.round(data.sales_cycle_days) + ' days');
+                } else {
+                    setKPI('kpi-sales-cycle', '\u2014');
+                }
                 latestQuotes = data.quotes_requested;
                 updateConversionRate();
             } catch (err) {
                 console.error('HubSpot KPI fetch error:', err);
                 setKPI('kpi-quotes', 'Error');
+                setKPI('kpi-sales-cycle', 'Error');
             }
-            if (el) el.style.opacity = '1';
+            ['kpi-quotes', 'kpi-sales-cycle'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.style.opacity = '1';
+            });
         }
 
         function fetchAllKPIs(filters) {

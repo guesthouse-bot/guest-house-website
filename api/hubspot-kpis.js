@@ -117,8 +117,86 @@ module.exports = async function handler(req, res) {
     // Count quotes requested = all deals in the Sales Pipeline (they all start at Quote Requested)
     var quotesRequested = filtered.length;
 
+    // Fetch Closed Won deals in date range for sales cycle calculation
+    let closedWonDeals = [];
+    let cwAfter = 0;
+    let cwHasMore = true;
+
+    while (cwHasMore) {
+      const cwBody = {
+        filterGroups: [{
+          filters: [
+            { propertyName: 'closedate', operator: 'GTE', value: String(startDate) },
+            { propertyName: 'closedate', operator: 'LTE', value: String(endDate) },
+            { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+            { propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' },
+          ]
+        }],
+        properties: ['dealname', 'createdate', 'closedate', 'market'],
+        limit: 100,
+        after: cwAfter,
+      };
+
+      const cwResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cwBody),
+      });
+
+      if (cwResponse.ok) {
+        const cwData = await cwResponse.json();
+        closedWonDeals = closedWonDeals.concat(cwData.results);
+        if (cwData.paging && cwData.paging.next && cwData.paging.next.after) {
+          cwAfter = cwData.paging.next.after;
+        } else {
+          cwHasMore = false;
+        }
+      } else {
+        cwHasMore = false;
+      }
+    }
+
+    // Filter closed won deals by market
+    let filteredCW = closedWonDeals;
+    if (market && market !== 'all' && market !== 'nationwide') {
+      const mapping = marketToValues[market.toLowerCase()];
+      if (mapping) {
+        filteredCW = closedWonDeals.filter(function(deal) {
+          var props = deal.properties || {};
+          var dealMarket = (props.market || '').toLowerCase();
+          if (mapping.markets.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
+          var name = props.dealname || '';
+          var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+          if (stateMatch && mapping.states.indexOf(stateMatch[1]) !== -1) return true;
+          return false;
+        });
+      }
+    }
+
+    // Calculate average sales cycle (days between createdate and closedate)
+    var totalDays = 0;
+    var cycleCount = 0;
+    filteredCW.forEach(function(deal) {
+      var props = deal.properties || {};
+      if (props.createdate && props.closedate) {
+        var created = new Date(props.createdate).getTime();
+        var closed = new Date(props.closedate).getTime();
+        var days = (closed - created) / (1000 * 60 * 60 * 24);
+        if (days >= 0) {
+          totalDays += days;
+          cycleCount++;
+        }
+      }
+    });
+    var avgSalesCycle = cycleCount > 0 ? totalDays / cycleCount : null;
+
     return res.status(200).json({
       quotes_requested: quotesRequested,
+      sales_cycle_days: avgSalesCycle,
+      closed_won_count: cycleCount,
       period: { start: startDate, end: endDate },
       market: market || 'all',
     });
