@@ -90,8 +90,8 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Calculate KPIs
-    const totalRevenue = filtered.reduce(function(sum, c) { return sum + c.amount; }, 0) / 100;
+    // Calculate KPIs (subtract refunds to match Stripe dashboard net revenue)
+    const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount - (c.amount_refunded || 0)); }, 0) / 100;
     const bookings = filtered.length;
     const aov = bookings > 0 ? totalRevenue / bookings : 0;
 
