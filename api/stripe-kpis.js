@@ -111,7 +111,7 @@ module.exports = async function handler(req, res) {
 
     // Split revenue: "Furniture Renewal" charges go to renewal, everything else to bookings revenue
     const renewalCharges = filtered.filter(function(c) {
-      return c.description && c.description.indexOf('Furniture Renewal') !== -1;
+      return c.description && c.description.indexOf('Furniture Renewal -') === 0;
     });
     const renewalRevenue = renewalCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
     const bookingsRevenue = totalRevenue - renewalRevenue;
