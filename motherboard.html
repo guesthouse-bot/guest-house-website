@@ -1772,11 +1772,22 @@
             var prevEl = document.getElementById(baseId + '-prev');
             if (!changeEl || !prevEl) return;
 
-            if (prevVal === null || prevVal === undefined || currentVal === null || currentVal === undefined) {
+            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', custom: 'comparison' };
+            var modeLabel = modeLabels[compareMode.value] || 'previous period';
+
+            // Handle null/undefined: show "N/A" instead of hiding comparison
+            if (currentVal === null || currentVal === undefined) {
                 changeEl.className = 'kpi-change';
                 changeEl.textContent = '';
                 prevEl.className = 'kpi-prev';
                 prevEl.textContent = '';
+                return;
+            }
+            if (prevVal === null || prevVal === undefined) {
+                changeEl.className = 'kpi-change neutral';
+                changeEl.textContent = 'N/A';
+                prevEl.className = 'kpi-prev visible';
+                prevEl.textContent = 'no data ' + modeLabel;
                 return;
             }
 
@@ -1804,8 +1815,6 @@
             changeEl.textContent = pctText;
 
             prevEl.className = 'kpi-prev visible';
-            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', custom: 'comparison' };
-            var modeLabel = modeLabels[compareMode.value] || 'previous period';
             prevEl.textContent = formatter(prevVal) + ' ' + modeLabel;
         }
 
@@ -1859,7 +1868,8 @@
                 setComparison('kpi-conversion', currConv, prevConv, function(v) { return v.toFixed(1) + '%'; }, false);
 
                 var currAov = latestBookings > 0 ? latestRevenue / latestBookings : 0;
-                var prevAov = compareBookings > 0 ? compareRevenue / compareBookings : 0;
+                // Use null for prev AOV when there were no bookings (shows "N/A" instead of "$0")
+                var prevAov = compareBookings > 0 ? compareRevenue / compareBookings : null;
                 setComparison('kpi-aov-total', currAov, prevAov, formatCurrency, false);
             }
         }
@@ -2040,7 +2050,9 @@
             if (dh && ch) {
                 setComparison('kpi-quotes', dh.quotes_requested, ch.quotes_requested, formatNumber, false);
                 setComparison('kpi-bookings', dh.bookings, ch.bookings, formatNumber, false);
-                setComparison('kpi-aov-close', dh.aov_at_close, ch.aov_at_close, formatCurrency, false);
+                // Use null for prev AOV when there were no bookings (shows "N/A" instead of "$0")
+                var prevAovClose = ch.bookings > 0 ? ch.aov_at_close : null;
+                setComparison('kpi-aov-close', dh.aov_at_close, prevAovClose, formatCurrency, false);
                 setComparison('kpi-sales-cycle', dh.sales_cycle_days, ch.sales_cycle_days,
                     function(v) { return v !== null ? Math.round(v) + ' days' : '\u2014'; }, true);
             }
@@ -2145,8 +2157,10 @@
 
             clearAllComparisons();
 
-            // Stagger fetches: Stripe + Firebase first (no HubSpot), then HubSpot + Customer
-            // This prevents concurrent HubSpot rate limiting
+            // Stagger fetches to prevent concurrent HubSpot rate limiting
+            // Wave 1: Stripe + Firebase (no HubSpot)
+            // Wave 2: Current HubSpot + Customer
+            // Wave 3: Compare HubSpot + Customer (only if compare on)
             var wave1 = [
                 fetchStripeKPIs(filters, false),
                 fetchFirebaseKPIs(filters, false),
@@ -2155,6 +2169,7 @@
                 fetchHubSpotKPIs(filters, false),
                 fetchCustomerKPIs(filters, false),
             ];
+            var wave3 = [];
 
             if (compareToggle.checked) {
                 var cmpDates = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
@@ -2166,12 +2181,13 @@
                 };
                 wave1.push(fetchStripeKPIs(cmpFilters, true));
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
-                wave2.push(fetchHubSpotKPIs(cmpFilters, true));
-                wave2.push(fetchCustomerKPIs(cmpFilters, true));
+                wave3.push(fetchHubSpotKPIs(cmpFilters, true));
+                wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
 
             await Promise.all(wave1);
             await Promise.all(wave2);
+            if (wave3.length > 0) await Promise.all(wave3);
 
             // Render sparklines (always, they show daily trends)
             renderAllSparklines();
