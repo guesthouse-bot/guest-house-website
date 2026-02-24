@@ -120,12 +120,15 @@ module.exports = async function handler(req, res) {
     var header = rows[0];
     var tsIdx = header.indexOf('timestamp');
     var stateIdx = header.indexOf('state');
+    var roleIdx = header.indexOf('role');
 
     if (tsIdx === -1) {
       return res.status(500).json({ error: 'No timestamp column found in sheet' });
     }
 
-    // Filter rows by date range and market
+    var vendorType = req.query.vendorType;
+
+    // Filter rows by date range, market, and vendor type
     var coAndCaStates = ['CO', 'CA'];
     var filtered = [];
 
@@ -148,25 +151,32 @@ module.exports = async function handler(req, res) {
         if (states.length > 0 && states.indexOf(rowState) === -1) continue;
       }
 
-      filtered.push({ date: rowDate, row: row });
+      // Vendor type filter
+      var rowRole = roleIdx !== -1 ? (row[roleIdx] || '').toLowerCase().trim() : '';
+      if (vendorType && vendorType !== 'all') {
+        if (rowRole !== vendorType.toLowerCase()) continue;
+      }
+
+      filtered.push({ date: rowDate, role: rowRole, row: row });
     }
 
-    var vendorSignups = filtered.length;
+    var vendorApplications = filtered.length;
 
     // Daily bucketing
     var daily = {};
     if (req.query.daily === 'true') {
       filtered.forEach(function(item) {
         var day = item.date.toISOString().slice(0, 10);
-        if (!daily[day]) daily[day] = { vendor_signups: 0 };
-        daily[day].vendor_signups++;
+        if (!daily[day]) daily[day] = { vendor_applications: 0 };
+        daily[day].vendor_applications++;
       });
     }
 
     var result = {
-      vendor_signups: vendorSignups,
+      vendor_applications: vendorApplications,
       period: { start: startDate.toISOString(), end: endDate.toISOString() },
       market: market || 'all',
+      vendor_type: vendorType || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
     return res.status(200).json(result);

@@ -1574,6 +1574,18 @@
                         <input type="date" class="filter-date sync-date-to">
                     </div>
                     <div class="filter-divider"></div>
+                    <div class="filter-group">
+                        <span class="filter-label">Vendor Type</span>
+                        <select class="filter-select" id="filterVendorType">
+                            <option value="all">All types</option>
+                            <option value="stager">Stager</option>
+                            <option value="cleaner">Cleaner</option>
+                            <option value="mover">Mover</option>
+                            <option value="media">Media</option>
+                            <option value="stylist">Stylist</option>
+                        </select>
+                    </div>
+                    <div class="filter-divider"></div>
                     <div class="compare-toggle-group">
                         <span class="filter-label">Compare</span>
                         <label class="compare-switch">
@@ -1594,6 +1606,15 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
+                    <div class="kpi-label">Vendor Applications</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-vendor-apps">&mdash;</span>
+                        <span class="kpi-change" id="kpi-vendor-apps-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-vendor-apps-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-vendor-apps-sparkline"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Vendor Signups</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-vendor-signups">&mdash;</span>
@@ -1603,49 +1624,40 @@
                     <div class="kpi-sparkline" id="kpi-vendor-signups-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Installs</div>
+                    <div class="kpi-label">Jobs Completed</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-installs">&mdash;</span>
-                        <span class="kpi-change" id="kpi-installs-change"></span>
+                        <span class="kpi-value" id="kpi-jobs-completed">&mdash;</span>
+                        <span class="kpi-change" id="kpi-jobs-completed-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-installs-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-installs-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-jobs-completed-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-jobs-completed-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Quote-to-Install (days)</div>
+                    <div class="kpi-label">Revenue / Home</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quote-to-install">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quote-to-install-change"></span>
+                        <span class="kpi-value" id="kpi-rev-home">&mdash;</span>
+                        <span class="kpi-change" id="kpi-rev-home-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-quote-to-install-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quote-to-install-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-rev-home-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-rev-home-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-label">Cost / Home</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ops-revenue">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ops-revenue-change"></span>
+                        <span class="kpi-value" id="kpi-cost-home">&mdash;</span>
+                        <span class="kpi-change" id="kpi-cost-home-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-ops-revenue-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ops-revenue-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-cost-home-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-cost-home-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">COGs</div>
+                    <div class="kpi-label">Margin / Home</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-cogs">&mdash;</span>
-                        <span class="kpi-change" id="kpi-cogs-change"></span>
+                        <span class="kpi-value" id="kpi-margin-home">&mdash;</span>
+                        <span class="kpi-change" id="kpi-margin-home-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-cogs-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-cogs-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Operating Margin</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-op-margin">&mdash;</span>
-                        <span class="kpi-change" id="kpi-op-margin-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-op-margin-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-op-margin-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-margin-home-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-margin-home-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">NPS</div>
@@ -1655,6 +1667,15 @@
                     </div>
                     <div class="kpi-prev" id="kpi-nps-prev"></div>
                     <div class="kpi-sparkline" id="kpi-nps-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quote-to-Install (days)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quote-to-install">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quote-to-install-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quote-to-install-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quote-to-install-sparkline"></div>
                 </div>
             </div>
         </div>
@@ -2421,11 +2442,15 @@
             }
         }
 
-        async function fetchVendorSignups(filters, isCompare) {
-            var ids = ['kpi-vendor-signups'];
+        async function fetchVendorApplications(filters, isCompare) {
+            var ids = ['kpi-vendor-apps'];
             if (!isCompare) setLoading(ids);
             try {
                 var params = buildParams(filters);
+                var vendorType = document.getElementById('filterVendorType');
+                if (vendorType && vendorType.value !== 'all') {
+                    params.append('vendorType', vendorType.value);
+                }
                 var response = await fetch('/api/vendor-signups?' + params.toString());
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
@@ -2434,12 +2459,12 @@
                     compareData.vendor = data;
                 } else {
                     currentData.vendor = data;
-                    setKPI('kpi-vendor-signups', formatNumber(data.vendor_signups));
+                    setKPI('kpi-vendor-apps', formatNumber(data.vendor_applications));
                 }
                 return data;
             } catch (err) {
-                console.error('Vendor signups fetch error:', err);
-                if (!isCompare) setKPI('kpi-vendor-signups', 'Error');
+                console.error('Vendor applications fetch error:', err);
+                if (!isCompare) setKPI('kpi-vendor-apps', 'Error');
                 return null;
             } finally {
                 if (!isCompare) clearLoading(ids);
@@ -2520,7 +2545,7 @@
             var dv = currentData.vendor;
             var cv = compareData.vendor;
             if (dv && cv) {
-                setComparison('kpi-vendor-signups', dv.vendor_signups, cv.vendor_signups, formatNumber, false);
+                setComparison('kpi-vendor-apps', dv.vendor_applications, cv.vendor_applications, formatNumber, false);
             }
             // Typeform comparisons
             var dt = currentData.typeform;
@@ -2586,11 +2611,11 @@
                 renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
             }
 
-            // Vendor signups sparkline
+            // Vendor applications sparkline
             var dv = currentData.vendor;
             var cvs = compareData.vendor;
             if (dv && dv.daily) {
-                renderSparkline('kpi-vendor-signups-sparkline', dv.daily, cmpOn && cvs ? cvs.daily : null, 'vendor_signups', 'count');
+                renderSparkline('kpi-vendor-apps-sparkline', dv.daily, cmpOn && cvs ? cvs.daily : null, 'vendor_applications', 'count');
             }
 
             // Typeform NPS sparkline
@@ -2637,7 +2662,7 @@
                 fetchStripeKPIs(filters, false),
                 fetchFirebaseKPIs(filters, false),
                 fetchTypeformNPS(filters, false),
-                fetchVendorSignups(filters, false),
+                fetchVendorApplications(filters, false),
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
@@ -2656,7 +2681,7 @@
                 wave1.push(fetchStripeKPIs(cmpFilters, true));
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
-                wave1.push(fetchVendorSignups(cmpFilters, true));
+                wave1.push(fetchVendorApplications(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
