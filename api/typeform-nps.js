@@ -87,28 +87,30 @@ module.exports = async function handler(req, res) {
     }
 
     // Extract NPS scores from responses
-    // Typeform NPS questions use type "opinion_scale" or "number" with 0-10 range
+    // Typeform NPS field type sends answers as type "number" with field.type "nps"
     var scores = [];
     allResponses.forEach(function(item) {
       var answers = item.answers || [];
       for (var i = 0; i < answers.length; i++) {
         var answer = answers[i];
-        // NPS is typically an opinion_scale or number type with 0-10 range
-        if (answer.type === 'number' && typeof answer.number === 'number') {
-          if (answer.number >= 0 && answer.number <= 10) {
-            scores.push({
-              score: answer.number,
-              submitted_at: item.submitted_at || item.landed_at,
-            });
-            break; // Take first NPS-like answer per response
-          }
-        }
-        if (answer.type === 'opinion_scale' && typeof answer.number === 'number') {
+        var fieldType = answer.field && answer.field.type;
+        // Prioritize actual NPS field type
+        if (fieldType === 'nps' && typeof answer.number === 'number') {
           scores.push({
             score: answer.number,
             submitted_at: item.submitted_at || item.landed_at,
           });
           break;
+        }
+        // Fallback: opinion_scale or number in 0-10 range
+        if ((fieldType === 'opinion_scale' || answer.type === 'number') && typeof answer.number === 'number') {
+          if (answer.number >= 0 && answer.number <= 10) {
+            scores.push({
+              score: answer.number,
+              submitted_at: item.submitted_at || item.landed_at,
+            });
+            break;
+          }
         }
       }
     });
