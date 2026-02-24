@@ -1684,7 +1684,7 @@
             case 0: return !!appRole;
             case 1: return fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
             case 2: return fv("locations");
-            case 3: return true;
+            case 3: return SERVICES_CONFIG[appRole].jobs ? fvArr("jobs").length > 0 : true;
             case 4: return fv("business_name") && fv("entity_type") && fv("tax_id");
             default: return true;
         }
@@ -1735,6 +1735,7 @@
             el.onclick = function() {
                 fsToggle(el.dataset.ms, el.dataset.msval);
                 el.classList.toggle("selected");
+                updateFormNext();
             };
         });
         // Nav
