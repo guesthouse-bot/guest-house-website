@@ -1084,7 +1084,7 @@
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-label">Accounts created</div>
-                    <div class="kpi-value">&mdash;</div>
+                    <div class="kpi-value" id="kpi-accounts">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
@@ -1376,11 +1376,35 @@
             });
         }
 
+        async function fetchFirebaseKPIs(filters) {
+            var el = document.getElementById('kpi-accounts');
+            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            try {
+                var params = new URLSearchParams({
+                    market: filters.market,
+                    period: filters.period,
+                });
+                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+                if (filters.dateTo) params.append('dateTo', filters.dateTo);
+
+                var response = await fetch('/api/firebase-kpis?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                setKPI('kpi-accounts', formatNumber(data.accounts_created));
+            } catch (err) {
+                console.error('Firebase KPI fetch error:', err);
+                setKPI('kpi-accounts', 'Error');
+            }
+            if (el) el.style.opacity = '1';
+        }
+
         function fetchAllKPIs(filters) {
             latestBookings = null;
             latestQuotes = null;
             fetchStripeKPIs(filters);
             fetchHubSpotKPIs(filters);
+            fetchFirebaseKPIs(filters);
         }
 
         document.getElementById('applyFilters').addEventListener('click', function() {
