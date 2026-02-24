@@ -1092,7 +1092,7 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings</div>
-                    <div class="kpi-value" id="kpi-bookings">&mdash;</div>
+                    <div class="kpi-value">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Revenue</div>
@@ -1100,19 +1100,19 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (at close)</div>
-                    <div class="kpi-value" id="kpi-aov-close">&mdash;</div>
+                    <div class="kpi-value">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (total)</div>
-                    <div class="kpi-value" id="kpi-aov-total">&mdash;</div>
+                    <div class="kpi-value">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">ARPU</div>
-                    <div class="kpi-value" id="kpi-arpu">&mdash;</div>
+                    <div class="kpi-value">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings x Account</div>
-                    <div class="kpi-value" id="kpi-bpa">&mdash;</div>
+                    <div class="kpi-value">&mdash;</div>
                 </div>
             </div>
         </div>
@@ -1289,17 +1289,13 @@
         }
 
         function setStripeLoading() {
-            ['kpi-bookings', 'kpi-revenue', 'kpi-aov-close', 'kpi-aov-total', 'kpi-arpu', 'kpi-bpa'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
-            });
+            var el = document.getElementById('kpi-revenue');
+            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
         }
 
         function clearStripeLoading() {
-            ['kpi-bookings', 'kpi-revenue', 'kpi-aov-close', 'kpi-aov-total', 'kpi-arpu', 'kpi-bpa'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.style.opacity = '1';
-            });
+            var el = document.getElementById('kpi-revenue');
+            if (el) el.style.opacity = '1';
         }
 
         async function fetchStripeKPIs(filters) {
@@ -1316,17 +1312,10 @@
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
 
-                setKPI('kpi-bookings', formatNumber(data.bookings));
                 setKPI('kpi-revenue', formatCurrency(data.revenue));
-                setKPI('kpi-aov-close', formatCurrency(data.aov));
-                setKPI('kpi-aov-total', formatCurrency(data.aov));
-                setKPI('kpi-arpu', formatCurrency(data.arpu));
-                setKPI('kpi-bpa', formatNumber(data.bookings_per_account));
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
-                ['kpi-bookings', 'kpi-revenue', 'kpi-aov-close', 'kpi-aov-total', 'kpi-arpu', 'kpi-bpa'].forEach(function(id) {
-                    setKPI(id, 'Error');
-                });
+                setKPI('kpi-revenue', 'Error');
             }
             clearStripeLoading();
         }
