@@ -109,9 +109,9 @@ module.exports = async function handler(req, res) {
     // Use amount_captured to match Stripe's Gross volume (excludes uncaptured authorizations)
     const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
 
-    // Split revenue: "Furniture Renewal" charges go to renewal, everything else to bookings revenue
+    // Split revenue: any charge mentioning "furniture renewal" goes to renewal, everything else to bookings revenue
     const renewalCharges = filtered.filter(function(c) {
-      return c.description && c.description.indexOf('Furniture Renewal -') === 0;
+      return c.description && c.description.toLowerCase().indexOf('furniture renewal') !== -1;
     });
     const renewalRevenue = renewalCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
     const bookingsRevenue = totalRevenue - renewalRevenue;
@@ -132,7 +132,7 @@ module.exports = async function handler(req, res) {
         if (!daily[day]) daily[day] = { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
         var amt = (c.amount_captured || 0) / 100;
         daily[day].revenue += amt;
-        var isRenewal = c.description && c.description.indexOf('Furniture Renewal -') === 0;
+        var isRenewal = c.description && c.description.toLowerCase().indexOf('furniture renewal') !== -1;
         if (isRenewal) {
           daily[day].renewal_revenue += amt;
         } else {
