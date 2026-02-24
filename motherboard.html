@@ -1434,6 +1434,71 @@
         </div>
     </section>
 
+    <!-- Ops KPIs -->
+    <section>
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Ops KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">NPS Score</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-nps">&mdash;</span>
+                        <span class="kpi-change" id="kpi-nps-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-nps-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-nps-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Response Time</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-response-time">&mdash;</span>
+                        <span class="kpi-change" id="kpi-response-time-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-response-time-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-response-time-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quote-to-Stage (days)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quote-to-stage">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quote-to-stage-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quote-to-stage-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quote-to-stage-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">On-Time Delivery Rate</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ontime-delivery">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ontime-delivery-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ontime-delivery-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ontime-delivery-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Support Tickets</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-support-tickets">&mdash;</span>
+                        <span class="kpi-change" id="kpi-support-tickets-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-support-tickets-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-support-tickets-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Repeat Customer Rate</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-repeat-customer">&mdash;</span>
+                        <span class="kpi-change" id="kpi-repeat-customer-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-repeat-customer-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-repeat-customer-sparkline"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -1893,8 +1958,8 @@
         }
 
         // ---- Data storage ----
-        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null };
-        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null };
+        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
+        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
 
         // Track latest values for cross-source calculations
         var latestRevenue = null;
@@ -2088,6 +2153,35 @@
             }
         }
 
+        async function fetchTypeformNPS(filters, isCompare) {
+            var ids = ['kpi-nps'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
+                var response = await fetch('/api/typeform-nps?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                if (isCompare) {
+                    compareData.typeform = data;
+                } else {
+                    currentData.typeform = data;
+                    if (data.nps_score !== null) {
+                        setKPI('kpi-nps', data.nps_score);
+                    } else {
+                        setKPI('kpi-nps', '\u2014');
+                    }
+                }
+                return data;
+            } catch (err) {
+                console.error('Typeform NPS fetch error:', err);
+                if (!isCompare) setKPI('kpi-nps', 'Error');
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
+            }
+        }
+
         // ---- Render comparisons and sparklines ----
         function renderAllComparisons() {
             var cs = compareData.stripe;
@@ -2128,6 +2222,12 @@
                     function(v) { return v.toFixed(2); }, false);
                 setComparison('kpi-rev-user', dc.revenue_per_user, cc.revenue_per_user, formatCurrency, false);
                 setComparison('kpi-arpu', dc.arpu, cc.arpu, formatCurrency, false);
+            }
+            // Typeform comparisons
+            var dt = currentData.typeform;
+            var ct = compareData.typeform;
+            if (dt && ct && dt.nps_score !== null && ct.nps_score !== null) {
+                setComparison('kpi-nps', dt.nps_score, ct.nps_score, function(v) { return v.toFixed(0); }, false);
             }
             // Cross-source comparisons
             updateCrossSourceKPIs();
@@ -2186,6 +2286,13 @@
                 renderSparkline('kpi-rev-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
                 renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
             }
+
+            // Typeform NPS sparkline
+            var dtf = currentData.typeform;
+            var ctf = compareData.typeform;
+            if (dtf && dtf.daily) {
+                renderSparkline('kpi-nps-sparkline', dtf.daily, cmpOn && ctf ? ctf.daily : null, 'nps_score', 'count');
+            }
         }
 
         // Build daily average sales cycle from hubspot daily data
@@ -2211,8 +2318,8 @@
             compareRevenue = null;
             compareBookings = null;
             compareQuotes = null;
-            currentData = { stripe: null, hubspot: null, firebase: null, customer: null };
-            compareData = { stripe: null, hubspot: null, firebase: null, customer: null };
+            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
+            compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
 
             clearAllComparisons();
 
@@ -2223,6 +2330,7 @@
             var wave1 = [
                 fetchStripeKPIs(filters, false),
                 fetchFirebaseKPIs(filters, false),
+                fetchTypeformNPS(filters, false),
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
@@ -2240,6 +2348,7 @@
                 };
                 wave1.push(fetchStripeKPIs(cmpFilters, true));
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
+                wave1.push(fetchTypeformNPS(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
