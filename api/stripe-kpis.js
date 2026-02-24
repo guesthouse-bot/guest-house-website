@@ -92,18 +92,76 @@ module.exports = async function handler(req, res) {
       california: ['CA'],
     };
 
+    // Known addresses without state in description → state code
+    var addressToState = {
+      '1885 diamond st': 'CA',
+      '4224 tonopah ave': 'CA',
+      '5851 box canyon': 'CA',
+      '864 iris ave': 'CO',
+      '358 arapahoe ave': 'CO',
+      '4861 iran st': 'CO',
+      '1772 garrison way': 'CA',
+      '3530 fenton st': 'CO',
+      '10151 w 38th': 'CO',
+      '20682 falcon wing': 'CO',
+      '2198 s sherman': 'CO',
+      '1501 front st': 'CA',
+      '1028 daisy ave': 'CA',
+      '1913 alga rd': 'CA',
+    };
+
+    // Helper: extract state from a text string (description or invoice line item)
+    function extractState(text) {
+      if (!text) return '';
+      // Match ", ST," or ", ST " or ", ST XXXXX" patterns (US state codes)
+      var stateMatch = text.match(/,\s*([A-Z]{2})\s*(?:\d{5}|,|$|\s)/);
+      if (stateMatch) return stateMatch[1];
+      // Check known address lookup table
+      var lower = text.toLowerCase();
+      var keys = Object.keys(addressToState);
+      for (var i = 0; i < keys.length; i++) {
+        if (lower.indexOf(keys[i]) !== -1) return addressToState[keys[i]];
+      }
+      return '';
+    }
+
+    // Helper: get all text sources for a charge (description + invoice lines)
+    function getChargeTexts(charge) {
+      var texts = [];
+      if (charge.description) texts.push(charge.description);
+      if (charge.invoice && typeof charge.invoice === 'object') {
+        var inv = charge.invoice;
+        if (inv.description) texts.push(inv.description);
+        var lines = (inv.lines && inv.lines.data) || [];
+        for (var i = 0; i < lines.length; i++) {
+          if (lines[i].description) texts.push(lines[i].description);
+        }
+      }
+      return texts;
+    }
+
     // Filter by market if specified
     let filtered = allCharges;
     if (market && market !== 'all' && market !== 'nationwide') {
       const stateCodes = marketToStates[market.toLowerCase()] || [];
       filtered = allCharges.filter(function(charge) {
+        // Check billing address state
         const billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
+        if (stateCodes.indexOf(billingState) !== -1) return true;
+        // Check shipping address state
         const shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
+        if (stateCodes.indexOf(shippingState) !== -1) return true;
+        // Check metadata
         const meta = charge.metadata || {};
         const metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
-        return stateCodes.indexOf(billingState) !== -1 ||
-               stateCodes.indexOf(shippingState) !== -1 ||
-               stateCodes.indexOf(metaState) !== -1;
+        if (stateCodes.indexOf(metaState) !== -1) return true;
+        // Parse state from charge description and invoice line items
+        var texts = getChargeTexts(charge);
+        for (var i = 0; i < texts.length; i++) {
+          var parsed = extractState(texts[i]);
+          if (parsed && stateCodes.indexOf(parsed) !== -1) return true;
+        }
+        return false;
       });
     }
 
