@@ -1106,10 +1106,6 @@
                     <div class="kpi-label">AOV (total)</div>
                     <div class="kpi-value" id="kpi-aov-total">&mdash;</div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bookings x Account</div>
-                    <div class="kpi-value">&mdash;</div>
-                </div>
             </div>
         </div>
     </section>
@@ -1124,6 +1120,10 @@
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes / User</div>
                     <div class="kpi-value" id="kpi-quotes-user">&mdash;</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings / User</div>
+                    <div class="kpi-value" id="kpi-bookings-user">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Revenue / User</div>
@@ -1261,14 +1261,14 @@
         }
 
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
         }
 
         function clearStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.style.opacity = '1';
             });
@@ -1292,6 +1292,7 @@
                 setKPI('kpi-bookings', formatNumber(data.bookings));
                 setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
                 setKPI('kpi-aov-total', data.bookings > 0 ? formatCurrency(data.revenue / data.bookings) : '$0');
+                setKPI('kpi-bookings-user', data.unique_accounts > 0 ? formatNumber(data.bookings / data.unique_accounts) : '0');
                 setKPI('kpi-rev-user', data.unique_accounts > 0 ? formatCurrency(data.revenue / data.unique_accounts) : '$0');
                 setKPI('kpi-arpu', formatCurrency(data.arpu));
             } catch (err) {
@@ -1300,6 +1301,7 @@
                 setKPI('kpi-bookings', 'Error');
                 setKPI('kpi-aov-close', 'Error');
                 setKPI('kpi-aov-total', 'Error');
+                setKPI('kpi-bookings-user', 'Error');
                 setKPI('kpi-rev-user', 'Error');
                 setKPI('kpi-arpu', 'Error');
             }
