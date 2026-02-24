@@ -230,6 +230,67 @@ module.exports = async function handler(req, res) {
       result._debug_renewal_count = renewalChargeIds.size;
       result._debug_total_charges = filtered.length;
       result._debug_invoice_details = invoiceDetails;
+
+      // Also check charges for invoice field and metadata
+      var chargeDetails = [];
+      filtered.forEach(function(c) {
+        var desc = (c.description || '').toLowerCase();
+        if (desc.indexOf('invoice') !== -1 || desc.indexOf('daisy') !== -1 || desc.indexOf('1028') !== -1) {
+          chargeDetails.push({
+            id: c.id,
+            description: c.description,
+            amount: (c.amount_captured || 0) / 100,
+            invoice_field: c.invoice || null,
+            payment_intent: c.payment_intent || null,
+            metadata: c.metadata || {},
+            customer: c.customer || null,
+          });
+        }
+      });
+      result._debug_charge_details = chargeDetails;
+
+      // Also search Stripe Invoices API directly
+      var stripeInvoices = [];
+      var invHasMore = true;
+      var invStartingAfter = null;
+      while (invHasMore) {
+        var invParams = new URLSearchParams({
+          'created[gte]': String(startDate),
+          'created[lte]': String(endDate),
+          'limit': '100',
+          'status': 'paid',
+          'expand[]': 'data.lines',
+        });
+        if (invStartingAfter) invParams.append('starting_after', invStartingAfter);
+        try {
+          var siResp = await fetch('https://api.stripe.com/v1/invoices?' + invParams, {
+            headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
+          });
+          if (siResp.ok) {
+            var siData = await siResp.json();
+            siData.data.forEach(function(inv) {
+              var lines = (inv.lines && inv.lines.data) || [];
+              stripeInvoices.push({
+                id: inv.id,
+                number: inv.number,
+                description: inv.description,
+                amount_paid: (inv.amount_paid || 0) / 100,
+                line_items: lines.map(function(l) { return { desc: l.description, amount: (l.amount || 0) / 100 }; }),
+                charge: inv.charge,
+              });
+            });
+            invHasMore = siData.has_more;
+            if (invHasMore && siData.data.length > 0) {
+              invStartingAfter = siData.data[siData.data.length - 1].id;
+            }
+          } else {
+            invHasMore = false;
+          }
+        } catch (e) {
+          invHasMore = false;
+        }
+      }
+      result._debug_stripe_invoices = stripeInvoices;
     }
 
     return res.status(200).json(result);
