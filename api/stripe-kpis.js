@@ -80,13 +80,29 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Filter by market if specified
+    // Map market filter to state codes
+    const marketToStates = {
+      colorado: ['CO'],
+      california: ['CA'],
+      arizona: ['AZ'],
+    };
+
+    // Filter by market if specified (checks billing/shipping address state)
     let filtered = allCharges;
     if (market && market !== 'all') {
+      const stateCodes = marketToStates[market.toLowerCase()] || [];
       filtered = allCharges.filter(function(charge) {
+        // Check billing address state
+        const billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
+        // Check shipping address state
+        const shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
+        // Check metadata as fallback
         const meta = charge.metadata || {};
-        const chargeMarket = (meta.market || meta.Market || meta.region || meta.Region || '').toLowerCase();
-        return chargeMarket.indexOf(market.toLowerCase()) !== -1;
+        const metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
+
+        return stateCodes.indexOf(billingState) !== -1 ||
+               stateCodes.indexOf(shippingState) !== -1 ||
+               stateCodes.indexOf(metaState) !== -1;
       });
     }
 
