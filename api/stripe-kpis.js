@@ -114,7 +114,8 @@ module.exports = async function handler(req, res) {
       return c.description && c.description.indexOf('Staging -') === 0;
     });
     const bookings = bookingCharges.length;
-    const aov = bookings > 0 ? totalRevenue / bookings : 0;
+    const bookingRevenue = bookingCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
+    const aovAtClose = bookings > 0 ? bookingRevenue / bookings : 0;
 
     // Get unique customers for ARPU and bookings per account
     const customerSet = new Set();
@@ -128,7 +129,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       revenue: totalRevenue,
       bookings: bookings,
-      aov: aov,
+      aov_at_close: aovAtClose,
       arpu: arpu,
       bookings_per_account: bookingsPerAccount,
       unique_accounts: uniqueAccounts,
