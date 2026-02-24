@@ -148,21 +148,22 @@ module.exports = async function handler(req, res) {
     // Count quotes requested = all deals in the Sales Pipeline (they all start at Quote Requested)
     var quotesRequested = filtered.length;
 
-    // Fetch Closed Won deals in date range for sales cycle calculation
+    // Fetch booked deals in date range (closedwon + legacy stage 13174420)
     let closedWonDeals = [];
     let cwAfter = 0;
     let cwHasMore = true;
 
     while (cwHasMore) {
+      var dateAndPipelineFilters = [
+        { propertyName: 'closedate', operator: 'GTE', value: String(startDate) },
+        { propertyName: 'closedate', operator: 'LTE', value: String(endDate) },
+        { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+      ];
       const cwBody = {
-        filterGroups: [{
-          filters: [
-            { propertyName: 'closedate', operator: 'GTE', value: String(startDate) },
-            { propertyName: 'closedate', operator: 'LTE', value: String(endDate) },
-            { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
-            { propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' },
-          ]
-        }],
+        filterGroups: [
+          { filters: dateAndPipelineFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' }]) },
+          { filters: dateAndPipelineFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: '13174420' }]) },
+        ],
         properties: ['dealname', 'createdate', 'closedate', 'market', 'amount'],
         limit: 100,
         after: cwAfter,

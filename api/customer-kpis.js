@@ -80,14 +80,16 @@ module.exports = async function handler(req, res) {
   }
 
   // Helper: paginated HubSpot deal search
-  async function searchDeals(filters) {
+  // Accepts either a single filters array or an array of filterGroups
+  async function searchDeals(filtersOrGroups) {
     var allDeals = [];
     var after = 0;
     var hasMore = true;
+    var filterGroups = Array.isArray(filtersOrGroups[0]) ? filtersOrGroups.map(function(f) { return { filters: f }; }) : [{ filters: filtersOrGroups }];
 
     while (hasMore) {
       var body = {
-        filterGroups: [{ filters: filters }],
+        filterGroups: filterGroups,
         properties: ['dealname', 'dealstage', 'createdate', 'closedate', 'amount', 'pipeline', 'market'],
         limit: 100,
         after: after,
@@ -149,12 +151,15 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // --- Step 1: Get Closed Won deals in the period (bookings) ---
-    var rawBookingDeals = await searchDeals([
+    // --- Step 1: Get booked deals in the period (closedwon + legacy stage 13174420) ---
+    var dateAndPipelineFilters = [
       { propertyName: 'closedate', operator: 'GTE', value: String(startMs) },
       { propertyName: 'closedate', operator: 'LTE', value: String(endMs) },
       { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
-      { propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' },
+    ];
+    var rawBookingDeals = await searchDeals([
+      dateAndPipelineFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' }]),
+      dateAndPipelineFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: '13174420' }]),
     ]);
     var bookingDeals = filterByMarket(rawBookingDeals);
 
