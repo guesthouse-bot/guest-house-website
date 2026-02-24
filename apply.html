@@ -400,25 +400,25 @@
 
         /* Hero Section */
         .hero {
-            padding: 140px 3rem 40px;
+            padding: 140px 3rem 48px;
             max-width: 1400px;
             margin: 0 auto;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
             font-weight: 500;
             line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-subtitle {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             color: var(--color-text-secondary);
-            max-width: 500px;
+            max-width: 540px;
             margin: 0 auto;
             line-height: 1.6;
             animation: fadeInUp 0.6s ease-out 0.3s both;
@@ -435,48 +435,43 @@
             }
         }
 
-        /* Application form container — inline, not a modal */
+        /* Application form container — full-width, not a card */
         .application-section {
-            max-width: 640px;
+            max-width: 780px;
             margin: 0 auto;
-            padding: 32px 1.5rem 80px;
+            padding: 16px 1.5rem 100px;
         }
 
         .application-card {
             background: var(--color-white);
-            border-radius: 20px;
-            border: 1px solid var(--color-border);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
             width: 100%;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
         .modal-header {
-            border-bottom: 1px solid var(--color-border);
-            padding: 28px 32px 16px;
+            padding: 0 0 32px;
             text-align: center;
             position: relative;
             flex-shrink: 0;
         }
         .modal-header h2 {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             letter-spacing: -0.01em;
         }
         .modal-header p {
-            font-size: 0.8125rem;
+            font-size: 0.9375rem;
             color: var(--color-text-secondary);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
+            top: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
             background: var(--color-surface-secondary);
@@ -496,15 +491,15 @@
             stroke: var(--color-text-secondary);
         }
         .modal-body {
-            padding: 24px 32px;
+            padding: 40px 0;
             flex: 1;
             min-height: 0;
         }
         .modal-footer {
-            border-top: 1px solid var(--color-border);
-            padding: 16px 32px;
+            padding: 32px 0 0;
             display: flex;
             justify-content: space-between;
+            border-top: 1px solid var(--color-border);
             flex-shrink: 0;
         }
 
@@ -513,17 +508,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 0;
         }
         .form-step-dot {
-            width: 30px;
-            height: 30px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8125rem;
+            font-size: 0.875rem;
             font-weight: 600;
             flex-shrink: 0;
             transition: all 0.2s;
@@ -532,14 +527,14 @@
         .form-step-dot.active { background: var(--color-golden); color: var(--color-onyx); }
         .form-step-dot.upcoming { background: var(--color-surface-secondary); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
         .form-step-label {
-            font-size: 0.6875rem;
-            margin: 0 4px;
+            font-size: 0.8125rem;
+            margin: 0 6px;
             font-weight: 500;
         }
         .form-step-label.active { color: var(--color-onyx); }
         .form-step-label.muted { color: var(--color-text-secondary); }
         .form-step-line {
-            width: 28px;
+            width: 40px;
             height: 2px;
             flex-shrink: 0;
             border-radius: 1px;
@@ -549,14 +544,14 @@
 
         /* Form controls */
         .form-field {
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
         .form-field label {
             display: block;
-            font-size: 0.8125rem;
+            font-size: 0.9375rem;
             font-weight: 500;
             color: var(--color-charcoal);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         .form-field label .req {
             color: var(--color-error);
@@ -566,9 +561,9 @@
         .form-field textarea {
             width: 100%;
             border: 1px solid var(--color-border);
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 0.875rem;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 1rem;
             font-family: inherit;
             outline: none;
             transition: border-color 0.15s, box-shadow 0.15s;
@@ -587,20 +582,20 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 20px;
         }
 
         /* Yes/No toggles */
         .form-yesno {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         .form-yesno button {
-            padding: 8px 20px;
-            border-radius: 10px;
+            padding: 12px 28px;
+            border-radius: 12px;
             border: 1px solid var(--color-border);
             background: var(--color-white);
-            font-size: 0.8125rem;
+            font-size: 0.9375rem;
             font-weight: 500;
             font-family: inherit;
             color: var(--color-text-secondary);
@@ -620,12 +615,12 @@
         .form-roles {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 16px;
         }
         .form-role-card {
             text-align: left;
-            padding: 18px;
-            border-radius: 14px;
+            padding: 24px;
+            border-radius: 16px;
             border: 2px solid var(--color-border);
             background: var(--color-white);
             cursor: pointer;
@@ -639,24 +634,24 @@
             background: var(--color-surface-secondary);
         }
         .form-role-card .role-icon {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+            font-size: 2rem;
+            margin-bottom: 12px;
         }
         .form-role-card .role-name {
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 1.0625rem;
         }
         .form-role-card .role-desc {
-            font-size: 0.6875rem;
+            font-size: 0.875rem;
             color: var(--color-text-secondary);
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         /* Form buttons */
         .form-btn {
-            padding: 10px 24px;
-            border-radius: 10px;
-            font-size: 0.875rem;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 500;
             border: none;
             cursor: pointer;
@@ -703,23 +698,23 @@
         .form-checkboxes {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
         .form-checkbox-card {
             text-align: left;
-            padding: 14px 18px;
-            border-radius: 10px;
+            padding: 18px 22px;
+            border-radius: 14px;
             border: 2px solid var(--color-border);
             background: var(--color-white);
             cursor: pointer;
             transition: all 0.15s;
-            font-size: 0.875rem;
+            font-size: 1rem;
             font-weight: 500;
             font-family: inherit;
             color: var(--color-text-primary);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
         .form-checkbox-card:hover {
             border-color: var(--color-text-secondary);
@@ -729,9 +724,9 @@
             background: var(--color-surface-secondary);
         }
         .form-check-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
             border: 2px solid var(--color-border);
             flex-shrink: 0;
             display: flex;
@@ -744,8 +739,8 @@
             border-color: var(--color-onyx);
         }
         .form-check-icon svg {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             stroke: var(--color-white);
             fill: none;
             opacity: 0;
@@ -758,31 +753,31 @@
         /* Review blocks */
         .form-review-block {
             background: var(--color-surface-secondary);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 12px;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
         }
         .form-review-block h3 {
-            font-size: 0.6875rem;
+            font-size: 0.8125rem;
             font-weight: 600;
             color: var(--color-text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .form-review-block .rv {
             color: var(--color-onyx);
-            font-size: 0.875rem;
+            font-size: 1rem;
         }
         .form-review-block .rs {
             color: var(--color-text-secondary);
-            font-size: 0.8125rem;
+            font-size: 0.9375rem;
         }
         .form-rate-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8125rem;
-            padding: 2px 0;
+            font-size: 0.9375rem;
+            padding: 3px 0;
         }
         .form-rate-row .rl {
             color: var(--color-text-secondary);
@@ -793,73 +788,79 @@
         }
 
         .form-section-title {
-            font-size: 0.6875rem;
+            font-size: 0.8125rem;
             font-weight: 600;
             color: var(--color-text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin: 20px 0 12px;
+            margin: 28px 0 16px;
         }
         .form-step-heading {
-            font-size: 1.0625rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 4px;
-            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
         }
         .form-step-sub {
-            font-size: 0.8125rem;
+            font-size: 1rem;
             color: var(--color-text-secondary);
-            margin-bottom: 20px;
+            margin-bottom: 32px;
         }
         .form-error-banner {
-            margin-top: 16px;
-            padding: 12px;
+            margin-top: 20px;
+            padding: 16px;
             background: #fef2f2;
             border: 1px solid #fecaca;
-            border-radius: 10px;
+            border-radius: 12px;
             color: var(--color-error);
-            font-size: 0.8125rem;
+            font-size: 0.9375rem;
         }
         .form-success-wrap {
             text-align: center;
-            padding: 48px 32px;
+            padding: 80px 32px;
         }
         .form-success-wrap .big-icon {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             background: var(--color-golden);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 24px;
         }
         .form-success-wrap .big-icon svg {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             stroke: var(--color-onyx);
             fill: none;
         }
         .form-success-wrap h2 {
-            font-size: 1.375rem;
+            font-size: 1.75rem;
             font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
         .form-success-wrap p {
             color: var(--color-text-secondary);
-            margin-bottom: 24px;
-            font-size: 0.875rem;
+            margin-bottom: 32px;
+            font-size: 1.0625rem;
             line-height: 1.6;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
+            .application-section { padding: 8px 1.25rem 80px; }
             .form-roles { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
             .form-step-label { display: none; }
-            .modal-body { padding: 20px; }
-            .modal-header { padding: 24px 20px 12px; }
-            .modal-footer { padding: 12px 20px; }
+            .modal-body { padding: 32px 0; }
+            .modal-footer { padding: 24px 0 0; }
+            .form-step-heading { font-size: 1.25rem; }
+            .form-step-sub { font-size: 0.9375rem; margin-bottom: 24px; }
+            .form-success-wrap { padding: 60px 16px; }
         }
 
         /* Footer */
@@ -984,7 +985,7 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
-                padding: 120px 1.5rem 32px;
+                padding: 120px 1.5rem 24px;
             }
 
             .footer-content {
