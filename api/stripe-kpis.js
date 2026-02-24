@@ -84,12 +84,12 @@ module.exports = async function handler(req, res) {
     const marketToStates = {
       colorado: ['CO'],
       california: ['CA'],
-      arizona: ['AZ'],
     };
 
     // Filter by market if specified (checks billing/shipping address state)
+    // "nationwide" and "all" return all charges unfiltered
     let filtered = allCharges;
-    if (market && market !== 'all') {
+    if (market && market !== 'all' && market !== 'nationwide') {
       const stateCodes = marketToStates[market.toLowerCase()] || [];
       filtered = allCharges.filter(function(charge) {
         // Check billing address state
