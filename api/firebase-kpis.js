@@ -146,9 +146,19 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // All CO and CA region values (for nationwide exclusion)
+    var coAndCaRegions = ['denver_boulder', 'san_diego', 'orange_county', 'los_angeles'];
+
     // Filter by market using activeRegion field
+    // "all" = everything, "nationwide" = only regions outside CO and CA
     var filtered = allUsers;
-    if (market && market !== 'all' && market !== 'nationwide') {
+    if (market === 'nationwide') {
+      filtered = allUsers.filter(function(item) {
+        var fields = item.document.fields;
+        var activeRegion = (fields.activeRegion && fields.activeRegion.stringValue || '').toLowerCase();
+        return !coAndCaRegions.some(function(r) { return activeRegion.indexOf(r) !== -1; });
+      });
+    } else if (market && market !== 'all') {
       var regions = marketToRegions[market.toLowerCase()] || [];
       filtered = allUsers.filter(function(item) {
         var fields = item.document.fields;

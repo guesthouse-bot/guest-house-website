@@ -52,6 +52,18 @@ module.exports = async function handler(req, res) {
     california: { states: ['CA'], markets: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] },
   };
 
+  // Helper: check if a deal belongs to CO or CA
+  function isDealInCOorCA(deal) {
+    var props = deal.properties || {};
+    var dealMarket = (props.market || '').toLowerCase();
+    var allMarketKeywords = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'];
+    if (allMarketKeywords.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
+    var name = props.dealname || '';
+    var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+    if (stateMatch && ['CO', 'CA'].indexOf(stateMatch[1]) !== -1) return true;
+    return false;
+  }
+
   // Retry helper for HubSpot rate limiting and transient errors
   async function fetchWithRetry(url, options, retries) {
     retries = retries || 3;
@@ -114,16 +126,17 @@ module.exports = async function handler(req, res) {
     }
 
     // Filter by market
+    // "all" = everything, "nationwide" = only states outside CO and CA
     let filtered = allDeals;
-    if (market && market !== 'all' && market !== 'nationwide') {
+    if (market === 'nationwide') {
+      filtered = allDeals.filter(function(deal) { return !isDealInCOorCA(deal); });
+    } else if (market && market !== 'all') {
       const mapping = marketToValues[market.toLowerCase()];
       if (mapping) {
         filtered = allDeals.filter(function(deal) {
           var props = deal.properties || {};
-          // Check market property
           var dealMarket = (props.market || '').toLowerCase();
           if (mapping.markets.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
-          // Fallback: parse state from deal name (e.g. "123 Main St, Denver, CO")
           var name = props.dealname || '';
           var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
           if (stateMatch && mapping.states.indexOf(stateMatch[1]) !== -1) return true;
@@ -179,7 +192,9 @@ module.exports = async function handler(req, res) {
 
     // Filter closed won deals by market
     let filteredCW = closedWonDeals;
-    if (market && market !== 'all' && market !== 'nationwide') {
+    if (market === 'nationwide') {
+      filteredCW = closedWonDeals.filter(function(deal) { return !isDealInCOorCA(deal); });
+    } else if (market && market !== 'all') {
       const mapping = marketToValues[market.toLowerCase()];
       if (mapping) {
         filteredCW = closedWonDeals.filter(function(deal) {

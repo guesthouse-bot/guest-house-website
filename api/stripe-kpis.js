@@ -140,28 +140,38 @@ module.exports = async function handler(req, res) {
       return texts;
     }
 
-    // Filter by market if specified
+    // Helper: detect the state code for a charge
+    function getChargeState(charge) {
+      var billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
+      if (billingState) return billingState;
+      var shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
+      if (shippingState) return shippingState;
+      var meta = charge.metadata || {};
+      var metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
+      if (metaState) return metaState;
+      var texts = getChargeTexts(charge);
+      for (var i = 0; i < texts.length; i++) {
+        var parsed = extractState(texts[i]);
+        if (parsed) return parsed;
+      }
+      return '';
+    }
+
+    // Filter by market
+    // "all" = everything, "nationwide" = only states outside CO and CA,
+    // "colorado"/"california" = only that state
     let filtered = allCharges;
-    if (market && market !== 'all' && market !== 'nationwide') {
-      const stateCodes = marketToStates[market.toLowerCase()] || [];
+    if (market === 'nationwide') {
+      var excludeStates = ['CO', 'CA'];
       filtered = allCharges.filter(function(charge) {
-        // Check billing address state
-        const billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
-        if (stateCodes.indexOf(billingState) !== -1) return true;
-        // Check shipping address state
-        const shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
-        if (stateCodes.indexOf(shippingState) !== -1) return true;
-        // Check metadata
-        const meta = charge.metadata || {};
-        const metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
-        if (stateCodes.indexOf(metaState) !== -1) return true;
-        // Parse state from charge description and invoice line items
-        var texts = getChargeTexts(charge);
-        for (var i = 0; i < texts.length; i++) {
-          var parsed = extractState(texts[i]);
-          if (parsed && stateCodes.indexOf(parsed) !== -1) return true;
-        }
-        return false;
+        var state = getChargeState(charge);
+        return !state || excludeStates.indexOf(state) === -1;
+      });
+    } else if (market && market !== 'all') {
+      var stateCodes = marketToStates[market.toLowerCase()] || [];
+      filtered = allCharges.filter(function(charge) {
+        var state = getChargeState(charge);
+        return state && stateCodes.indexOf(state) !== -1;
       });
     }
 

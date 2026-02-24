@@ -115,9 +115,25 @@ module.exports = async function handler(req, res) {
     return allDeals;
   }
 
+  // Helper: check if a deal belongs to CO or CA
+  function isDealInCOorCA(deal) {
+    var props = deal.properties || {};
+    var dealMarket = (props.market || '').toLowerCase();
+    var allKeywords = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'];
+    if (allKeywords.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
+    var name = props.dealname || '';
+    var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+    if (stateMatch && ['CO', 'CA'].indexOf(stateMatch[1]) !== -1) return true;
+    return false;
+  }
+
   // Helper: filter deals by market
+  // "all" = everything, "nationwide" = only states outside CO and CA
   function filterByMarket(deals) {
-    if (!market || market === 'all' || market === 'nationwide') return deals;
+    if (!market || market === 'all') return deals;
+    if (market === 'nationwide') {
+      return deals.filter(function(deal) { return !isDealInCOorCA(deal); });
+    }
     var mapping = marketToValues[market.toLowerCase()];
     if (!mapping) return deals;
 
