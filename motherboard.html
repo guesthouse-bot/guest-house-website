@@ -1104,7 +1104,7 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (total)</div>
-                    <div class="kpi-value">&mdash;</div>
+                    <div class="kpi-value" id="kpi-aov-total">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">ARPU</div>
@@ -1289,14 +1289,14 @@
         }
 
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-total'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
         }
 
         function clearStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-total'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.style.opacity = '1';
             });
@@ -1318,10 +1318,12 @@
 
                 setKPI('kpi-revenue', formatCurrency(data.revenue));
                 setKPI('kpi-bookings', formatNumber(data.bookings));
+                setKPI('kpi-aov-total', data.bookings > 0 ? formatCurrency(data.revenue / data.bookings) : '$0');
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
                 setKPI('kpi-revenue', 'Error');
                 setKPI('kpi-bookings', 'Error');
+                setKPI('kpi-aov-total', 'Error');
             }
             clearStripeLoading();
         }
