@@ -175,6 +175,7 @@ module.exports = async function handler(req, res) {
     var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
     var agentContactIds = [];
     var agentEmails = new Set();
+    var agentContactMap = {}; // contactId → email
 
     for (var i = 0; i < emails.length; i += 100) {
       var batch = emails.slice(i, i + 100);
@@ -204,74 +205,103 @@ module.exports = async function handler(req, res) {
           if (isAgent) {
             agentContactIds.push(contact.id);
             agentEmails.add((props.email || '').toLowerCase());
+            agentContactMap[contact.id] = (props.email || '').toLowerCase();
           }
         });
       }
     }
 
-    var activeUsers = agentEmails.size;
+    // --- Step 5: Get deal associations — preserve contact→deals mapping ---
+    var contactDealIds = {}; // contactId → [dealId, ...]
+    var allDealIds = new Set();
 
-    // --- Step 5: In parallel, fetch HubSpot deal associations + Stripe charges ---
+    for (var i = 0; i < agentContactIds.length; i += 100) {
+      var batch = agentContactIds.slice(i, i + 100);
+      var assocResponse = await fetch('https://api.hubapi.com/crm/v4/associations/contact/deal/batch/read', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputs: batch.map(function(id) { return { id: String(id) }; })
+        }),
+      });
 
-    // 5a: HubSpot — get deal IDs associated with agent contacts
-    async function getAgentDeals() {
-      var agentDealIds = new Set();
-
-      for (var i = 0; i < agentContactIds.length; i += 100) {
-        var batch = agentContactIds.slice(i, i + 100);
-        var assocResponse = await fetch('https://api.hubapi.com/crm/v4/associations/contact/deal/batch/read', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            inputs: batch.map(function(id) { return { id: String(id) }; })
-          }),
-        });
-
-        if (assocResponse.ok) {
-          var assocData = await assocResponse.json();
-          (assocData.results || []).forEach(function(result) {
-            (result.to || []).forEach(function(to) {
-              agentDealIds.add(String(to.toObjectId));
-            });
+      if (assocResponse.ok) {
+        var assocData = await assocResponse.json();
+        (assocData.results || []).forEach(function(result) {
+          var contactId = String(result.from.id);
+          if (!contactDealIds[contactId]) contactDealIds[contactId] = [];
+          (result.to || []).forEach(function(to) {
+            var dealId = String(to.toObjectId);
+            contactDealIds[contactId].push(dealId);
+            allDealIds.add(dealId);
           });
-        }
-      }
-
-      // Batch read deal details
-      var dealIdArray = Array.from(agentDealIds);
-      var allDeals = [];
-
-      for (var i = 0; i < dealIdArray.length; i += 100) {
-        var batch = dealIdArray.slice(i, i + 100);
-        var dealResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals/batch/read', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            properties: ['dealname', 'dealstage', 'createdate', 'closedate', 'amount', 'pipeline'],
-            inputs: batch.map(function(id) { return { id: id }; })
-          }),
         });
-
-        if (dealResponse.ok) {
-          var dealData = await dealResponse.json();
-          allDeals = allDeals.concat(dealData.results || []);
-        }
       }
+    }
 
-      // Count quotes (deals created in range) and bookings (closed won in range)
-      var agentQuotes = 0;
-      var agentBookings = 0;
-      var agentBookingRevenue = 0;
+    // --- Step 6: Batch read all deal details ---
+    var dealIdArray = Array.from(allDealIds);
+    var dealMap = {}; // dealId → deal properties
 
-      allDeals.forEach(function(deal) {
-        var props = deal.properties || {};
-        if (props.pipeline !== 'default') return;
+    for (var i = 0; i < dealIdArray.length; i += 100) {
+      var batch = dealIdArray.slice(i, i + 100);
+      var dealResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals/batch/read', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          properties: ['dealname', 'dealstage', 'createdate', 'closedate', 'amount', 'pipeline'],
+          inputs: batch.map(function(id) { return { id: id }; })
+        }),
+      });
+
+      if (dealResponse.ok) {
+        var dealData = await dealResponse.json();
+        (dealData.results || []).forEach(function(deal) {
+          dealMap[deal.id] = deal.properties || {};
+        });
+      }
+    }
+
+    // --- Step 7: Find "active users" = agents with at least 1 Closed Won deal in period ---
+    var activeContactIds = new Set();
+
+    Object.keys(contactDealIds).forEach(function(contactId) {
+      var dealIds = contactDealIds[contactId];
+      var hasBooking = dealIds.some(function(dealId) {
+        var props = dealMap[dealId];
+        if (!props || props.pipeline !== 'default') return false;
+        if (props.dealstage !== 'closedwon' || !props.closedate) return false;
+        var closeTime = new Date(props.closedate).getTime();
+        return closeTime >= startMs && closeTime <= endMs;
+      });
+      if (hasBooking) activeContactIds.add(contactId);
+    });
+
+    var activeUsers = activeContactIds.size;
+
+    // Build set of active agent emails (for Stripe matching)
+    var activeAgentEmails = new Set();
+    activeContactIds.forEach(function(contactId) {
+      var email = agentContactMap[contactId];
+      if (email) activeAgentEmails.add(email);
+    });
+
+    // --- Step 8: Count quotes + bookings only for active (paying) agents ---
+    var agentQuotes = 0;
+    var agentBookings = 0;
+    var agentBookingRevenue = 0;
+
+    activeContactIds.forEach(function(contactId) {
+      var dealIds = contactDealIds[contactId] || [];
+      dealIds.forEach(function(dealId) {
+        var props = dealMap[dealId];
+        if (!props || props.pipeline !== 'default') return;
 
         var createTime = new Date(props.createdate).getTime();
         if (createTime >= startMs && createTime <= endMs) {
@@ -287,64 +317,55 @@ module.exports = async function handler(req, res) {
           }
         }
       });
+    });
 
-      return { agentQuotes: agentQuotes, agentBookings: agentBookings, agentBookingRevenue: agentBookingRevenue };
-    }
+    // --- Step 9: Stripe revenue only for active agent emails ---
+    var agentRevenue = 0;
+    var sHasMore = true;
+    var startingAfter = null;
 
-    // 5b: Stripe — fetch charges and filter by agent emails
-    async function getAgentStripeRevenue() {
-      var agentRev = 0;
-      var sHasMore = true;
-      var startingAfter = null;
+    while (sHasMore) {
+      var stripeParams = new URLSearchParams({
+        'created[gte]': String(startUnix),
+        'created[lte]': String(endUnix),
+        'limit': '100',
+        'status': 'succeeded',
+      });
+      if (startingAfter) stripeParams.append('starting_after', startingAfter);
 
-      while (sHasMore) {
-        var params = new URLSearchParams({
-          'created[gte]': String(startUnix),
-          'created[lte]': String(endUnix),
-          'limit': '100',
-          'status': 'succeeded',
-        });
-        if (startingAfter) params.append('starting_after', startingAfter);
+      var stripeResponse = await fetch('https://api.stripe.com/v1/charges?' + stripeParams, {
+        headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
+      });
 
-        var stripeResponse = await fetch('https://api.stripe.com/v1/charges?' + params, {
-          headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
-        });
+      if (!stripeResponse.ok) break;
 
-        if (!stripeResponse.ok) break;
-
-        var stripeData = await stripeResponse.json();
-        stripeData.data.forEach(function(charge) {
-          var billingEmail = (charge.billing_details && charge.billing_details.email || '').toLowerCase();
-          var receiptEmail = (charge.receipt_email || '').toLowerCase();
-          if (agentEmails.has(billingEmail) || agentEmails.has(receiptEmail)) {
-            agentRev += (charge.amount_captured || 0);
-          }
-        });
-
-        sHasMore = stripeData.has_more;
-        if (sHasMore && stripeData.data.length > 0) {
-          startingAfter = stripeData.data[stripeData.data.length - 1].id;
+      var stripeData = await stripeResponse.json();
+      stripeData.data.forEach(function(charge) {
+        var billingEmail = (charge.billing_details && charge.billing_details.email || '').toLowerCase();
+        var receiptEmail = (charge.receipt_email || '').toLowerCase();
+        if (activeAgentEmails.has(billingEmail) || activeAgentEmails.has(receiptEmail)) {
+          agentRevenue += (charge.amount_captured || 0);
         }
-      }
+      });
 
-      return agentRev / 100;
+      sHasMore = stripeData.has_more;
+      if (sHasMore && stripeData.data.length > 0) {
+        startingAfter = stripeData.data[stripeData.data.length - 1].id;
+      }
     }
 
-    // Run HubSpot deals + Stripe charges in parallel
-    var results = await Promise.all([getAgentDeals(), getAgentStripeRevenue()]);
-    var hubspotResult = results[0];
-    var agentRevenue = results[1];
+    agentRevenue = agentRevenue / 100;
 
-    // --- Step 6: Compute per-user metrics ---
+    // --- Step 10: Compute per-user metrics ---
     var accts = activeUsers > 0 ? activeUsers : 1;
 
     return res.status(200).json({
       active_users: activeUsers,
-      agent_quotes: hubspotResult.agentQuotes,
-      agent_bookings: hubspotResult.agentBookings,
+      agent_quotes: agentQuotes,
+      agent_bookings: agentBookings,
       agent_revenue: agentRevenue,
-      quotes_per_user: hubspotResult.agentQuotes / accts,
-      bookings_per_user: hubspotResult.agentBookings / accts,
+      quotes_per_user: agentQuotes / accts,
+      bookings_per_user: agentBookings / accts,
       revenue_per_user: agentRevenue / accts,
       arpu: agentRevenue / accts,
       period: { start: startMs, end: endMs },
