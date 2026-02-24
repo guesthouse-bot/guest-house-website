@@ -1273,31 +1273,44 @@
         }
 
         // Track latest values for cross-source calculations
+        var latestRevenue = null;
         var latestBookings = null;
         var latestQuotes = null;
+        var latestUniqueAccounts = null;
 
-        function updateConversionRate() {
+        function updateCrossSourceKPIs() {
+            // Conversion rate (HubSpot bookings / HubSpot quotes)
             if (latestQuotes !== null && latestBookings !== null) {
                 if (latestQuotes > 0) {
-                    var rate = (latestBookings / latestQuotes * 100).toFixed(1);
-                    setKPI('kpi-conversion', rate + '%');
+                    setKPI('kpi-conversion', (latestBookings / latestQuotes * 100).toFixed(1) + '%');
                 } else {
                     setKPI('kpi-conversion', '0%');
                 }
                 var el = document.getElementById('kpi-conversion');
                 if (el) el.style.opacity = '1';
             }
+            // AOV total (Stripe revenue / HubSpot bookings)
+            if (latestRevenue !== null && latestBookings !== null) {
+                setKPI('kpi-aov-total', latestBookings > 0 ? formatCurrency(latestRevenue / latestBookings) : '$0');
+                var el2 = document.getElementById('kpi-aov-total');
+                if (el2) el2.style.opacity = '1';
+            }
+            // Revenue / User and ARPU (Stripe revenue / Stripe unique accounts)
+            if (latestRevenue !== null && latestUniqueAccounts !== null) {
+                setKPI('kpi-rev-user', latestUniqueAccounts > 0 ? formatCurrency(latestRevenue / latestUniqueAccounts) : '$0');
+                setKPI('kpi-arpu', latestUniqueAccounts > 0 ? formatCurrency(latestRevenue / latestUniqueAccounts) : '$0');
+            }
         }
 
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu', 'kpi-conversion'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-aov-total', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
         }
 
         function clearStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.style.opacity = '1';
             });
@@ -1318,30 +1331,21 @@
                 var data = await response.json();
 
                 setKPI('kpi-revenue', formatCurrency(data.revenue));
-                setKPI('kpi-bookings', formatNumber(data.bookings));
-                setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
-                setKPI('kpi-aov-total', data.bookings > 0 ? formatCurrency(data.revenue / data.bookings) : '$0');
-                setKPI('kpi-bookings-user', data.unique_accounts > 0 ? formatNumber(data.bookings / data.unique_accounts) : '0');
-                setKPI('kpi-rev-user', data.unique_accounts > 0 ? formatCurrency(data.revenue / data.unique_accounts) : '$0');
-                setKPI('kpi-arpu', formatCurrency(data.arpu));
-                latestBookings = data.bookings;
-                updateConversionRate();
+                latestRevenue = data.revenue;
+                latestUniqueAccounts = data.unique_accounts;
+                updateCrossSourceKPIs();
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
                 setKPI('kpi-revenue', 'Error');
-                setKPI('kpi-bookings', 'Error');
-                setKPI('kpi-aov-close', 'Error');
                 setKPI('kpi-aov-total', 'Error');
-                setKPI('kpi-bookings-user', 'Error');
                 setKPI('kpi-rev-user', 'Error');
                 setKPI('kpi-arpu', 'Error');
-                setKPI('kpi-conversion', 'Error');
             }
             clearStripeLoading();
         }
 
         async function fetchHubSpotKPIs(filters) {
-            ['kpi-quotes', 'kpi-sales-cycle'].forEach(function(id) {
+            ['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-conversion', 'kpi-sales-cycle', 'kpi-bookings-user'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
@@ -1358,19 +1362,25 @@
                 var data = await response.json();
 
                 setKPI('kpi-quotes', formatNumber(data.quotes_requested));
+                setKPI('kpi-bookings', formatNumber(data.bookings));
+                setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
                 if (data.sales_cycle_days !== null) {
                     setKPI('kpi-sales-cycle', Math.round(data.sales_cycle_days) + ' days');
                 } else {
                     setKPI('kpi-sales-cycle', '\u2014');
                 }
+                latestBookings = data.bookings;
                 latestQuotes = data.quotes_requested;
-                updateConversionRate();
+                updateCrossSourceKPIs();
             } catch (err) {
                 console.error('HubSpot KPI fetch error:', err);
                 setKPI('kpi-quotes', 'Error');
+                setKPI('kpi-bookings', 'Error');
+                setKPI('kpi-aov-close', 'Error');
                 setKPI('kpi-sales-cycle', 'Error');
+                setKPI('kpi-conversion', 'Error');
             }
-            ['kpi-quotes', 'kpi-sales-cycle'].forEach(function(id) {
+            ['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-sales-cycle', 'kpi-bookings-user'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.style.opacity = '1';
             });
@@ -1400,8 +1410,10 @@
         }
 
         function fetchAllKPIs(filters) {
+            latestRevenue = null;
             latestBookings = null;
             latestQuotes = null;
+            latestUniqueAccounts = null;
             fetchStripeKPIs(filters);
             fetchHubSpotKPIs(filters);
             fetchFirebaseKPIs(filters);

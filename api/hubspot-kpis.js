@@ -132,7 +132,7 @@ module.exports = async function handler(req, res) {
             { propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' },
           ]
         }],
-        properties: ['dealname', 'createdate', 'closedate', 'market'],
+        properties: ['dealname', 'createdate', 'closedate', 'market', 'amount'],
         limit: 100,
         after: cwAfter,
       };
@@ -193,10 +193,21 @@ module.exports = async function handler(req, res) {
     });
     var avgSalesCycle = cycleCount > 0 ? totalDays / cycleCount : null;
 
+    // Bookings = Closed Won deals count and revenue
+    var bookings = filteredCW.length;
+    var bookingRevenue = 0;
+    filteredCW.forEach(function(deal) {
+      var amt = parseFloat(deal.properties.amount || 0);
+      if (!isNaN(amt)) bookingRevenue += amt;
+    });
+    var aovAtClose = bookings > 0 ? bookingRevenue / bookings : 0;
+
     return res.status(200).json({
       quotes_requested: quotesRequested,
+      bookings: bookings,
+      booking_revenue: bookingRevenue,
+      aov_at_close: aovAtClose,
       sales_cycle_days: avgSalesCycle,
-      closed_won_count: cycleCount,
       period: { start: startDate, end: endDate },
       market: market || 'all',
     });
