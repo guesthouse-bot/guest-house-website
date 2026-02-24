@@ -151,6 +151,21 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
+
+    // Debug mode: show all charge descriptions grouped
+    if (req.query.debug === 'descriptions') {
+      var descMap = {};
+      filtered.forEach(function(c) {
+        var desc = c.description || '(no description)';
+        if (!descMap[desc]) descMap[desc] = { count: 0, total: 0 };
+        descMap[desc].count++;
+        descMap[desc].total += (c.amount_captured || 0) / 100;
+      });
+      result._debug_descriptions = descMap;
+      result._debug_renewal_count = renewalCharges.length;
+      result._debug_total_charges = filtered.length;
+    }
+
     return res.status(200).json(result);
 
   } catch (err) {
