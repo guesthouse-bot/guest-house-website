@@ -209,7 +209,7 @@ module.exports = async function handler(req, res) {
         var props = deal.properties || {};
         if (props.createdate) {
           var day = new Date(props.createdate).toISOString().slice(0, 10);
-          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0 };
+          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0, sales_cycle_total: 0, sales_cycle_count: 0 };
           daily[day].quotes++;
         }
       });
@@ -217,10 +217,20 @@ module.exports = async function handler(req, res) {
         var props = deal.properties || {};
         if (props.closedate) {
           var day = new Date(props.closedate).toISOString().slice(0, 10);
-          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0 };
+          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0, sales_cycle_total: 0, sales_cycle_count: 0 };
           daily[day].bookings++;
           var amt = parseFloat(props.amount || 0);
           if (!isNaN(amt)) daily[day].booking_revenue += amt;
+          // Sales cycle per closed deal
+          if (props.createdate) {
+            var created = new Date(props.createdate).getTime();
+            var closed = new Date(props.closedate).getTime();
+            var days = (closed - created) / (1000 * 60 * 60 * 24);
+            if (days >= 0) {
+              daily[day].sales_cycle_total += days;
+              daily[day].sales_cycle_count++;
+            }
+          }
         }
       });
     }

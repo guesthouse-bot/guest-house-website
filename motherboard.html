@@ -458,7 +458,7 @@
 
         /* Filter Bar */
         .filters-bar {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 3rem;
         }
@@ -582,7 +582,7 @@
 
         /* KPI Sections */
         .kpi-section {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 60px 3rem 80px;
         }
@@ -604,14 +604,14 @@
         }
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
         .kpi-card {
             background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 12px;
-            padding: 24px;
+            padding: 24px 24px 20px;
         }
         .kpi-label {
             font-size: 0.75rem;
@@ -666,32 +666,71 @@
             display: block;
         }
         .kpi-sparkline {
-            height: 40px;
-            margin-top: 12px;
+            margin-top: 16px;
             display: none;
+            position: relative;
         }
         .kpi-sparkline.visible {
             display: block;
         }
-        .kpi-sparkline svg {
+        .sparkline-chart-area {
+            position: relative;
+            height: 160px;
+        }
+        .sparkline-chart-area svg {
             width: 100%;
             height: 100%;
+            display: block;
         }
         .sparkline-current {
             fill: none;
-            stroke: var(--color-onyx);
-            stroke-width: 1.5;
+            stroke: #635BFF;
+            stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
         .sparkline-compare {
             fill: none;
-            stroke: var(--color-text-secondary);
-            stroke-width: 1;
+            stroke: #999;
+            stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 4 3;
-            opacity: 0.5;
+            stroke-dasharray: 6 4;
+            opacity: 0.6;
+        }
+        .sparkline-grid-line {
+            stroke: #E8E8E8;
+            stroke-width: 1;
+        }
+        .sparkline-x-axis {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.6875rem;
+            color: var(--color-text-secondary);
+        }
+        .sparkline-y-axis {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+            padding: 0;
+        }
+        .sparkline-y-label {
+            font-size: 0.625rem;
+            color: #999;
+            text-align: right;
+            line-height: 1;
+            transform: translateY(-50%);
+            background: var(--color-white);
+            padding-left: 4px;
+        }
+        .kpi-section-grey .sparkline-y-label {
+            background: var(--color-surface-secondary);
         }
         /* Compare toggle */
         .compare-toggle-group {
@@ -822,7 +861,7 @@
                 grid-template-columns: repeat(3, 1fr);
             }
             .kpi-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1590,8 +1629,56 @@
             return { dateFrom: fmt(cmpStart), dateTo: fmt(cmpEnd) };
         }
 
-        // ---- Sparkline renderer ----
-        function renderSparkline(containerId, currentDaily, compareDaily, dailyKey) {
+        // ---- Chart renderer (Stripe-style with axes) ----
+        var lastFilters = null; // stored so sparklines know the date range
+
+        function formatAxisLabel(val, unit) {
+            if (unit === 'currency') {
+                if (Math.abs(val) >= 1000) return '$' + (val / 1000).toFixed(0) + 'K';
+                return '$' + Math.round(val);
+            }
+            if (unit === 'percent') return val.toFixed(0) + '%';
+            if (unit === 'days') return Math.round(val) + 'd';
+            if (unit === 'decimal1') return val.toFixed(1);
+            if (unit === 'decimal2') return val.toFixed(2);
+            return Math.round(val).toString();
+        }
+
+        function formatDateLabel(dateStr) {
+            var d = new Date(dateStr + 'T00:00:00');
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return months[d.getMonth()] + ' ' + d.getDate();
+        }
+
+        function niceTickCount(range) {
+            if (range <= 4) return Math.max(range, 2);
+            if (range <= 10) return 4;
+            return 4;
+        }
+
+        function computeNiceTicks(min, max, count) {
+            if (min === max) { min = min - 1; max = max + 1; }
+            var range = max - min;
+            var rawStep = range / (count - 1);
+            // Round step to a nice number
+            var mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+            var residual = rawStep / mag;
+            var niceStep;
+            if (residual <= 1.5) niceStep = 1 * mag;
+            else if (residual <= 3) niceStep = 2 * mag;
+            else if (residual <= 7) niceStep = 5 * mag;
+            else niceStep = 10 * mag;
+
+            var niceMin = Math.floor(min / niceStep) * niceStep;
+            var niceMax = Math.ceil(max / niceStep) * niceStep;
+            var ticks = [];
+            for (var v = niceMin; v <= niceMax + niceStep * 0.01; v += niceStep) {
+                ticks.push(Math.round(v * 1000) / 1000);
+            }
+            return { min: niceMin, max: niceMax, ticks: ticks };
+        }
+
+        function renderSparkline(containerId, currentDaily, compareDaily, dailyKey, unit) {
             var container = document.getElementById(containerId);
             if (!container) return;
 
@@ -1603,23 +1690,70 @@
             }
 
             container.classList.add('visible');
-            var w = container.offsetWidth || 200;
-            var h = 40;
-            var currentPoints = computePolyline(currentEntries, w, h);
 
-            var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">';
-
+            // Collect all values for Y-axis scale (include compare if present)
+            var allValues = currentEntries.map(function(e) { return e.value; });
+            var compareEntries = [];
             if (compareDaily) {
-                var compareEntries = dailyToSorted(compareDaily, dailyKey);
-                if (compareEntries.length >= 2) {
-                    var comparePoints = computePolyline(compareEntries, w, h);
-                    svg += '<polyline class="sparkline-compare" points="' + comparePoints + '"/>';
-                }
+                compareEntries = dailyToSorted(compareDaily, dailyKey);
+                compareEntries.forEach(function(e) { allValues.push(e.value); });
             }
 
-            svg += '<polyline class="sparkline-current" points="' + currentPoints + '"/>';
+            var dataMin = Math.min.apply(null, allValues);
+            var dataMax = Math.max.apply(null, allValues);
+            // Ensure min starts at 0 for count/currency
+            if (unit !== 'days' && unit !== 'decimal1' && unit !== 'decimal2') {
+                dataMin = Math.min(dataMin, 0);
+            }
+
+            var tickInfo = computeNiceTicks(dataMin, dataMax, 4);
+            var yMin = tickInfo.min;
+            var yMax = tickInfo.max;
+            var ticks = tickInfo.ticks;
+
+            // Chart dimensions (inner area, leaving room for Y labels on right)
+            var chartW = 300;
+            var chartH = 160;
+            var padRight = 45;
+            var padTop = 8;
+            var padBot = 8;
+            var innerW = chartW - padRight;
+            var innerH = chartH - padTop - padBot;
+
+            // Build SVG
+            var svg = '<svg viewBox="0 0 ' + chartW + ' ' + chartH + '" preserveAspectRatio="none" style="width:100%;height:160px;">';
+
+            // Grid lines + Y labels
+            ticks.forEach(function(tick) {
+                var y = padTop + innerH - ((tick - yMin) / (yMax - yMin || 1)) * innerH;
+                svg += '<line x1="0" y1="' + y.toFixed(1) + '" x2="' + innerW + '" y2="' + y.toFixed(1) + '" class="sparkline-grid-line"/>';
+                svg += '<text x="' + (innerW + 6) + '" y="' + (y + 3.5).toFixed(1) + '" font-size="10" fill="#999" font-family="Circular, sans-serif">' + formatAxisLabel(tick, unit) + '</text>';
+            });
+
+            // Polyline helper using nice scale
+            function toPoints(entries) {
+                return entries.map(function(e, i) {
+                    var x = entries.length === 1 ? innerW / 2 : (i / (entries.length - 1)) * innerW;
+                    var y = padTop + innerH - ((e.value - yMin) / (yMax - yMin || 1)) * innerH;
+                    return x.toFixed(1) + ',' + y.toFixed(1);
+                }).join(' ');
+            }
+
+            // Compare line (behind)
+            if (compareEntries.length >= 2) {
+                svg += '<polyline class="sparkline-compare" points="' + toPoints(compareEntries) + '"/>';
+            }
+
+            // Current line (on top)
+            svg += '<polyline class="sparkline-current" points="' + toPoints(currentEntries) + '"/>';
             svg += '</svg>';
-            container.innerHTML = svg;
+
+            // X-axis date labels
+            var firstDate = currentEntries[0].day;
+            var lastDate = currentEntries[currentEntries.length - 1].day;
+            var xAxisHtml = '<div class="sparkline-x-axis"><span>' + formatDateLabel(firstDate) + '</span><span>' + formatDateLabel(lastDate) + '</span></div>';
+
+            container.innerHTML = '<div class="sparkline-chart-area">' + svg + '</div>' + xAxisHtml;
         }
 
         function dailyToSorted(daily, key) {
@@ -1630,20 +1764,6 @@
                 if (val !== undefined) entries.push({ day: day, value: val });
             });
             return entries;
-        }
-
-        function computePolyline(entries, w, h) {
-            var pad = 2;
-            var values = entries.map(function(e) { return e.value; });
-            var min = Math.min.apply(null, values);
-            var max = Math.max.apply(null, values);
-            var range = max - min || 1;
-
-            return entries.map(function(e, i) {
-                var x = entries.length === 1 ? w / 2 : (i / (entries.length - 1)) * w;
-                var y = h - pad - ((e.value - min) / range) * (h - pad * 2);
-                return x.toFixed(1) + ',' + y.toFixed(1);
-            }).join(' ');
         }
 
         // ---- Comparison renderer ----
@@ -1684,7 +1804,9 @@
             changeEl.textContent = pctText;
 
             prevEl.className = 'kpi-prev visible';
-            prevEl.textContent = 'vs ' + formatter(prevVal);
+            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', custom: 'comparison' };
+            var modeLabel = modeLabels[compareMode.value] || 'previous period';
+            prevEl.textContent = formatter(prevVal) + ' ' + modeLabel;
         }
 
         function clearAllComparisons() {
@@ -1953,50 +2075,64 @@
 
             // Stripe sparklines
             if (ds && ds.daily) {
-                renderSparkline('kpi-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue');
-                renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue');
-                renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue');
+                renderSparkline('kpi-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
+                renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue', 'currency');
+                renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue', 'currency');
             }
 
             // HubSpot sparklines
             if (dh && dh.daily) {
-                renderSparkline('kpi-quotes-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'quotes');
-                renderSparkline('kpi-bookings-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings');
+                renderSparkline('kpi-quotes-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'quotes', 'count');
+                renderSparkline('kpi-bookings-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings', 'count');
             }
 
             // Firebase sparklines
             if (dfb && dfb.daily) {
-                renderSparkline('kpi-accounts-sparkline', dfb.daily, cmpOn && cf ? cf.daily : null, 'accounts_created');
+                renderSparkline('kpi-accounts-sparkline', dfb.daily, cmpOn && cf ? cf.daily : null, 'accounts_created', 'count');
             }
 
             // Customer sparklines
             if (dc && dc.daily) {
-                renderSparkline('kpi-active-users-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings');
-                renderSparkline('kpi-quotes-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_quotes');
-                renderSparkline('kpi-bookings-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings');
+                renderSparkline('kpi-active-users-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings', 'count');
+                renderSparkline('kpi-quotes-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_quotes', 'count');
+                renderSparkline('kpi-bookings-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings', 'count');
             }
 
-            // Computed sparklines: conversion, AOV total, sales cycle, rev/user, arpu
-            // These need cross-source merge or just show the primary underlying metric
+            // Conversion sparkline: show bookings trend
             if (dh && dh.daily) {
-                // Conversion sparkline: show bookings trend (since conversion = bookings/quotes)
-                renderSparkline('kpi-conversion-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings');
-                // AOV at close: show booking_revenue trend
-                renderSparkline('kpi-aov-close-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'booking_revenue');
-                // Sales cycle: no daily data available, skip
+                renderSparkline('kpi-conversion-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings', 'count');
+                // AOV at close: booking_revenue trend
+                renderSparkline('kpi-aov-close-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'booking_revenue', 'currency');
+                // Sales cycle: use daily sales cycle averages
+                var scDaily = buildSalesCycleDaily(dh.daily);
+                var scCompare = ch && ch.daily ? buildSalesCycleDaily(ch.daily) : null;
+                renderSparkline('kpi-sales-cycle-sparkline', scDaily, scCompare, 'avg_days', 'days');
             }
             if (ds && ds.daily) {
-                // AOV total: show revenue trend
-                renderSparkline('kpi-aov-total-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue');
+                renderSparkline('kpi-aov-total-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
             }
             if (dc && dc.daily) {
-                renderSparkline('kpi-rev-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue');
-                renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue');
+                renderSparkline('kpi-rev-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
+                renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
             }
+        }
+
+        // Build daily average sales cycle from hubspot daily data
+        function buildSalesCycleDaily(daily) {
+            if (!daily) return null;
+            var result = {};
+            Object.keys(daily).forEach(function(day) {
+                var d = daily[day];
+                if (d.sales_cycle_count > 0) {
+                    result[day] = { avg_days: d.sales_cycle_total / d.sales_cycle_count };
+                }
+            });
+            return Object.keys(result).length > 0 ? result : null;
         }
 
         // ---- Main fetch orchestrator ----
         async function fetchAllKPIs(filters) {
+            lastFilters = filters;
             latestRevenue = null;
             latestBookings = null;
             latestQuotes = null;
