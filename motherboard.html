@@ -1095,6 +1095,10 @@
                     <div class="kpi-value" id="kpi-bookings">&mdash;</div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Conversion rate</div>
+                    <div class="kpi-value" id="kpi-conversion">&mdash;</div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Revenue</div>
                     <div class="kpi-value" id="kpi-revenue">&mdash;</div>
                 </div>
@@ -1264,8 +1268,25 @@
             if (el) el.textContent = value;
         }
 
+        // Track latest values for cross-source calculations
+        var latestBookings = null;
+        var latestQuotes = null;
+
+        function updateConversionRate() {
+            if (latestQuotes !== null && latestBookings !== null) {
+                if (latestQuotes > 0) {
+                    var rate = (latestBookings / latestQuotes * 100).toFixed(1);
+                    setKPI('kpi-conversion', rate + '%');
+                } else {
+                    setKPI('kpi-conversion', '0%');
+                }
+                var el = document.getElementById('kpi-conversion');
+                if (el) el.style.opacity = '1';
+            }
+        }
+
         function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
+            ['kpi-revenue', 'kpi-bookings', 'kpi-aov-close', 'kpi-aov-total', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu', 'kpi-conversion'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
@@ -1299,6 +1320,8 @@
                 setKPI('kpi-bookings-user', data.unique_accounts > 0 ? formatNumber(data.bookings / data.unique_accounts) : '0');
                 setKPI('kpi-rev-user', data.unique_accounts > 0 ? formatCurrency(data.revenue / data.unique_accounts) : '$0');
                 setKPI('kpi-arpu', formatCurrency(data.arpu));
+                latestBookings = data.bookings;
+                updateConversionRate();
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
                 setKPI('kpi-revenue', 'Error');
@@ -1308,6 +1331,7 @@
                 setKPI('kpi-bookings-user', 'Error');
                 setKPI('kpi-rev-user', 'Error');
                 setKPI('kpi-arpu', 'Error');
+                setKPI('kpi-conversion', 'Error');
             }
             clearStripeLoading();
         }
@@ -1328,6 +1352,8 @@
                 var data = await response.json();
 
                 setKPI('kpi-quotes', formatNumber(data.quotes_requested));
+                latestQuotes = data.quotes_requested;
+                updateConversionRate();
             } catch (err) {
                 console.error('HubSpot KPI fetch error:', err);
                 setKPI('kpi-quotes', 'Error');
@@ -1336,6 +1362,8 @@
         }
 
         function fetchAllKPIs(filters) {
+            latestBookings = null;
+            latestQuotes = null;
             fetchStripeKPIs(filters);
             fetchHubSpotKPIs(filters);
         }
