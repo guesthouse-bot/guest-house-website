@@ -141,7 +141,13 @@ module.exports = async function handler(req, res) {
     }
 
     // Helper: detect the state code for a charge
+    // Priority: description/invoice text (property location) > billing > shipping > metadata
     function getChargeState(charge) {
+      var texts = getChargeTexts(charge);
+      for (var i = 0; i < texts.length; i++) {
+        var parsed = extractState(texts[i]);
+        if (parsed) return parsed;
+      }
       var billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
       if (billingState) return billingState;
       var shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
@@ -149,11 +155,6 @@ module.exports = async function handler(req, res) {
       var meta = charge.metadata || {};
       var metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
       if (metaState) return metaState;
-      var texts = getChargeTexts(charge);
-      for (var i = 0; i < texts.length; i++) {
-        var parsed = extractState(texts[i]);
-        if (parsed) return parsed;
-      }
       return '';
     }
 
