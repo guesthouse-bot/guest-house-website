@@ -126,6 +126,7 @@ module.exports = async function handler(req, res) {
 
     // Store invoice details for debug
     var invoiceDetails = {};
+    var invoiceFetchErrors = [];
 
     // Fetch invoices individually
     for (var i = 0; i < invoiceCharges.length; i++) {
@@ -161,9 +162,13 @@ module.exports = async function handler(req, res) {
               break;
             }
           }
+        } else {
+          var errBody = '';
+          try { errBody = await invResp.text(); } catch(e2) {}
+          invoiceFetchErrors.push({ invoiceId: invoiceId, status: invResp.status, error: errBody.slice(0, 200) });
         }
       } catch (e) {
-        // Skip invoice lookup failures silently
+        invoiceFetchErrors.push({ invoiceId: invoiceId, error: e.message });
       }
     }
 
@@ -230,6 +235,8 @@ module.exports = async function handler(req, res) {
       result._debug_renewal_count = renewalChargeIds.size;
       result._debug_total_charges = filtered.length;
       result._debug_invoice_details = invoiceDetails;
+      result._debug_invoice_fetch_errors = invoiceFetchErrors;
+      result._debug_invoice_charges_count = invoiceCharges.length;
 
       // Also check charges for invoice field and metadata
       var chargeDetails = [];
