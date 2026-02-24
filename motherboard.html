@@ -1594,6 +1594,15 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
+                    <div class="kpi-label">Vendor Signups</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-vendor-signups">&mdash;</span>
+                        <span class="kpi-change" id="kpi-vendor-signups-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-vendor-signups-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-vendor-signups-sparkline"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Installs</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-installs">&mdash;</span>
@@ -2217,8 +2226,8 @@
         }
 
         // ---- Data storage ----
-        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
-        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
+        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null };
+        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null };
 
         // Track latest values for cross-source calculations
         var latestRevenue = null;
@@ -2412,6 +2421,31 @@
             }
         }
 
+        async function fetchVendorSignups(filters, isCompare) {
+            var ids = ['kpi-vendor-signups'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
+                var response = await fetch('/api/vendor-signups?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                if (isCompare) {
+                    compareData.vendor = data;
+                } else {
+                    currentData.vendor = data;
+                    setKPI('kpi-vendor-signups', formatNumber(data.vendor_signups));
+                }
+                return data;
+            } catch (err) {
+                console.error('Vendor signups fetch error:', err);
+                if (!isCompare) setKPI('kpi-vendor-signups', 'Error');
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
+            }
+        }
+
         async function fetchTypeformNPS(filters, isCompare) {
             var ids = ['kpi-nps'];
             if (!isCompare) setLoading(ids);
@@ -2482,6 +2516,12 @@
                 setComparison('kpi-rev-user', dc.revenue_per_user, cc.revenue_per_user, formatCurrency, false);
                 setComparison('kpi-arpu', dc.arpu, cc.arpu, formatCurrency, false);
             }
+            // Vendor comparisons
+            var dv = currentData.vendor;
+            var cv = compareData.vendor;
+            if (dv && cv) {
+                setComparison('kpi-vendor-signups', dv.vendor_signups, cv.vendor_signups, formatNumber, false);
+            }
             // Typeform comparisons
             var dt = currentData.typeform;
             var ct = compareData.typeform;
@@ -2546,6 +2586,13 @@
                 renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue', 'currency');
             }
 
+            // Vendor signups sparkline
+            var dv = currentData.vendor;
+            var cvs = compareData.vendor;
+            if (dv && dv.daily) {
+                renderSparkline('kpi-vendor-signups-sparkline', dv.daily, cmpOn && cvs ? cvs.daily : null, 'vendor_signups', 'count');
+            }
+
             // Typeform NPS sparkline
             var dtf = currentData.typeform;
             var ctf = compareData.typeform;
@@ -2590,6 +2637,7 @@
                 fetchStripeKPIs(filters, false),
                 fetchFirebaseKPIs(filters, false),
                 fetchTypeformNPS(filters, false),
+                fetchVendorSignups(filters, false),
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
@@ -2608,6 +2656,7 @@
                 wave1.push(fetchStripeKPIs(cmpFilters, true));
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
+                wave1.push(fetchVendorSignups(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
