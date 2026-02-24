@@ -109,11 +109,58 @@ module.exports = async function handler(req, res) {
     // Use amount_captured to match Stripe's Gross volume (excludes uncaptured authorizations)
     const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
 
-    // Split revenue: any charge mentioning "furniture renewal" goes to renewal, everything else to bookings revenue
-    const renewalCharges = filtered.filter(function(c) {
-      return c.description && c.description.toLowerCase().indexOf('furniture renewal') !== -1;
+    // --- Renewal detection ---
+    // Step 1: Check charge description for "renewal" (case-insensitive)
+    var renewalChargeIds = new Set();
+    filtered.forEach(function(c) {
+      if (c.description && c.description.toLowerCase().indexOf('renewal') !== -1) {
+        renewalChargeIds.add(c.id);
+      }
     });
-    const renewalRevenue = renewalCharges.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
+
+    // Step 2: For charges linked to invoices that aren't already flagged as renewal,
+    // fetch the invoice line items and check for "renewal" in line item descriptions
+    var invoiceCharges = filtered.filter(function(c) {
+      return c.invoice && !renewalChargeIds.has(c.id);
+    });
+
+    // Fetch invoices in batches (Stripe allows fetching one at a time)
+    for (var i = 0; i < invoiceCharges.length; i++) {
+      var invoiceId = invoiceCharges[i].invoice;
+      try {
+        var invResp = await fetch('https://api.stripe.com/v1/invoices/' + invoiceId, {
+          headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
+        });
+        if (invResp.ok) {
+          var inv = await invResp.json();
+          // Check invoice-level description
+          var invDesc = ((inv.description || '') + ' ' + (inv.memo || '')).toLowerCase();
+          if (invDesc.indexOf('renewal') !== -1) {
+            renewalChargeIds.add(invoiceCharges[i].id);
+            continue;
+          }
+          // Check each line item description
+          var lines = (inv.lines && inv.lines.data) || [];
+          for (var j = 0; j < lines.length; j++) {
+            var lineDesc = (lines[j].description || '').toLowerCase();
+            if (lineDesc.indexOf('renewal') !== -1) {
+              renewalChargeIds.add(invoiceCharges[i].id);
+              break;
+            }
+          }
+        }
+      } catch (e) {
+        // Skip invoice lookup failures silently
+      }
+    }
+
+    // Calculate renewal revenue from all identified renewal charges
+    var renewalRevenue = 0;
+    filtered.forEach(function(c) {
+      if (renewalChargeIds.has(c.id)) {
+        renewalRevenue += (c.amount_captured || 0) / 100;
+      }
+    });
     const bookingsRevenue = totalRevenue - renewalRevenue;
 
     // Get unique customers for ARPU and bookings per account
@@ -124,6 +171,11 @@ module.exports = async function handler(req, res) {
     const uniqueAccounts = customerSet.size || 1;
     const arpu = totalRevenue / uniqueAccounts;
 
+    // Helper: check if a charge is renewal
+    function isRenewalCharge(c) {
+      return renewalChargeIds.has(c.id);
+    }
+
     // Daily bucketing
     var daily = {};
     if (req.query.daily === 'true') {
@@ -132,8 +184,7 @@ module.exports = async function handler(req, res) {
         if (!daily[day]) daily[day] = { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
         var amt = (c.amount_captured || 0) / 100;
         daily[day].revenue += amt;
-        var isRenewal = c.description && c.description.toLowerCase().indexOf('furniture renewal') !== -1;
-        if (isRenewal) {
+        if (isRenewalCharge(c)) {
           daily[day].renewal_revenue += amt;
         } else {
           daily[day].bookings_revenue += amt;
@@ -152,17 +203,18 @@ module.exports = async function handler(req, res) {
     };
     if (req.query.daily === 'true') result.daily = daily;
 
-    // Debug mode: show all charge descriptions grouped
+    // Debug mode: show all charge descriptions grouped and renewal classification
     if (req.query.debug === 'descriptions') {
       var descMap = {};
       filtered.forEach(function(c) {
         var desc = c.description || '(no description)';
-        if (!descMap[desc]) descMap[desc] = { count: 0, total: 0 };
-        descMap[desc].count++;
-        descMap[desc].total += (c.amount_captured || 0) / 100;
+        var key = desc + (isRenewalCharge(c) ? ' [RENEWAL]' : '');
+        if (!descMap[key]) descMap[key] = { count: 0, total: 0 };
+        descMap[key].count++;
+        descMap[key].total += (c.amount_captured || 0) / 100;
       });
       result._debug_descriptions = descMap;
-      result._debug_renewal_count = renewalCharges.length;
+      result._debug_renewal_count = renewalChargeIds.size;
       result._debug_total_charges = filtered.length;
     }
 
