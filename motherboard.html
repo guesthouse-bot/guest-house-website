@@ -456,6 +456,120 @@
             }
         }
 
+        /* Filter Bar */
+        .filters-bar {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+        .filters-inner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+        .filter-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 8px 32px 8px 12px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--color-onyx);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.15s;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .filter-select:focus {
+            border-color: var(--color-onyx);
+        }
+        .filter-date {
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--color-onyx);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .filter-date:focus {
+            border-color: var(--color-onyx);
+        }
+        .filter-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--color-border);
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            margin-left: auto;
+        }
+        .filter-btn:hover {
+            background: var(--color-charcoal);
+        }
+        @media (max-width: 768px) {
+            .filters-bar {
+                padding: 0 1.5rem;
+            }
+            .filters-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            .filter-select, .filter-date {
+                flex: 1;
+            }
+            .filter-divider {
+                display: none;
+            }
+            .filter-btn {
+                margin-left: 0;
+                width: 100%;
+                padding: 12px 20px;
+            }
+        }
+
         /* KPI Sections */
         .kpi-section {
             max-width: 1100px;
@@ -927,6 +1041,40 @@
         <p class="hero-subtitle">Guest House internal dashboard</p>
     </section>
 
+    <!-- Filters -->
+    <section class="filters-bar">
+        <div class="filters-inner">
+            <div class="filter-group">
+                <span class="filter-label">Market</span>
+                <select class="filter-select" id="filterMarket">
+                    <option value="all">All markets</option>
+                    <option value="colorado">Colorado</option>
+                    <option value="california">California</option>
+                    <option value="arizona">Arizona</option>
+                </select>
+            </div>
+            <div class="filter-divider"></div>
+            <div class="filter-group">
+                <span class="filter-label">Period</span>
+                <select class="filter-select" id="filterPeriod">
+                    <option value="mtd">Month to date</option>
+                    <option value="last30">Last 30 days</option>
+                    <option value="qtd">Quarter to date</option>
+                    <option value="ytd">Year to date</option>
+                    <option value="last_month">Last month</option>
+                    <option value="last_quarter">Last quarter</option>
+                    <option value="custom">Custom range</option>
+                </select>
+            </div>
+            <div class="filter-group" id="customDateRange" style="display: none;">
+                <input type="date" class="filter-date" id="filterDateFrom">
+                <span class="filter-label" style="text-transform: none;">to</span>
+                <input type="date" class="filter-date" id="filterDateTo">
+            </div>
+            <button class="filter-btn" id="applyFilters">Apply</button>
+        </div>
+    </section>
+
     <!-- Company KPIs -->
     <section>
         <div class="kpi-section">
@@ -964,10 +1112,6 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings x Account</div>
-                    <div class="kpi-value">&mdash;</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Churn</div>
                     <div class="kpi-value">&mdash;</div>
                 </div>
             </div>
@@ -1121,6 +1265,27 @@
                     link.parentElement.classList.toggle('dropdown-open');
                 });
             }
+        });
+
+        // Filter controls
+        var filterPeriod = document.getElementById('filterPeriod');
+        var customDateRange = document.getElementById('customDateRange');
+
+        filterPeriod.addEventListener('change', function() {
+            customDateRange.style.display = this.value === 'custom' ? 'flex' : 'none';
+        });
+
+        document.getElementById('applyFilters').addEventListener('click', function() {
+            var market = document.getElementById('filterMarket').value;
+            var period = filterPeriod.value;
+            var dateFrom = document.getElementById('filterDateFrom').value;
+            var dateTo = document.getElementById('filterDateTo').value;
+
+            // Log filter state — will be replaced with API calls once connected
+            console.log('Filters applied:', { market: market, period: period, dateFrom: dateFrom, dateTo: dateTo });
+
+            // TODO: Fetch data from APIs with these filters and update KPI values
+            // fetchKPIs({ market, period, dateFrom, dateTo });
         });
     </script>
 </body>
