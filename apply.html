@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Become a Guest House vendor partner. Stagers, photographers, movers, and cleaners get jobs for free, faster payments, and less admin.">
-    <title>Vendor Partnerships | Guest House</title>
+    <meta name="description" content="Apply to become a Guest House vendor partner. Stagers, cleaners, movers, media professionals, and stylists — join our network today.">
+    <title>Apply to Become a Partner | Guest House</title>
     <style>
         @font-face {
             font-family: 'Circular';
@@ -241,7 +241,7 @@
             color: var(--color-text-secondary) !important;
             line-height: 1.4;
         }
-        /* Featured section in Resources dropdown */
+
         .dropdown-resources-layout {
             display: flex;
             gap: 1.5rem;
@@ -344,7 +344,6 @@
             display: none !important;
         }
 
-
         .nav-actions {
             display: flex;
             gap: 1.5rem;
@@ -352,7 +351,6 @@
             flex-shrink: 0;
         }
 
-        /* Hide mobile menu elements on desktop */
         .hamburger {
             display: none;
         }
@@ -400,46 +398,27 @@
             background: var(--color-surface-secondary);
         }
 
-        .btn-large {
-            padding: 20px 40px;
-            font-size: 1rem;
-        }
-
-        .btn-dark {
-            background: var(--color-onyx);
-            color: var(--color-white);
-        }
-
-        .btn-dark:hover {
-            background: var(--color-charcoal);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
         /* Hero Section */
         .hero {
-            padding: 180px 3rem 80px;
+            padding: 140px 3rem 40px;
             max-width: 1400px;
             margin: 0 auto;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 500;
             line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 12px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             color: var(--color-text-secondary);
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             line-height: 1.6;
             animation: fadeInUp 0.6s ease-out 0.3s both;
@@ -456,208 +435,431 @@
             }
         }
 
-        /* Value Props Section */
-        .value-props {
-            max-width: 1100px;
+        /* Application form container — inline, not a modal */
+        .application-section {
+            max-width: 640px;
             margin: 0 auto;
-            padding: 0 3rem 100px;
+            padding: 32px 1.5rem 80px;
         }
-        .value-props-header {
+
+        .application-card {
+            background: var(--color-white);
+            border-radius: 20px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--color-border);
+            padding: 28px 32px 16px;
             text-align: center;
-            margin-bottom: 48px;
+            position: relative;
+            flex-shrink: 0;
         }
-        .value-props-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .modal-header p {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-surface-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+            text-decoration: none;
+        }
+        .modal-close:hover {
+            background: var(--color-border);
+        }
+        .modal-close svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--color-text-secondary);
+        }
+        .modal-body {
+            padding: 24px 32px;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-footer {
+            border-top: 1px solid var(--color-border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        /* Form step indicators */
+        .form-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .form-step-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .form-step-dot.done { background: var(--color-onyx); color: var(--color-white); }
+        .form-step-dot.active { background: var(--color-golden); color: var(--color-onyx); }
+        .form-step-dot.upcoming { background: var(--color-surface-secondary); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+        .form-step-label {
+            font-size: 0.6875rem;
+            margin: 0 4px;
             font-weight: 500;
-            letter-spacing: -0.02em;
+        }
+        .form-step-label.active { color: var(--color-onyx); }
+        .form-step-label.muted { color: var(--color-text-secondary); }
+        .form-step-line {
+            width: 28px;
+            height: 2px;
+            flex-shrink: 0;
+            border-radius: 1px;
+        }
+        .form-step-line.done { background: var(--color-onyx); }
+        .form-step-line.upcoming { background: var(--color-border); }
+
+        /* Form controls */
+        .form-field {
+            margin-bottom: 16px;
+        }
+        .form-field label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 6px;
+        }
+        .form-field label .req {
+            color: var(--color-error);
+        }
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: var(--color-white);
+            color: var(--color-text-primary);
+        }
+        .form-field input:focus,
+        .form-field select:focus,
+        .form-field textarea:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.08);
+        }
+        .form-field textarea {
+            resize: none;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Yes/No toggles */
+        .form-yesno {
+            display: flex;
+            gap: 10px;
+        }
+        .form-yesno button {
+            padding: 8px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            background: var(--color-white);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .form-yesno button.selected {
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border-color: var(--color-onyx);
+        }
+        .form-yesno button:hover:not(.selected) {
+            border-color: var(--color-text-secondary);
+        }
+
+        /* Role selection cards */
+        .form-roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .form-role-card {
+            text-align: left;
+            padding: 18px;
+            border-radius: 14px;
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .form-role-card:hover {
+            border-color: var(--color-text-secondary);
+        }
+        .form-role-card.selected {
+            border-color: var(--color-onyx);
+            background: var(--color-surface-secondary);
+        }
+        .form-role-card .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .form-role-card .role-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .form-role-card .role-desc {
+            font-size: 0.6875rem;
+            color: var(--color-text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Form buttons */
+        .form-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .form-btn-next {
+            background: var(--color-onyx);
+            color: var(--color-white);
+        }
+        .form-btn-next:hover {
+            background: var(--color-charcoal);
+        }
+        .form-btn-next:disabled {
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+            cursor: not-allowed;
+        }
+        .form-btn-back {
+            background: transparent;
+            color: var(--color-text-secondary);
+        }
+        .form-btn-back:hover {
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+        }
+        .form-btn-submit {
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            font-weight: 600;
+        }
+        .form-btn-submit:hover {
+            background: #D4A85E;
+        }
+        .form-btn-submit:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+        .form-btn-invisible {
+            visibility: hidden;
+        }
+
+        /* Multi-select checkboxes */
+        .form-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-checkbox-card {
+            text-align: left;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .form-checkbox-card:hover {
+            border-color: var(--color-text-secondary);
+        }
+        .form-checkbox-card.selected {
+            border-color: var(--color-onyx);
+            background: var(--color-surface-secondary);
+        }
+        .form-check-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 2px solid var(--color-border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .form-checkbox-card.selected .form-check-icon {
+            background: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+        .form-check-icon svg {
+            width: 12px;
+            height: 12px;
+            stroke: var(--color-white);
+            fill: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .form-checkbox-card.selected .form-check-icon svg {
+            opacity: 1;
+        }
+
+        /* Review blocks */
+        .form-review-block {
+            background: var(--color-surface-secondary);
+            border-radius: 14px;
+            padding: 16px;
             margin-bottom: 12px;
         }
-        .value-props-header p {
+        .form-review-block h3 {
+            font-size: 0.6875rem;
+            font-weight: 600;
             color: var(--color-text-secondary);
-            font-size: 1.125rem;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
         }
-        .value-props-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+        .form-review-block .rv {
+            color: var(--color-onyx);
+            font-size: 0.875rem;
         }
-        .value-prop-card {
-            background: var(--color-surface-secondary);
-            border-radius: 16px;
-            padding: 40px 32px;
+        .form-review-block .rs {
+            color: var(--color-text-secondary);
+            font-size: 0.8125rem;
+        }
+        .form-rate-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            padding: 2px 0;
+        }
+        .form-rate-row .rl {
+            color: var(--color-text-secondary);
+        }
+        .form-rate-row .ra {
+            font-weight: 500;
+            color: var(--color-onyx);
+        }
+
+        .form-section-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 20px 0 12px;
+        }
+        .form-step-heading {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .form-step-sub {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+        }
+        .form-error-banner {
+            margin-top: 16px;
+            padding: 12px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            color: var(--color-error);
+            font-size: 0.8125rem;
+        }
+        .form-success-wrap {
             text-align: center;
+            padding: 48px 32px;
         }
-        .value-prop-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--color-white);
-            border: 1px solid var(--color-border);
-            border-radius: 14px;
+        .form-success-wrap .big-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--color-golden);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
         }
-        .value-prop-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--color-onyx);
-            fill: none;
-        }
-        .value-prop-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
-        }
-        .value-prop-card p {
-            color: var(--color-text-secondary);
-            font-size: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Who We Work With */
-        .vendors-section {
-            background: var(--color-surface-secondary);
-            padding: 100px 3rem;
-        }
-        .vendors-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .vendors-header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-        .vendors-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 12px;
-        }
-        .vendors-header p {
-            color: var(--color-text-secondary);
-            font-size: 1.125rem;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .vendors-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        .vendor-card {
-            background: var(--color-white);
-            border-radius: 16px;
-            padding: 32px 24px;
-            text-align: center;
-            border: 1px solid var(--color-border);
-        }
-        .vendor-card-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-surface-secondary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-        .vendor-card-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--color-onyx);
-            fill: none;
-        }
-        .vendor-card h3 {
-            font-size: 1.0625rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .vendor-card p {
-            color: var(--color-text-secondary);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 100px 3rem;
-        }
-        .how-it-works-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .how-it-works h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 3rem;
-            letter-spacing: -0.02em;
-        }
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .step {
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 32px;
-        }
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .form-success-wrap .big-icon svg {
             width: 32px;
             height: 32px;
-            background: var(--color-onyx);
-            color: var(--color-white);
-            border-radius: 50%;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 16px;
+            stroke: var(--color-onyx);
+            fill: none;
         }
-        .step h3 {
-            font-size: 1.125rem;
+        .form-success-wrap h2 {
+            font-size: 1.375rem;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
         }
-        .step p {
+        .form-success-wrap p {
             color: var(--color-text-secondary);
-            font-size: 1rem;
-            line-height: 1.7;
+            margin-bottom: 24px;
+            font-size: 0.875rem;
+            line-height: 1.6;
         }
 
-        /* CTA Section */
-        .cta-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('cta-background.jpg');
-            background-size: cover;
-            background-position: center 70%;
-            color: white;
-            text-align: center;
-        }
-        .cta-section h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        .cta-section p {
-            font-size: 1.125rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-        }
-        .cta-section .btn-primary {
-            background: var(--color-white);
-            color: var(--color-primary);
-        }
-        .cta-section .btn-primary:hover {
-            background: var(--color-bone);
+        @media (max-width: 500px) {
+            .form-roles { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-step-label { display: none; }
+            .modal-body { padding: 20px; }
+            .modal-header { padding: 24px 20px 12px; }
+            .modal-footer { padding: 12px 20px; }
         }
 
         /* Footer */
@@ -737,7 +939,6 @@
             .footer-content {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .vendors-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
@@ -783,17 +984,8 @@
             .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
 
             .hero {
-                padding: 140px 1.5rem 60px;
+                padding: 120px 1.5rem 32px;
             }
-
-            .value-props { padding: 0 1.5rem 80px; }
-            .value-props-grid { grid-template-columns: 1fr; gap: 16px; }
-            .vendors-section { padding: 80px 1.5rem; }
-            .vendors-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .how-it-works { padding: 80px 1.5rem; }
-            .steps { grid-template-columns: 1fr; gap: 16px; }
-            .cta-section { padding: 4rem 1.5rem; }
-            .cta-section h2 { font-size: 1.75rem; }
 
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
@@ -1073,111 +1265,13 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>Vendor partnerships</h1>
-        <p class="hero-subtitle">We help stagers, photographers, movers, and cleaners grow their business — so they can focus on the work they love.</p>
-        <a href="apply.html" class="btn btn-primary btn-large" style="margin-top: 32px;">Apply to become a partner</a>
+        <h1>Vendor partner application</h1>
+        <p class="hero-subtitle">Join our network of trusted home service professionals</p>
     </section>
 
-    <!-- Value Props -->
-    <section class="value-props">
-        <div class="value-props-header">
-            <h2>Why vendors love working with us</h2>
-            <p>We handle the business side so you can focus on delivering amazing work.</p>
-        </div>
-        <div class="value-props-grid">
-            <div class="value-prop-card">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                </div>
-                <h3>Get jobs for free</h3>
-                <p>No marketing spend, no chasing leads. We bring the jobs directly to you — at zero cost.</p>
-            </div>
-            <div class="value-prop-card">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </div>
-                <h3>Get paid faster</h3>
-                <p>We pay on time, every time. No more chasing invoices or waiting on checks to clear.</p>
-            </div>
-            <div class="value-prop-card">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </div>
-                <h3>Focus on work you love</h3>
-                <p>We handle the scheduling, coordination, and admin. You just show up and do great work.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Who We Work With -->
-    <section class="vendors-section">
-        <div class="vendors-inner">
-            <div class="vendors-header">
-                <h2>Who we work with</h2>
-                <p>We partner with top-tier vendors across home preparation services.</p>
-            </div>
-            <div class="vendors-grid">
-                <div class="vendor-card">
-                    <div class="vendor-card-icon">
-                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    </div>
-                    <h3>Stagers</h3>
-                    <p>Home staging professionals who transform spaces to sell faster and for more.</p>
-                </div>
-                <div class="vendor-card">
-                    <div class="vendor-card-icon">
-                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                    </div>
-                    <h3>Photographers</h3>
-                    <p>Real estate photographers who capture stunning listing photos and virtual tours.</p>
-                </div>
-                <div class="vendor-card">
-                    <div class="vendor-card-icon">
-                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                    </div>
-                    <h3>Movers</h3>
-                    <p>Furniture movers who deliver and install staging inventory efficiently and on time.</p>
-                </div>
-                <div class="vendor-card">
-                    <div class="vendor-card-icon">
-                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                    </div>
-                    <h3>Cleaners</h3>
-                    <p>Cleaning professionals who make homes sparkle before showings and photo shoots.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <div class="how-it-works-inner">
-            <h2>How it works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Apply to join</h3>
-                    <p>Fill out a quick application with your service area, availability, and specialties. We review every submission personally.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Get matched with jobs</h3>
-                    <p>When a customer books through Guest House, we match the right vendor based on location, skill, and availability.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Do the work, get paid</h3>
-                    <p>Complete the job, confirm it in our system, and get paid fast. We handle invoicing and collections so you never have to.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-        <h2>Ready to grow your business?</h2>
-        <p>Apply today and start getting matched with jobs in your area.</p>
-        <a href="apply.html" class="btn btn-primary btn-large">Apply to become a partner</a>
+    <!-- Application Form (inline) -->
+    <section class="application-section">
+        <div class="application-card" id="applicationCard"></div>
     </section>
 
     <footer>
@@ -1281,5 +1375,453 @@
         });
     </script>
 
+    <script>
+    // Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUpbB5O0OGr-OfWoMPBmuieubxu8kWjXaoEthVZASdCyijlF2AZ88otrm2BiqJXgw/exec";
+
+    const ROLES = [
+      { id:"stager", label:"Stager", icon:"\u{1F3E0}", desc:"Home staging & design services" },
+      { id:"cleaner", label:"Cleaner", icon:"\u2728", desc:"Residential & turnover cleaning" },
+      { id:"mover", label:"Mover", icon:"\u{1F69A}", desc:"Moving & furniture delivery services" },
+      { id:"media", label:"Media", icon:"\u{1F4F8}", desc:"Real estate photography & media" },
+      { id:"stylist", label:"Stylist", icon:"\u{1F3A8}", desc:"Interior design & styling services" },
+    ];
+
+    /* ── About Your Business / About You config per role ── */
+    const ABOUT_CONFIG = {
+      stager: {
+        title: "About your business",
+        sub: "Tell us about your operations and capacity.",
+        fields: [
+          { key:"locations", label:"What locations do you service?", type:"text" },
+          { key:"business_stage", label:"How would you describe your current stage as a business?", type:"select", options:["Just getting started","Growing","Established and stable"] },
+          { key:"core_business", label:"What best describes your core business?", type:"select", options:["Listings <$750k","Listings $750K\u2013$2M","Listings $2M+"] },
+          { key:"furniture_homes", label:"About how many homes of furniture do you own?", type:"select", options:["Less than 5","5\u201310","10\u201320","20\u201330","30+"] },
+          { key:"stagings_per_week", label:"About how many homes are you set up to stage each week?", type:"select", options:["1 full staging per week","2\u20133 full stagings per week","3+ full stagings per week"] },
+          { key:"lead_time", label:"What is your lead time for booking your services?", type:"text" },
+        ],
+      },
+      cleaner: {
+        title: "About your business",
+        sub: "Tell us about your operations and capacity.",
+        fields: [
+          { key:"locations", label:"What locations do you service?", type:"text" },
+          { key:"team_count", label:"How many teams do you currently operate?", type:"select", options:["1","2\u20133","3\u20135","Large network of more than 5 teams"] },
+          { key:"lead_time", label:"What is your lead time for booking your services?", type:"text" },
+        ],
+      },
+      mover: {
+        title: "About your business",
+        sub: "Tell us about your operations and capacity.",
+        fields: [
+          { key:"locations", label:"What locations do you service?", type:"text" },
+          { key:"truck_count", label:"How many trucks/teams do you currently operate?", type:"select", options:["1","2","3 or more"] },
+          { key:"lead_time", label:"What is your lead time for booking your services?", type:"text" },
+        ],
+      },
+      media: {
+        title: "About your business",
+        sub: "Tell us about your operations and capacity.",
+        fields: [
+          { key:"locations", label:"What locations do you service?", type:"text" },
+          { key:"team_count", label:"How many teams do you currently operate?", type:"select", options:["1","2\u20133","3\u20135","Large network of more than 5 teams"] },
+          { key:"lead_time", label:"What is your lead time for booking your services?", type:"text" },
+        ],
+      },
+      stylist: {
+        title: "About you",
+        sub: "Tell us about your design background.",
+        fields: [
+          { key:"design_degree", label:"Do you have a degree in Interior Design or are you currently in school for Interior Design?", type:"text" },
+          { key:"years_experience", label:"About how many years of design experience do you have? Interior Design? Staging Homes?", type:"text" },
+          { key:"locations", label:"What locations are you able to provide in-person styling services in?", type:"text" },
+        ],
+      },
+    };
+
+    /* ── Services config per role ── */
+    const SERVICES_CONFIG = {
+      stager: {
+        jobs: {
+          label: "What jobs would you like to accept from Guest House?",
+          options: ["Standard full stagings", "Luxury full stagings", "In-person Styling (no inventory needed)"],
+        },
+        rates: null,
+        otherServices: false,
+      },
+      cleaner: {
+        jobs: null,
+        rates: {
+          label: "Enter your rates for the following:",
+          items: [
+            { key:"deep_clean_under_1500", label:"Deep cleaning <1,500 sq ft" },
+            { key:"deep_clean_1500_3000", label:"Deep cleaning 1,500\u20133,000 sq ft" },
+            { key:"deep_clean_3000_4500", label:"Deep cleaning 3,000\u20134,500 sq ft" },
+            { key:"deep_clean_4500_plus", label:"Deep cleaning 4,500+ sq ft" },
+          ],
+        },
+        otherServices: true,
+      },
+      mover: {
+        jobs: {
+          label: "What jobs would you like to accept from Guest House?",
+          options: ["Staging Delivery", "Staging Removal", "3 hour in-home moving block (no truck needed)"],
+        },
+        rates: null,
+        otherServices: true,
+      },
+      media: {
+        jobs: null,
+        rates: {
+          label: "Enter your rates for the following services you offer:",
+          items: [
+            { key:"25_mls_photos", label:"25 MLS photos" },
+            { key:"50_mls_photos", label:"50 MLS photos" },
+            { key:"twilight_photos", label:"Twilight photos" },
+            { key:"matterport", label:"Matterport" },
+            { key:"zillow_3d", label:"Zillow 3D tour" },
+            { key:"floorplan", label:"Floorplan" },
+            { key:"10_aerial_photos", label:"10 Aerial photos" },
+            { key:"aerial_video", label:"Aerial video" },
+          ],
+        },
+        otherServices: true,
+      },
+      stylist: {
+        jobs: {
+          label: "What jobs would you like to accept from Guest House?",
+          options: ["Assisting on Stagings", "In-person Styling", "Remote Design Advice"],
+        },
+        rates: null,
+        otherServices: true,
+      },
+    };
+
+    const US_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"];
+
+    let appStep = 0;
+    let appRole = null;
+    let appForm = {};
+    let appSubmitting = false;
+    let appSubmitError = null;
+
+    const qs = (s, el) => (el || document).querySelector(s);
+    const qsa = (s, el) => [...(el || document).querySelectorAll(s)];
+    const card = () => document.getElementById("applicationCard");
+    const fv = k => appForm[k] || "";
+    const fs = (k, val) => { appForm[k] = val; };
+    function fvArr(k) { return Array.isArray(appForm[k]) ? appForm[k] : []; }
+    function fvHas(k, val) { return fvArr(k).indexOf(val) !== -1; }
+    function fsToggle(k, val) {
+        var arr = fvArr(k);
+        var idx = arr.indexOf(val);
+        if (idx === -1) arr.push(val); else arr.splice(idx, 1);
+        appForm[k] = arr;
+    }
+    function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    function goBack() {
+        window.location.href = 'vendor-partnerships.html';
+    }
+
+    /* ── Step labels: Role, Contact, About, Services, Legal ── */
+    function formStepsHTML() {
+        const labels = ["Role","Contact","About","Services","Legal"];
+        return '<div class="form-steps">' + labels.map((l,i) => {
+            const dotCls = i < appStep ? "done" : i === appStep ? "active" : "upcoming";
+            const lblCls = i === appStep ? "active" : "muted";
+            const lineCls = i < appStep ? "done" : "upcoming";
+            return '<div class="form-step-dot ' + dotCls + '">' + (i < appStep ? "\u2713" : i+1) + '</div><span class="form-step-label ' + lblCls + '">' + l + '</span>' + (i < 4 ? '<div class="form-step-line ' + lineCls + '"></div>' : '');
+        }).join("") + '</div>';
+    }
+
+    /* ── Form field helpers ── */
+    function ffHTML(label, key, opts) {
+        opts = opts || {};
+        var req = opts.required ? '<span class="req">*</span>' : "";
+        var ph = opts.placeholder || "";
+        var type = opts.type || "text";
+        return '<div class="form-field"><label>' + label + ' ' + req + '</label><input type="' + type + '" data-key="' + key + '" value="' + esc(fv(key)) + '" placeholder="' + esc(ph) + '" /></div>';
+    }
+
+    function fselectHTML(label, key, options, opts) {
+        opts = opts || {};
+        var req = opts.required ? '<span class="req">*</span>' : "";
+        var optHTML = options.map(function(o) {
+            var val = typeof o === "string" ? o : o.value;
+            var lbl = typeof o === "string" ? o : o.label;
+            return '<option value="' + esc(val) + '" ' + (fv(key)===val?"selected":"") + '>' + esc(lbl) + '</option>';
+        }).join("");
+        return '<div class="form-field"><label>' + label + ' ' + req + '</label><select data-key="' + key + '"><option value="">Select...</option>' + optHTML + '</select></div>';
+    }
+
+    function fyesnoHTML(label, key) {
+        return '<div class="form-field"><label>' + label + '</label><div class="form-yesno"><button type="button" data-yn="' + key + '" data-val="Yes" class="' + (fv(key)==="Yes"?"selected":"") + '">Yes</button><button type="button" data-yn="' + key + '" data-val="No" class="' + (fv(key)==="No"?"selected":"") + '">No</button></div></div>';
+    }
+
+    function ftextareaHTML(label, key, ph) {
+        return '<div class="form-field"><label>' + label + '</label><textarea data-key="' + key + '" rows="3" placeholder="' + esc(ph || "") + '">' + esc(fv(key)) + '</textarea></div>';
+    }
+
+    function fmultiselectHTML(label, key, options) {
+        var html = '<div class="form-field"><label>' + label + '</label><div class="form-checkboxes">';
+        options.forEach(function(opt) {
+            var sel = fvHas(key, opt) ? "selected" : "";
+            html += '<button type="button" class="form-checkbox-card ' + sel + '" data-ms="' + key + '" data-msval="' + esc(opt) + '">' +
+                '<div class="form-check-icon"><svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+                esc(opt) + '</button>';
+        });
+        html += '</div></div>';
+        return html;
+    }
+
+    /* ── Step 0: Choose provider type ── */
+    function renderFormStep0() {
+        return '<div class="form-step-heading">Choose your provider type</div>' +
+            '<div class="form-step-sub">Select the role that best describes your primary service.</div>' +
+            '<div class="form-roles">' + ROLES.map(function(r) {
+                return '<div class="form-role-card ' + (appRole===r.id?"selected":"") + '" data-role="' + r.id + '">' +
+                    '<div class="role-icon">' + r.icon + '</div>' +
+                    '<div class="role-name">' + r.label + '</div>' +
+                    '<div class="role-desc">' + r.desc + '</div></div>';
+            }).join("") + '</div>';
+    }
+
+    /* ── Step 1: Contact (same for all roles) ── */
+    function renderFormStep1() {
+        return '<div class="form-step-heading">Contact information</div>' +
+            '<div class="form-step-sub">Tell us how to reach you.</div>' +
+            '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>' +
+            ffHTML("Email address","email",{required:true,type:"email"}) +
+            ffHTML("Phone number","phone",{required:true,type:"tel",placeholder:"(555) 123-4567"}) +
+            '<div class="form-row">' + ffHTML("City","city",{required:true}) + fselectHTML("State","state",US_STATES,{required:true}) + '</div>' +
+            ffHTML("Website or portfolio URL","website",{placeholder:"https://"});
+    }
+
+    /* ── Step 2: About your business / About you ── */
+    function renderFormStep2() {
+        var cfg = ABOUT_CONFIG[appRole];
+        var html = '<div class="form-step-heading">' + cfg.title + '</div>' +
+            '<div class="form-step-sub">' + cfg.sub + '</div>';
+        cfg.fields.forEach(function(f) {
+            if (f.type === "select") {
+                html += fselectHTML(f.label, f.key, f.options, {});
+            } else if (f.type === "textarea") {
+                html += ftextareaHTML(f.label, f.key, f.ph || "");
+            } else {
+                html += ffHTML(f.label, f.key, { placeholder: f.ph || "" });
+            }
+        });
+        return html;
+    }
+
+    /* ── Step 3: Services ── */
+    function renderFormStep3() {
+        var cfg = SERVICES_CONFIG[appRole];
+        var html = '<div class="form-step-heading">Services</div>';
+
+        if (cfg.jobs) {
+            html += '<div class="form-step-sub">Select all that apply.</div>';
+            html += fmultiselectHTML(cfg.jobs.label, "jobs", cfg.jobs.options);
+        }
+
+        if (cfg.rates) {
+            html += '<div class="form-step-sub">Leave blank for services you don\u2019t offer.</div>';
+            html += '<div class="form-section-title">' + cfg.rates.label + '</div>';
+            cfg.rates.items.forEach(function(item) {
+                html += ffHTML(item.label, "rate_" + item.key, { placeholder: "" });
+            });
+        }
+
+        if (cfg.otherServices) {
+            html += ftextareaHTML("Do you offer any other services we should consider?", "other_services", "");
+        }
+
+        return html;
+    }
+
+    /* ── Step 4: Legal (moved to after Services) ── */
+    function renderFormStep4() {
+        var extra = "";
+        if (appRole === "stager" || appRole === "cleaner") {
+            extra = ffHTML("Relevant license number (if applicable)","license_number",{placeholder:"e.g. contractor license"});
+        }
+        if (appRole === "mover") {
+            extra = ffHTML("DOT / USDOT number","dot_number",{placeholder:"If applicable"}) + ffHTML("MC number","mc_number",{placeholder:"If applicable"});
+        }
+        return '<div class="form-step-heading">Business & legal information</div>' +
+            '<div class="form-step-sub">We need a few details for compliance and payments.</div>' +
+            ffHTML("Business / company name","business_name",{required:true}) +
+            fselectHTML("Business entity type","entity_type",[
+                {value:"Sole Proprietorship",label:"Sole Proprietorship"},
+                {value:"LLC",label:"LLC"},
+                {value:"S-Corp",label:"S-Corp"},
+                {value:"C-Corp",label:"C-Corp"},
+                {value:"Partnership",label:"Partnership"},
+                {value:"Other",label:"Other"},
+            ],{required:true}) +
+            ffHTML("EIN / Tax ID number","tax_id",{required:true,placeholder:"XX-XXXXXXX"}) +
+            fyesnoHTML("Are you able to provide a W-9?","w9") +
+            ffHTML("Insurance provider","insurance_provider",{placeholder:"e.g. State Farm, Hartford"}) +
+            ffHTML("Insurance policy / certificate number","insurance_number",{placeholder:"Optional"}) +
+            extra +
+            (appSubmitError ? '<div class="form-error-banner">' + appSubmitError + '</div>' : '');
+    }
+
+    /* ── Success screen ── */
+    function renderFormSuccess() {
+        card().innerHTML = '<div class="form-success-wrap">' +
+            '<div class="big-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+            '<h2>Application submitted</h2>' +
+            '<p>Thank you for your interest in joining Guest House\u2019s Partner program. We are reviewing your application and will be in touch soon.</p>' +
+            '<button class="form-btn form-btn-next" id="formClose">Back to Vendor Partnerships</button>' +
+            '</div>';
+        qs("#formClose").onclick = goBack;
+    }
+
+    function canAdvance() {
+        switch (appStep) {
+            case 0: return !!appRole;
+            case 1: return fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
+            case 2: return fv("locations");
+            case 3: return true;
+            case 4: return fv("business_name") && fv("entity_type") && fv("tax_id");
+            default: return true;
+        }
+    }
+
+    function renderForm(success) {
+        if (success) { renderFormSuccess(); return; }
+        var bodyHTML = [renderFormStep0, renderFormStep1, renderFormStep2, renderFormStep3, renderFormStep4][appStep]();
+        var nextLabel = appStep < 4 ? 'Continue \u2192' : (appSubmitting ? 'Submitting\u2026' : 'Submit application');
+        var nextCls = appStep < 4 ? 'form-btn form-btn-next' : 'form-btn form-btn-submit';
+        var nextDisabled = appStep < 4 ? !canAdvance() : appSubmitting;
+
+        card().innerHTML =
+            '<div class="modal-header">' +
+                '<a href="vendor-partnerships.html" class="modal-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></a>' +
+                formStepsHTML() +
+            '</div>' +
+            '<div class="modal-body">' + bodyHTML + '</div>' +
+            '<div class="modal-footer">' +
+                '<button class="form-btn form-btn-back ' + (appStep===0?"form-btn-invisible":"") + '" id="formPrev">\u2190 Back</button>' +
+                '<button class="' + nextCls + '" id="formNext" ' + (nextDisabled?"disabled":"") + '>' + nextLabel + '</button>' +
+            '</div>';
+
+        bindFormEvents();
+    }
+
+    function bindFormEvents() {
+        // Role cards
+        qsa("[data-role]", card()).forEach(function(el) {
+            el.onclick = function() { appRole = el.dataset.role; renderForm(); };
+        });
+        // Inputs & selects
+        qsa("[data-key]", card()).forEach(function(el) {
+            var ev = el.tagName === "SELECT" ? "change" : "input";
+            el.addEventListener(ev, function() { fs(el.dataset.key, el.value); updateFormNext(); });
+        });
+        // Yes/No
+        qsa("[data-yn]", card()).forEach(function(el) {
+            el.onclick = function() {
+                fs(el.dataset.yn, el.dataset.val);
+                qsa('[data-yn="' + el.dataset.yn + '"]', card()).forEach(function(b) {
+                    b.classList.toggle("selected", b.dataset.val === el.dataset.val);
+                });
+            };
+        });
+        // Multi-select checkboxes
+        qsa("[data-ms]", card()).forEach(function(el) {
+            el.onclick = function() {
+                fsToggle(el.dataset.ms, el.dataset.msval);
+                el.classList.toggle("selected");
+            };
+        });
+        // Nav
+        qs("#formPrev", card()).onclick = function() { if (appStep > 0) { appStep--; renderForm(); } };
+        qs("#formNext", card()).onclick = function() {
+            if (appStep < 4 && canAdvance()) { appStep++; renderForm(); }
+            else if (appStep === 4) handleFormSubmit();
+        };
+    }
+
+    function updateFormNext() {
+        var btn = qs("#formNext", card());
+        if (btn && appStep < 4) btn.disabled = !canAdvance();
+    }
+
+    async function handleFormSubmit() {
+        appSubmitting = true;
+        appSubmitError = null;
+        renderForm();
+
+        try {
+            var payload = buildFormPayload();
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload),
+                });
+            } else {
+                console.warn("Google Script URL not configured \u2014 logging payload:");
+                console.table(payload);
+            }
+            appSubmitting = false;
+            renderForm(true);
+        } catch (err) {
+            appSubmitting = false;
+            appSubmitError = "Something went wrong. Please try again.";
+            console.error(err);
+            renderForm();
+        }
+    }
+
+    function buildFormPayload() {
+        var r = ROLES.find(function(r) { return r.id === appRole; });
+        var aboutCfg = ABOUT_CONFIG[appRole];
+        var svcCfg = SERVICES_CONFIG[appRole];
+
+        var payload = {
+            timestamp: new Date().toISOString(),
+            role: r.label,
+            // Contact
+            first_name: fv("first_name"), last_name: fv("last_name"),
+            email: fv("email"), phone: fv("phone"),
+            city: fv("city"), state: fv("state"), website: fv("website"),
+            // Legal
+            business_name: fv("business_name"), entity_type: fv("entity_type"),
+            tax_id: fv("tax_id"), w9: fv("w9"),
+            insurance_provider: fv("insurance_provider"), insurance_number: fv("insurance_number"),
+            license_number: fv("license_number"), dot_number: fv("dot_number"), mc_number: fv("mc_number"),
+        };
+
+        // About fields
+        aboutCfg.fields.forEach(function(f) { payload[f.key] = fv(f.key); });
+
+        // Services — jobs (multi-select)
+        if (svcCfg.jobs) {
+            payload["jobs_accepted"] = fvArr("jobs").join(", ");
+        }
+
+        // Services — rates
+        if (svcCfg.rates) {
+            svcCfg.rates.items.forEach(function(item) {
+                payload[item.label] = fv("rate_" + item.key);
+            });
+        }
+
+        // Other services
+        if (svcCfg.otherServices) {
+            payload["other_services"] = fv("other_services");
+        }
+
+        return payload;
+    }
+
+    // Initialize the form on page load
+    renderForm();
+    </script>
 </body>
 </html>
