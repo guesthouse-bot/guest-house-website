@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Fetch all charges in the date range (paginated)
+    // Fetch all charges in the date range (paginated), expanding invoice data inline
     let allCharges = [];
     let hasMore = true;
     let startingAfter = null;
@@ -59,6 +59,8 @@ module.exports = async function handler(req, res) {
         'limit': '100',
         'status': 'succeeded',
       });
+      // Try to expand invoice so we can check line items for renewal labels
+      params.append('expand[]', 'data.invoice.lines');
       if (startingAfter) params.append('starting_after', startingAfter);
 
       const response = await fetch(`https://api.stripe.com/v1/charges?${params}`, {
@@ -68,6 +70,34 @@ module.exports = async function handler(req, res) {
       });
 
       if (!response.ok) {
+        // If expand fails due to permissions, retry without expand
+        if (response.status === 403 || response.status === 400) {
+          const retryParams = new URLSearchParams({
+            'created[gte]': startDate,
+            'created[lte]': endDate,
+            'limit': '100',
+            'status': 'succeeded',
+          });
+          if (startingAfter) retryParams.append('starting_after', startingAfter);
+
+          const retryResponse = await fetch(`https://api.stripe.com/v1/charges?${retryParams}`, {
+            headers: { 'Authorization': `Bearer ${STRIPE_KEY}` },
+          });
+
+          if (!retryResponse.ok) {
+            const err = await retryResponse.json();
+            return res.status(retryResponse.status).json({ error: err.error?.message || 'Stripe API error' });
+          }
+
+          const retryData = await retryResponse.json();
+          allCharges = allCharges.concat(retryData.data);
+          hasMore = retryData.has_more;
+          if (hasMore && retryData.data.length > 0) {
+            startingAfter = retryData.data[retryData.data.length - 1].id;
+          }
+          continue;
+        }
+
         const err = await response.json();
         return res.status(response.status).json({ error: err.error?.message || 'Stripe API error' });
       }
@@ -87,16 +117,12 @@ module.exports = async function handler(req, res) {
     };
 
     // Filter by market if specified (checks billing/shipping address state)
-    // "nationwide" and "all" return all charges unfiltered
     let filtered = allCharges;
     if (market && market !== 'all' && market !== 'nationwide') {
       const stateCodes = marketToStates[market.toLowerCase()] || [];
       filtered = allCharges.filter(function(charge) {
-        // Check billing address state
         const billingState = (charge.billing_details && charge.billing_details.address && charge.billing_details.address.state || '').toUpperCase();
-        // Check shipping address state
         const shippingState = (charge.shipping && charge.shipping.address && charge.shipping.address.state || '').toUpperCase();
-        // Check metadata as fallback
         const meta = charge.metadata || {};
         const metaState = (meta.state || meta.State || meta.market || meta.Market || meta.region || meta.Region || '').toUpperCase();
 
@@ -106,73 +132,39 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Use amount_captured to match Stripe's Gross volume (excludes uncaptured authorizations)
+    // Use amount_captured to match Stripe's Gross volume
     const totalRevenue = filtered.reduce(function(sum, c) { return sum + (c.amount_captured || 0); }, 0) / 100;
 
     // --- Renewal detection ---
-    // Step 1: Check charge description for "renewal" (case-insensitive)
+    // Check charge description, invoice description, and invoice line items for "renewal"
     var renewalChargeIds = new Set();
     filtered.forEach(function(c) {
+      // Check charge description
       if (c.description && c.description.toLowerCase().indexOf('renewal') !== -1) {
         renewalChargeIds.add(c.id);
+        return;
       }
-    });
-
-    // Step 2: For charges linked to invoices that aren't already flagged as renewal,
-    // fetch the invoice line items and check for "renewal" in line item descriptions
-    var invoiceCharges = filtered.filter(function(c) {
-      return c.invoice && !renewalChargeIds.has(c.id);
-    });
-
-    // Store invoice details for debug
-    var invoiceDetails = {};
-    var invoiceFetchErrors = [];
-
-    // Fetch invoices individually
-    for (var i = 0; i < invoiceCharges.length; i++) {
-      var invoiceId = invoiceCharges[i].invoice;
-      try {
-        var invResp = await fetch('https://api.stripe.com/v1/invoices/' + invoiceId, {
-          headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
-        });
-        if (invResp.ok) {
-          var inv = await invResp.json();
-          var lines = (inv.lines && inv.lines.data) || [];
-          var lineDescs = lines.map(function(l) { return l.description || ''; });
-
-          // Store for debug
-          invoiceDetails[invoiceCharges[i].description || invoiceId] = {
-            invoice_desc: inv.description || null,
-            memo: inv.memo || null,
-            line_items: lineDescs,
-            amount: (invoiceCharges[i].amount_captured || 0) / 100,
-          };
-
-          // Check invoice-level description
-          var invDesc = ((inv.description || '') + ' ' + (inv.memo || '')).toLowerCase();
-          if (invDesc.indexOf('renewal') !== -1) {
-            renewalChargeIds.add(invoiceCharges[i].id);
-            continue;
-          }
-          // Check each line item description
-          for (var j = 0; j < lines.length; j++) {
-            var lineDesc = (lines[j].description || '').toLowerCase();
-            if (lineDesc.indexOf('renewal') !== -1) {
-              renewalChargeIds.add(invoiceCharges[i].id);
-              break;
-            }
-          }
-        } else {
-          var errBody = '';
-          try { errBody = await invResp.text(); } catch(e2) {}
-          invoiceFetchErrors.push({ invoiceId: invoiceId, status: invResp.status, error: errBody.slice(0, 200) });
+      // Check expanded invoice data (if available from expand[])
+      if (c.invoice && typeof c.invoice === 'object') {
+        var inv = c.invoice;
+        // Check invoice description
+        if (inv.description && inv.description.toLowerCase().indexOf('renewal') !== -1) {
+          renewalChargeIds.add(c.id);
+          return;
         }
-      } catch (e) {
-        invoiceFetchErrors.push({ invoiceId: invoiceId, error: e.message });
+        // Check invoice line items
+        var lines = (inv.lines && inv.lines.data) || [];
+        for (var j = 0; j < lines.length; j++) {
+          var lineDesc = (lines[j].description || '').toLowerCase();
+          if (lineDesc.indexOf('renewal') !== -1) {
+            renewalChargeIds.add(c.id);
+            return;
+          }
+        }
       }
-    }
+    });
 
-    // Calculate renewal revenue from all identified renewal charges
+    // Calculate renewal revenue
     var renewalRevenue = 0;
     filtered.forEach(function(c) {
       if (renewalChargeIds.has(c.id)) {
@@ -181,7 +173,7 @@ module.exports = async function handler(req, res) {
     });
     const bookingsRevenue = totalRevenue - renewalRevenue;
 
-    // Get unique customers for ARPU and bookings per account
+    // Get unique customers for ARPU
     const customerSet = new Set();
     filtered.forEach(function(c) {
       if (c.customer) customerSet.add(c.customer);
@@ -189,7 +181,6 @@ module.exports = async function handler(req, res) {
     const uniqueAccounts = customerSet.size || 1;
     const arpu = totalRevenue / uniqueAccounts;
 
-    // Helper: check if a charge is renewal
     function isRenewalCharge(c) {
       return renewalChargeIds.has(c.id);
     }
@@ -221,7 +212,7 @@ module.exports = async function handler(req, res) {
     };
     if (req.query.daily === 'true') result.daily = daily;
 
-    // Debug mode: show all charge descriptions grouped and renewal classification
+    // Debug mode
     if (req.query.debug === 'descriptions') {
       var descMap = {};
       filtered.forEach(function(c) {
@@ -231,73 +222,25 @@ module.exports = async function handler(req, res) {
         descMap[key].count++;
         descMap[key].total += (c.amount_captured || 0) / 100;
       });
+
+      // Show invoice line items if expanded
+      var invoiceLineItems = {};
+      filtered.forEach(function(c) {
+        if (c.invoice && typeof c.invoice === 'object') {
+          var lines = (c.invoice.lines && c.invoice.lines.data) || [];
+          invoiceLineItems[c.description || c.id] = {
+            amount: (c.amount_captured || 0) / 100,
+            is_renewal: isRenewalCharge(c),
+            line_items: lines.map(function(l) { return l.description || ''; }),
+          };
+        }
+      });
+
       result._debug_descriptions = descMap;
       result._debug_renewal_count = renewalChargeIds.size;
       result._debug_total_charges = filtered.length;
-      result._debug_invoice_details = invoiceDetails;
-      result._debug_invoice_fetch_errors = invoiceFetchErrors;
-      result._debug_invoice_charges_count = invoiceCharges.length;
-
-      // Also check charges for invoice field and metadata
-      var chargeDetails = [];
-      filtered.forEach(function(c) {
-        var desc = (c.description || '').toLowerCase();
-        if (desc.indexOf('invoice') !== -1 || desc.indexOf('daisy') !== -1 || desc.indexOf('1028') !== -1) {
-          chargeDetails.push({
-            id: c.id,
-            description: c.description,
-            amount: (c.amount_captured || 0) / 100,
-            invoice_field: c.invoice || null,
-            payment_intent: c.payment_intent || null,
-            metadata: c.metadata || {},
-            customer: c.customer || null,
-          });
-        }
-      });
-      result._debug_charge_details = chargeDetails;
-
-      // Also search Stripe Invoices API directly
-      var stripeInvoices = [];
-      var invHasMore = true;
-      var invStartingAfter = null;
-      while (invHasMore) {
-        var invParams = new URLSearchParams({
-          'created[gte]': String(startDate),
-          'created[lte]': String(endDate),
-          'limit': '100',
-          'status': 'paid',
-          'expand[]': 'data.lines',
-        });
-        if (invStartingAfter) invParams.append('starting_after', invStartingAfter);
-        try {
-          var siResp = await fetch('https://api.stripe.com/v1/invoices?' + invParams, {
-            headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
-          });
-          if (siResp.ok) {
-            var siData = await siResp.json();
-            siData.data.forEach(function(inv) {
-              var lines = (inv.lines && inv.lines.data) || [];
-              stripeInvoices.push({
-                id: inv.id,
-                number: inv.number,
-                description: inv.description,
-                amount_paid: (inv.amount_paid || 0) / 100,
-                line_items: lines.map(function(l) { return { desc: l.description, amount: (l.amount || 0) / 100 }; }),
-                charge: inv.charge,
-              });
-            });
-            invHasMore = siData.has_more;
-            if (invHasMore && siData.data.length > 0) {
-              invStartingAfter = siData.data[siData.data.length - 1].id;
-            }
-          } else {
-            invHasMore = false;
-          }
-        } catch (e) {
-          invHasMore = false;
-        }
-      }
-      result._debug_stripe_invoices = stripeInvoices;
+      result._debug_invoice_line_items = invoiceLineItems;
+      result._debug_invoices_expanded = Object.keys(invoiceLineItems).length > 0;
     }
 
     return res.status(200).json(result);
