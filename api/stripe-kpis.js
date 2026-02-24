@@ -123,16 +123,12 @@ module.exports = async function handler(req, res) {
     });
     const uniqueAccounts = customerSet.size || 1;
     const arpu = totalRevenue / uniqueAccounts;
-    const bookingsPerAccount = bookings / uniqueAccounts;
 
     return res.status(200).json({
       revenue: totalRevenue,
       bookings_revenue: bookingsRevenue,
       renewal_revenue: renewalRevenue,
-      bookings: bookings,
-      aov_at_close: aovAtClose,
       arpu: arpu,
-      bookings_per_account: bookingsPerAccount,
       unique_accounts: uniqueAccounts,
       period: { start: startDate, end: endDate },
       market: market || 'all',
