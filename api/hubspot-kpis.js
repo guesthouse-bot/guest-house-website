@@ -202,7 +202,30 @@ module.exports = async function handler(req, res) {
     });
     var aovAtClose = bookings > 0 ? bookingRevenue / bookings : 0;
 
-    return res.status(200).json({
+    // Daily bucketing
+    var daily = {};
+    if (req.query.daily === 'true') {
+      filtered.forEach(function(deal) {
+        var props = deal.properties || {};
+        if (props.createdate) {
+          var day = new Date(props.createdate).toISOString().slice(0, 10);
+          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0 };
+          daily[day].quotes++;
+        }
+      });
+      filteredCW.forEach(function(deal) {
+        var props = deal.properties || {};
+        if (props.closedate) {
+          var day = new Date(props.closedate).toISOString().slice(0, 10);
+          if (!daily[day]) daily[day] = { quotes: 0, bookings: 0, booking_revenue: 0 };
+          daily[day].bookings++;
+          var amt = parseFloat(props.amount || 0);
+          if (!isNaN(amt)) daily[day].booking_revenue += amt;
+        }
+      });
+    }
+
+    var result = {
       quotes_requested: quotesRequested,
       bookings: bookings,
       booking_revenue: bookingRevenue,
@@ -210,7 +233,9 @@ module.exports = async function handler(req, res) {
       sales_cycle_days: avgSalesCycle,
       period: { start: startDate, end: endDate },
       market: market || 'all',
-    });
+    };
+    if (req.query.daily === 'true') result.daily = daily;
+    return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });

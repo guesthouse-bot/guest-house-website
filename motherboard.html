@@ -568,6 +568,16 @@
                 width: 100%;
                 padding: 12px 20px;
             }
+            .compare-toggle-group {
+                width: 100%;
+            }
+            .compare-options {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .compare-options .filter-select {
+                flex: 1;
+            }
         }
 
         /* KPI Sections */
@@ -616,6 +626,122 @@
             font-weight: 600;
             color: var(--color-onyx);
             letter-spacing: -0.02em;
+        }
+        .kpi-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .kpi-change {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: none;
+        }
+        .kpi-change.positive {
+            display: inline-block;
+            background: #ECFDF3;
+            color: #067647;
+        }
+        .kpi-change.negative {
+            display: inline-block;
+            background: #FEF3F2;
+            color: #B42318;
+        }
+        .kpi-change.neutral {
+            display: inline-block;
+            background: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+        }
+        .kpi-prev {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            margin-top: 2px;
+            display: none;
+        }
+        .kpi-prev.visible {
+            display: block;
+        }
+        .kpi-sparkline {
+            height: 40px;
+            margin-top: 12px;
+            display: none;
+        }
+        .kpi-sparkline.visible {
+            display: block;
+        }
+        .kpi-sparkline svg {
+            width: 100%;
+            height: 100%;
+        }
+        .sparkline-current {
+            fill: none;
+            stroke: var(--color-onyx);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .sparkline-compare {
+            fill: none;
+            stroke: var(--color-text-secondary);
+            stroke-width: 1;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 4 3;
+            opacity: 0.5;
+        }
+        /* Compare toggle */
+        .compare-toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .compare-switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .compare-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .compare-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--color-border);
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+        .compare-slider::before {
+            content: '';
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+        .compare-switch input:checked + .compare-slider {
+            background: var(--color-onyx);
+        }
+        .compare-switch input:checked + .compare-slider::before {
+            transform: translateX(16px);
+        }
+        .compare-options {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .compare-options.visible {
+            display: flex;
         }
 
         /* Footer */
@@ -1071,6 +1197,27 @@
                 <span class="filter-label" style="text-transform: none;">to</span>
                 <input type="date" class="filter-date" id="filterDateTo">
             </div>
+            <div class="filter-divider"></div>
+            <div class="compare-toggle-group">
+                <span class="filter-label">Compare</span>
+                <label class="compare-switch">
+                    <input type="checkbox" id="compareToggle">
+                    <span class="compare-slider"></span>
+                </label>
+            </div>
+            <div class="compare-options" id="compareOptions">
+                <select class="filter-select" id="compareMode">
+                    <option value="previous_period">Previous period</option>
+                    <option value="previous_month">Previous month</option>
+                    <option value="previous_year">Previous year</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <div class="filter-group" id="compareCustomRange" style="display: none;">
+                    <input type="date" class="filter-date" id="compareDateFrom">
+                    <span class="filter-label" style="text-transform: none;">to</span>
+                    <input type="date" class="filter-date" id="compareDateTo">
+                </div>
+            </div>
             <button class="filter-btn" id="applyFilters">Apply</button>
         </div>
     </section>
@@ -1084,43 +1231,93 @@
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-label">Accounts created</div>
-                    <div class="kpi-value" id="kpi-accounts">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
+                        <span class="kpi-change" id="kpi-accounts-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
-                    <div class="kpi-value" id="kpi-quotes">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quotes">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quotes-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quotes-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quotes-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings</div>
-                    <div class="kpi-value" id="kpi-bookings">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-bookings-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Conversion rate</div>
-                    <div class="kpi-value" id="kpi-conversion">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-conversion">&mdash;</span>
+                        <span class="kpi-change" id="kpi-conversion-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-conversion-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-conversion-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Total Revenue</div>
-                    <div class="kpi-value" id="kpi-revenue">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-revenue">&mdash;</span>
+                        <span class="kpi-change" id="kpi-revenue-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-revenue-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-revenue-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings Revenue</div>
-                    <div class="kpi-value" id="kpi-bookings-rev">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-rev">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-rev-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-rev-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-bookings-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Renewal Revenue</div>
-                    <div class="kpi-value" id="kpi-renewal-rev">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-renewal-rev">&mdash;</span>
+                        <span class="kpi-change" id="kpi-renewal-rev-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-renewal-rev-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-renewal-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (at close)</div>
-                    <div class="kpi-value" id="kpi-aov-close">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
+                        <span class="kpi-change" id="kpi-aov-close-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-aov-close-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-aov-close-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">AOV (total)</div>
-                    <div class="kpi-value" id="kpi-aov-total">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-aov-total">&mdash;</span>
+                        <span class="kpi-change" id="kpi-aov-total-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-aov-total-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Sales cycle</div>
-                    <div class="kpi-value" id="kpi-sales-cycle">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
+                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
                 </div>
             </div>
         </div>
@@ -1135,23 +1332,48 @@
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-label">Active Users</div>
-                    <div class="kpi-value" id="kpi-active-users">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-users">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-users-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-users-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-active-users-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes / User</div>
-                    <div class="kpi-value" id="kpi-quotes-user">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quotes-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quotes-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quotes-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quotes-user-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings / User</div>
-                    <div class="kpi-value" id="kpi-bookings-user">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-bookings-user-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Revenue / User</div>
-                    <div class="kpi-value" id="kpi-rev-user">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-rev-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-rev-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-rev-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-rev-user-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">ARPU</div>
-                    <div class="kpi-value" id="kpi-arpu">&mdash;</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-arpu">&mdash;</span>
+                        <span class="kpi-change" id="kpi-arpu-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-arpu-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-arpu-sparkline"></div>
                 </div>
             </div>
         </div>
@@ -1262,9 +1484,24 @@
         // Filter controls
         var filterPeriod = document.getElementById('filterPeriod');
         var customDateRange = document.getElementById('customDateRange');
+        var compareToggle = document.getElementById('compareToggle');
+        var compareOptions = document.getElementById('compareOptions');
+        var compareMode = document.getElementById('compareMode');
+        var compareCustomRange = document.getElementById('compareCustomRange');
 
         filterPeriod.addEventListener('change', function() {
             customDateRange.style.display = this.value === 'custom' ? 'flex' : 'none';
+        });
+
+        compareToggle.addEventListener('change', function() {
+            compareOptions.classList.toggle('visible', this.checked);
+            if (!this.checked) {
+                clearAllComparisons();
+            }
+        });
+
+        compareMode.addEventListener('change', function() {
+            compareCustomRange.style.display = this.value === 'custom' ? 'flex' : 'none';
         });
 
         function formatCurrency(n) {
@@ -1280,14 +1517,205 @@
             if (el) el.textContent = value;
         }
 
+        // ---- Compare period calculator ----
+        function getDateRange(period, dateFrom, dateTo) {
+            var now = new Date();
+            var start, end;
+            end = now;
+            switch (period) {
+                case 'mtd':
+                    start = new Date(now.getFullYear(), now.getMonth(), 1);
+                    break;
+                case 'last30':
+                    start = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'qtd':
+                    var qMonth = Math.floor(now.getMonth() / 3) * 3;
+                    start = new Date(now.getFullYear(), qMonth, 1);
+                    break;
+                case 'ytd':
+                    start = new Date(now.getFullYear(), 0, 1);
+                    break;
+                case 'last_month':
+                    start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                    end = new Date(now.getFullYear(), now.getMonth(), 1);
+                    break;
+                case 'last_quarter':
+                    var cqMonth = Math.floor(now.getMonth() / 3) * 3;
+                    start = new Date(now.getFullYear(), cqMonth - 3, 1);
+                    end = new Date(now.getFullYear(), cqMonth, 1);
+                    break;
+                case 'custom':
+                    if (dateFrom) start = new Date(dateFrom);
+                    if (dateTo) end = new Date(dateTo + 'T23:59:59');
+                    break;
+                default:
+                    start = new Date(now.getFullYear(), now.getMonth(), 1);
+            }
+            return { start: start, end: end };
+        }
+
+        function getComparisonDates(period, dateFrom, dateTo, cmpMode) {
+            var range = getDateRange(period, dateFrom, dateTo);
+            var start = range.start;
+            var end = range.end;
+            var durationMs = end.getTime() - start.getTime();
+            var cmpStart, cmpEnd;
+
+            switch (cmpMode) {
+                case 'previous_period':
+                    cmpEnd = new Date(start.getTime());
+                    cmpStart = new Date(start.getTime() - durationMs);
+                    break;
+                case 'previous_month':
+                    cmpStart = new Date(start.getFullYear(), start.getMonth() - 1, start.getDate());
+                    cmpEnd = new Date(end.getFullYear(), end.getMonth() - 1, end.getDate());
+                    break;
+                case 'previous_year':
+                    cmpStart = new Date(start.getFullYear() - 1, start.getMonth(), start.getDate());
+                    cmpEnd = new Date(end.getFullYear() - 1, end.getMonth(), end.getDate());
+                    break;
+                case 'custom':
+                    var cf = document.getElementById('compareDateFrom').value;
+                    var ct = document.getElementById('compareDateTo').value;
+                    cmpStart = cf ? new Date(cf) : new Date(start.getTime() - durationMs);
+                    cmpEnd = ct ? new Date(ct + 'T23:59:59') : new Date(start.getTime());
+                    break;
+                default:
+                    cmpEnd = new Date(start.getTime());
+                    cmpStart = new Date(start.getTime() - durationMs);
+            }
+
+            function fmt(d) { return d.toISOString().slice(0, 10); }
+            return { dateFrom: fmt(cmpStart), dateTo: fmt(cmpEnd) };
+        }
+
+        // ---- Sparkline renderer ----
+        function renderSparkline(containerId, currentDaily, compareDaily, dailyKey) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            var currentEntries = dailyToSorted(currentDaily, dailyKey);
+            if (currentEntries.length < 2) {
+                container.innerHTML = '';
+                container.classList.remove('visible');
+                return;
+            }
+
+            container.classList.add('visible');
+            var w = container.offsetWidth || 200;
+            var h = 40;
+            var currentPoints = computePolyline(currentEntries, w, h);
+
+            var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">';
+
+            if (compareDaily) {
+                var compareEntries = dailyToSorted(compareDaily, dailyKey);
+                if (compareEntries.length >= 2) {
+                    var comparePoints = computePolyline(compareEntries, w, h);
+                    svg += '<polyline class="sparkline-compare" points="' + comparePoints + '"/>';
+                }
+            }
+
+            svg += '<polyline class="sparkline-current" points="' + currentPoints + '"/>';
+            svg += '</svg>';
+            container.innerHTML = svg;
+        }
+
+        function dailyToSorted(daily, key) {
+            if (!daily) return [];
+            var entries = [];
+            Object.keys(daily).sort().forEach(function(day) {
+                var val = daily[day][key];
+                if (val !== undefined) entries.push({ day: day, value: val });
+            });
+            return entries;
+        }
+
+        function computePolyline(entries, w, h) {
+            var pad = 2;
+            var values = entries.map(function(e) { return e.value; });
+            var min = Math.min.apply(null, values);
+            var max = Math.max.apply(null, values);
+            var range = max - min || 1;
+
+            return entries.map(function(e, i) {
+                var x = entries.length === 1 ? w / 2 : (i / (entries.length - 1)) * w;
+                var y = h - pad - ((e.value - min) / range) * (h - pad * 2);
+                return x.toFixed(1) + ',' + y.toFixed(1);
+            }).join(' ');
+        }
+
+        // ---- Comparison renderer ----
+        function setComparison(baseId, currentVal, prevVal, formatter, invertColors) {
+            var changeEl = document.getElementById(baseId + '-change');
+            var prevEl = document.getElementById(baseId + '-prev');
+            if (!changeEl || !prevEl) return;
+
+            if (prevVal === null || prevVal === undefined || currentVal === null || currentVal === undefined) {
+                changeEl.className = 'kpi-change';
+                changeEl.textContent = '';
+                prevEl.className = 'kpi-prev';
+                prevEl.textContent = '';
+                return;
+            }
+
+            var pctChange;
+            if (prevVal === 0) {
+                pctChange = currentVal > 0 ? 100 : (currentVal < 0 ? -100 : 0);
+            } else {
+                pctChange = ((currentVal - prevVal) / Math.abs(prevVal)) * 100;
+            }
+
+            var sign = pctChange > 0 ? '+' : '';
+            var pctText = sign + pctChange.toFixed(1) + '%';
+
+            var isPositive = pctChange > 0;
+            var isNegative = pctChange < 0;
+            if (invertColors) { var tmp = isPositive; isPositive = isNegative; isNegative = tmp; }
+
+            if (Math.abs(pctChange) < 0.1) {
+                changeEl.className = 'kpi-change neutral';
+            } else if (isPositive) {
+                changeEl.className = 'kpi-change positive';
+            } else {
+                changeEl.className = 'kpi-change negative';
+            }
+            changeEl.textContent = pctText;
+
+            prevEl.className = 'kpi-prev visible';
+            prevEl.textContent = 'vs ' + formatter(prevVal);
+        }
+
+        function clearAllComparisons() {
+            document.querySelectorAll('.kpi-change').forEach(function(el) {
+                el.className = 'kpi-change';
+                el.textContent = '';
+            });
+            document.querySelectorAll('.kpi-prev').forEach(function(el) {
+                el.className = 'kpi-prev';
+                el.textContent = '';
+            });
+            document.querySelectorAll('.kpi-sparkline').forEach(function(el) {
+                el.innerHTML = '';
+                el.classList.remove('visible');
+            });
+        }
+
+        // ---- Data storage ----
+        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null };
+        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null };
+
         // Track latest values for cross-source calculations
         var latestRevenue = null;
         var latestBookings = null;
         var latestQuotes = null;
         var latestUniqueAccounts = null;
+        var compareRevenue = null;
+        var compareBookings = null;
+        var compareQuotes = null;
 
         function updateCrossSourceKPIs() {
-            // Conversion rate (HubSpot bookings / HubSpot quotes)
             if (latestQuotes !== null && latestBookings !== null) {
                 if (latestQuotes > 0) {
                     setKPI('kpi-conversion', (latestBookings / latestQuotes * 100).toFixed(1) + '%');
@@ -1297,168 +1725,325 @@
                 var el = document.getElementById('kpi-conversion');
                 if (el) el.style.opacity = '1';
             }
-            // AOV total (Stripe revenue / HubSpot bookings)
             if (latestRevenue !== null && latestBookings !== null) {
                 setKPI('kpi-aov-total', latestBookings > 0 ? formatCurrency(latestRevenue / latestBookings) : '$0');
                 var el2 = document.getElementById('kpi-aov-total');
                 if (el2) el2.style.opacity = '1';
             }
+            // Cross-source comparisons
+            if (compareToggle.checked && compareQuotes !== null && compareBookings !== null) {
+                var currConv = latestQuotes > 0 ? (latestBookings / latestQuotes * 100) : 0;
+                var prevConv = compareQuotes > 0 ? (compareBookings / compareQuotes * 100) : 0;
+                setComparison('kpi-conversion', currConv, prevConv, function(v) { return v.toFixed(1) + '%'; }, false);
+
+                var currAov = latestBookings > 0 ? latestRevenue / latestBookings : 0;
+                var prevAov = compareBookings > 0 ? compareRevenue / compareBookings : 0;
+                setComparison('kpi-aov-total', currAov, prevAov, formatCurrency, false);
+            }
         }
 
-        function setStripeLoading() {
-            ['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev', 'kpi-aov-total'].forEach(function(id) {
+        // ---- Loading helpers ----
+        function setLoading(ids) {
+            ids.forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
             });
         }
-
-        function clearStripeLoading() {
-            ['kpi-revenue'].forEach(function(id) {
+        function clearLoading(ids) {
+            ids.forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.style.opacity = '1';
             });
         }
 
-        async function fetchStripeKPIs(filters) {
-            setStripeLoading();
-            try {
-                var params = new URLSearchParams({
-                    market: filters.market,
-                    period: filters.period,
-                });
-                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-                if (filters.dateTo) params.append('dateTo', filters.dateTo);
+        // ---- API fetch helper ----
+        function buildParams(filters) {
+            var params = new URLSearchParams({
+                market: filters.market,
+                period: filters.period,
+                daily: 'true',
+            });
+            if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+            if (filters.dateTo) params.append('dateTo', filters.dateTo);
+            return params;
+        }
 
+        // ---- Fetch functions ----
+        async function fetchStripeKPIs(filters, isCompare) {
+            var ids = ['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev', 'kpi-aov-total'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
                 var response = await fetch('/api/stripe-kpis?' + params.toString());
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
 
-                setKPI('kpi-revenue', formatCurrency(data.revenue));
-                setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
-                setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
-                latestRevenue = data.revenue;
-                latestUniqueAccounts = data.unique_accounts;
-                updateCrossSourceKPIs();
+                if (isCompare) {
+                    compareData.stripe = data;
+                    compareRevenue = data.revenue;
+                } else {
+                    currentData.stripe = data;
+                    setKPI('kpi-revenue', formatCurrency(data.revenue));
+                    setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
+                    setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
+                    latestRevenue = data.revenue;
+                    latestUniqueAccounts = data.unique_accounts;
+                    updateCrossSourceKPIs();
+                }
+                return data;
             } catch (err) {
                 console.error('Stripe KPI fetch error:', err);
-                setKPI('kpi-revenue', 'Error');
-                setKPI('kpi-bookings-rev', 'Error');
-                setKPI('kpi-renewal-rev', 'Error');
-                setKPI('kpi-aov-total', 'Error');
+                if (!isCompare) {
+                    setKPI('kpi-revenue', 'Error');
+                    setKPI('kpi-bookings-rev', 'Error');
+                    setKPI('kpi-renewal-rev', 'Error');
+                    setKPI('kpi-aov-total', 'Error');
+                }
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(['kpi-revenue', 'kpi-bookings-rev', 'kpi-renewal-rev']);
             }
-            clearStripeLoading();
         }
 
-        async function fetchHubSpotKPIs(filters) {
-            ['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-conversion', 'kpi-sales-cycle'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
-            });
+        async function fetchHubSpotKPIs(filters, isCompare) {
+            var ids = ['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-conversion', 'kpi-sales-cycle'];
+            if (!isCompare) setLoading(ids);
             try {
-                var params = new URLSearchParams({
-                    market: filters.market,
-                    period: filters.period,
-                });
-                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-                if (filters.dateTo) params.append('dateTo', filters.dateTo);
-
+                var params = buildParams(filters);
                 var response = await fetch('/api/hubspot-kpis?' + params.toString());
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
 
-                setKPI('kpi-quotes', formatNumber(data.quotes_requested));
-                setKPI('kpi-bookings', formatNumber(data.bookings));
-                setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
-                if (data.sales_cycle_days !== null) {
-                    setKPI('kpi-sales-cycle', Math.round(data.sales_cycle_days) + ' days');
+                if (isCompare) {
+                    compareData.hubspot = data;
+                    compareBookings = data.bookings;
+                    compareQuotes = data.quotes_requested;
                 } else {
-                    setKPI('kpi-sales-cycle', '\u2014');
+                    currentData.hubspot = data;
+                    setKPI('kpi-quotes', formatNumber(data.quotes_requested));
+                    setKPI('kpi-bookings', formatNumber(data.bookings));
+                    setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
+                    if (data.sales_cycle_days !== null) {
+                        setKPI('kpi-sales-cycle', Math.round(data.sales_cycle_days) + ' days');
+                    } else {
+                        setKPI('kpi-sales-cycle', '\u2014');
+                    }
+                    latestBookings = data.bookings;
+                    latestQuotes = data.quotes_requested;
+                    updateCrossSourceKPIs();
                 }
-                latestBookings = data.bookings;
-                latestQuotes = data.quotes_requested;
-                updateCrossSourceKPIs();
+                return data;
             } catch (err) {
                 console.error('HubSpot KPI fetch error:', err);
-                setKPI('kpi-quotes', 'Error');
-                setKPI('kpi-bookings', 'Error');
-                setKPI('kpi-aov-close', 'Error');
-                setKPI('kpi-sales-cycle', 'Error');
-                setKPI('kpi-conversion', 'Error');
+                if (!isCompare) {
+                    ids.forEach(function(id) { setKPI(id, 'Error'); });
+                }
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-sales-cycle']);
             }
-            ['kpi-quotes', 'kpi-bookings', 'kpi-aov-close', 'kpi-sales-cycle'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.style.opacity = '1';
-            });
         }
 
-        async function fetchFirebaseKPIs(filters) {
-            var el = document.getElementById('kpi-accounts');
-            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+        async function fetchFirebaseKPIs(filters, isCompare) {
+            if (!isCompare) setLoading(['kpi-accounts']);
             try {
-                var params = new URLSearchParams({
-                    market: filters.market,
-                    period: filters.period,
-                });
-                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-                if (filters.dateTo) params.append('dateTo', filters.dateTo);
-
+                var params = buildParams(filters);
                 var response = await fetch('/api/firebase-kpis?' + params.toString());
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
 
-                setKPI('kpi-accounts', formatNumber(data.accounts_created));
+                if (isCompare) {
+                    compareData.firebase = data;
+                } else {
+                    currentData.firebase = data;
+                    setKPI('kpi-accounts', formatNumber(data.accounts_created));
+                }
+                return data;
             } catch (err) {
                 console.error('Firebase KPI fetch error:', err);
-                setKPI('kpi-accounts', 'Error');
+                if (!isCompare) setKPI('kpi-accounts', 'Error');
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(['kpi-accounts']);
             }
-            if (el) el.style.opacity = '1';
         }
 
-        async function fetchCustomerKPIs(filters) {
-            ['kpi-active-users', 'kpi-quotes-user', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
-            });
+        async function fetchCustomerKPIs(filters, isCompare) {
+            var ids = ['kpi-active-users', 'kpi-quotes-user', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'];
+            if (!isCompare) setLoading(ids);
             try {
-                var params = new URLSearchParams({
-                    market: filters.market,
-                    period: filters.period,
-                });
-                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-                if (filters.dateTo) params.append('dateTo', filters.dateTo);
-
+                var params = buildParams(filters);
                 var response = await fetch('/api/customer-kpis?' + params.toString());
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
 
-                setKPI('kpi-active-users', formatNumber(data.active_users));
-                setKPI('kpi-quotes-user', data.quotes_per_user.toFixed(1));
-                setKPI('kpi-bookings-user', data.bookings_per_user.toFixed(2));
-                setKPI('kpi-rev-user', formatCurrency(data.revenue_per_user));
-                setKPI('kpi-arpu', formatCurrency(data.arpu));
+                if (isCompare) {
+                    compareData.customer = data;
+                } else {
+                    currentData.customer = data;
+                    setKPI('kpi-active-users', formatNumber(data.active_users));
+                    setKPI('kpi-quotes-user', data.quotes_per_user.toFixed(1));
+                    setKPI('kpi-bookings-user', data.bookings_per_user.toFixed(2));
+                    setKPI('kpi-rev-user', formatCurrency(data.revenue_per_user));
+                    setKPI('kpi-arpu', formatCurrency(data.arpu));
+                }
+                return data;
             } catch (err) {
                 console.error('Customer KPI fetch error:', err);
-                setKPI('kpi-active-users', 'Error');
-                setKPI('kpi-quotes-user', 'Error');
-                setKPI('kpi-bookings-user', 'Error');
-                setKPI('kpi-rev-user', 'Error');
-                setKPI('kpi-arpu', 'Error');
+                if (!isCompare) ids.forEach(function(id) { setKPI(id, 'Error'); });
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
             }
-            ['kpi-active-users', 'kpi-quotes-user', 'kpi-bookings-user', 'kpi-rev-user', 'kpi-arpu'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.style.opacity = '1';
-            });
         }
 
-        function fetchAllKPIs(filters) {
+        // ---- Render comparisons and sparklines ----
+        function renderAllComparisons() {
+            var cs = compareData.stripe;
+            var ch = compareData.hubspot;
+            var cf = compareData.firebase;
+            var cc = compareData.customer;
+            var ds = currentData.stripe;
+            var dh = currentData.hubspot;
+            var dfb = currentData.firebase;
+            var dc = currentData.customer;
+
+            // Stripe comparisons
+            if (ds && cs) {
+                setComparison('kpi-revenue', ds.revenue, cs.revenue, formatCurrency, false);
+                setComparison('kpi-bookings-rev', ds.bookings_revenue, cs.bookings_revenue, formatCurrency, false);
+                setComparison('kpi-renewal-rev', ds.renewal_revenue, cs.renewal_revenue, formatCurrency, false);
+            }
+            // HubSpot comparisons
+            if (dh && ch) {
+                setComparison('kpi-quotes', dh.quotes_requested, ch.quotes_requested, formatNumber, false);
+                setComparison('kpi-bookings', dh.bookings, ch.bookings, formatNumber, false);
+                setComparison('kpi-aov-close', dh.aov_at_close, ch.aov_at_close, formatCurrency, false);
+                setComparison('kpi-sales-cycle', dh.sales_cycle_days, ch.sales_cycle_days,
+                    function(v) { return v !== null ? Math.round(v) + ' days' : '\u2014'; }, true);
+            }
+            // Firebase comparisons
+            if (dfb && cf) {
+                setComparison('kpi-accounts', dfb.accounts_created, cf.accounts_created, formatNumber, false);
+            }
+            // Customer comparisons
+            if (dc && cc) {
+                setComparison('kpi-active-users', dc.active_users, cc.active_users, formatNumber, false);
+                setComparison('kpi-quotes-user', dc.quotes_per_user, cc.quotes_per_user,
+                    function(v) { return v.toFixed(1); }, false);
+                setComparison('kpi-bookings-user', dc.bookings_per_user, cc.bookings_per_user,
+                    function(v) { return v.toFixed(2); }, false);
+                setComparison('kpi-rev-user', dc.revenue_per_user, cc.revenue_per_user, formatCurrency, false);
+                setComparison('kpi-arpu', dc.arpu, cc.arpu, formatCurrency, false);
+            }
+            // Cross-source comparisons
+            updateCrossSourceKPIs();
+        }
+
+        function renderAllSparklines() {
+            var ds = currentData.stripe;
+            var dh = currentData.hubspot;
+            var dfb = currentData.firebase;
+            var dc = currentData.customer;
+            var cs = compareData.stripe;
+            var ch = compareData.hubspot;
+            var cf = compareData.firebase;
+            var cc = compareData.customer;
+            var cmpOn = compareToggle.checked;
+
+            // Stripe sparklines
+            if (ds && ds.daily) {
+                renderSparkline('kpi-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue');
+                renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue');
+                renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue');
+            }
+
+            // HubSpot sparklines
+            if (dh && dh.daily) {
+                renderSparkline('kpi-quotes-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'quotes');
+                renderSparkline('kpi-bookings-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings');
+            }
+
+            // Firebase sparklines
+            if (dfb && dfb.daily) {
+                renderSparkline('kpi-accounts-sparkline', dfb.daily, cmpOn && cf ? cf.daily : null, 'accounts_created');
+            }
+
+            // Customer sparklines
+            if (dc && dc.daily) {
+                renderSparkline('kpi-active-users-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings');
+                renderSparkline('kpi-quotes-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_quotes');
+                renderSparkline('kpi-bookings-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_bookings');
+            }
+
+            // Computed sparklines: conversion, AOV total, sales cycle, rev/user, arpu
+            // These need cross-source merge or just show the primary underlying metric
+            if (dh && dh.daily) {
+                // Conversion sparkline: show bookings trend (since conversion = bookings/quotes)
+                renderSparkline('kpi-conversion-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings');
+                // AOV at close: show booking_revenue trend
+                renderSparkline('kpi-aov-close-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'booking_revenue');
+                // Sales cycle: no daily data available, skip
+            }
+            if (ds && ds.daily) {
+                // AOV total: show revenue trend
+                renderSparkline('kpi-aov-total-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue');
+            }
+            if (dc && dc.daily) {
+                renderSparkline('kpi-rev-user-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue');
+                renderSparkline('kpi-arpu-sparkline', dc.daily, cmpOn && cc ? cc.daily : null, 'agent_booking_revenue');
+            }
+        }
+
+        // ---- Main fetch orchestrator ----
+        async function fetchAllKPIs(filters) {
             latestRevenue = null;
             latestBookings = null;
             latestQuotes = null;
             latestUniqueAccounts = null;
-            fetchStripeKPIs(filters);
-            fetchHubSpotKPIs(filters);
-            fetchFirebaseKPIs(filters);
-            fetchCustomerKPIs(filters);
+            compareRevenue = null;
+            compareBookings = null;
+            compareQuotes = null;
+            currentData = { stripe: null, hubspot: null, firebase: null, customer: null };
+            compareData = { stripe: null, hubspot: null, firebase: null, customer: null };
+
+            clearAllComparisons();
+
+            // Fire current-period fetches
+            var currentPromises = [
+                fetchStripeKPIs(filters, false),
+                fetchHubSpotKPIs(filters, false),
+                fetchFirebaseKPIs(filters, false),
+                fetchCustomerKPIs(filters, false),
+            ];
+
+            // If compare is on, fire comparison fetches in parallel
+            var comparePromises = [];
+            if (compareToggle.checked) {
+                var cmpDates = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
+                var cmpFilters = {
+                    market: filters.market,
+                    period: 'custom',
+                    dateFrom: cmpDates.dateFrom,
+                    dateTo: cmpDates.dateTo,
+                };
+                comparePromises = [
+                    fetchStripeKPIs(cmpFilters, true),
+                    fetchHubSpotKPIs(cmpFilters, true),
+                    fetchFirebaseKPIs(cmpFilters, true),
+                    fetchCustomerKPIs(cmpFilters, true),
+                ];
+            }
+
+            await Promise.all(currentPromises.concat(comparePromises));
+
+            // Render sparklines (always, they show daily trends)
+            renderAllSparklines();
+
+            // Render comparison badges
+            if (compareToggle.checked) {
+                renderAllComparisons();
+            }
         }
 
         document.getElementById('applyFilters').addEventListener('click', function() {

@@ -287,7 +287,34 @@ module.exports = async function handler(req, res) {
     // --- Step 9: Compute per-user metrics ---
     var accts = activeUsers > 0 ? activeUsers : 1;
 
-    return res.status(200).json({
+    // Daily bucketing
+    var daily = {};
+    if (req.query.daily === 'true') {
+      quoteDeals.forEach(function(deal) {
+        var props = deal.properties || {};
+        var contacts = dealContactMap[deal.id] || [];
+        var hasActiveAgent = contacts.some(function(c) { return activeAgentIds.has(c); });
+        if (hasActiveAgent && props.createdate) {
+          var day = new Date(props.createdate).toISOString().slice(0, 10);
+          if (!daily[day]) daily[day] = { agent_quotes: 0, agent_bookings: 0, agent_booking_revenue: 0 };
+          daily[day].agent_quotes++;
+        }
+      });
+      bookingDeals.forEach(function(deal) {
+        var props = deal.properties || {};
+        var contacts = dealContactMap[deal.id] || [];
+        var hasActiveAgent = contacts.some(function(c) { return activeAgentIds.has(c); });
+        if (hasActiveAgent && props.closedate) {
+          var day = new Date(props.closedate).toISOString().slice(0, 10);
+          if (!daily[day]) daily[day] = { agent_quotes: 0, agent_bookings: 0, agent_booking_revenue: 0 };
+          daily[day].agent_bookings++;
+          var amt = parseFloat(props.amount || 0);
+          if (!isNaN(amt)) daily[day].agent_booking_revenue += amt;
+        }
+      });
+    }
+
+    var result = {
       active_users: activeUsers,
       agent_quotes: agentQuotes,
       agent_bookings: agentBookings,
@@ -298,7 +325,9 @@ module.exports = async function handler(req, res) {
       arpu: agentRevenue / accts,
       period: { start: startMs, end: endMs },
       market: market || 'all',
-    });
+    };
+    if (req.query.daily === 'true') result.daily = daily;
+    return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });

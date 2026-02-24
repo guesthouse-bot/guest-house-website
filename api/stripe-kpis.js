@@ -124,7 +124,24 @@ module.exports = async function handler(req, res) {
     const uniqueAccounts = customerSet.size || 1;
     const arpu = totalRevenue / uniqueAccounts;
 
-    return res.status(200).json({
+    // Daily bucketing
+    var daily = {};
+    if (req.query.daily === 'true') {
+      filtered.forEach(function(c) {
+        var day = new Date(c.created * 1000).toISOString().slice(0, 10);
+        if (!daily[day]) daily[day] = { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
+        var amt = (c.amount_captured || 0) / 100;
+        daily[day].revenue += amt;
+        var isRenewal = c.description && c.description.indexOf('Furniture Renewal -') === 0;
+        if (isRenewal) {
+          daily[day].renewal_revenue += amt;
+        } else {
+          daily[day].bookings_revenue += amt;
+        }
+      });
+    }
+
+    var result = {
       revenue: totalRevenue,
       bookings_revenue: bookingsRevenue,
       renewal_revenue: renewalRevenue,
@@ -132,7 +149,9 @@ module.exports = async function handler(req, res) {
       unique_accounts: uniqueAccounts,
       period: { start: startDate, end: endDate },
       market: market || 'all',
-    });
+    };
+    if (req.query.daily === 'true') result.daily = daily;
+    return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });

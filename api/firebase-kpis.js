@@ -216,11 +216,26 @@ module.exports = async function handler(req, res) {
 
     var accountsCreated = filtered.length;
 
-    return res.status(200).json({
+    // Daily bucketing
+    var daily = {};
+    if (req.query.daily === 'true') {
+      filtered.forEach(function(item) {
+        var fields = item.document.fields;
+        if (fields.created && fields.created.timestampValue) {
+          var day = new Date(fields.created.timestampValue).toISOString().slice(0, 10);
+          if (!daily[day]) daily[day] = { accounts_created: 0 };
+          daily[day].accounts_created++;
+        }
+      });
+    }
+
+    var result = {
       accounts_created: accountsCreated,
       period: { start: startDate, end: endDate },
       market: market || 'all',
-    });
+    };
+    if (req.query.daily === 'true') result.daily = daily;
+    return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
