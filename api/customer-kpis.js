@@ -1,47 +1,15 @@
-var crypto = require('crypto');
-
-async function getAccessToken(serviceAccount) {
-  var now = Math.floor(Date.now() / 1000);
-  var header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
-  var payload = Buffer.from(JSON.stringify({
-    iss: serviceAccount.client_email,
-    sub: serviceAccount.client_email,
-    aud: 'https://oauth2.googleapis.com/token',
-    scope: 'https://www.googleapis.com/auth/datastore',
-    iat: now,
-    exp: now + 3600,
-  })).toString('base64url');
-
-  var sign = crypto.createSign('RSA-SHA256');
-  sign.update(header + '.' + payload);
-  var signature = sign.sign(serviceAccount.private_key, 'base64url');
-  var jwt = header + '.' + payload + '.' + signature;
-
-  var response = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt,
-  });
-
-  var data = await response.json();
-  return data.access_token;
-}
-
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  var saB64 = process.env.FIREBASE_SERVICE_ACCOUNT_B64;
   var HUBSPOT_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
   var STRIPE_KEY = process.env.STRIPE_API_KEY;
 
-  if (!saB64) return res.status(500).json({ error: 'Firebase not configured' });
   if (!HUBSPOT_TOKEN) return res.status(500).json({ error: 'HubSpot not configured' });
   if (!STRIPE_KEY) return res.status(500).json({ error: 'Stripe not configured' });
 
-  var serviceAccount = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
   var market = req.query.market;
   var period = req.query.period;
   var dateFrom = req.query.dateFrom;
@@ -83,141 +51,99 @@ module.exports = async function handler(req, res) {
       startMs = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
   }
 
-  var startISO = new Date(startMs).toISOString();
-  var endISO = new Date(endMs).toISOString();
   var startUnix = Math.floor(startMs / 1000);
   var endUnix = Math.floor(endMs / 1000);
 
-  var marketToRegions = {
-    colorado: ['denver_boulder'],
-    california: ['san_diego', 'orange_county', 'los_angeles'],
+  var marketToValues = {
+    colorado: { states: ['CO'], markets: ['denver', 'boulder', 'colorado'] },
+    california: { states: ['CA'], markets: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] },
   };
 
-  try {
-    // --- Step 1: Get Firebase users created in date range ---
-    var accessToken = await getAccessToken(serviceAccount);
-    var allUsers = [];
-    var pageToken = null;
-    var fbHasMore = true;
+  var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
 
-    while (fbHasMore) {
-      var query = {
-        structuredQuery: {
-          from: [{ collectionId: 'users' }],
-          where: {
-            compositeFilter: {
-              op: 'AND',
-              filters: [
-                { fieldFilter: { field: { fieldPath: 'created' }, op: 'GREATER_THAN_OR_EQUAL', value: { timestampValue: startISO } } },
-                { fieldFilter: { field: { fieldPath: 'created' }, op: 'LESS_THAN_OR_EQUAL', value: { timestampValue: endISO } } },
-              ]
-            }
-          },
-          limit: 300,
-        }
+  // Helper: paginated HubSpot deal search
+  async function searchDeals(filters) {
+    var allDeals = [];
+    var after = 0;
+    var hasMore = true;
+
+    while (hasMore) {
+      var body = {
+        filterGroups: [{ filters: filters }],
+        properties: ['dealname', 'dealstage', 'createdate', 'closedate', 'amount', 'pipeline', 'market'],
+        limit: 100,
+        after: after,
       };
 
-      if (pageToken) {
-        query.structuredQuery.startAt = { values: [{ timestampValue: pageToken }], before: false };
-        query.structuredQuery.orderBy = [{ field: { fieldPath: 'created' }, direction: 'ASCENDING' }];
-      }
-
-      var fbResponse = await fetch(
-        'https://firestore.googleapis.com/v1/projects/guesthouse-cms/databases/(default)/documents:runQuery',
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(query),
-        }
-      );
-
-      if (!fbResponse.ok) {
-        var fbErr = await fbResponse.json();
-        return res.status(fbResponse.status).json({ error: fbErr.error ? fbErr.error.message : 'Firestore error' });
-      }
-
-      var fbData = await fbResponse.json();
-      var docs = fbData.filter(function(item) { return item.document; });
-      allUsers = allUsers.concat(docs);
-
-      if (docs.length >= 300) {
-        var lastDoc = docs[docs.length - 1].document.fields;
-        pageToken = lastDoc.created.timestampValue;
-      } else {
-        fbHasMore = false;
-      }
-    }
-
-    // --- Step 2: Filter by market ---
-    var filtered = allUsers;
-    if (market && market !== 'all' && market !== 'nationwide') {
-      var regions = marketToRegions[market.toLowerCase()] || [];
-      filtered = allUsers.filter(function(item) {
-        var fields = item.document.fields;
-        var activeRegion = (fields.activeRegion && fields.activeRegion.stringValue || '').toLowerCase();
-        return regions.some(function(r) { return activeRegion.indexOf(r) !== -1; });
-      });
-    }
-
-    // --- Step 3: Extract emails ---
-    var emails = [];
-    filtered.forEach(function(item) {
-      var fields = item.document.fields;
-      if (fields.email && fields.email.stringValue) {
-        emails.push(fields.email.stringValue.toLowerCase());
-      }
-    });
-
-    // --- Step 4: Batch lookup HubSpot contacts, filter to agent roles ---
-    var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
-    var agentContactIds = [];
-    var agentEmails = new Set();
-    var agentContactMap = {}; // contactId → email
-
-    for (var i = 0; i < emails.length; i += 100) {
-      var batch = emails.slice(i, i + 100);
-      var batchBody = {
-        properties: ['email', 'jobtitle', 'role'],
-        idProperty: 'email',
-        inputs: batch.map(function(email) { return { id: email }; })
-      };
-
-      var hsResponse = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+      var resp = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(batchBody),
+        body: JSON.stringify(body),
       });
 
-      if (hsResponse.ok) {
-        var hsData = await hsResponse.json();
-        (hsData.results || []).forEach(function(contact) {
-          var props = contact.properties || {};
-          var role = ((props.jobtitle || '') + ' ' + (props.role || '')).toLowerCase();
-          var isAgent = agentKeywords.some(function(keyword) {
-            return role.indexOf(keyword) !== -1;
-          });
-          if (isAgent) {
-            agentContactIds.push(contact.id);
-            agentEmails.add((props.email || '').toLowerCase());
-            agentContactMap[contact.id] = (props.email || '').toLowerCase();
-          }
-        });
+      if (!resp.ok) break;
+
+      var data = await resp.json();
+      allDeals = allDeals.concat(data.results || []);
+      if (data.paging && data.paging.next && data.paging.next.after) {
+        after = data.paging.next.after;
+      } else {
+        hasMore = false;
       }
     }
+    return allDeals;
+  }
 
-    // --- Step 5: Get deal associations — preserve contact→deals mapping ---
-    var contactDealIds = {}; // contactId → [dealId, ...]
+  // Helper: filter deals by market
+  function filterByMarket(deals) {
+    if (!market || market === 'all' || market === 'nationwide') return deals;
+    var mapping = marketToValues[market.toLowerCase()];
+    if (!mapping) return deals;
+
+    return deals.filter(function(deal) {
+      var props = deal.properties || {};
+      var dealMarket = (props.market || '').toLowerCase();
+      if (mapping.markets.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
+      var name = props.dealname || '';
+      var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+      if (stateMatch && mapping.states.indexOf(stateMatch[1]) !== -1) return true;
+      return false;
+    });
+  }
+
+  try {
+    // --- Step 1: Get Closed Won deals in the period (bookings) ---
+    var rawBookingDeals = await searchDeals([
+      { propertyName: 'closedate', operator: 'GTE', value: String(startMs) },
+      { propertyName: 'closedate', operator: 'LTE', value: String(endMs) },
+      { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+      { propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' },
+    ]);
+    var bookingDeals = filterByMarket(rawBookingDeals);
+
+    // --- Step 2: Get all deals created in the period (quotes) ---
+    var rawQuoteDeals = await searchDeals([
+      { propertyName: 'createdate', operator: 'GTE', value: String(startMs) },
+      { propertyName: 'createdate', operator: 'LTE', value: String(endMs) },
+      { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+    ]);
+    var quoteDeals = filterByMarket(rawQuoteDeals);
+
+    // --- Step 3: Collect all unique deal IDs, get deal→contact associations ---
     var allDealIds = new Set();
+    bookingDeals.forEach(function(d) { allDealIds.add(d.id); });
+    quoteDeals.forEach(function(d) { allDealIds.add(d.id); });
 
-    for (var i = 0; i < agentContactIds.length; i += 100) {
-      var batch = agentContactIds.slice(i, i + 100);
-      var assocResponse = await fetch('https://api.hubapi.com/crm/v4/associations/contact/deal/batch/read', {
+    var dealIdArray = Array.from(allDealIds);
+    var dealContactMap = {}; // dealId → [contactId, ...]
+    var allContactIds = new Set();
+
+    for (var i = 0; i < dealIdArray.length; i += 100) {
+      var batch = dealIdArray.slice(i, i + 100);
+      var assocResp = await fetch('https://api.hubapi.com/crm/v4/associations/deal/contact/batch/read', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
@@ -228,98 +154,100 @@ module.exports = async function handler(req, res) {
         }),
       });
 
-      if (assocResponse.ok) {
-        var assocData = await assocResponse.json();
+      if (assocResp.ok) {
+        var assocData = await assocResp.json();
         (assocData.results || []).forEach(function(result) {
-          var contactId = String(result.from.id);
-          if (!contactDealIds[contactId]) contactDealIds[contactId] = [];
+          var dealId = String(result.from.id);
+          if (!dealContactMap[dealId]) dealContactMap[dealId] = [];
           (result.to || []).forEach(function(to) {
-            var dealId = String(to.toObjectId);
-            contactDealIds[contactId].push(dealId);
-            allDealIds.add(dealId);
+            var contactId = String(to.toObjectId);
+            dealContactMap[dealId].push(contactId);
+            allContactIds.add(contactId);
           });
         });
       }
     }
 
-    // --- Step 6: Batch read all deal details ---
-    var dealIdArray = Array.from(allDealIds);
-    var dealMap = {}; // dealId → deal properties
+    // --- Step 4: Batch read contacts → filter to agent roles ---
+    var agentContactIds = new Set();
+    var agentContactEmails = {}; // contactId → email
+    var contactIdArray = Array.from(allContactIds);
 
-    for (var i = 0; i < dealIdArray.length; i += 100) {
-      var batch = dealIdArray.slice(i, i + 100);
-      var dealResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals/batch/read', {
+    for (var i = 0; i < contactIdArray.length; i += 100) {
+      var batch = contactIdArray.slice(i, i + 100);
+      var contactResp = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          properties: ['dealname', 'dealstage', 'createdate', 'closedate', 'amount', 'pipeline'],
+          properties: ['email', 'jobtitle', 'role'],
           inputs: batch.map(function(id) { return { id: id }; })
         }),
       });
 
-      if (dealResponse.ok) {
-        var dealData = await dealResponse.json();
-        (dealData.results || []).forEach(function(deal) {
-          dealMap[deal.id] = deal.properties || {};
+      if (contactResp.ok) {
+        var contactData = await contactResp.json();
+        (contactData.results || []).forEach(function(contact) {
+          var props = contact.properties || {};
+          var role = ((props.jobtitle || '') + ' ' + (props.role || '')).toLowerCase();
+          var isAgent = agentKeywords.some(function(keyword) {
+            return role.indexOf(keyword) !== -1;
+          });
+          if (isAgent) {
+            agentContactIds.add(String(contact.id));
+            agentContactEmails[String(contact.id)] = (props.email || '').toLowerCase();
+          }
         });
       }
     }
 
-    // --- Step 7: Find "active users" = agents with at least 1 Closed Won deal in period ---
-    var activeContactIds = new Set();
+    // --- Step 5: Active Users = agents with at least 1 booking deal ---
+    var activeAgentIds = new Set();
 
-    Object.keys(contactDealIds).forEach(function(contactId) {
-      var dealIds = contactDealIds[contactId];
-      var hasBooking = dealIds.some(function(dealId) {
-        var props = dealMap[dealId];
-        if (!props || props.pipeline !== 'default') return false;
-        if (props.dealstage !== 'closedwon' || !props.closedate) return false;
-        var closeTime = new Date(props.closedate).getTime();
-        return closeTime >= startMs && closeTime <= endMs;
+    bookingDeals.forEach(function(deal) {
+      var contacts = dealContactMap[deal.id] || [];
+      contacts.forEach(function(contactId) {
+        if (agentContactIds.has(contactId)) {
+          activeAgentIds.add(contactId);
+        }
       });
-      if (hasBooking) activeContactIds.add(contactId);
     });
 
-    var activeUsers = activeContactIds.size;
+    var activeUsers = activeAgentIds.size;
 
     // Build set of active agent emails (for Stripe matching)
     var activeAgentEmails = new Set();
-    activeContactIds.forEach(function(contactId) {
-      var email = agentContactMap[contactId];
+    activeAgentIds.forEach(function(contactId) {
+      var email = agentContactEmails[contactId];
       if (email) activeAgentEmails.add(email);
     });
 
-    // --- Step 8: Count quotes + bookings only for active (paying) agents ---
-    var agentQuotes = 0;
+    // --- Step 6: Count bookings for active agents ---
     var agentBookings = 0;
     var agentBookingRevenue = 0;
 
-    activeContactIds.forEach(function(contactId) {
-      var dealIds = contactDealIds[contactId] || [];
-      dealIds.forEach(function(dealId) {
-        var props = dealMap[dealId];
-        if (!props || props.pipeline !== 'default') return;
-
-        var createTime = new Date(props.createdate).getTime();
-        if (createTime >= startMs && createTime <= endMs) {
-          agentQuotes++;
-        }
-
-        if (props.dealstage === 'closedwon' && props.closedate) {
-          var closeTime = new Date(props.closedate).getTime();
-          if (closeTime >= startMs && closeTime <= endMs) {
-            agentBookings++;
-            var amt = parseFloat(props.amount || 0);
-            if (!isNaN(amt)) agentBookingRevenue += amt;
-          }
-        }
-      });
+    bookingDeals.forEach(function(deal) {
+      var contacts = dealContactMap[deal.id] || [];
+      var hasActiveAgent = contacts.some(function(c) { return activeAgentIds.has(c); });
+      if (hasActiveAgent) {
+        agentBookings++;
+        var amt = parseFloat(deal.properties.amount || 0);
+        if (!isNaN(amt)) agentBookingRevenue += amt;
+      }
     });
 
-    // --- Step 9: Stripe revenue only for active agent emails ---
+    // --- Step 7: Count quotes for active agents (all deals created in period) ---
+    var agentQuotes = 0;
+
+    quoteDeals.forEach(function(deal) {
+      var contacts = dealContactMap[deal.id] || [];
+      var hasActiveAgent = contacts.some(function(c) { return activeAgentIds.has(c); });
+      if (hasActiveAgent) agentQuotes++;
+    });
+
+    // --- Step 8: Stripe revenue for active agent emails ---
     var agentRevenue = 0;
     var sHasMore = true;
     var startingAfter = null;
@@ -333,13 +261,13 @@ module.exports = async function handler(req, res) {
       });
       if (startingAfter) stripeParams.append('starting_after', startingAfter);
 
-      var stripeResponse = await fetch('https://api.stripe.com/v1/charges?' + stripeParams, {
+      var stripeResp = await fetch('https://api.stripe.com/v1/charges?' + stripeParams, {
         headers: { 'Authorization': 'Bearer ' + STRIPE_KEY },
       });
 
-      if (!stripeResponse.ok) break;
+      if (!stripeResp.ok) break;
 
-      var stripeData = await stripeResponse.json();
+      var stripeData = await stripeResp.json();
       stripeData.data.forEach(function(charge) {
         var billingEmail = (charge.billing_details && charge.billing_details.email || '').toLowerCase();
         var receiptEmail = (charge.receipt_email || '').toLowerCase();
@@ -356,7 +284,7 @@ module.exports = async function handler(req, res) {
 
     agentRevenue = agentRevenue / 100;
 
-    // --- Step 10: Compute per-user metrics ---
+    // --- Step 9: Compute per-user metrics ---
     var accts = activeUsers > 0 ? activeUsers : 1;
 
     return res.status(200).json({
