@@ -285,30 +285,21 @@ module.exports = async function handler(req, res) {
         var stage = d.properties.dealstage || 'unknown';
         stageCounts[stage] = (stageCounts[stage] || 0) + 1;
       });
+      var dealsByStage = {};
+      allDeals.forEach(function(d) {
+        var s = d.properties.dealstage || 'unknown';
+        if (!dealsByStage[s]) dealsByStage[s] = [];
+        if (dealsByStage[s].length < 3) dealsByStage[s].push({
+          id: d.id, name: d.properties.dealname,
+          createdate: d.properties.createdate, closedate: d.properties.closedate,
+          amount: d.properties.amount, market: d.properties.market,
+        });
+      });
       result.debug = {
         total_deals_in_pipeline: allDeals.length,
         deal_stages: stageCounts,
-        sample_deals: allDeals.slice(0, 10).map(function(d) {
-          return {
-            id: d.id,
-            name: d.properties.dealname,
-            stage: d.properties.dealstage,
-            createdate: d.properties.createdate,
-            closedate: d.properties.closedate,
-            amount: d.properties.amount,
-            market: d.properties.market,
-          };
-        }),
+        deals_by_stage: dealsByStage,
         closed_won_count: filteredCW.length,
-        sample_closed_won: filteredCW.slice(0, 5).map(function(d) {
-          return {
-            id: d.id,
-            name: d.properties.dealname,
-            stage: d.properties.dealstage,
-            closedate: d.properties.closedate,
-            amount: d.properties.amount,
-          };
-        }),
       };
     }
     return res.status(200).json(result);
