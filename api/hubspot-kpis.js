@@ -278,6 +278,39 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
+    if (req.query.debug === 'true') {
+      // Show deal stage distribution and sample deals
+      var stageCounts = {};
+      allDeals.forEach(function(d) {
+        var stage = d.properties.dealstage || 'unknown';
+        stageCounts[stage] = (stageCounts[stage] || 0) + 1;
+      });
+      result.debug = {
+        total_deals_in_pipeline: allDeals.length,
+        deal_stages: stageCounts,
+        sample_deals: allDeals.slice(0, 10).map(function(d) {
+          return {
+            id: d.id,
+            name: d.properties.dealname,
+            stage: d.properties.dealstage,
+            createdate: d.properties.createdate,
+            closedate: d.properties.closedate,
+            amount: d.properties.amount,
+            market: d.properties.market,
+          };
+        }),
+        closed_won_count: filteredCW.length,
+        sample_closed_won: filteredCW.slice(0, 5).map(function(d) {
+          return {
+            id: d.id,
+            name: d.properties.dealname,
+            stage: d.properties.dealstage,
+            closedate: d.properties.closedate,
+            amount: d.properties.amount,
+          };
+        }),
+      };
+    }
     return res.status(200).json(result);
 
   } catch (err) {
