@@ -1575,7 +1575,7 @@
         return html;
     }
 
-    /* ── Step 0: Choose provider type + business name ── */
+    /* ── Step 0: Choose provider type ── */
     function renderFormStep0() {
         return '<div class="form-step-heading">Choose your provider type</div>' +
             '<div class="form-step-sub">Select the role that best describes your primary service.</div>' +
@@ -1584,14 +1584,14 @@
                     '<div class="role-icon">' + r.icon + '</div>' +
                     '<div class="role-name">' + r.label + '</div>' +
                     '<div class="role-desc">' + r.desc + '</div></div>';
-            }).join("") + '</div>' +
-            '<div style="margin-top:20px">' + ffHTML("Business / company name","business_name",{required:true}) + '</div>';
+            }).join("") + '</div>';
     }
 
     /* ── Step 1: Contact (same for all roles) ── */
     function renderFormStep1() {
         return '<div class="form-step-heading">Contact information</div>' +
             '<div class="form-step-sub">Tell us how to reach you.</div>' +
+            ffHTML("Business / company name","business_name",{required:true}) +
             '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>' +
             ffHTML("Email address","email",{required:true,type:"email"}) +
             ffHTML("Phone number","phone",{required:true,type:"tel",placeholder:"(555) 123-4567"}) +
@@ -1658,8 +1658,8 @@
 
     function canAdvance() {
         switch (appStep) {
-            case 0: return !!appRole && fv("business_name");
-            case 1: return fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
+            case 0: return !!appRole;
+            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fv("phone") && fv("city") && fv("state");
             case 2: return fv("locations");
             case 3: return SERVICES_CONFIG[appRole].jobs ? fvArr("jobs").length > 0 : true;
             default: return true;
