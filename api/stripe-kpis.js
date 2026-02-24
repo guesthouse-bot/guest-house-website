@@ -124,7 +124,10 @@ module.exports = async function handler(req, res) {
       return c.invoice && !renewalChargeIds.has(c.id);
     });
 
-    // Fetch invoices in batches (Stripe allows fetching one at a time)
+    // Store invoice details for debug
+    var invoiceDetails = {};
+
+    // Fetch invoices individually
     for (var i = 0; i < invoiceCharges.length; i++) {
       var invoiceId = invoiceCharges[i].invoice;
       try {
@@ -133,6 +136,17 @@ module.exports = async function handler(req, res) {
         });
         if (invResp.ok) {
           var inv = await invResp.json();
+          var lines = (inv.lines && inv.lines.data) || [];
+          var lineDescs = lines.map(function(l) { return l.description || ''; });
+
+          // Store for debug
+          invoiceDetails[invoiceCharges[i].description || invoiceId] = {
+            invoice_desc: inv.description || null,
+            memo: inv.memo || null,
+            line_items: lineDescs,
+            amount: (invoiceCharges[i].amount_captured || 0) / 100,
+          };
+
           // Check invoice-level description
           var invDesc = ((inv.description || '') + ' ' + (inv.memo || '')).toLowerCase();
           if (invDesc.indexOf('renewal') !== -1) {
@@ -140,7 +154,6 @@ module.exports = async function handler(req, res) {
             continue;
           }
           // Check each line item description
-          var lines = (inv.lines && inv.lines.data) || [];
           for (var j = 0; j < lines.length; j++) {
             var lineDesc = (lines[j].description || '').toLowerCase();
             if (lineDesc.indexOf('renewal') !== -1) {
@@ -216,6 +229,7 @@ module.exports = async function handler(req, res) {
       result._debug_descriptions = descMap;
       result._debug_renewal_count = renewalChargeIds.size;
       result._debug_total_charges = filtered.length;
+      result._debug_invoice_details = invoiceDetails;
     }
 
     return res.status(200).json(result);
