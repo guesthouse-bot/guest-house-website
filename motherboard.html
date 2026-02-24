@@ -1088,7 +1088,7 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
-                    <div class="kpi-value">&mdash;</div>
+                    <div class="kpi-value" id="kpi-quotes">&mdash;</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings</div>
@@ -1312,17 +1312,45 @@
             clearStripeLoading();
         }
 
+        async function fetchHubSpotKPIs(filters) {
+            var el = document.getElementById('kpi-quotes');
+            if (el) { el.textContent = '...'; el.style.opacity = '0.4'; }
+            try {
+                var params = new URLSearchParams({
+                    market: filters.market,
+                    period: filters.period,
+                });
+                if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+                if (filters.dateTo) params.append('dateTo', filters.dateTo);
+
+                var response = await fetch('/api/hubspot-kpis?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                setKPI('kpi-quotes', formatNumber(data.quotes_requested));
+            } catch (err) {
+                console.error('HubSpot KPI fetch error:', err);
+                setKPI('kpi-quotes', 'Error');
+            }
+            if (el) el.style.opacity = '1';
+        }
+
+        function fetchAllKPIs(filters) {
+            fetchStripeKPIs(filters);
+            fetchHubSpotKPIs(filters);
+        }
+
         document.getElementById('applyFilters').addEventListener('click', function() {
             var market = document.getElementById('filterMarket').value;
             var period = filterPeriod.value;
             var dateFrom = document.getElementById('filterDateFrom').value;
             var dateTo = document.getElementById('filterDateTo').value;
 
-            fetchStripeKPIs({ market: market, period: period, dateFrom: dateFrom, dateTo: dateTo });
+            fetchAllKPIs({ market: market, period: period, dateFrom: dateFrom, dateTo: dateTo });
         });
 
         // Auto-load on page load with default filters
-        fetchStripeKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
+        fetchAllKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
     </script>
 </body>
 </html>
