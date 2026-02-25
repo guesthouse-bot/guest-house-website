@@ -1345,24 +1345,6 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">Accounts created</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
-                        <span class="kpi-change" id="kpi-accounts-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quotes requested</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quotes">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quotes-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-quotes-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quotes-sparkline"></div>
-                </div>
-                <div class="kpi-card">
                     <div class="kpi-label">Bookings</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-bookings">&mdash;</span>
@@ -1372,16 +1354,7 @@
                     <div class="kpi-sparkline" id="kpi-bookings-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Conversion rate</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-conversion">&mdash;</span>
-                        <span class="kpi-change" id="kpi-conversion-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-conversion-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-conversion-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-label">Revenue</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-revenue">&mdash;</span>
                         <span class="kpi-change" id="kpi-revenue-change"></span>
@@ -1390,59 +1363,38 @@
                     <div class="kpi-sparkline" id="kpi-revenue-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Bookings Revenue</div>
+                    <div class="kpi-label">Gross Margin</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-bookings-rev">&mdash;</span>
-                        <span class="kpi-change" id="kpi-bookings-rev-change"></span>
+                        <span class="kpi-value" id="kpi-gross-margin">&mdash;</span>
                     </div>
-                    <div class="kpi-prev" id="kpi-bookings-rev-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-bookings-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Renewal Revenue</div>
+                    <div class="kpi-label">Net Income</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-renewal-rev">&mdash;</span>
-                        <span class="kpi-change" id="kpi-renewal-rev-change"></span>
+                        <span class="kpi-value" id="kpi-net-income">&mdash;</span>
                     </div>
-                    <div class="kpi-prev" id="kpi-renewal-rev-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-renewal-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">AOV (at close)</div>
+                    <div class="kpi-label">Cash On Hand</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
-                        <span class="kpi-change" id="kpi-aov-close-change"></span>
+                        <span class="kpi-value" id="kpi-cash-on-hand">&mdash;</span>
                     </div>
-                    <div class="kpi-prev" id="kpi-aov-close-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-aov-close-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">AOV (total)</div>
+                    <div class="kpi-label">Runway</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-aov-total">&mdash;</span>
-                        <span class="kpi-change" id="kpi-aov-total-change"></span>
+                        <span class="kpi-value" id="kpi-runway">&mdash;</span>
                     </div>
-                    <div class="kpi-prev" id="kpi-aov-total-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Sales cycle</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
-                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Customer KPIs -->
+    <!-- Sales KPIs -->
     <section class="kpi-section-grey">
         <div class="kpi-section">
             <div class="kpi-section-header">
-                <h2>Customer KPIs</h2>
+                <h2>Sales KPIs</h2>
                 <div class="section-filters" data-section="customer">
                     <div class="filter-group">
                         <span class="filter-label">Market</span>
@@ -1491,6 +1443,78 @@
                 </div>
             </div>
             <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Accounts created</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
+                        <span class="kpi-change" id="kpi-accounts-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quotes requested</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quotes">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quotes-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quotes-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quotes-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Conversion rate</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-conversion">&mdash;</span>
+                        <span class="kpi-change" id="kpi-conversion-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-conversion-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-conversion-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings Revenue</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-rev">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-rev-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-rev-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-bookings-rev-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Renewal Revenue</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-renewal-rev">&mdash;</span>
+                        <span class="kpi-change" id="kpi-renewal-rev-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-renewal-rev-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-renewal-rev-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">AOV (at close)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
+                        <span class="kpi-change" id="kpi-aov-close-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-aov-close-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-aov-close-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">AOV (total)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-aov-total">&mdash;</span>
+                        <span class="kpi-change" id="kpi-aov-total-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-aov-total-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Sales cycle</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
+                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
+                </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Active Users</div>
                     <div class="kpi-value-row">
@@ -2247,7 +2271,7 @@
         }
 
         // ---- Data storage ----
-        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null };
+        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null, scorecard: null };
         var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null };
 
         // Track latest values for cross-source calculations
@@ -2258,6 +2282,23 @@
         var compareRevenue = null;
         var compareBookings = null;
         var compareQuotes = null;
+
+        function updateScorecardKPIs() {
+            var sc = currentData.scorecard;
+            if (latestRevenue !== null && sc) {
+                var grossMargin = latestRevenue * sc.gross_margin_pct;
+                var netIncome = grossMargin - sc.monthly_expenses;
+                var runway = netIncome !== 0 ? sc.cash_on_hand / netIncome : null;
+                setKPI('kpi-gross-margin', formatCurrency(grossMargin));
+                setKPI('kpi-net-income', formatCurrency(netIncome));
+                setKPI('kpi-cash-on-hand', formatCurrency(sc.cash_on_hand));
+                if (runway !== null) {
+                    setKPI('kpi-runway', Math.round(Math.abs(runway)) + ' mo');
+                } else {
+                    setKPI('kpi-runway', '\u2014');
+                }
+            }
+        }
 
         function updateCrossSourceKPIs() {
             if (latestQuotes !== null && latestBookings !== null) {
@@ -2274,6 +2315,7 @@
                 var el2 = document.getElementById('kpi-aov-total');
                 if (el2) el2.style.opacity = '1';
             }
+            updateScorecardKPIs();
             // Cross-source comparisons
             if (compareToggle.checked && compareQuotes !== null && compareBookings !== null) {
                 var currConv = latestQuotes > 0 ? (latestBookings / latestQuotes * 100) : 0;
@@ -2410,6 +2452,26 @@
                 return null;
             } finally {
                 if (!isCompare) clearLoading(['kpi-accounts']);
+            }
+        }
+
+        async function fetchScorecardKPIs() {
+            var ids = ['kpi-gross-margin', 'kpi-net-income', 'kpi-cash-on-hand', 'kpi-runway'];
+            setLoading(ids);
+            try {
+                var response = await fetch('/api/scorecard-kpis');
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+                currentData.scorecard = data;
+                setKPI('kpi-cash-on-hand', formatCurrency(data.cash_on_hand));
+                updateScorecardKPIs();
+                return data;
+            } catch (err) {
+                console.error('Scorecard KPI fetch error:', err);
+                ids.forEach(function(id) { setKPI(id, 'Error'); });
+                return null;
+            } finally {
+                clearLoading(ids);
             }
         }
 
@@ -2649,7 +2711,7 @@
             compareRevenue = null;
             compareBookings = null;
             compareQuotes = null;
-            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
+            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, scorecard: null };
             compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
 
             clearAllComparisons();
@@ -2663,6 +2725,7 @@
                 fetchFirebaseKPIs(filters, false),
                 fetchTypeformNPS(filters, false),
                 fetchVendorApplications(filters, false),
+                fetchScorecardKPIs(),
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
