@@ -1907,10 +1907,10 @@
         }
 
         .more-services-grid {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(5, auto);
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .more-service-chip {
@@ -2422,6 +2422,10 @@
             .service-tile .tile-arrow {
                 bottom: 24px;
                 right: 24px;
+            }
+
+            .more-services-grid {
+                grid-template-columns: repeat(2, auto);
             }
         }
 
@@ -4724,7 +4728,7 @@
             </a>
         </div>
         <div class="more-services">
-            <p class="more-services-label">Plus, easily book</p>
+            <p class="more-services-label">Plus, easily book:</p>
             <div class="more-services-grid">
                 <a href="homeowners.html" class="more-service-chip">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -4737,14 +4741,6 @@
                 <a href="homeowners.html" class="more-service-chip">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
                     Matterport & 3D Tours
-                </a>
-                <a href="homeowners.html" class="more-service-chip">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                    Handyman
-                </a>
-                <a href="homeowners.html" class="more-service-chip">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-                    Landscaping
                 </a>
                 <a href="homeowners.html" class="more-service-chip">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><polygon points="12 15 17 21 7 21 12 15"/></svg>
