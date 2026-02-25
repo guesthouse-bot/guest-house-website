@@ -445,6 +445,36 @@
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .section-nav-link {
+            padding: 8px 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .section-nav-link:hover {
+            color: var(--color-text-primary);
+            border-color: var(--color-text-primary);
+        }
+
+        .section-nav-link.active {
+            color: var(--color-white);
+            background: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -1280,6 +1310,11 @@
     <section class="hero">
         <h1>Motherboard</h1>
         <p class="hero-subtitle">Guest House internal dashboard</p>
+        <nav class="section-nav">
+            <a href="#section-company" class="section-nav-link active">Company</a>
+            <a href="#section-sales" class="section-nav-link">Sales</a>
+            <a href="#section-operations" class="section-nav-link">Operations</a>
+        </nav>
     </section>
 
     <!-- Filters -->
@@ -1338,7 +1373,7 @@
     </section>
 
     <!-- Company KPIs -->
-    <section>
+    <section id="section-company">
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Company KPIs</h2>
@@ -1391,7 +1426,7 @@
     </section>
 
     <!-- Sales KPIs - Overview -->
-    <section class="kpi-section-grey">
+    <section id="section-sales" class="kpi-section-grey">
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Sales KPIs - Overview</h2>
@@ -1534,13 +1569,9 @@
                     <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Sales KPIs - Customer Level -->
-    <section>
-        <div class="kpi-section">
-            <div class="kpi-section-header">
+            <!-- Customer Level -->
+            <div class="kpi-section-header" style="margin-top: 48px;">
                 <h2>Sales KPIs - Customer Level</h2>
             </div>
             <div class="kpi-grid">
@@ -1594,7 +1625,7 @@
     </section>
 
     <!-- Ops KPIs -->
-    <section>
+    <section id="section-operations">
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Ops KPIs</h2>
@@ -1813,7 +1844,7 @@
         (function() {
             var PASS_HASH = 'bde2e71603f2157c15fdff865653d6321dad99d7fb2d0098f49bd5db17f15d45';
             var gate = document.getElementById('authGate');
-            var mainContent = document.querySelectorAll('nav, .hero, .filters-bar, .kpi-section, .mobile-menu-modal, footer');
+            var mainContent = document.querySelectorAll('nav, .hero, .filters-bar, .kpi-section, .section-nav, .mobile-menu-modal, footer');
 
             async function sha256(str) {
                 var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -2816,6 +2847,41 @@
         } else {
             window.addEventListener('mb-authenticated', loadDashboard);
         }
+        // ---- Section subnav: smooth scroll + active state ----
+        (function() {
+            var navLinks = document.querySelectorAll('.section-nav-link');
+            var sections = [
+                { id: 'section-company', link: navLinks[0] },
+                { id: 'section-sales', link: navLinks[1] },
+                { id: 'section-operations', link: navLinks[2] },
+            ];
+
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        var offset = 80;
+                        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', function() {
+                var scrollPos = window.pageYOffset + 120;
+                var active = sections[0].link;
+                for (var i = sections.length - 1; i >= 0; i--) {
+                    var el = document.getElementById(sections[i].id);
+                    if (el && el.offsetTop <= scrollPos) {
+                        active = sections[i].link;
+                        break;
+                    }
+                }
+                navLinks.forEach(function(l) { l.classList.remove('active'); });
+                active.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
