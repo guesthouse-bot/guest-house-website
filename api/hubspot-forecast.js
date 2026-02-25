@@ -51,12 +51,14 @@ module.exports = async function handler(req, res) {
     // Match target labels (case-insensitive)
     const targetStageIds = [];
     const matchedLabels = [];
+    const stageProbabilities = {};
     stages.forEach(function(stage) {
       var label = (stage.label || '').trim();
       TARGET_LABELS.forEach(function(target) {
         if (label.toLowerCase() === target.toLowerCase()) {
           targetStageIds.push(stage.id);
           matchedLabels.push(label);
+          stageProbabilities[stage.id] = parseFloat((stage.metadata || {}).probability || 0);
         }
       });
     });
@@ -92,7 +94,7 @@ module.exports = async function handler(req, res) {
     while (hasMore) {
       const body = {
         filterGroups: filterGroups,
-        properties: ['hs_weighted_amount', 'dealname', 'dealstage', 'closedate', 'amount'],
+        properties: ['dealname', 'dealstage', 'closedate', 'amount'],
         limit: 100,
         after: after,
       };
@@ -117,11 +119,13 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Step 4: Sum deal amounts
+    // Step 4: Sum weighted amounts (amount × stage probability)
     var totalForecast = 0;
     allDeals.forEach(function(deal) {
-      var amt = parseFloat((deal.properties || {}).amount || 0);
-      if (!isNaN(amt)) totalForecast += amt;
+      var props = deal.properties || {};
+      var amt = parseFloat(props.amount || 0);
+      var prob = stageProbabilities[props.dealstage] || 0;
+      if (!isNaN(amt)) totalForecast += amt * prob;
     });
 
     var result = {
