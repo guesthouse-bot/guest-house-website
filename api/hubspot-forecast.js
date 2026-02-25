@@ -77,10 +77,12 @@ module.exports = async function handler(req, res) {
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
 
     // Step 3: Query deals — one filterGroup per stage (OR'd together)
-    // Each filterGroup ANDs: pipeline + dealstage
+    // Each filterGroup ANDs: expected_close_date in current month + pipeline + dealstage
     const filterGroups = targetStageIds.map(function(stageId) {
       return {
         filters: [
+          { propertyName: 'expected_close_date', operator: 'GTE', value: String(monthStart) },
+          { propertyName: 'expected_close_date', operator: 'LTE', value: String(monthEnd) },
           { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
           { propertyName: 'dealstage', operator: 'EQ', value: stageId },
         ]
@@ -94,7 +96,7 @@ module.exports = async function handler(req, res) {
     while (hasMore) {
       const body = {
         filterGroups: filterGroups,
-        properties: ['dealname', 'dealstage', 'closedate', 'amount'],
+        properties: ['dealname', 'dealstage', 'expected_close_date', 'amount'],
         limit: 100,
         after: after,
       };
