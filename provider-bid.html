@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Submit your bid for a Guest House staging job.">
+    <title>Submit Bid | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-bone: #E9E6E3;
+            --color-error: #C4544C;
+            --color-border: #DDDDDD;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface-secondary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .bid-container {
+            background: var(--color-white);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+            max-width: 520px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .bid-header {
+            padding: 32px 32px 0;
+        }
+
+        .bid-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bid-logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .bid-greeting {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .bid-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .job-details {
+            background: var(--color-surface-secondary);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 32px 24px;
+        }
+
+        .job-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+
+        .job-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .job-detail-label {
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .job-detail-value {
+            color: var(--color-onyx);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .deadline-row .job-detail-value {
+            color: var(--color-deep);
+        }
+
+        .bid-form {
+            padding: 0 32px 32px;
+        }
+
+        .bid-input-group {
+            margin-bottom: 20px;
+        }
+
+        .bid-input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 8px;
+        }
+
+        .bid-input-wrapper {
+            position: relative;
+        }
+
+        .bid-input-wrapper .dollar-sign {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+
+        .bid-input {
+            width: 100%;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 16px 18px 16px 36px;
+            font-size: 20px;
+            font-weight: 600;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            color: var(--color-onyx);
+        }
+
+        .bid-input:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.08);
+        }
+
+        .bid-input::placeholder {
+            color: #ccc;
+            font-weight: 400;
+        }
+
+        .bid-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            font-size: 16px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .bid-submit:hover {
+            opacity: 0.85;
+        }
+
+        .bid-submit:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .countdown {
+            text-align: center;
+            padding: 16px 32px;
+            background: var(--color-surface-secondary);
+            border-top: 1px solid var(--color-border);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .countdown-time {
+            font-weight: 600;
+            color: var(--color-deep);
+        }
+
+        .countdown-urgent .countdown-time {
+            color: var(--color-error);
+        }
+
+        /* State screens */
+        .state-screen {
+            padding: 48px 32px;
+            text-align: center;
+        }
+
+        .state-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .state-icon-success {
+            background: #ECFDF3;
+            color: #067647;
+        }
+
+        .state-icon-warning {
+            background: #FEF3F2;
+            color: var(--color-error);
+        }
+
+        .state-icon-info {
+            background: #EFF6FF;
+            color: var(--color-deep);
+        }
+
+        .state-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .state-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 8px;
+        }
+
+        .state-message {
+            color: var(--color-text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .state-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-onyx);
+            margin: 16px 0;
+        }
+
+        /* Loading */
+        .loading {
+            padding: 80px 32px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--color-border);
+            border-top-color: var(--color-onyx);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .error-text {
+            color: var(--color-error);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bid-container" id="bidApp">
+        <div class="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading job details...</div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var app = document.getElementById('bidApp');
+        var params = new URLSearchParams(window.location.search);
+        var token = params.get('token');
+
+        if (!token) {
+            renderError('Invalid link', 'This bid link is missing a token. Please check the link from your email.');
+            return;
+        }
+
+        var jobData = null;
+        var countdownInterval = null;
+
+        // Fetch bid/job data
+        fetch('/api/submit-bid?token=' + encodeURIComponent(token))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error === 'invalid_token') {
+                    renderError('Invalid link', 'This bid link is not valid. It may have been used already or the link is incorrect.');
+                    return;
+                }
+                if (data.status === 'already_submitted') {
+                    renderAlreadySubmitted(data.bid.amount);
+                    return;
+                }
+                if (data.status === 'deadline_passed') {
+                    renderDeadlinePassed();
+                    return;
+                }
+                if (data.status === 'open') {
+                    jobData = data;
+                    renderBidForm(data);
+                    return;
+                }
+                renderError('Something went wrong', 'Unexpected response. Please try again.');
+            })
+            .catch(function() {
+                renderError('Connection error', 'Could not load job details. Please check your connection and try again.');
+            });
+
+        function renderBidForm(data) {
+            var job = data.job;
+            var firstName = data.providerName.split(' ')[0];
+
+            var html = '<div class="bid-header">' +
+                '<div class="bid-logo">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' +
+                    'Guest House' +
+                '</div>' +
+                '<div class="bid-greeting">Hi ' + esc(firstName) + '</div>' +
+                '<div class="bid-subtitle">Submit your bid for this staging job.</div>' +
+            '</div>' +
+            '<div class="job-details">';
+
+            html += jobRow('Address', job.address);
+            if (job.sqft) html += jobRow('Size', job.sqft + ' sq ft');
+            if (job.rooms) html += jobRow('Rooms', job.rooms);
+            if (job.timeline) html += jobRow('Timeline', job.timeline);
+            if (job.notes) html += jobRow('Notes', job.notes);
+            html += '<div class="job-detail-row deadline-row">' +
+                '<span class="job-detail-label">Deadline</span>' +
+                '<span class="job-detail-value" id="deadlineText"></span></div>';
+            html += '</div>';
+
+            html += '<div class="bid-form">' +
+                '<div class="bid-input-group">' +
+                    '<label class="bid-input-label">Your bid amount</label>' +
+                    '<div class="bid-input-wrapper">' +
+                        '<span class="dollar-sign">$</span>' +
+                        '<input type="number" class="bid-input" id="bidAmount" placeholder="0.00" min="1" step="0.01" inputmode="decimal">' +
+                    '</div>' +
+                    '<div class="error-text" id="bidError" style="display:none;"></div>' +
+                '</div>' +
+                '<button class="bid-submit" id="bidSubmit" disabled>Submit Bid</button>' +
+            '</div>' +
+            '<div class="countdown" id="countdown"></div>';
+
+            app.innerHTML = html;
+
+            // Bid input validation
+            var input = document.getElementById('bidAmount');
+            var submit = document.getElementById('bidSubmit');
+            var errorEl = document.getElementById('bidError');
+
+            input.addEventListener('input', function() {
+                var val = parseFloat(input.value);
+                submit.disabled = !val || val <= 0;
+                errorEl.style.display = 'none';
+            });
+
+            // Submit bid
+            submit.addEventListener('click', function() {
+                var val = parseFloat(input.value);
+                if (!val || val <= 0) return;
+
+                submit.disabled = true;
+                submit.textContent = 'Submitting...';
+                errorEl.style.display = 'none';
+
+                fetch('/api/submit-bid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: token, amount: val }),
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        renderSuccess(data.amount);
+                    } else if (data.error === 'already_submitted') {
+                        renderAlreadySubmitted(data.amount);
+                    } else if (data.error === 'deadline_passed') {
+                        renderDeadlinePassed();
+                    } else {
+                        errorEl.textContent = data.error || 'Something went wrong';
+                        errorEl.style.display = 'block';
+                        submit.disabled = false;
+                        submit.textContent = 'Submit Bid';
+                    }
+                })
+                .catch(function() {
+                    errorEl.textContent = 'Connection error. Please try again.';
+                    errorEl.style.display = 'block';
+                    submit.disabled = false;
+                    submit.textContent = 'Submit Bid';
+                });
+            });
+
+            // Focus the input
+            input.focus();
+
+            // Start deadline countdown
+            startCountdown(job.biddingDeadline);
+        }
+
+        function renderSuccess(amount) {
+            clearInterval(countdownInterval);
+            app.innerHTML = '<div class="state-screen">' +
+                '<div class="state-icon state-icon-success">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+                '</div>' +
+                '<div class="state-title">Bid submitted</div>' +
+                '<div class="state-amount">$' + formatAmount(amount) + '</div>' +
+                '<div class="state-message">You\'ll receive an email when the job is awarded. Good luck!</div>' +
+            '</div>';
+        }
+
+        function renderAlreadySubmitted(amount) {
+            clearInterval(countdownInterval);
+            app.innerHTML = '<div class="state-screen">' +
+                '<div class="state-icon state-icon-info">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>' +
+                '</div>' +
+                '<div class="state-title">Already submitted</div>' +
+                '<div class="state-amount">$' + formatAmount(amount) + '</div>' +
+                '<div class="state-message">You\'ve already submitted your bid for this job. We\'ll notify you when it\'s awarded.</div>' +
+            '</div>';
+        }
+
+        function renderDeadlinePassed() {
+            clearInterval(countdownInterval);
+            app.innerHTML = '<div class="state-screen">' +
+                '<div class="state-icon state-icon-warning">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+                '</div>' +
+                '<div class="state-title">Bidding closed</div>' +
+                '<div class="state-message">The deadline for this job has passed. Contact Guest House if you have questions.</div>' +
+            '</div>';
+        }
+
+        function renderError(title, message) {
+            app.innerHTML = '<div class="state-screen">' +
+                '<div class="state-icon state-icon-warning">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' +
+                '</div>' +
+                '<div class="state-title">' + title + '</div>' +
+                '<div class="state-message">' + message + '</div>' +
+            '</div>';
+        }
+
+        function startCountdown(deadlineStr) {
+            var deadline = new Date(deadlineStr);
+            var el = document.getElementById('countdown');
+            var deadlineText = document.getElementById('deadlineText');
+
+            if (deadlineText) {
+                deadlineText.textContent = deadline.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+            }
+
+            function update() {
+                var now = new Date();
+                var diff = deadline - now;
+                if (diff <= 0) {
+                    el.innerHTML = '<span class="countdown-time">Bidding closed</span>';
+                    clearInterval(countdownInterval);
+                    // Disable submit if still on form
+                    var btn = document.getElementById('bidSubmit');
+                    if (btn) btn.disabled = true;
+                    return;
+                }
+                var hours = Math.floor(diff / 3600000);
+                var mins = Math.floor((diff % 3600000) / 60000);
+                var secs = Math.floor((diff % 60000) / 1000);
+                var isUrgent = hours < 2;
+                el.className = 'countdown' + (isUrgent ? ' countdown-urgent' : '');
+                el.innerHTML = 'Time remaining: <span class="countdown-time">' +
+                    (hours > 0 ? hours + 'h ' : '') + mins + 'm ' + secs + 's</span>';
+            }
+
+            update();
+            countdownInterval = setInterval(update, 1000);
+        }
+
+        function jobRow(label, value) {
+            return '<div class="job-detail-row"><span class="job-detail-label">' + esc(label) + '</span><span class="job-detail-value">' + esc(value) + '</span></div>';
+        }
+
+        function formatAmount(n) {
+            return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    })();
+    </script>
+</body>
+</html>

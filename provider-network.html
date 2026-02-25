@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Guest House provider network management and job bidding dashboard.">
+    <title>Provider Network | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-error: #C4544C;
+            --color-sunflower: #D69B43;
+            --color-golden: #EBBC76;
+            --color-beige: #E1D7C3;
+            --color-rain: #CCD5D6;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+        }
+
+        /* Auth gate */
+        #authGate {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0a0a0a;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Circular', sans-serif;
+        }
+
+        #authGate .auth-inner {
+            text-align: center;
+            max-width: 360px;
+            width: 90%;
+        }
+
+        #authGate h2 { color: #fff; font-size: 20px; font-weight: 500; margin-bottom: 8px; }
+        #authGate p { color: #666; font-size: 14px; margin-bottom: 24px; }
+
+        #authForm {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #authPassword {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #161616;
+            color: #fff;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #authPassword:focus { border-color: #555; }
+
+        #authForm button[type="submit"] {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #fff;
+            color: #0a0a0a;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        #authForm button[type="submit"]:hover { opacity: 0.85; }
+        #authError { color: #ef4444; font-size: 13px; margin: 0; display: none; }
+
+        /* Main layout */
+        .main-content { display: none; }
+
+        .page-header {
+            border-bottom: 1px solid var(--color-border);
+            padding: 24px 0;
+        }
+
+        .page-header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .page-logo {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+        }
+
+        /* Section nav */
+        .section-nav {
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .section-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            gap: 32px;
+        }
+
+        .section-nav-btn {
+            padding: 16px 0;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .section-nav-btn:hover { color: var(--color-onyx); }
+        .section-nav-btn.active { color: var(--color-onyx); border-bottom-color: var(--color-onyx); }
+
+        /* Sections */
+        .section { max-width: 1200px; margin: 0 auto; padding: 40px 3rem 60px; display: none; }
+        .section.active { display: block; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-grid-full { grid-column: 1 / -1; }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-charcoal);
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            padding: 12px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: var(--color-white);
+            color: var(--color-text-primary);
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.06);
+        }
+
+        .field select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        .field textarea { resize: vertical; min-height: 80px; }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .btn-primary { background: var(--color-onyx); color: var(--color-white); }
+        .btn-secondary { background: var(--color-surface-secondary); color: var(--color-onyx); border: 1px solid var(--color-border); }
+        .btn-success { background: #067647; color: var(--color-white); }
+        .btn-danger { background: var(--color-error); color: var(--color-white); }
+        .btn-sm { padding: 8px 16px; font-size: 13px; }
+
+        .form-actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .form-message.success { display: block; background: #ECFDF3; color: #067647; }
+        .form-message.error { display: block; background: #FEF3F2; color: var(--color-error); }
+
+        /* Job cards */
+        .jobs-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .job-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: box-shadow 0.15s;
+        }
+
+        .job-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+        .job-card-header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            cursor: pointer;
+        }
+
+        .job-card-header:hover { background: var(--color-surface-secondary); }
+
+        .job-card-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 4px;
+        }
+
+        .job-card-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .job-card-meta span { white-space: nowrap; }
+
+        .job-card-stats {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .job-stat {
+            text-align: center;
+        }
+
+        .job-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .job-stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-bidding { background: #EFF6FF; color: #1D4ED8; }
+        .status-awarded { background: #ECFDF3; color: #067647; }
+        .status-completed { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
+        .status-cancelled { background: #FEF3F2; color: var(--color-error); }
+        .status-no_bids { background: #FEF3F2; color: var(--color-error); }
+
+        /* Bids detail panel */
+        .job-card-bids {
+            display: none;
+            border-top: 1px solid var(--color-border);
+            padding: 20px 24px;
+            background: var(--color-surface-secondary);
+        }
+
+        .job-card-bids.open { display: block; }
+
+        .bids-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .bids-table th {
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .bids-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+
+        .bids-table tr:last-child td { border-bottom: none; }
+
+        .bids-table .bid-amount {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--color-onyx);
+        }
+
+        .bids-table .bid-pending {
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        .bid-won { background: #ECFDF3; }
+
+        .bids-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-sm {
+            font-size: 12px;
+            color: var(--color-deep);
+            font-weight: 500;
+        }
+
+        .countdown-sm.urgent { color: var(--color-error); }
+
+        /* Provider table */
+        .provider-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .provider-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .provider-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            border-bottom: 2px solid var(--color-border);
+            white-space: nowrap;
+        }
+
+        .provider-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+
+        .provider-table tr:hover td { background: var(--color-surface-secondary); }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-dot.active { background: #067647; }
+        .status-dot.inactive { background: var(--color-error); }
+
+        .toggle-btn {
+            padding: 4px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: var(--color-white);
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .toggle-btn:hover { background: var(--color-surface-secondary); }
+
+        /* Filter row */
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-row select {
+            padding: 8px 32px 8px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--color-white);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--color-border);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p { font-size: 14px; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: var(--color-white);
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .modal h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header-inner, .section-nav-inner, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .job-card-header { flex-direction: column; }
+            .section-nav-inner { gap: 20px; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Gate -->
+    <div id="authGate">
+        <div class="auth-inner">
+            <div style="margin-bottom:32px;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h2>Provider Network</h2>
+            <p>Enter password to continue</p>
+            <form id="authForm">
+                <input type="password" id="authPassword" placeholder="Password" autocomplete="current-password">
+                <button type="submit">Continue</button>
+                <p id="authError">Incorrect password</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="page-header-inner">
+                <h1 class="page-title">Provider Network</h1>
+                <a href="motherboard.html" class="page-logo">Guest House</a>
+            </div>
+        </div>
+
+        <div class="section-nav">
+            <div class="section-nav-inner">
+                <button class="section-nav-btn active" data-section="jobs">Create Job</button>
+                <button class="section-nav-btn" data-section="active-jobs">Active Jobs</button>
+                <button class="section-nav-btn" data-section="providers">Provider Directory</button>
+            </div>
+        </div>
+
+        <!-- Section 1: Create Job -->
+        <div class="section active" id="section-jobs">
+            <div class="section-header">
+                <h2>Create New Job</h2>
+            </div>
+            <div class="form-grid" id="jobForm">
+                <div class="field form-grid-full">
+                    <label>Address *</label>
+                    <input type="text" id="jobAddress" placeholder="123 Main St, Denver, CO 80202">
+                </div>
+                <div class="field">
+                    <label>Square Footage</label>
+                    <input type="text" id="jobSqft" placeholder="2,400">
+                </div>
+                <div class="field">
+                    <label>Rooms</label>
+                    <input type="text" id="jobRooms" placeholder="e.g. 4 BR / 3 BA">
+                </div>
+                <div class="field">
+                    <label>Timeline</label>
+                    <input type="text" id="jobTimeline" placeholder="e.g. Stage by March 5">
+                </div>
+                <div class="field">
+                    <label>Market *</label>
+                    <select id="jobMarket">
+                        <option value="" disabled selected>Select market</option>
+                        <option value="colorado">Colorado</option>
+                        <option value="california">California</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Provider Type *</label>
+                    <select id="jobProviderType">
+                        <option value="" disabled selected>Select type</option>
+                        <option value="stager">Stager</option>
+                        <option value="cleaner">Cleaner</option>
+                        <option value="mover">Mover</option>
+                        <option value="media">Media</option>
+                        <option value="stylist">Stylist</option>
+                    </select>
+                </div>
+                <div class="field form-grid-full">
+                    <label>Notes</label>
+                    <textarea id="jobNotes" placeholder="Any special instructions or details..."></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="createJobBtn">Create Job & Notify Providers</button>
+            </div>
+            <div class="form-message" id="jobMessage"></div>
+        </div>
+
+        <!-- Section 2: Active Jobs -->
+        <div class="section" id="section-active-jobs">
+            <div class="section-header">
+                <h2>Jobs</h2>
+                <div class="filter-row">
+                    <select id="filterJobStatus">
+                        <option value="">All statuses</option>
+                        <option value="bidding" selected>Bidding</option>
+                        <option value="awarded">Awarded</option>
+                        <option value="completed">Completed</option>
+                        <option value="no_bids">No Bids</option>
+                    </select>
+                    <select id="filterJobMarket">
+                        <option value="">All markets</option>
+                        <option value="colorado">Colorado</option>
+                        <option value="california">California</option>
+                    </select>
+                </div>
+            </div>
+            <div class="jobs-grid" id="jobsGrid">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <p>Loading jobs...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Provider Directory -->
+        <div class="section" id="section-providers">
+            <div class="section-header">
+                <h2>Provider Directory</h2>
+                <button class="btn btn-primary btn-sm" id="addProviderBtn">+ Add Provider</button>
+            </div>
+            <div class="filter-row" style="margin-bottom:20px;">
+                <select id="filterProviderMarket">
+                    <option value="">All markets</option>
+                    <option value="colorado">Colorado</option>
+                    <option value="california">California</option>
+                </select>
+                <select id="filterProviderRole">
+                    <option value="">All roles</option>
+                    <option value="stager">Stager</option>
+                    <option value="cleaner">Cleaner</option>
+                    <option value="mover">Mover</option>
+                    <option value="media">Media</option>
+                    <option value="stylist">Stylist</option>
+                </select>
+                <select id="filterProviderStatus">
+                    <option value="">All statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="provider-table-wrapper">
+                <table class="provider-table" id="providerTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Business</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Market</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="providerBody">
+                        <tr><td colspan="7" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Provider Modal -->
+    <div class="modal-overlay" id="providerModal">
+        <div class="modal">
+            <h3 id="providerModalTitle">Add Provider</h3>
+            <div class="form-grid">
+                <div class="field">
+                    <label>Name *</label>
+                    <input type="text" id="providerName" placeholder="Full name">
+                </div>
+                <div class="field">
+                    <label>Email *</label>
+                    <input type="email" id="providerEmail" placeholder="name@company.com">
+                </div>
+                <div class="field form-grid-full">
+                    <label>Business Name</label>
+                    <input type="text" id="providerBusiness" placeholder="Business / company name">
+                </div>
+                <div class="field">
+                    <label>Role *</label>
+                    <select id="providerRole">
+                        <option value="" disabled selected>Select role</option>
+                        <option value="stager">Stager</option>
+                        <option value="cleaner">Cleaner</option>
+                        <option value="mover">Mover</option>
+                        <option value="media">Media</option>
+                        <option value="stylist">Stylist</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Market *</label>
+                    <select id="providerMarket">
+                        <option value="" disabled selected>Select market</option>
+                        <option value="colorado">Colorado</option>
+                        <option value="california">California</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="saveProviderBtn">Add Provider</button>
+                <button class="btn btn-secondary" id="cancelProviderBtn">Cancel</button>
+            </div>
+            <div class="form-message" id="providerMessage"></div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        // Password gate
+        var PASS_HASH = 'bde2e71603f2157c15fdff865653d6321dad99d7fb2d0098f49bd5db17f15d45';
+        var gate = document.getElementById('authGate');
+        var mainContent = document.getElementById('mainContent');
+
+        async function sha256(str) {
+            var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+        }
+
+        function hideContent() {
+            mainContent.style.display = 'none';
+            gate.style.display = 'flex';
+        }
+
+        function showContent() {
+            gate.style.display = 'none';
+            mainContent.style.display = 'block';
+            init();
+        }
+
+        if (sessionStorage.getItem('pn_auth') === '1') {
+            showContent();
+        } else {
+            hideContent();
+            document.getElementById('authPassword').focus();
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var pw = document.getElementById('authPassword').value;
+            var hash = await sha256(pw);
+            if (hash === PASS_HASH) {
+                sessionStorage.setItem('pn_auth', '1');
+                showContent();
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                document.getElementById('authPassword').value = '';
+                document.getElementById('authPassword').focus();
+            }
+        });
+
+        // App state
+        var jobs = [];
+        var providers = [];
+        var countdownIntervals = {};
+
+        function init() {
+            setupNav();
+            setupCreateJob();
+            setupProviderModal();
+            setupFilters();
+            loadJobs();
+            loadProviders();
+        }
+
+        // Section navigation
+        function setupNav() {
+            var btns = document.querySelectorAll('.section-nav-btn');
+            btns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    btns.forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+                    document.getElementById('section-' + btn.dataset.section).classList.add('active');
+
+                    // Refresh data when switching to Active Jobs or Providers
+                    if (btn.dataset.section === 'active-jobs') loadJobs();
+                    if (btn.dataset.section === 'providers') loadProviders();
+                });
+            });
+        }
+
+        // Create Job
+        function setupCreateJob() {
+            document.getElementById('createJobBtn').addEventListener('click', async function() {
+                var btn = this;
+                var address = document.getElementById('jobAddress').value.trim();
+                var market = document.getElementById('jobMarket').value;
+                var providerType = document.getElementById('jobProviderType').value;
+                var msg = document.getElementById('jobMessage');
+
+                if (!address || !market || !providerType) {
+                    msg.className = 'form-message error';
+                    msg.textContent = 'Please fill in all required fields.';
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Creating job...';
+                msg.className = 'form-message';
+                msg.style.display = 'none';
+
+                try {
+                    var response = await fetch('/api/jobs', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            address: address,
+                            sqft: document.getElementById('jobSqft').value.trim(),
+                            rooms: document.getElementById('jobRooms').value.trim(),
+                            timeline: document.getElementById('jobTimeline').value.trim(),
+                            market: market,
+                            providerType: providerType,
+                            notes: document.getElementById('jobNotes').value.trim(),
+                        }),
+                    });
+                    var data = await response.json();
+                    if (!response.ok) throw new Error(data.error);
+
+                    msg.className = 'form-message success';
+                    msg.textContent = 'Job created! ' + data.bidsCreated + ' provider(s) notified via email.';
+
+                    // Clear form
+                    document.getElementById('jobAddress').value = '';
+                    document.getElementById('jobSqft').value = '';
+                    document.getElementById('jobRooms').value = '';
+                    document.getElementById('jobTimeline').value = '';
+                    document.getElementById('jobNotes').value = '';
+                    document.getElementById('jobMarket').selectedIndex = 0;
+                    document.getElementById('jobProviderType').selectedIndex = 0;
+                } catch (err) {
+                    msg.className = 'form-message error';
+                    msg.textContent = 'Error: ' + err.message;
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'Create Job & Notify Providers';
+            });
+        }
+
+        // Load Jobs
+        async function loadJobs() {
+            var grid = document.getElementById('jobsGrid');
+            var status = document.getElementById('filterJobStatus').value;
+            var market = document.getElementById('filterJobMarket').value;
+
+            var params = [];
+            if (status) params.push('status=' + status);
+            if (market) params.push('market=' + market);
+            var qs = params.length ? '?' + params.join('&') : '';
+
+            try {
+                var response = await fetch('/api/jobs' + qs);
+                var data = await response.json();
+                jobs = data.jobs || [];
+
+                // Clear old countdowns
+                Object.keys(countdownIntervals).forEach(function(k) { clearInterval(countdownIntervals[k]); });
+                countdownIntervals = {};
+
+                if (jobs.length === 0) {
+                    grid.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><p>No jobs found</p></div>';
+                    return;
+                }
+
+                // Sort by created date descending
+                jobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
+
+                grid.innerHTML = jobs.map(function(job) {
+                    return '<div class="job-card" data-job-id="' + esc(job.id) + '">' +
+                        '<div class="job-card-header" data-toggle="' + esc(job.id) + '">' +
+                            '<div class="job-card-info">' +
+                                '<h3>' + esc(job.address) + '</h3>' +
+                                '<div class="job-card-meta">' +
+                                    '<span class="status-badge status-' + esc(job.status) + '">' + esc(job.status) + '</span>' +
+                                    (job.sqft ? '<span>' + esc(job.sqft) + ' sq ft</span>' : '') +
+                                    (job.rooms ? '<span>' + esc(job.rooms) + '</span>' : '') +
+                                    '<span>' + capitalize(job.market) + '</span>' +
+                                    '<span>' + capitalize(job.providerType) + '</span>' +
+                                    (job.status === 'bidding' ? '<span class="countdown-sm" id="cd-' + esc(job.id) + '"></span>' : '') +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="job-card-stats">' +
+                                '<div class="job-stat"><div class="job-stat-value" id="bc-' + esc(job.id) + '">...</div><div class="job-stat-label">Bids</div></div>' +
+                                (job.awardedProvider ? '<div class="job-stat"><div class="job-stat-value" style="font-size:13px;">' + esc(job.awardedProvider) + '</div><div class="job-stat-label">Awarded to</div></div>' : '') +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="job-card-bids" id="bids-' + esc(job.id) + '"></div>' +
+                    '</div>';
+                }).join('');
+
+                // Start countdowns
+                jobs.forEach(function(job) {
+                    if (job.status === 'bidding') startCountdown(job.id, job.biddingDeadline);
+                });
+
+                // Toggle expand + load bids
+                grid.querySelectorAll('[data-toggle]').forEach(function(el) {
+                    el.addEventListener('click', function() {
+                        var jobId = el.dataset.toggle;
+                        var panel = document.getElementById('bids-' + jobId);
+                        if (panel.classList.contains('open')) {
+                            panel.classList.remove('open');
+                        } else {
+                            panel.classList.add('open');
+                            loadJobBids(jobId);
+                        }
+                    });
+                });
+
+            } catch (err) {
+                grid.innerHTML = '<div class="empty-state"><p>Error loading jobs: ' + esc(err.message) + '</p></div>';
+            }
+        }
+
+        // Load bids for a specific job
+        async function loadJobBids(jobId) {
+            var panel = document.getElementById('bids-' + jobId);
+            panel.innerHTML = '<p style="color:var(--color-text-secondary);font-size:13px;">Loading bids...</p>';
+
+            try {
+                var response = await fetch('/api/job-details?jobId=' + jobId);
+                var data = await response.json();
+                var bids = data.bids || [];
+                var job = data.job;
+
+                // Update bid count
+                var submittedCount = bids.filter(function(b) { return b.submittedAt; }).length;
+                var bcEl = document.getElementById('bc-' + jobId);
+                if (bcEl) bcEl.textContent = submittedCount + '/' + bids.length;
+
+                if (bids.length === 0) {
+                    panel.innerHTML = '<p style="color:var(--color-text-secondary);font-size:13px;">No providers were notified for this job.</p>';
+                    return;
+                }
+
+                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th>' + (job.status === 'bidding' ? '<th>Action</th>' : '') + '</tr></thead><tbody>';
+
+                bids.forEach(function(bid) {
+                    var rowClass = bid.status === 'won' ? ' class="bid-won"' : '';
+                    html += '<tr' + rowClass + '>';
+                    html += '<td>' + esc(bid.providerName) + '<br><span style="font-size:12px;color:var(--color-text-secondary);">' + esc(bid.providerEmail) + '</span></td>';
+                    if (bid.submittedAt) {
+                        html += '<td class="bid-amount">$' + formatAmount(bid.amount) + '</td>';
+                        html += '<td>' + formatDate(bid.submittedAt) + '</td>';
+                    } else {
+                        html += '<td class="bid-pending">Not submitted</td>';
+                        html += '<td class="bid-pending">-</td>';
+                    }
+                    html += '<td><span class="status-badge status-' + esc(bid.status === 'won' ? 'awarded' : bid.status === 'lost' ? 'cancelled' : 'bidding') + '">' + esc(bid.status) + '</span></td>';
+                    if (job.status === 'bidding' && bid.submittedAt) {
+                        html += '<td><button class="btn btn-success btn-sm award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button></td>';
+                    } else if (job.status === 'bidding') {
+                        html += '<td></td>';
+                    }
+                    html += '</tr>';
+                });
+
+                html += '</tbody></table>';
+
+                if (job.status === 'bidding' && submittedCount > 0) {
+                    html += '<div class="bids-actions">' +
+                        '<button class="btn btn-primary btn-sm auto-award-btn" data-job-id="' + esc(jobId) + '">Auto-Award Lowest Bid</button>' +
+                    '</div>';
+                }
+
+                panel.innerHTML = html;
+
+                // Bind award buttons
+                panel.querySelectorAll('.award-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        awardJob(btn.dataset.jobId, btn.dataset.bidId, btn);
+                    });
+                });
+
+                var autoBtn = panel.querySelector('.auto-award-btn');
+                if (autoBtn) {
+                    autoBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        awardJob(autoBtn.dataset.jobId, null, autoBtn);
+                    });
+                }
+
+            } catch (err) {
+                panel.innerHTML = '<p style="color:var(--color-error);font-size:13px;">Error: ' + esc(err.message) + '</p>';
+            }
+        }
+
+        // Award a job
+        async function awardJob(jobId, bidId, btn) {
+            if (!confirm('Are you sure you want to award this job' + (bidId ? '' : ' to the lowest bidder') + '?')) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Awarding...';
+
+            try {
+                var payload = { jobId: jobId };
+                if (bidId) payload.bidId = bidId;
+                else payload.auto = true;
+
+                var response = await fetch('/api/award-job', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                var data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+
+                alert('Job awarded to ' + data.awardedTo + ' ($' + formatAmount(data.amount) + ')');
+                loadJobs();
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = bidId ? 'Award' : 'Auto-Award Lowest Bid';
+            }
+        }
+
+        // Countdown for bidding jobs
+        function startCountdown(jobId, deadlineStr) {
+            var deadline = new Date(deadlineStr);
+            var el = document.getElementById('cd-' + jobId);
+            if (!el) return;
+
+            function update() {
+                var now = new Date();
+                var diff = deadline - now;
+                if (diff <= 0) {
+                    el.textContent = 'Expired';
+                    el.classList.add('urgent');
+                    clearInterval(countdownIntervals[jobId]);
+                    return;
+                }
+                var hours = Math.floor(diff / 3600000);
+                var mins = Math.floor((diff % 3600000) / 60000);
+                el.textContent = hours + 'h ' + mins + 'm left';
+                if (hours < 2) el.classList.add('urgent');
+            }
+            update();
+            countdownIntervals[jobId] = setInterval(update, 60000);
+        }
+
+        // Load Providers
+        async function loadProviders() {
+            var tbody = document.getElementById('providerBody');
+            var market = document.getElementById('filterProviderMarket').value;
+            var role = document.getElementById('filterProviderRole').value;
+            var status = document.getElementById('filterProviderStatus').value;
+
+            var params = [];
+            if (market) params.push('market=' + market);
+            if (role) params.push('role=' + role);
+            if (status) params.push('status=' + status);
+            var qs = params.length ? '?' + params.join('&') : '';
+
+            try {
+                var response = await fetch('/api/providers' + qs);
+                var data = await response.json();
+                providers = data.providers || [];
+
+                if (providers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--color-text-secondary);padding:32px;">No providers found</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = providers.map(function(p) {
+                    return '<tr>' +
+                        '<td style="font-weight:500;">' + esc(p.name) + '</td>' +
+                        '<td>' + esc(p.businessName || '-') + '</td>' +
+                        '<td>' + esc(p.email) + '</td>' +
+                        '<td>' + capitalize(p.role) + '</td>' +
+                        '<td>' + capitalize(p.market) + '</td>' +
+                        '<td><span class="status-dot ' + esc(p.status) + '"></span>' + capitalize(p.status) + '</td>' +
+                        '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="toggle-status" data-current="' + esc(p.status) + '">' + (p.status === 'active' ? 'Deactivate' : 'Activate') + '</button></td>' +
+                    '</tr>';
+                }).join('');
+
+                // Bind toggle buttons
+                tbody.querySelectorAll('[data-action="toggle-status"]').forEach(function(btn) {
+                    btn.addEventListener('click', async function() {
+                        var newStatus = btn.dataset.current === 'active' ? 'inactive' : 'active';
+                        btn.disabled = true;
+                        try {
+                            await fetch('/api/providers', {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
+                            });
+                            loadProviders();
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                            btn.disabled = false;
+                        }
+                    });
+                });
+
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--color-error);padding:32px;">Error: ' + esc(err.message) + '</td></tr>';
+            }
+        }
+
+        // Provider Modal
+        function setupProviderModal() {
+            var modal = document.getElementById('providerModal');
+
+            document.getElementById('addProviderBtn').addEventListener('click', function() {
+                document.getElementById('providerName').value = '';
+                document.getElementById('providerEmail').value = '';
+                document.getElementById('providerBusiness').value = '';
+                document.getElementById('providerRole').selectedIndex = 0;
+                document.getElementById('providerMarket').selectedIndex = 0;
+                document.getElementById('providerMessage').className = 'form-message';
+                document.getElementById('providerMessage').style.display = 'none';
+                modal.classList.add('open');
+            });
+
+            document.getElementById('cancelProviderBtn').addEventListener('click', function() {
+                modal.classList.remove('open');
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+
+            document.getElementById('saveProviderBtn').addEventListener('click', async function() {
+                var btn = this;
+                var name = document.getElementById('providerName').value.trim();
+                var email = document.getElementById('providerEmail').value.trim();
+                var business = document.getElementById('providerBusiness').value.trim();
+                var role = document.getElementById('providerRole').value;
+                var market = document.getElementById('providerMarket').value;
+                var msg = document.getElementById('providerMessage');
+
+                if (!name || !email || !role || !market) {
+                    msg.className = 'form-message error';
+                    msg.textContent = 'Please fill in all required fields.';
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Adding...';
+
+                try {
+                    var response = await fetch('/api/providers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            businessName: business,
+                            role: role,
+                            market: market,
+                            source: 'manual',
+                        }),
+                    });
+                    var data = await response.json();
+                    if (!response.ok) throw new Error(data.error);
+
+                    if (data.existing) {
+                        msg.className = 'form-message error';
+                        msg.textContent = 'Provider with this email already exists.';
+                    } else {
+                        modal.classList.remove('open');
+                        loadProviders();
+                    }
+                } catch (err) {
+                    msg.className = 'form-message error';
+                    msg.textContent = 'Error: ' + err.message;
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'Add Provider';
+            });
+        }
+
+        // Filters
+        function setupFilters() {
+            document.getElementById('filterJobStatus').addEventListener('change', loadJobs);
+            document.getElementById('filterJobMarket').addEventListener('change', loadJobs);
+            document.getElementById('filterProviderMarket').addEventListener('change', loadProviders);
+            document.getElementById('filterProviderRole').addEventListener('change', loadProviders);
+            document.getElementById('filterProviderStatus').addEventListener('change', loadProviders);
+        }
+
+        // Helpers
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function capitalize(s) {
+            return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+        }
+
+        function formatAmount(n) {
+            return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        }
+    })();
+    </script>
+</body>
+</html>
