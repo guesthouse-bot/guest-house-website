@@ -1640,7 +1640,16 @@
         // File uploads
         html += '<div class="form-section-title">Documents</div>';
         html += fileUploadHTML("w9", "W-9 form", fileW9, true);
-        html += fileUploadHTML("insurance", "Proof of insurance", fileInsurance, true);
+        html += fileUploadHTML("insurance", "Proof of insurance (Commercial General Liability)", fileInsurance, true);
+        html += '<div style="margin-top:-16px;margin-bottom:24px;padding:16px 20px;background:var(--color-surface-secondary);border:1px solid var(--color-border);border-radius:12px;font-size:0.875rem;color:var(--color-text-secondary);line-height:1.6;">' +
+            '<strong style="color:var(--color-charcoal);">Insurance requirements</strong><br>' +
+            'All vendors must carry Commercial General Liability (CGL) insurance with minimum limits of:' +
+            '<div style="margin:8px 0 0 8px;">' +
+            '<strong style="color:var(--color-charcoal);">$1,000,000</strong> per occurrence<br>' +
+            '<strong style="color:var(--color-charcoal);">$2,000,000</strong> aggregate' +
+            '</div>' +
+            '<div style="margin-top:8px;">Policy must cover bodily injury, property damage, and completed operations.</div>' +
+            '</div>';
 
         // Rate fields for Cleaner and Media only
         var rateCfg = RATE_CONFIG[selectedRole];
