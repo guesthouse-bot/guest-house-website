@@ -117,11 +117,11 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Step 4: Sum hs_weighted_amount
+    // Step 4: Sum deal amounts
     var totalForecast = 0;
     allDeals.forEach(function(deal) {
-      var weighted = parseFloat((deal.properties || {}).hs_weighted_amount || 0);
-      if (!isNaN(weighted)) totalForecast += weighted;
+      var amt = parseFloat((deal.properties || {}).amount || 0);
+      if (!isNaN(amt)) totalForecast += amt;
     });
 
     var result = {
