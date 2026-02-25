@@ -1396,8 +1396,8 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>General partner agreement</h1>
-        <p class="hero-subtitle">Review and sign the Guest House service partner agreement</p>
+        <h1>Vendor onboarding</h1>
+        <p class="hero-subtitle">Complete your profile, review the service agreement, and get set up to start accepting jobs.</p>
     </section>
 
     <!-- Signup Form (inline) -->
@@ -1605,7 +1605,7 @@
       "",
       "9. INDEMNIFICATION. Contractor will indemnify and hold harmless Guest House, its Customers, and its and their directors, officers, employees, and affiliates from all taxes, losses, damages, liabilities, costs, expenses, or other liability (including reasonable attorneys\u2019 fees and other legal expenses) arising directly or indirectly from or in connection with Contractor\u2019s performance of the Services. Guest House may satisfy such indemnity (in whole or in part) by way of deduction from any payment due to Contractor. At Guest House\u2019s sole option, Contractor shall assume the defense of any such claim at Contractor\u2019s sole cost.",
       "",
-      "10. INSURANCE. During the term of this Agreement, Contractor shall maintain in force adequate workers\u2019 compensation insurance, commercial general liability insurance, errors and omissions insurance, and other forms of insurance, in each case with insurers reasonably acceptable to Guest House, with policy limits sufficient to protect and indemnify Guest House and its affiliates, and each of their officers, directors, employees, successors and assigns, from any losses resulting from Contractor\u2019s negligent acts or omissions or the negligent acts or omissions of Contractor\u2019s contractors or employees. Contractor\u2019s commercial general liability insurance shall have policy limits of no less than one million dollars ($1,000,000) per occurrence and three million dollars ($3,000,000) in the aggregate.",
+      "10. INSURANCE. During the term of this Agreement, Contractor shall maintain in force adequate workers\u2019 compensation insurance, commercial general liability insurance, errors and omissions insurance, and other forms of insurance, in each case with insurers reasonably acceptable to Guest House, with policy limits sufficient to protect and indemnify Guest House and its affiliates, and each of their officers, directors, employees, successors and assigns, from any losses resulting from Contractor\u2019s negligent acts or omissions or the negligent acts or omissions of Contractor\u2019s contractors or employees. Contractor\u2019s commercial general liability insurance shall have policy limits of no less than one million dollars ($1,000,000) per occurrence and three million dollars ($3,000,000) in the aggregate. Contractor shall name Guest House as an Additional Insured on its Commercial General Liability and Commercial Auto insurance policies and shall provide a Certificate of Insurance (COI) reflecting this status prior to performing any services. Guest House will verify that: (a) Guest House appears in the \u2018Additional Insured\u2019 or \u2018Description of Operations\u2019 box on the ACORD 25 certificate; and (b) policy limits meet Guest House\u2019s minimums as stated herein.",
       "",
       "11. Limitation of Liability. IN NO EVENT WILL EITHER PARTY BE LIABLE FOR ANY CONSEQUENTIAL, INDIRECT, EXEMPLARY, SPECIAL, OR INCIDENTAL DAMAGES ARISING FROM OR RELATING TO THIS AGREEMENT EXCEPT TO THE EXTENT ARISING FROM A BREACH OF SECTION 5. TO THE FULLEST EXTENT PERMISSIBLE BY APPLICABLE LAW, GUEST HOUSE\u2019S TOTAL LIABILITY FOR ALL DAMAGES ARISING OUT OF OR RELATED TO THE SERVICES OR THIS AGREEMENT, WHETHER IN CONTRACT, TORT (INCLUDING NEGLIGENCE) OR OTHERWISE, SHALL NOT EXCEED THE TOTAL AMOUNT OF FEES PAID BY GUEST HOUSE TO CONTRACTOR DURING THE TWELVE (12) MONTHS PRECEDING THE EVENT GIVING RISE TO LIABILITY.",
       "",
@@ -1681,7 +1681,7 @@
 
     /* Step indicators: Provider type, Details, Agreement */
     function formStepsHTML() {
-        const labels = ["Provider type","Details","Agreement"];
+        const labels = ["Provider type","Details","Review & sign"];
         return '<div class="form-steps">' + labels.map((l,i) => {
             const dotCls = i < step ? "done" : i === step ? "active" : "upcoming";
             const lblCls = i === step ? "active" : "muted";
@@ -1713,8 +1713,8 @@
 
     /* Step 1: Business details + rates (varies by provider type) */
     function renderStep1() {
-        var html = '<div class="form-step-heading">Business details</div>' +
-            '<div class="form-step-sub">Tell us about yourself and your business.</div>';
+        var html = '<div class="form-step-heading">Your profile</div>' +
+            '<div class="form-step-sub">Set up your vendor profile so we can match you with jobs.</div>';
 
         html += ffHTML("Business / company name","business_name",{required:true});
         html += '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>';
@@ -1731,6 +1731,12 @@
             '<strong style="color:var(--color-charcoal);">$2,000,000</strong> aggregate' +
             '</div>' +
             '<div style="margin-top:8px;">Policy must cover bodily injury, property damage, and completed operations.</div>' +
+            '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--color-border);">' +
+            '<strong style="color:var(--color-charcoal);">Additional Insured &amp; COI</strong><br>' +
+            'Guest House must be named as Additional Insured on your CGL and Commercial Auto policies.<br>' +
+            'Your Certificate of Insurance (COI) must be an ACORD 25 form showing Guest House listed in the \u2018Additional Insured\u2019 or \u2018Description of Operations\u2019 section.<br>' +
+            'Policy limits on the COI must meet the minimums above.' +
+            '</div>' +
             '</div>';
 
         // Rate fields for Cleaner and Media only
@@ -1784,9 +1790,16 @@
     function renderSuccess() {
         card().innerHTML = '<div class="form-success-wrap">' +
             '<div class="big-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
-            '<h2>Agreement signed</h2>' +
-            '<p>Thank you for signing the Guest House service partner agreement. Welcome to the network \u2014 we\u2019ll be in touch with next steps.</p>' +
-            '<button class="form-btn form-btn-next" id="formClose">Back to Vendor Partnerships</button>' +
+            '<h2>You\u2019re all set!</h2>' +
+            '<p>Your account is being activated. Once we verify your documents, you\u2019ll receive login credentials to access your vendor portal where you can view and accept jobs.</p>' +
+            '<div style="text-align:left;margin:24px auto;max-width:360px;">' +
+            '<strong style="font-size:0.95rem;color:var(--color-charcoal);">What happens next</strong>' +
+            '<ol style="margin:12px 0 0;padding-left:20px;font-size:0.9rem;color:var(--color-text-secondary);line-height:1.8;">' +
+            '<li>We\u2019ll review your COI and W-9 (1\u20132 business days)</li>' +
+            '<li>You\u2019ll receive your portal login via email</li>' +
+            '<li>Start accepting jobs in your area</li>' +
+            '</ol></div>' +
+            '<button class="form-btn form-btn-next" id="formClose">Done</button>' +
             '</div>';
         qs("#formClose").onclick = goBack;
     }
