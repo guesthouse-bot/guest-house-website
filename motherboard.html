@@ -1345,7 +1345,7 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">Bookings</div>
+                    <div class="kpi-label">Total Bookings</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-bookings">&mdash;</span>
                         <span class="kpi-change" id="kpi-bookings-change"></span>
@@ -1354,7 +1354,7 @@
                     <div class="kpi-sparkline" id="kpi-bookings-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-label">Total Revenue</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-revenue">&mdash;</span>
                         <span class="kpi-change" id="kpi-revenue-change"></span>
@@ -1462,6 +1462,15 @@
                     <div class="kpi-sparkline" id="kpi-quotes-sparkline"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Total Bookings</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-total-bookings">&mdash;</span>
+                        <span class="kpi-change" id="kpi-total-bookings-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-total-bookings-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-total-bookings-sparkline"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Conversion rate</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-conversion">&mdash;</span>
@@ -1469,6 +1478,15 @@
                     </div>
                     <div class="kpi-prev" id="kpi-conversion-prev"></div>
                     <div class="kpi-sparkline" id="kpi-conversion-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-total-revenue">&mdash;</span>
+                        <span class="kpi-change" id="kpi-total-revenue-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-total-revenue-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-total-revenue-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Bookings Revenue</div>
@@ -2371,6 +2389,7 @@
                 } else {
                     currentData.stripe = data;
                     setKPI('kpi-revenue', formatCurrency(data.revenue));
+                    setKPI('kpi-total-revenue', formatCurrency(data.revenue));
                     setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
                     setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
                     latestRevenue = data.revenue;
@@ -2382,6 +2401,7 @@
                 console.error('Stripe KPI fetch error:', err);
                 if (!isCompare) {
                     setKPI('kpi-revenue', 'Error');
+                    setKPI('kpi-total-revenue', 'Error');
                     setKPI('kpi-bookings-rev', 'Error');
                     setKPI('kpi-renewal-rev', 'Error');
                     setKPI('kpi-aov-total', 'Error');
@@ -2409,6 +2429,7 @@
                     currentData.hubspot = data;
                     setKPI('kpi-quotes', formatNumber(data.quotes_requested));
                     setKPI('kpi-bookings', formatNumber(data.bookings));
+                    setKPI('kpi-total-bookings', formatNumber(data.bookings));
                     setKPI('kpi-aov-close', formatCurrency(data.aov_at_close));
                     if (data.sales_cycle_days !== null) {
                         setKPI('kpi-sales-cycle', Math.round(data.sales_cycle_days) + ' days');
@@ -2576,6 +2597,7 @@
             // Stripe comparisons
             if (ds && cs) {
                 setComparison('kpi-revenue', ds.revenue, cs.revenue, formatCurrency, false);
+                setComparison('kpi-total-revenue', ds.revenue, cs.revenue, formatCurrency, false);
                 setComparison('kpi-bookings-rev', ds.bookings_revenue, cs.bookings_revenue, formatCurrency, false);
                 setComparison('kpi-renewal-rev', ds.renewal_revenue, cs.renewal_revenue, formatCurrency, false);
             }
@@ -2583,6 +2605,7 @@
             if (dh && ch) {
                 setComparison('kpi-quotes', dh.quotes_requested, ch.quotes_requested, formatNumber, false);
                 setComparison('kpi-bookings', dh.bookings, ch.bookings, formatNumber, false);
+                setComparison('kpi-total-bookings', dh.bookings, ch.bookings, formatNumber, false);
                 // Use null for prev AOV when there were no bookings (shows "N/A" instead of "$0")
                 var prevAovClose = ch.bookings > 0 ? ch.aov_at_close : null;
                 setComparison('kpi-aov-close', dh.aov_at_close, prevAovClose, formatCurrency, false);
@@ -2633,6 +2656,7 @@
             // Stripe sparklines
             if (ds && ds.daily) {
                 renderSparkline('kpi-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
+                renderSparkline('kpi-total-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
                 renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue', 'currency');
                 renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue', 'currency');
             }
@@ -2641,6 +2665,7 @@
             if (dh && dh.daily) {
                 renderSparkline('kpi-quotes-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'quotes', 'count');
                 renderSparkline('kpi-bookings-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings', 'count');
+                renderSparkline('kpi-total-bookings-sparkline', dh.daily, cmpOn && ch ? ch.daily : null, 'bookings', 'count');
             }
 
             // Firebase sparklines
