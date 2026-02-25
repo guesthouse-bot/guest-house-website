@@ -2065,15 +2065,6 @@
         }
 
         .tile-call .tile-cta {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .tile-call:hover .tile-cta {
-            background: white;
-            color: var(--color-onyx);
         }
 
         @media (max-width: 900px) {
@@ -2138,33 +2129,8 @@
         .tile-cta {
             position: relative;
             z-index: 1;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
             margin: 0 28px 28px;
-            padding: 12px 24px;
-            background: white;
-            color: var(--color-onyx);
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 100px;
-            transition: all 0.25s ease;
-        }
-
-        .service-tile:hover .tile-cta {
-            background: var(--color-onyx);
-            color: white;
-            transform: translateX(4px);
-        }
-
-        .tile-cta svg {
-            width: 16px;
-            height: 16px;
-            transition: transform 0.25s ease;
-        }
-
-        .service-tile:hover .tile-cta svg {
-            transform: translateX(3px);
+            align-self: flex-start;
         }
 
         /* Non-photo tiles */
@@ -4710,7 +4676,7 @@
                     <h3 class="tile-name">Expert Design Advice</h3>
                     <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan — no commitment required.</p>
                 </div>
-                <span class="tile-cta">Start for free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="tile-cta btn btn-primary">Get your quote</span>
             </a>
             <a href="style-for-you.html" class="service-tile">
                 <img src="in-person-styling-tile.jpg" alt="In-person styling" class="tile-bg" decoding="async" loading="lazy" width="384" height="440" style="object-position: center center;">
@@ -4719,7 +4685,7 @@
                     <h3 class="tile-name">In-Person Styling</h3>
                     <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
-                <span class="tile-cta">Start for free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="tile-cta btn btn-primary">Get your quote</span>
             </a>
             <a href="full-service-staging.html" class="service-tile">
                 <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" decoding="async" loading="lazy" width="384" height="440">
@@ -4728,7 +4694,7 @@
                     <h3 class="tile-name">Full-Service Staging</h3>
                     <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
                 </div>
-                <span class="tile-cta">Start for free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="tile-cta btn btn-primary">Get your quote</span>
             </a>
         </div>
         <div class="more-services">
