@@ -1914,8 +1914,8 @@
 
         /* Video-call style tile for Expert Design Advice */
         .service-tile.tile-call {
-            background: var(--color-onyx);
-            color: white;
+            background: var(--color-bone);
+            color: var(--color-onyx);
             justify-content: space-between;
         }
 
@@ -1937,7 +1937,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 0 0 12px rgba(235,188,118,0.1), 0 0 0 24px rgba(235,188,118,0.05);
+            box-shadow: 0 0 0 12px rgba(235,188,118,0.2), 0 0 0 24px rgba(235,188,118,0.08);
         }
 
         .tile-call-ring img {
@@ -1960,7 +1960,7 @@
             padding: 6px 16px;
             border-radius: 100px;
             white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
         .tile-call-ui {
@@ -1985,19 +1985,23 @@
         }
 
         .tile-call-ui-dot.mute {
-            background: rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.07);
         }
 
         .tile-call-ui-dot.video {
-            background: rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.07);
         }
 
         .tile-call-ui-dot svg {
             width: 20px;
             height: 20px;
-            stroke: white;
+            stroke: var(--color-onyx);
             fill: none;
             stroke-width: 2;
+        }
+
+        .tile-call-ui-dot.accept svg {
+            stroke: white;
         }
 
         .tile-call .tile-overlay {
@@ -2005,20 +2009,27 @@
         }
 
         .tile-call .tile-content {
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
             padding: 32px;
         }
 
+        .tile-call .tile-name {
+            color: var(--color-onyx);
+        }
+
+        .tile-call .tile-desc {
+            color: var(--color-text-secondary);
+        }
+
         .tile-call .tile-arrow {
-            background: rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.07);
         }
 
         .tile-call .tile-arrow svg {
-            stroke: white;
+            stroke: var(--color-onyx);
         }
 
         .tile-call:hover .tile-arrow {
-            background: rgba(255,255,255,0.25);
+            background: rgba(0,0,0,0.12);
         }
 
         @media (max-width: 900px) {
