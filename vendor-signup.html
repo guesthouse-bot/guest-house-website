@@ -732,6 +732,104 @@
             margin-right: auto;
         }
 
+        /* File upload */
+        .file-upload-field {
+            margin-bottom: 24px;
+        }
+        .file-upload-field label {
+            display: block;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 8px;
+        }
+        .file-upload-field label .req {
+            color: var(--color-error);
+        }
+        .file-upload-zone {
+            border: 2px dashed var(--color-border);
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: var(--color-white);
+            position: relative;
+        }
+        .file-upload-zone:hover {
+            border-color: var(--color-text-secondary);
+            background: var(--color-surface-secondary);
+        }
+        .file-upload-zone.has-file {
+            border-color: var(--color-onyx);
+            border-style: solid;
+            background: var(--color-surface-secondary);
+        }
+        .file-upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-upload-icon {
+            margin-bottom: 8px;
+        }
+        .file-upload-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--color-text-secondary);
+            fill: none;
+        }
+        .file-upload-zone.has-file .file-upload-icon svg {
+            stroke: var(--color-onyx);
+        }
+        .file-upload-text {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+        .file-upload-text strong {
+            color: var(--color-text-primary);
+        }
+        .file-upload-hint {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        .file-upload-filename {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .file-upload-filename svg {
+            width: 18px;
+            height: 18px;
+            stroke: #4a9e6e;
+            fill: none;
+            flex-shrink: 0;
+        }
+        .file-remove-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.8125rem;
+            color: var(--color-error);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+        .file-remove-btn:hover {
+            background: #fef2f2;
+        }
+
         /* Agreement text container */
         .agreement-container {
             max-height: 400px;
@@ -1456,12 +1554,44 @@
     let submitting = false;
     let submitError = null;
 
+    // File upload state: { name, type, size, data (base64) }
+    let fileW9 = null;
+    let fileInsurance = null;
+
     const qs = (s, el) => (el || document).querySelector(s);
     const qsa = (s, el) => [...(el || document).querySelectorAll(s)];
     const card = () => document.getElementById("signupCard");
     const fv = k => formData[k] || "";
     const fs = (k, val) => { formData[k] = val; };
     function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    function readFileAsBase64(file) {
+        return new Promise(function(resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function() { resolve(reader.result.split(",")[1]); };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function fileUploadHTML(id, label, fileObj, required) {
+        var reqSpan = required ? ' <span class="req">*</span>' : '';
+        var html = '<div class="file-upload-field"><label>' + label + reqSpan + '</label>';
+        html += '<div class="file-upload-zone' + (fileObj ? ' has-file' : '') + '" id="' + id + 'Zone">';
+        html += '<input type="file" id="' + id + 'Input" accept=".pdf,.jpg,.jpeg,.png,.heic">';
+        if (fileObj) {
+            html += '<div class="file-upload-filename">' +
+                '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+                esc(fileObj.name) + '</div>' +
+                '<button type="button" class="file-remove-btn" data-remove="' + id + '">Remove</button>';
+        } else {
+            html += '<div class="file-upload-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>' +
+                '<div class="file-upload-text"><strong>Click to upload</strong> or drag and drop</div>' +
+                '<div class="file-upload-hint">PDF, JPG, or PNG (max 10 MB)</div>';
+        }
+        html += '</div></div>';
+        return html;
+    }
 
     function goBack() {
         window.location.href = 'vendor-partnerships.html';
@@ -1506,6 +1636,11 @@
 
         html += ffHTML("Business / company name","business_name",{required:true});
         html += '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>';
+
+        // File uploads
+        html += '<div class="form-section-title">Documents</div>';
+        html += fileUploadHTML("w9", "W-9 form", fileW9, true);
+        html += fileUploadHTML("insurance", "Proof of insurance", fileInsurance, true);
 
         // Rate fields for Cleaner and Media only
         var rateCfg = RATE_CONFIG[selectedRole];
@@ -1568,7 +1703,7 @@
     function canAdvance() {
         switch (step) {
             case 0: return !!selectedRole;
-            case 1: return fv("business_name") && fv("first_name") && fv("last_name");
+            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fileW9 && fileInsurance;
             case 2:
                 var expected = (fv("first_name") + " " + fv("last_name")).trim().toLowerCase();
                 return agreementChecked && signatureName.trim().toLowerCase() === expected && expected.length > 0;
@@ -1606,6 +1741,38 @@
         // Inputs
         qsa("[data-key]", card()).forEach(function(el) {
             el.addEventListener("input", function() { fs(el.dataset.key, el.value); updateNext(); });
+        });
+        // File uploads
+        var w9Input = qs("#w9Input", card());
+        if (w9Input) {
+            w9Input.onchange = async function() {
+                var file = w9Input.files[0];
+                if (!file) return;
+                if (file.size > 10 * 1024 * 1024) { alert("File must be under 10 MB."); w9Input.value = ""; return; }
+                var data = await readFileAsBase64(file);
+                fileW9 = { name: file.name, type: file.type, size: file.size, data: data };
+                render();
+            };
+        }
+        var insInput = qs("#insuranceInput", card());
+        if (insInput) {
+            insInput.onchange = async function() {
+                var file = insInput.files[0];
+                if (!file) return;
+                if (file.size > 10 * 1024 * 1024) { alert("File must be under 10 MB."); insInput.value = ""; return; }
+                var data = await readFileAsBase64(file);
+                fileInsurance = { name: file.name, type: file.type, size: file.size, data: data };
+                render();
+            };
+        }
+        // File remove buttons
+        qsa("[data-remove]", card()).forEach(function(el) {
+            el.onclick = function(e) {
+                e.stopPropagation();
+                if (el.dataset.remove === "w9") fileW9 = null;
+                if (el.dataset.remove === "insurance") fileInsurance = null;
+                render();
+            };
         });
         // Agreement checkbox
         var chk = qs("#agreementCheckbox", card());
@@ -1689,6 +1856,14 @@
             business_name: fv("business_name"),
             first_name: fv("first_name"),
             last_name: fv("last_name"),
+
+            // Documents (base64-encoded)
+            w9_filename: fileW9 ? fileW9.name : "",
+            w9_filetype: fileW9 ? fileW9.type : "",
+            w9_data: fileW9 ? fileW9.data : "",
+            insurance_filename: fileInsurance ? fileInsurance.name : "",
+            insurance_filetype: fileInsurance ? fileInsurance.type : "",
+            insurance_data: fileInsurance ? fileInsurance.data : "",
 
             // Legally defensible agreement record
             agreement_accepted: true,
