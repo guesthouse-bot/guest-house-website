@@ -1451,6 +1451,13 @@
                     </div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Expected Total Revenue</div>
+                    <div style="font-size:11px;color:#888;margin-top:2px;">Total Revenue + Forecasted Renewal + Forecasted Bookings</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-expected-total-revenue">&mdash;</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Gross Margin</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-gross-margin">&mdash;</span>
@@ -2478,9 +2485,22 @@
         var latestBookings = null;
         var latestQuotes = null;
         var latestUniqueAccounts = null;
+        var latestBookingsForecast = null;
         var compareRevenue = null;
         var compareBookings = null;
         var compareQuotes = null;
+
+        function updateExpectedRevenue() {
+            var sc = currentData.scorecard;
+            if (latestRevenue !== null && sc && latestBookingsForecast !== null) {
+                var expectedTotal = latestRevenue + (sc.renewal_forecast || 0) + latestBookingsForecast;
+                setKPI('kpi-expected-total-revenue', formatCurrency(expectedTotal));
+                var grossMargin = expectedTotal * 0.75;
+                var netIncome = grossMargin - sc.monthly_expenses;
+                setKPI('kpi-gross-margin', formatCurrency(grossMargin));
+                setKPI('kpi-net-income', formatCurrency(netIncome));
+            }
+        }
 
         function updateScorecardKPIs() {
             var sc = currentData.scorecard;
@@ -2490,6 +2510,7 @@
                 setKPI('kpi-gross-margin', formatCurrency(grossMargin));
                 setKPI('kpi-net-income', formatCurrency(netIncome));
                 setKPI('kpi-cash-on-hand', formatCurrency(sc.cash_on_hand));
+                updateExpectedRevenue();
 
                 // Runway: cash on hand / average of trailing 3 months net income
                 // M0 (current/forecasted) + M-1 and M-2 (actuals from sheet)
@@ -2695,7 +2716,9 @@
                 var response = await fetch('/api/hubspot-forecast');
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
-                setKPI('kpi-bookings-forecast', formatCurrency(data.forecast_revenue));
+                latestBookingsForecast = data.forecast_revenue || 0;
+                setKPI('kpi-bookings-forecast', formatCurrency(latestBookingsForecast));
+                updateExpectedRevenue();
                 return data;
             } catch (err) {
                 console.error('Bookings forecast fetch error:', err);
@@ -3039,6 +3062,7 @@
             latestBookings = null;
             latestQuotes = null;
             latestUniqueAccounts = null;
+            latestBookingsForecast = null;
             compareRevenue = null;
             compareBookings = null;
             compareQuotes = null;
