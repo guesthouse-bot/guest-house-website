@@ -126,11 +126,24 @@ module.exports = async function handler(req, res) {
       if (!isNaN(weighted)) totalForecast += weighted;
     });
 
-    return res.status(200).json({
+    var result = {
       forecast_revenue: totalForecast,
       matched_stages: matchedLabels,
       deal_count: allDeals.length,
-    });
+    };
+
+    if (req.query.debug === 'true') {
+      result.debug = {
+        target_stage_ids: targetStageIds,
+        all_pipeline_stages: stages.map(function(s) { return { id: s.id, label: s.label }; }),
+        month_range: { start: new Date(monthStart).toISOString(), end: new Date(monthEnd).toISOString() },
+        sample_deals: allDeals.slice(0, 5).map(function(d) {
+          return { id: d.id, name: d.properties.dealname, stage: d.properties.dealstage, closedate: d.properties.closedate, amount: d.properties.amount, hs_weighted_amount: d.properties.hs_weighted_amount };
+        }),
+      };
+    }
+
+    return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
