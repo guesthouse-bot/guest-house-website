@@ -2130,8 +2130,27 @@
         .tile-cta {
             position: relative;
             z-index: 1;
-            margin: 0 28px 28px;
+            margin: 0 28px 0;
             align-self: center;
+            text-decoration: none;
+        }
+
+        .tile-sub-cta {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            margin: 12px 0 28px;
+            align-self: center;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .tile-sub-cta:hover {
+            opacity: 1;
         }
 
         /* Non-photo tiles */
@@ -4660,7 +4679,7 @@
     </section>
     <section class="deliverable-section" id="services">
         <div class="service-tiles">
-            <a href="design-advice.html" class="service-tile tile-call">
+            <div class="service-tile tile-call">
                 <div class="tile-call-visual">
                     <div class="tile-call-ring">
                         <img src="design-advisor-headshot.png" alt="Guest House design advisor" decoding="async" loading="lazy">
@@ -4677,26 +4696,29 @@
                     <h3 class="tile-name">Expert Design Advice</h3>
                     <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan — no commitment required.</p>
                 </div>
-                <span class="tile-cta btn btn-primary">Get your quote</span>
-            </a>
-            <a href="style-for-you.html" class="service-tile">
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
+            </div>
+            <div class="service-tile">
                 <img src="in-person-styling-tile.jpg" alt="In-person styling" class="tile-bg" decoding="async" loading="lazy" width="384" height="440" style="object-position: center center;">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">In-Person Styling</h3>
                     <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
-                <span class="tile-cta btn btn-primary">Get your quote</span>
-            </a>
-            <a href="full-service-staging.html" class="service-tile">
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="style-for-you.html" class="tile-sub-cta">See how In-Person Styling works</a>
+            </div>
+            <div class="service-tile">
                 <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" decoding="async" loading="lazy" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Full-Service Staging</h3>
                     <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
                 </div>
-                <span class="tile-cta btn btn-primary">Get your quote</span>
-            </a>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="full-service-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
+            </div>
         </div>
         <div class="more-services">
             <p class="more-services-label">Plus, easily book:</p>
