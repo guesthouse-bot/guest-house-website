@@ -1889,9 +1889,8 @@
 
         .service-tiles {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            grid-template-rows: 240px 240px 300px;
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .service-tile {
@@ -1905,42 +1904,12 @@
             justify-content: flex-end;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             contain: layout style paint;
+            min-height: 440px;
         }
 
         .service-tile:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-        }
-
-        .service-tile.tile-large {
-            grid-column: 1 / 4;
-            grid-row: 1 / 3;
-            min-height: 280px;
-        }
-
-        .service-tile.tile-top-right {
-            grid-column: 4 / 7;
-            grid-row: 1;
-        }
-
-        .service-tile.tile-mid-right {
-            grid-column: 4 / 7;
-            grid-row: 2;
-        }
-
-        .service-tile.tile-bottom-1 {
-            grid-column: 1 / 3;
-            grid-row: 3;
-        }
-
-        .service-tile.tile-bottom-2 {
-            grid-column: 3 / 5;
-            grid-row: 3;
-        }
-
-        .service-tile.tile-bottom-3 {
-            grid-column: 5 / 7;
-            grid-row: 3;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.18);
         }
 
         .service-tile .tile-bg {
@@ -1954,13 +1923,13 @@
         .service-tile .tile-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.0) 100%);
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.0) 100%);
         }
 
         .service-tile .tile-content {
             position: relative;
             z-index: 1;
-            padding: 28px;
+            padding: 32px;
         }
 
         .service-tile .tile-badge {
@@ -1978,19 +1947,15 @@
         }
 
         .service-tile .tile-name {
-            font-size: 1.375rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             line-height: 1.2;
-        }
-
-        .tile-large .tile-name {
-            font-size: 1.625rem;
         }
 
         .service-tile .tile-desc {
             font-size: 0.9375rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.9);
             line-height: 1.5;
             max-width: 400px;
         }
@@ -2270,26 +2235,11 @@
 
             .service-tiles {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                height: auto;
+                gap: 16px;
             }
 
             .service-tile {
-                min-height: 240px;
-            }
-
-            .service-tile.tile-large,
-            .service-tile.tile-top-right,
-            .service-tile.tile-mid-right,
-            .service-tile.tile-bottom-1,
-            .service-tile.tile-bottom-2,
-            .service-tile.tile-bottom-3 {
-                grid-column: auto;
-                grid-row: auto;
-            }
-
-            .service-tile.tile-large {
-                min-height: 300px;
+                min-height: 320px;
             }
 
             .service-tile .tile-content {
@@ -4562,92 +4512,30 @@
     </section>
     <section class="deliverable-section" id="services">
         <div class="service-tiles">
-            <a href="full-service-staging.html" class="service-tile tile-large">
-                <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" decoding="async" loading="lazy" width="568" height="496">
-                <div class="tile-overlay"></div>
-                <div class="tile-content">
-                    <h3 class="tile-name">Full-Service Staging</h3>
-                </div>
-                <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-            </a>
-            <a href="design-advice.html" class="service-tile tile-ui tile-top-right">
-                <div class="tile-floating-card">
-                    <div class="fc-header">
-                        <div class="fc-avatar">GH</div>
-                        <div class="fc-title">Your Instant Checklist</div>
-                    </div>
-                    <div class="fc-item">
-                        <div class="fc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                        <span class="fc-label">Declutter entryway</span>
-                        <span class="fc-tag high">High Impact</span>
-                    </div>
-                    <div class="fc-item">
-                        <div class="fc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                        <span class="fc-label">Brighten living room</span>
-                    </div>
-                    <div class="fc-item">
-                        <div class="fc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                        <span class="fc-label">Stage kitchen for photos</span>
-                    </div>
-                </div>
+            <a href="design-advice.html" class="service-tile">
+                <img src="944ArapahoeAve-33.jpg" alt="Expert design advice" class="tile-bg" decoding="async" loading="lazy" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Expert Design Advice</h3>
+                    <p class="tile-desc">Get a personalized prep checklist and expert guidance from our design team — no commitment required.</p>
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
-            <a href="style-for-you.html" class="service-tile tile-illustration tile-mid-right">
-                <img src="in-person-styling.png" alt="In-person styling" class="tile-bg-img" decoding="async" loading="lazy" width="284" height="288">
+            <a href="style-for-you.html" class="service-tile">
+                <img src="full-service-staging.jpg" alt="In-person styling" class="tile-bg" decoding="async" loading="lazy" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">In-Person Styling</h3>
+                    <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
-            <a href="agents.html" class="service-tile tile-bottom-1">
-                <img src="944ArapahoeAve-33.jpg" alt="Listing photos and media" class="tile-bg" decoding="async" loading="lazy" width="384" height="300">
+            <a href="full-service-staging.html" class="service-tile">
+                <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" decoding="async" loading="lazy" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
-                    <h3 class="tile-name">Listing Photos, 3D Tours,<br class="desktop-only"> &amp; Content</h3>
-                </div>
-                <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-            </a>
-            <a href="homeowners.html" class="service-tile tile-bottom-2">
-                <img src="full-service-staging.jpg" alt="Moving and cleaning services" class="tile-bg" decoding="async" loading="lazy" width="384" height="300">
-                <div class="tile-overlay"></div>
-                <div class="tile-content">
-                    <h3 class="tile-name">Moving, Cleaning &amp; Homeowner Services</h3>
-                </div>
-                <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-            </a>
-            <a href="pay-at-close.html" class="service-tile tile-ui tile-bottom-3">
-                <div class="tile-finance-card">
-                    <div class="fin-header">
-                        <div class="fin-icon">GH</div>
-                        <div class="fin-title">2448 Sagebrush Ct.</div>
-                    </div>
-                    <div class="fin-amount">$0 due today</div>
-                    <div class="fin-row">
-                        <span class="fin-service">Staging</span>
-                        <span class="fin-price">$2,950</span>
-                    </div>
-                    <div class="fin-row">
-                        <span class="fin-service">Listing Photos</span>
-                        <span class="fin-price">$250</span>
-                    </div>
-                    <div class="fin-row">
-                        <span class="fin-service">Deep Cleaning</span>
-                        <span class="fin-price">$450</span>
-                    </div>
-                    <hr class="fin-divider">
-                    <div class="fin-total-row">
-                        <span>Total at closing</span>
-                        <span>$3,650</span>
-                    </div>
-                </div>
-                <div class="tile-overlay"></div>
-                <div class="tile-content">
-                    <h3 class="tile-name">Pay At Close</h3>
+                    <h3 class="tile-name">Full-Service Staging</h3>
+                    <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
                 </div>
                 <span class="tile-arrow"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </a>
