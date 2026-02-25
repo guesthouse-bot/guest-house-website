@@ -870,7 +870,7 @@
                 msg.style.display = 'none';
 
                 try {
-                    var response = await fetch('/api/jobs', {
+                    var response = await fetch('/api/bidding?action=jobs', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -916,10 +916,10 @@
             var params = [];
             if (status) params.push('status=' + status);
             if (market) params.push('market=' + market);
-            var qs = params.length ? '?' + params.join('&') : '';
+            var qs = params.length ? '&' + params.join('&') : '';
 
             try {
-                var response = await fetch('/api/jobs' + qs);
+                var response = await fetch('/api/bidding?action=jobs' + qs);
                 var data = await response.json();
                 jobs = data.jobs || [];
 
@@ -988,7 +988,7 @@
             panel.innerHTML = '<p style="color:var(--color-text-secondary);font-size:13px;">Loading bids...</p>';
 
             try {
-                var response = await fetch('/api/job-details?jobId=' + jobId);
+                var response = await fetch('/api/bidding?action=job-details&jobId=' + jobId);
                 var data = await response.json();
                 var bids = data.bids || [];
                 var job = data.job;
@@ -1068,7 +1068,7 @@
                 if (bidId) payload.bidId = bidId;
                 else payload.auto = true;
 
-                var response = await fetch('/api/award-job', {
+                var response = await fetch('/api/bidding?action=award-job', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),

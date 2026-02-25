@@ -2,8 +2,8 @@
   "cleanUrls": true,
   "crons": [
     {
-      "path": "/api/check-deadlines?secret=${CRON_SECRET}",
-      "schedule": "0 * * * *"
+      "path": "/api/bidding?action=check-deadlines&secret=${CRON_SECRET}",
+      "schedule": "0 8 * * *"
     }
   ]
 }

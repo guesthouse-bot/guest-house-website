@@ -338,7 +338,7 @@
         var countdownInterval = null;
 
         // Fetch bid/job data
-        fetch('/api/submit-bid?token=' + encodeURIComponent(token))
+        fetch('/api/bidding?action=submit-bid&token=' + encodeURIComponent(token))
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.error === 'invalid_token') {
@@ -423,7 +423,7 @@
                 submit.textContent = 'Submitting...';
                 errorEl.style.display = 'none';
 
-                fetch('/api/submit-bid', {
+                fetch('/api/bidding?action=submit-bid', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token: token, amount: val }),
