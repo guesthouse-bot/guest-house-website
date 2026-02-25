@@ -703,6 +703,44 @@
             border-radius: 12px;
             padding: 24px 24px 20px;
         }
+        .kpi-card-full {
+            grid-column: 1 / -1;
+        }
+        .traffic-sources-chart {
+            margin-top: 12px;
+        }
+        .traffic-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .traffic-bar-label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            min-width: 140px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .traffic-bar-track {
+            flex: 1;
+            height: 20px;
+            background: var(--color-bg-secondary, #f5f5f5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .traffic-bar-fill {
+            height: 100%;
+            background: var(--color-onyx, #1a1a1a);
+            border-radius: 4px;
+            min-width: 2px;
+        }
+        .traffic-bar-value {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            min-width: 50px;
+        }
         .kpi-label {
             font-size: 0.75rem;
             font-weight: 600;
@@ -1313,6 +1351,7 @@
         <nav class="section-nav">
             <a href="#section-company" class="section-nav-link active">Company</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
+            <a href="#section-marketing" class="section-nav-link">Marketing</a>
             <a href="#section-operations" class="section-nav-link">Operations</a>
         </nav>
     </section>
@@ -1401,6 +1440,12 @@
                     <div class="kpi-label">Renewal Forecasted</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-renewal-forecast">&mdash;</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings Revenue Forecasted</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-forecast">&mdash;</span>
                     </div>
                 </div>
                 <div class="kpi-card">
@@ -1630,8 +1675,94 @@
         </div>
     </section>
 
+    <!-- Marketing KPIs -->
+    <section id="section-marketing">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Marketing KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Sessions</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-sessions">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-sessions-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-sessions-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ga-sessions-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Unique Visitors</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-users">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-users-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-users-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ga-users-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quote Starts</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-quote-starts">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-quote-starts-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-quote-starts-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ga-quote-starts-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quotes Requested</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-quotes-requested">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-quotes-requested-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-quotes-requested-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bounce Rate</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-bounce">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-bounce-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-bounce-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ga-bounce-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Session Duration</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-duration">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-duration-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-duration-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Pages / Session</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-pages">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-pages-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-pages-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Site-to-Quote Rate</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-site-to-quote">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-site-to-quote-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-site-to-quote-prev"></div>
+                </div>
+            </div>
+            <!-- Traffic Sources - full width bar chart -->
+            <div class="kpi-grid" style="margin-top: 20px;">
+                <div class="kpi-card kpi-card-full">
+                    <div class="kpi-label">Traffic Sources</div>
+                    <div id="kpi-ga-traffic-sources" class="traffic-sources-chart"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Ops KPIs -->
-    <section id="section-operations">
+    <section id="section-operations" class="kpi-section-grey">
         <div class="kpi-section">
             <div class="kpi-section-header">
                 <h2>Ops KPIs</h2>
@@ -1714,7 +1845,7 @@
                     <div class="kpi-sparkline" id="kpi-vendor-signups-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Jobs Completed</div>
+                    <div class="kpi-label">Homes Completed</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-jobs-completed">&mdash;</span>
                         <span class="kpi-change" id="kpi-jobs-completed-change"></span>
@@ -2337,8 +2468,8 @@
         }
 
         // ---- Data storage ----
-        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null, scorecard: null };
-        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null };
+        var currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null, scorecard: null, ga4: null };
+        var compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, vendor: null, ga4: null };
 
         // Track latest values for cross-source calculations
         var latestRevenue = null;
@@ -2354,10 +2485,18 @@
             if (latestRevenue !== null && sc) {
                 var grossMargin = (latestRevenue + sc.renewal_forecast) * sc.gross_margin_pct;
                 var netIncome = grossMargin - sc.monthly_expenses;
-                var runway = netIncome !== 0 ? sc.cash_on_hand / netIncome : null;
                 setKPI('kpi-gross-margin', formatCurrency(grossMargin));
                 setKPI('kpi-net-income', formatCurrency(netIncome));
                 setKPI('kpi-cash-on-hand', formatCurrency(sc.cash_on_hand));
+
+                // Runway: cash on hand / average of trailing 3 months net income
+                // M0 (current/forecasted) + M-1 and M-2 (actuals from sheet)
+                var netIncomes = [netIncome];
+                if (sc.trailing_net_income) {
+                    sc.trailing_net_income.forEach(function(ni) { netIncomes.push(ni); });
+                }
+                var avgNetIncome = netIncomes.reduce(function(a, b) { return a + b; }, 0) / netIncomes.length;
+                var runway = avgNetIncome !== 0 ? sc.cash_on_hand / avgNetIncome : null;
                 if (runway !== null) {
                     setKPI('kpi-runway', Math.round(Math.abs(runway)) + ' mo');
                 } else {
@@ -2486,6 +2625,8 @@
                     }
                     latestBookings = data.bookings;
                     latestQuotes = data.quotes_requested;
+                    // Mirror Quotes Requested into Marketing section
+                    setKPI('kpi-ga-quotes-requested', formatNumber(data.quotes_requested));
                     updateCrossSourceKPIs();
                 }
                 return data;
@@ -2539,6 +2680,24 @@
             } catch (err) {
                 console.error('Scorecard KPI fetch error:', err);
                 ids.forEach(function(id) { setKPI(id, 'Error'); });
+                return null;
+            } finally {
+                clearLoading(ids);
+            }
+        }
+
+        async function fetchBookingsForecast() {
+            var ids = ['kpi-bookings-forecast'];
+            setLoading(ids);
+            try {
+                var response = await fetch('/api/hubspot-forecast');
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+                setKPI('kpi-bookings-forecast', formatCurrency(data.forecast_revenue));
+                return data;
+            } catch (err) {
+                console.error('Bookings forecast fetch error:', err);
+                setKPI('kpi-bookings-forecast', 'Error');
                 return null;
             } finally {
                 clearLoading(ids);
@@ -2632,6 +2791,71 @@
             }
         }
 
+        // ---- GA4 KPIs ----
+        function formatDuration(seconds) {
+            var m = Math.floor(seconds / 60);
+            var s = Math.round(seconds % 60);
+            return m + 'm ' + s + 's';
+        }
+
+        function renderTrafficSources(sources) {
+            var container = document.getElementById('kpi-ga-traffic-sources');
+            if (!container) return;
+            if (!sources || sources.length === 0) {
+                container.innerHTML = '<span style="color:#999;font-size:0.85rem;">No data yet</span>';
+                return;
+            }
+            var maxSessions = sources[0].sessions || 1;
+            var html = '';
+            sources.forEach(function(src) {
+                var pct = (src.sessions / maxSessions) * 100;
+                html += '<div class="traffic-bar-row">';
+                html += '<span class="traffic-bar-label">' + src.channel + '</span>';
+                html += '<div class="traffic-bar-track"><div class="traffic-bar-fill" style="width:' + pct.toFixed(1) + '%"></div></div>';
+                html += '<span class="traffic-bar-value">' + src.sessions.toLocaleString() + '</span>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        async function fetchGA4KPIs(filters, isCompare) {
+            var ids = ['kpi-ga-sessions', 'kpi-ga-users', 'kpi-ga-quote-starts', 'kpi-ga-bounce', 'kpi-ga-duration', 'kpi-ga-pages', 'kpi-ga-site-to-quote'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
+                var response = await fetch('/api/ga4-kpis?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                if (isCompare) {
+                    compareData.ga4 = data;
+                } else {
+                    currentData.ga4 = data;
+                    setKPI('kpi-ga-sessions', formatNumber(data.sessions));
+                    setKPI('kpi-ga-users', formatNumber(data.users));
+                    setKPI('kpi-ga-quote-starts', formatNumber(data.quote_starts));
+                    setKPI('kpi-ga-bounce', data.bounce_rate.toFixed(1) + '%');
+                    setKPI('kpi-ga-duration', formatDuration(data.avg_duration));
+                    setKPI('kpi-ga-pages', data.pages_per_session.toFixed(1));
+                    // Site-to-Quote Rate: quote_starts / sessions
+                    var siteToQuote = data.sessions > 0 ? (data.quote_starts / data.sessions * 100) : 0;
+                    setKPI('kpi-ga-site-to-quote', siteToQuote.toFixed(1) + '%');
+                    // Mirror "Quotes Requested" from HubSpot when available
+                    if (currentData.hubspot) {
+                        setKPI('kpi-ga-quotes-requested', formatNumber(currentData.hubspot.quotes_requested));
+                    }
+                    renderTrafficSources(data.traffic_sources);
+                }
+                return data;
+            } catch (err) {
+                console.error('GA4 KPI fetch error:', err);
+                if (!isCompare) ids.forEach(function(id) { setKPI(id, 'Error'); });
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
+            }
+        }
+
         // ---- Render comparisons and sparklines ----
         function renderAllComparisons() {
             var cs = compareData.stripe;
@@ -2686,6 +2910,27 @@
             var ct = compareData.typeform;
             if (dt && ct && dt.nps_score !== null && ct.nps_score !== null) {
                 setComparison('kpi-nps', dt.nps_score, ct.nps_score, function(v) { return v.toFixed(0); }, false);
+            }
+            // GA4 comparisons
+            var dga = currentData.ga4;
+            var cga = compareData.ga4;
+            if (dga && cga) {
+                setComparison('kpi-ga-sessions', dga.sessions, cga.sessions, formatNumber, false);
+                setComparison('kpi-ga-users', dga.users, cga.users, formatNumber, false);
+                setComparison('kpi-ga-quote-starts', dga.quote_starts, cga.quote_starts, formatNumber, false);
+                setComparison('kpi-ga-bounce', dga.bounce_rate, cga.bounce_rate,
+                    function(v) { return v.toFixed(1) + '%'; }, true);
+                setComparison('kpi-ga-duration', dga.avg_duration, cga.avg_duration, formatDuration, false);
+                setComparison('kpi-ga-pages', dga.pages_per_session, cga.pages_per_session,
+                    function(v) { return v.toFixed(1); }, false);
+                var currStQ = dga.sessions > 0 ? (dga.quote_starts / dga.sessions * 100) : 0;
+                var prevStQ = cga.sessions > 0 ? (cga.quote_starts / cga.sessions * 100) : 0;
+                setComparison('kpi-ga-site-to-quote', currStQ, prevStQ,
+                    function(v) { return v.toFixed(1) + '%'; }, false);
+            }
+            // Quotes Requested (HubSpot-mirrored) in Marketing section
+            if (dh && ch) {
+                setComparison('kpi-ga-quotes-requested', dh.quotes_requested, ch.quotes_requested, formatNumber, false);
             }
             // Cross-source comparisons
             updateCrossSourceKPIs();
@@ -2760,6 +3005,16 @@
             if (dtf && dtf.daily) {
                 renderSparkline('kpi-nps-sparkline', dtf.daily, cmpOn && ctf ? ctf.daily : null, 'nps_score', 'count');
             }
+
+            // GA4 sparklines
+            var dga = currentData.ga4;
+            var cga = compareData.ga4;
+            if (dga && dga.daily) {
+                renderSparkline('kpi-ga-sessions-sparkline', dga.daily, cmpOn && cga ? cga.daily : null, 'sessions', 'count');
+                renderSparkline('kpi-ga-users-sparkline', dga.daily, cmpOn && cga ? cga.daily : null, 'users', 'count');
+                renderSparkline('kpi-ga-quote-starts-sparkline', dga.daily, cmpOn && cga ? cga.daily : null, 'quote_starts', 'count');
+                renderSparkline('kpi-ga-bounce-sparkline', dga.daily, cmpOn && cga ? cga.daily : null, 'bounce_rate', 'percent');
+            }
         }
 
         // Build daily average sales cycle from hubspot daily data
@@ -2785,13 +3040,13 @@
             compareRevenue = null;
             compareBookings = null;
             compareQuotes = null;
-            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, scorecard: null };
-            compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null };
+            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, scorecard: null, ga4: null };
+            compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, ga4: null };
 
             clearAllComparisons();
 
             // Stagger fetches to prevent concurrent HubSpot rate limiting
-            // Wave 1: Stripe + Firebase (no HubSpot)
+            // Wave 1: Stripe + Firebase + GA4 (no HubSpot)
             // Wave 2: Current HubSpot + Customer
             // Wave 3: Compare HubSpot + Customer (only if compare on)
             var wave1 = [
@@ -2800,6 +3055,8 @@
                 fetchTypeformNPS(filters, false),
                 fetchVendorApplications(filters, false),
                 fetchScorecardKPIs(),
+                fetchBookingsForecast(),
+                fetchGA4KPIs(filters, false),
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
@@ -2819,6 +3076,7 @@
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
                 wave1.push(fetchVendorApplications(cmpFilters, true));
+                wave1.push(fetchGA4KPIs(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
@@ -2860,7 +3118,8 @@
             var sections = [
                 { id: 'section-company', link: navLinks[0] },
                 { id: 'section-sales', link: navLinks[1] },
-                { id: 'section-operations', link: navLinks[2] },
+                { id: 'section-marketing', link: navLinks[2] },
+                { id: 'section-operations', link: navLinks[3] },
             ];
 
             navLinks.forEach(function(link) {
