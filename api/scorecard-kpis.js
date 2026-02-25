@@ -45,13 +45,14 @@ module.exports = async function handler(req, res) {
   try {
     var accessToken = await getAccessToken(serviceAccount);
 
-    // Read expenses from Financial Model (2026)!AL62 and cash on hand from Actuals (2026)!Z179
+    // Batch read: expenses, cash on hand, and renewal forecaster data
     var ranges = [
       "'Financial Model (2026)'!AL62",
       "'Actuals (2026)'!Z179",
+      "'Renewal Forecaster'!A1:F200",
     ];
     var encodedRanges = ranges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
-    var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedRanges + '&valueRenderOption=UNFORMATTED_VALUE';
+    var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedRanges + '&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
 
     var response = await fetch(url, {
       headers: { 'Authorization': 'Bearer ' + accessToken },
@@ -79,10 +80,60 @@ module.exports = async function handler(req, res) {
       cashOnHand = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
     }
 
+    // Parse Renewal Forecaster and compute current month forecast
+    var renewalForecast = 0;
+    var now = new Date();
+    var currentMonth = now.getMonth(); // 0-indexed
+    var currentYear = now.getFullYear();
+
+    if (valueRanges[2] && valueRanges[2].values) {
+      var rows = valueRanges[2].values;
+      // Find column indices from header row
+      var header = rows[0] || [];
+      var feeIdx = header.indexOf('Fee');
+      var paidThruIdx = header.indexOf('Paid Thru');
+
+      if (feeIdx !== -1 && paidThruIdx !== -1) {
+        for (var i = 1; i < rows.length; i++) {
+          var row = rows[i];
+          var feeRaw = row[feeIdx];
+          var paidThruRaw = row[paidThruIdx];
+          if (!feeRaw || !paidThruRaw) continue;
+
+          var fee = typeof feeRaw === 'number' ? feeRaw : parseFloat(String(feeRaw).replace(/[$,]/g, '')) || 0;
+          if (fee === 0) continue;
+
+          // Parse paid thru date - handles "3/28", "3/28/26", "2/28/26" formats
+          var paidThruStr = String(paidThruRaw).trim();
+          var parts = paidThruStr.split('/');
+          if (parts.length < 2) continue;
+
+          var ptMonth = parseInt(parts[0], 10) - 1; // 0-indexed
+          var ptDay = parseInt(parts[1], 10);
+          var ptYear = currentYear;
+          if (parts.length >= 3) {
+            var yr = parseInt(parts[2], 10);
+            ptYear = yr < 100 ? 2000 + yr : yr;
+          }
+
+          // Check if paid thru date is in the current month
+          if (ptMonth === currentMonth && ptYear === currentYear) {
+            // If before the 15th, count fee twice
+            if (ptDay < 15) {
+              renewalForecast += fee * 2;
+            } else {
+              renewalForecast += fee;
+            }
+          }
+        }
+      }
+    }
+
     return res.status(200).json({
       gross_margin_pct: 0.8,
       monthly_expenses: expenses,
       cash_on_hand: cashOnHand,
+      renewal_forecast: renewalForecast,
     });
 
   } catch (err) {

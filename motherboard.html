@@ -1398,6 +1398,12 @@
                     <div class="kpi-sparkline" id="kpi-revenue-sparkline"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Renewal Forecasted</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-renewal-forecast">&mdash;</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Gross Margin</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-gross-margin">&mdash;</span>
@@ -2519,7 +2525,7 @@
         }
 
         async function fetchScorecardKPIs() {
-            var ids = ['kpi-gross-margin', 'kpi-net-income', 'kpi-cash-on-hand', 'kpi-runway'];
+            var ids = ['kpi-gross-margin', 'kpi-net-income', 'kpi-cash-on-hand', 'kpi-runway', 'kpi-renewal-forecast'];
             setLoading(ids);
             try {
                 var response = await fetch('/api/scorecard-kpis');
@@ -2527,6 +2533,7 @@
                 var data = await response.json();
                 currentData.scorecard = data;
                 setKPI('kpi-cash-on-hand', formatCurrency(data.cash_on_hand));
+                setKPI('kpi-renewal-forecast', formatCurrency(data.renewal_forecast));
                 updateScorecardKPIs();
                 return data;
             } catch (err) {
