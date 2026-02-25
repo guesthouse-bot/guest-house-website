@@ -1550,7 +1550,7 @@
 
     <script>
     // Google Apps Script Web App URL
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUpbB5O0OGr-OfWoMPBmuieubxu8kWjXaoEthVZASdCyijlF2AZ88otrm2BiqJXgw/exec";
+    // Submissions go to /api/vendor-signup-submit (Vercel serverless → Google Sheets)
 
     const ROLES = [
       { id:"stager", label:"Stager", icon:"\u{1F3E0}", desc:"Home staging & design services" },
@@ -1981,16 +1981,14 @@
 
         try {
             var payload = buildPayload();
-            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify(payload),
-                });
-            } else {
-                console.warn("Google Script URL not configured \u2014 logging payload:");
-                console.table(payload);
+            var submitRes = await fetch("/api/vendor-signup-submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!submitRes.ok) {
+                var errBody = await submitRes.json().catch(function() { return {}; });
+                throw new Error(errBody.error || "Submission failed");
             }
             // Also register as a provider in Firestore for bidding system
             try {
