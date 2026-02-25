@@ -2352,7 +2352,7 @@
         function updateScorecardKPIs() {
             var sc = currentData.scorecard;
             if (latestRevenue !== null && sc) {
-                var grossMargin = latestRevenue * sc.gross_margin_pct;
+                var grossMargin = (latestRevenue + sc.renewal_forecast) * sc.gross_margin_pct;
                 var netIncome = grossMargin - sc.monthly_expenses;
                 var runway = netIncome !== 0 ? sc.cash_on_hand / netIncome : null;
                 setKPI('kpi-gross-margin', formatCurrency(grossMargin));
