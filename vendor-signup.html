@@ -597,6 +597,15 @@
         .form-field textarea {
             resize: none;
         }
+        .form-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1125,6 +1134,39 @@
     </style>
 </head>
 <body>
+    <!-- Password gate -->
+    <div id="pwGate" style="position:fixed;inset:0;z-index:9999;background:var(--color-surface);display:flex;align-items:center;justify-content:center;">
+        <div style="text-align:center;max-width:360px;padding:24px;">
+            <div style="font-size:1.5rem;font-weight:600;margin-bottom:8px;">This page is protected</div>
+            <p style="color:var(--color-text-secondary);margin-bottom:24px;font-size:0.95rem;">Enter the password to continue.</p>
+            <input type="password" id="pwInput" placeholder="Password" style="width:100%;padding:12px 16px;border:1px solid var(--color-border);border-radius:10px;font-size:1rem;font-family:inherit;outline:none;" autofocus />
+            <button id="pwBtn" style="margin-top:12px;width:100%;padding:12px;background:var(--color-onyx);color:var(--color-white);border:none;border-radius:10px;font-size:1rem;font-family:inherit;font-weight:500;cursor:pointer;">Enter</button>
+            <div id="pwError" style="color:var(--color-error);font-size:0.85rem;margin-top:10px;display:none;">Incorrect password.</div>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var pw = "1Cavalunch1";
+        if (sessionStorage.getItem("vendor_pw_ok") === "1") {
+            document.getElementById("pwGate").style.display = "none";
+            return;
+        }
+        function tryPw() {
+            if (document.getElementById("pwInput").value === pw) {
+                sessionStorage.setItem("vendor_pw_ok", "1");
+                document.getElementById("pwGate").style.display = "none";
+            } else {
+                document.getElementById("pwError").style.display = "block";
+                document.getElementById("pwInput").value = "";
+                document.getElementById("pwInput").focus();
+            }
+        }
+        document.getElementById("pwBtn").onclick = tryPw;
+        document.getElementById("pwInput").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") tryPw();
+        });
+    })();
+    </script>
     <header>
         <nav>
             <a href="index.html" class="logo">
@@ -1718,6 +1760,13 @@
 
         html += ffHTML("Business / company name","business_name",{required:true});
         html += '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>';
+        html += ffHTML("Email address","email",{required:true, type:"email", placeholder:"you@company.com"});
+        html += '<div class="form-field"><label>Market <span class="req">*</span></label>' +
+            '<select data-key="market" class="form-select">' +
+            '<option value=""' + (!fv("market") ? ' selected' : '') + ' disabled>Select your market</option>' +
+            '<option value="colorado"' + (fv("market")==="colorado" ? ' selected' : '') + '>Colorado</option>' +
+            '<option value="california"' + (fv("market")==="california" ? ' selected' : '') + '>California</option>' +
+            '</select></div>';
 
         // File uploads
         html += '<div class="form-section-title">Documents</div>';
@@ -1807,7 +1856,7 @@
     function canAdvance() {
         switch (step) {
             case 0: return !!selectedRole;
-            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fileW9 && fileInsurance;
+            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fv("market") && fileW9 && fileInsurance;
             case 2:
                 var expected = (fv("first_name") + " " + fv("last_name")).trim().toLowerCase();
                 return agreementChecked && signatureName.trim().toLowerCase() === expected && expected.length > 0;
@@ -1845,6 +1894,9 @@
         // Inputs
         qsa("[data-key]", card()).forEach(function(el) {
             el.addEventListener("input", function() { fs(el.dataset.key, el.value); updateNext(); });
+            if (el.tagName === "SELECT") {
+                el.addEventListener("change", function() { fs(el.dataset.key, el.value); updateNext(); });
+            }
         });
         // File uploads
         var w9Input = qs("#w9Input", card());
@@ -1940,6 +1992,24 @@
                 console.warn("Google Script URL not configured \u2014 logging payload:");
                 console.table(payload);
             }
+            // Also register as a provider in Firestore for bidding system
+            try {
+                await fetch("/api/providers", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: fv("email"),
+                        name: (fv("first_name") + " " + fv("last_name")).trim(),
+                        businessName: fv("business_name"),
+                        role: selectedRole,
+                        market: fv("market"),
+                        status: "active",
+                        source: "vendor_signup",
+                    }),
+                });
+            } catch (providerErr) {
+                console.warn("Provider registration failed (non-blocking):", providerErr);
+            }
             submitting = false;
             render(true);
         } catch (err) {
@@ -1960,6 +2030,8 @@
             business_name: fv("business_name"),
             first_name: fv("first_name"),
             last_name: fv("last_name"),
+            email: fv("email"),
+            market: fv("market"),
 
             // Documents (base64-encoded)
             w9_filename: fileW9 ? fileW9.name : "",
