@@ -810,6 +810,60 @@
             line-height: 1.5;
         }
 
+        /* E-signature field */
+        .esign-section {
+            margin-top: 28px;
+            padding: 24px;
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            background: var(--color-surface-secondary);
+        }
+        .esign-section label {
+            display: block;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 8px;
+        }
+        .esign-section .esign-hint {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .esign-input {
+            width: 100%;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 1.125rem;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-style: italic;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: var(--color-white);
+            color: var(--color-text-primary);
+        }
+        .esign-input:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.08);
+        }
+        .esign-input.matched {
+            border-color: #4a9e6e;
+            box-shadow: 0 0 0 3px rgba(74,158,110,0.12);
+        }
+        .esign-match-status {
+            font-size: 0.8125rem;
+            margin-top: 8px;
+            min-height: 1.2em;
+        }
+        .esign-match-status.matched {
+            color: #4a9e6e;
+        }
+        .esign-match-status.unmatched {
+            color: var(--color-text-secondary);
+        }
+
         @media (max-width: 600px) {
             .application-section { padding: 8px 1.25rem 80px; }
             .form-roles { grid-template-columns: 1fr; }
@@ -1374,6 +1428,15 @@
       },
     };
 
+    const AGREEMENT_VERSION = "1.0";
+
+    // Fetch signer IP address on page load
+    let signerIP = "";
+    fetch("https://api.ipify.org?format=json")
+      .then(function(r) { return r.json(); })
+      .then(function(d) { signerIP = d.ip; })
+      .catch(function() { signerIP = "unavailable"; });
+
     const AGREEMENT_TEXT = [
       "Welcome to Guest House\u2019s network of trusted service partners.",
       "By accepting jobs through the Guest House platform, you agree to operate as an independent contractor and to uphold the standards of quality and professionalism that our clients expect.",
@@ -1389,6 +1452,7 @@
     let selectedRole = null;
     let formData = {};
     let agreementChecked = false;
+    let signatureName = "";
     let submitting = false;
     let submitError = null;
 
@@ -1471,6 +1535,18 @@
             '<span class="agreement-checkbox-label">Please acknowledge that you have reviewed and accept the Guest House service agreement</span>' +
             '</div>';
 
+        // E-signature: type full name to sign
+        var expectedName = (fv("first_name") + " " + fv("last_name")).trim();
+        var nameMatches = signatureName.trim().toLowerCase() === expectedName.toLowerCase() && signatureName.trim().length > 0;
+        html += '<div class="esign-section">' +
+            '<label>Electronic signature <span class="req">*</span></label>' +
+            '<div class="esign-hint">Type your full name exactly as entered above to sign this agreement: <strong>' + esc(expectedName) + '</strong></div>' +
+            '<input type="text" class="esign-input' + (nameMatches ? ' matched' : '') + '" id="esignInput" value="' + esc(signatureName) + '" placeholder="Type your full name here" autocomplete="off" />' +
+            '<div class="esign-match-status ' + (signatureName.trim().length === 0 ? '' : nameMatches ? 'matched' : 'unmatched') + '">' +
+                (signatureName.trim().length === 0 ? '' : nameMatches ? '\u2713 Signature matches' : 'Name must match: ' + esc(expectedName)) +
+            '</div>' +
+            '</div>';
+
         if (submitError) {
             html += '<div class="form-error-banner">' + submitError + '</div>';
         }
@@ -1493,7 +1569,9 @@
         switch (step) {
             case 0: return !!selectedRole;
             case 1: return fv("business_name") && fv("first_name") && fv("last_name");
-            case 2: return agreementChecked;
+            case 2:
+                var expected = (fv("first_name") + " " + fv("last_name")).trim().toLowerCase();
+                return agreementChecked && signatureName.trim().toLowerCase() === expected && expected.length > 0;
             default: return true;
         }
     }
@@ -1537,6 +1615,28 @@
                 chk.classList.toggle("checked", agreementChecked);
                 updateNext();
             };
+        }
+        // E-signature input
+        var esign = qs("#esignInput", card());
+        if (esign) {
+            esign.addEventListener("input", function() {
+                signatureName = esign.value;
+                var expected = (fv("first_name") + " " + fv("last_name")).trim();
+                var matches = signatureName.trim().toLowerCase() === expected.toLowerCase() && signatureName.trim().length > 0;
+                esign.classList.toggle("matched", matches);
+                var status = esign.nextElementSibling;
+                if (signatureName.trim().length === 0) {
+                    status.textContent = "";
+                    status.className = "esign-match-status";
+                } else if (matches) {
+                    status.textContent = "\u2713 Signature matches";
+                    status.className = "esign-match-status matched";
+                } else {
+                    status.textContent = "Name must match: " + expected;
+                    status.className = "esign-match-status unmatched";
+                }
+                updateNext();
+            });
         }
         // Nav
         qs("#formPrev", card()).onclick = function() { if (step > 0) { step--; render(); } };
@@ -1589,7 +1689,15 @@
             business_name: fv("business_name"),
             first_name: fv("first_name"),
             last_name: fv("last_name"),
+
+            // Legally defensible agreement record
             agreement_accepted: true,
+            agreement_version: AGREEMENT_VERSION,
+            agreement_full_text: AGREEMENT_TEXT.join("\n\n"),
+            esignature_name: signatureName.trim(),
+            signed_at: new Date().toISOString(),
+            signer_ip: signerIP,
+            user_agent: navigator.userAgent,
         };
 
         // Rate fields if applicable
