@@ -75,12 +75,10 @@ module.exports = async function handler(req, res) {
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
 
     // Step 3: Query deals — one filterGroup per stage (OR'd together)
-    // Each filterGroup ANDs: closedate in range + pipeline + dealstage
+    // Each filterGroup ANDs: pipeline + dealstage
     const filterGroups = targetStageIds.map(function(stageId) {
       return {
         filters: [
-          { propertyName: 'closedate', operator: 'GTE', value: String(monthStart) },
-          { propertyName: 'closedate', operator: 'LTE', value: String(monthEnd) },
           { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
           { propertyName: 'dealstage', operator: 'EQ', value: stageId },
         ]
