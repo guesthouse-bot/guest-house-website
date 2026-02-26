@@ -154,9 +154,11 @@
         .sidebar-logo a {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             text-decoration: none;
             color: var(--color-onyx);
+            width: 100%;
         }
 
         .sidebar-logo svg {
@@ -984,7 +986,7 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
                 <a href="motherboard.html">
-                    <img src="images/agency-logo.png" alt="The Agency" style="height:28px;width:auto;">
+                    <img src="images/agency-logo.png" alt="The Agency" style="height:40px;width:auto;">
                 </a>
             </div>
             <nav class="sidebar-nav">
@@ -995,7 +997,7 @@
                 <div class="sidebar-nav-label">Homes</div>
                 <button class="section-nav-btn" data-section="jobs">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                    New Home
+                    New Quote
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
@@ -1025,7 +1027,7 @@
         <div class="content-area">
             <div class="content-header">
                 <h1 id="contentTitle">Overview</h1>
-                <button class="btn btn-cta" id="newHomeBtn">+ New Home</button>
+                <button class="btn btn-cta" id="newHomeBtn">+ New Quote</button>
             </div>
             <div class="content-body">
 
@@ -1039,11 +1041,11 @@
                     </div>
                 </div>
 
-                <!-- Section 1: New Home -->
+                <!-- Section 1: New Quote -->
                 <div class="section" id="section-jobs">
                     <div class="form-card">
                         <div class="section-header">
-                            <h2>New Home Details</h2>
+                            <h2>New Quote Details</h2>
                         </div>
                         <div class="form-grid" id="jobForm">
                             <div class="field form-grid-full">
@@ -1248,7 +1250,7 @@
         // Section title mapping
         var sectionTitles = {
             'dashboard': 'Overview',
-            'jobs': 'New Home',
+            'jobs': 'New Quote',
             'active-jobs': 'All Homes',
             'providers': 'Stagers'
         };
