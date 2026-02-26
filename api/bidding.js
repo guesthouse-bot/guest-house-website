@@ -1,7 +1,6 @@
 var fb = require('./_firebase');
 
 // Consolidated bidding router — dispatches on ?action= parameter
-// Actions: jobs, job-details, submit-bid, award-job, check-deadlines
 module.exports = async function handler(req, res) {
   fb.setCors(res);
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -16,6 +15,10 @@ module.exports = async function handler(req, res) {
     case 'award-job': return handleAwardJob(req, res);
     case 'check-deadlines': return handleCheckDeadlines(req, res);
     case 'dashboard-stats': return handleDashboardStats(req, res);
+    case 'delete-job': return handleDeleteJob(req, res);
+    case 'hubspot-webhook': return handleHubspotWebhook(req, res);
+    case 'hubspot-poll': return handleHubspotPoll(req, res);
+    case 'hubspot-debug': return handleHubspotDebug(req, res);
     default: return res.status(400).json({ error: 'Unknown action: ' + action });
   }
 };
@@ -604,4 +607,328 @@ async function handleDashboardStats(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+}
+
+// === DELETE JOB ===
+async function handleDeleteJob(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var jobId = req.body && req.body.jobId;
+    if (!jobId) return res.status(400).json({ error: 'Missing jobId' });
+
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    // Delete all bids for this job
+    var bidDocs = await fb.runQuery('bids', [
+      { field: { fieldPath: 'jobId' }, op: 'EQUAL', value: { stringValue: jobId } },
+    ], accessToken);
+
+    var bidsDeleted = 0;
+    for (var i = 0; i < bidDocs.length; i++) {
+      var bidId = fb.docId(bidDocs[i].document.name);
+      await fetch(fb.BASE_URL + '/bids/' + bidId, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + accessToken },
+      });
+      bidsDeleted++;
+    }
+
+    // Delete the job
+    await fetch(fb.BASE_URL + '/jobs/' + jobId, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + accessToken },
+    });
+
+    return res.status(200).json({ success: true, jobId: jobId, bidsDeleted: bidsDeleted });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// =============================================================
+// HUBSPOT WEBHOOK — Auto-Create Bid for Arizona Properties
+// =============================================================
+
+var HUBSPOT_TOKEN = function() { return process.env.HUBSPOT_ACCESS_TOKEN; };
+var HS_HEADERS = function() {
+  return { 'Authorization': 'Bearer ' + HUBSPOT_TOKEN(), 'Content-Type': 'application/json' };
+};
+
+function isArizonaDeal(dealName) {
+  if (!dealName) return false;
+  return /\bAZ\b/i.test(dealName);
+}
+
+function extractDealId(body) {
+  if (!body) return null;
+  if (body.objectId) return String(body.objectId);
+  if (body.object && body.object.objectId) return String(body.object.objectId);
+  if (Array.isArray(body) && body.length > 0) {
+    var first = body[0];
+    if (first.objectId) return String(first.objectId);
+  }
+  if (body.id) return String(body.id);
+  return null;
+}
+
+async function fetchWithRetry(url, options, retries) {
+  retries = retries || 3;
+  var lastResp;
+  for (var attempt = 0; attempt <= retries; attempt++) {
+    lastResp = await fetch(url, options);
+    if (lastResp.ok) return lastResp;
+    if ((lastResp.status === 429 || lastResp.status >= 500) && attempt < retries) {
+      await new Promise(function(r) { setTimeout(r, Math.pow(2, attempt) * 1000); });
+      continue;
+    }
+    return lastResp;
+  }
+  return lastResp;
+}
+
+// POST /api/bidding?action=hubspot-webhook
+async function handleHubspotWebhook(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  console.log('HubSpot webhook received:', JSON.stringify(req.body));
+
+  var secret = process.env.HUBSPOT_WEBHOOK_SECRET;
+  if (secret) {
+    var provided = req.headers['x-hubspot-webhook-secret'] || req.query.secret;
+    if (provided !== secret) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+  }
+
+  var dealId = extractDealId(req.body);
+  if (!dealId) {
+    return res.status(400).json({ error: 'Could not extract deal ID', received: req.body });
+  }
+
+  try {
+    var result = await processHubspotDeal(dealId);
+    console.log('Result:', JSON.stringify(result));
+    return res.status(result.created ? 201 : 200).json(result);
+  } catch (err) {
+    console.error('Webhook error:', err.message);
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// GET /api/bidding?action=hubspot-poll&secret=CRON_SECRET
+async function handleHubspotPoll(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  var cronSecret = process.env.CRON_SECRET;
+  if (cronSecret && req.query.secret !== cronSecret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    var stageIds = await resolveCommitStageIds();
+    if (stageIds.length === 0) {
+      return res.status(200).json({ processed: 0, message: 'No commit stages found' });
+    }
+
+    var allDeals = [];
+    for (var s = 0; s < stageIds.length; s++) {
+      var stageDeals = await searchDealsByStage(stageIds[s]);
+      allDeals = allDeals.concat(stageDeals);
+    }
+
+    var results = [];
+    for (var i = 0; i < allDeals.length; i++) {
+      try {
+        var result = await processHubspotDeal(allDeals[i].id);
+        results.push({ dealId: allDeals[i].id, result: result });
+      } catch (err) {
+        results.push({ dealId: allDeals[i].id, error: err.message });
+      }
+    }
+
+    return res.status(200).json({ processed: results.length, results: results });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// GET /api/bidding?action=hubspot-debug&secret=CRON_SECRET
+async function handleHubspotDebug(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  var cronSecret = process.env.CRON_SECRET;
+  if (cronSecret && req.query.secret !== cronSecret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    var stagesResp = await fetchWithRetry(
+      'https://api.hubapi.com/crm/v3/pipelines/deals/default/stages',
+      { method: 'GET', headers: HS_HEADERS() }
+    );
+    var stagesData = stagesResp.ok ? await stagesResp.json() : {};
+    var stages = (stagesData.results || []).map(function(s) { return { id: s.id, label: s.label }; });
+
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+    var jobDocs = await fb.runQuery('jobs', [
+      { field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: 'bidding' } },
+    ], accessToken);
+    var jobs = jobDocs.map(function(item) {
+      var data = fb.fromFirestoreFields(item.document.fields);
+      data.id = fb.docId(item.document.name);
+      return data;
+    });
+
+    return res.status(200).json({ pipeline_stages: stages, active_jobs: jobs });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+async function processHubspotDeal(dealId) {
+  var dealResp = await fetchWithRetry(
+    'https://api.hubapi.com/crm/v3/objects/deals/' + dealId + '?properties=dealname,dealstage,amount',
+    { method: 'GET', headers: HS_HEADERS() }
+  );
+  if (!dealResp.ok) {
+    var errData = await dealResp.json();
+    throw new Error('HubSpot API error: ' + (errData.message || dealResp.status));
+  }
+  var deal = await dealResp.json();
+  var props = deal.properties || {};
+
+  console.log('Deal:', dealId, '| name:', props.dealname, '| stage:', props.dealstage);
+
+  if (!isArizonaDeal(props.dealname)) {
+    return { skipped: true, reason: 'not_arizona', dealName: props.dealname };
+  }
+
+  var serviceAccount = fb.getServiceAccount();
+  var accessToken = await fb.getAccessToken(serviceAccount);
+
+  var existing = await fb.runQuery('jobs', [
+    { field: { fieldPath: 'hubspotDealId' }, op: 'EQUAL', value: { stringValue: dealId } },
+  ], accessToken);
+
+  if (existing.length > 0) {
+    return { skipped: true, reason: 'duplicate', jobId: fb.docId(existing[0].document.name) };
+  }
+
+  var now = new Date();
+  var deadline = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+  var jobDoc = await fb.createDocument('jobs', {
+    address: props.dealname || '',
+    sqft: '',
+    rooms: '',
+    timeline: '',
+    market: 'arizona',
+    providerType: 'stager',
+    notes: 'Auto-created from HubSpot deal ' + dealId,
+    status: 'bidding',
+    created: now.toISOString(),
+    biddingDeadline: deadline.toISOString(),
+    awardedBidId: null,
+    awardedProvider: null,
+    awardedAt: null,
+    hubspotDealId: dealId,
+    hubspotAmount: props.amount || '',
+  }, accessToken);
+
+  var jobId = fb.docId(jobDoc.name);
+  console.log('Job created:', jobId);
+
+  var providerDocs = await fb.runQuery('providers', [
+    { field: { fieldPath: 'market' }, op: 'EQUAL', value: { stringValue: 'arizona' } },
+    { field: { fieldPath: 'role' }, op: 'EQUAL', value: { stringValue: 'stager' } },
+    { field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: 'active' } },
+  ], accessToken);
+
+  var bidsCreated = 0;
+  var emailsSent = 0;
+
+  for (var i = 0; i < providerDocs.length; i++) {
+    var provider = fb.fromFirestoreFields(providerDocs[i].document.fields);
+    var token = fb.generateToken();
+
+    await fb.createDocument('bids', {
+      jobId: jobId,
+      providerEmail: provider.email,
+      providerName: provider.name,
+      amount: null,
+      token: token,
+      status: 'pending',
+      submittedAt: null,
+      created: now.toISOString(),
+    }, accessToken);
+    bidsCreated++;
+
+    var bidUrl = 'https://guesthouseprep.com/provider-bid?token=' + token;
+    var deadlineStr = deadline.toLocaleDateString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit',
+    });
+    var redacted = fb.redactAddress(props.dealname || '');
+
+    await fb.sendEmail(
+      provider.email,
+      'New Job Available \u2014 ' + redacted,
+      '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+        '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+        '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
+        '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
+        '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
+          '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
+          '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + deadlineStr + '</span></div>' +
+        '</div>' +
+        '<a href="' + bidUrl + '" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">Submit Your Bid</a>' +
+        '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>' +
+      '</div>'
+    );
+    emailsSent++;
+  }
+
+  return { created: true, jobId: jobId, dealId: dealId, dealName: props.dealname, market: 'arizona', bidsCreated: bidsCreated, emailsSent: emailsSent };
+}
+
+async function resolveCommitStageIds() {
+  var resp = await fetchWithRetry(
+    'https://api.hubapi.com/crm/v3/pipelines/deals/default/stages',
+    { method: 'GET', headers: HS_HEADERS() }
+  );
+  if (!resp.ok) return [];
+  var data = await resp.json();
+  var ids = [];
+  (data.results || data).forEach(function(s) {
+    var label = (s.label || '').toLowerCase();
+    if (label.indexOf('commit') !== -1 || label.indexOf('seller approved') !== -1) ids.push(s.id);
+  });
+  return ids;
+}
+
+async function searchDealsByStage(stageId) {
+  var allDeals = [];
+  var after = 0;
+  var hasMore = true;
+  while (hasMore) {
+    var resp = await fetchWithRetry('https://api.hubapi.com/crm/v3/objects/deals/search', {
+      method: 'POST', headers: HS_HEADERS(),
+      body: JSON.stringify({
+        filterGroups: [{ filters: [
+          { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+          { propertyName: 'dealstage', operator: 'EQ', value: stageId },
+        ]}],
+        properties: ['dealname', 'dealstage', 'amount'],
+        limit: 100, after: after,
+      }),
+    });
+    if (!resp.ok) break;
+    var data = await resp.json();
+    allDeals = allDeals.concat(data.results || []);
+    after = (data.paging && data.paging.next) ? data.paging.next.after : null;
+    if (!after) hasMore = false;
+  }
+  return allDeals;
 }

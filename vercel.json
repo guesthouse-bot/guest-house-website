@@ -1,3 +1,13 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "crons": [
+    {
+      "path": "/api/bidding?action=check-deadlines&secret=${CRON_SECRET}",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/bidding?action=hubspot-poll&secret=${CRON_SECRET}",
+      "schedule": "0 12 * * *"
+    }
+  ]
 }
