@@ -1409,10 +1409,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                     Overview
                 </button>
-                <div class="sidebar-nav-label">Bids</div>
+                <div class="sidebar-nav-label">Quotes</div>
                 <button class="section-nav-btn" data-section="jobs">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                    New Bid
+                    New Quote
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
@@ -1424,7 +1424,7 @@
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    All Bids
+                    All Quotes
                 </button>
                 <div class="sidebar-nav-label" style="margin-top:8px;">Jobs</div>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
@@ -1455,7 +1455,7 @@
         <div class="content-area">
             <div class="content-header">
                 <h1 id="contentTitle">Overview</h1>
-                <button class="btn btn-cta" id="newHomeBtn">+ New Bid</button>
+                <button class="btn btn-cta" id="newHomeBtn">+ New Quote</button>
             </div>
             <div class="content-body">
 
@@ -1788,8 +1788,8 @@
         // Section title mapping
         var sectionTitles = {
             'dashboard': 'Overview',
-            'jobs': 'New Bid',
-            'active-jobs': 'All Bids',
+            'jobs': 'New Quote',
+            'active-jobs': 'All Quotes',
             'providers': 'Stagers'
         };
 
@@ -2192,17 +2192,6 @@
                         attentionItems.push({ severity: 2, icon: iconWarn, cls: 'alert-warning', address: job.address, msg: 'Expires in ' + Math.round(hoursLeft) + ' hours', jobId: job.id });
                     }
                 });
-                noBidsJobs.forEach(function(job) {
-                    attentionItems.push({ severity: 0, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'No bids received', jobId: job.id });
-                });
-                awardedJobs.forEach(function(job) {
-                    if (job.awardedAt) {
-                        var hoursSinceAward = (now - new Date(job.awardedAt)) / 3600000;
-                        if (hoursSinceAward < 48) {
-                            attentionItems.push({ severity: 3, icon: iconInfo, cls: 'alert-info', address: job.address, msg: 'Awarded ' + Math.round(hoursSinceAward) + 'h ago', jobId: job.id });
-                        }
-                    }
-                });
                 attentionItems.sort(function(a, b) { return a.severity - b.severity; });
 
                 // --- Build HTML ---
@@ -2244,7 +2233,7 @@
                 html += '<div class="ov-split-left">';
                 html += '<div class="ov-section-header"><span class="ov-section-title">Collecting Bids</span><span class="dash-lane-count">' + biddingJobs.length + '</span></div>';
                 if (biddingJobs.length === 0) {
-                    html += '<div class="ov-empty-state">No active bids. <span class="ov-empty-link" data-action="new-bid">Create a new bid to get started.</span></div>';
+                    html += '<div class="ov-empty-state">No active bids. <span class="ov-empty-link" data-action="new-bid">Create a new quote to get started.</span></div>';
                 } else {
                     html += '<div class="ov-bid-list">';
                     biddingJobs.forEach(function(job) {
@@ -2344,7 +2333,7 @@
                     });
                 });
 
-                // Bind "View All" button → All Bids section
+                // Bind "View All" button → All Quotes section
                 container.querySelectorAll('.ov-view-all-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
                         var allBidsBtn = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
