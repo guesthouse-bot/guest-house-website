@@ -48,7 +48,7 @@ module.exports = async function handler(req, res) {
       }
 
       var now = new Date().toISOString();
-      var doc = await fb.createDocument('providers', {
+      var docData = {
         email: body.email.toLowerCase(),
         name: body.name,
         businessName: body.businessName || '',
@@ -57,7 +57,15 @@ module.exports = async function handler(req, res) {
         status: body.status || 'active',
         created: now,
         source: body.source || 'manual',
-      }, accessToken);
+      };
+      if (body.firstName) docData.firstName = body.firstName;
+      if (body.lastName) docData.lastName = body.lastName;
+      if (body.phone) docData.phone = body.phone;
+      if (body.city) docData.city = body.city;
+      if (body.state) docData.state = body.state;
+      if (body.website) docData.website = body.website;
+      if (body.applicationData) docData.applicationData = JSON.stringify(body.applicationData);
+      var doc = await fb.createDocument('providers', docData, accessToken);
 
       var provider = fb.fromFirestoreFields(doc.fields);
       provider.id = fb.docId(doc.name);
@@ -68,7 +76,11 @@ module.exports = async function handler(req, res) {
       if (!body.id) return res.status(400).json({ error: 'Missing provider id' });
 
       var updates = {};
-      if (body.status) updates.status = body.status;
+      if (body.status === 'approved') {
+        updates.status = 'active';
+      } else if (body.status) {
+        updates.status = body.status;
+      }
       if (body.name) updates.name = body.name;
       if (body.businessName !== undefined) updates.businessName = body.businessName;
       if (body.market) updates.market = body.market;
@@ -81,6 +93,36 @@ module.exports = async function handler(req, res) {
       var updated = await fb.updateDocument('providers/' + body.id, updates, accessToken);
       var result = fb.fromFirestoreFields(updated.fields);
       result.id = fb.docId(updated.name);
+
+      // Send welcome email on approval
+      if (body.status === 'approved' && result.email) {
+        try {
+          await fb.sendEmail(
+            result.email,
+            "You're Approved — Welcome to Guest House",
+            '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+              '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+              '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Welcome to the Guest House network!</h2>' +
+              '<p style="color:#444;font-size:15px;line-height:1.6;margin-bottom:24px;">' +
+                'Hi ' + (result.firstName || result.name || 'there') + ', great news — your application has been approved. ' +
+                'You\'re now part of the Guest House partner network.' +
+              '</p>' +
+              '<p style="color:#444;font-size:15px;line-height:1.6;margin-bottom:24px;">' +
+                'Here\'s what happens next:' +
+              '</p>' +
+              '<ul style="color:#444;font-size:15px;line-height:1.8;margin-bottom:24px;padding-left:20px;">' +
+                '<li>You\'ll receive job notifications for your market</li>' +
+                '<li>Submit bids on available jobs</li>' +
+                '<li>A member of our team will reach out with onboarding details</li>' +
+              '</ul>' +
+              '<p style="color:#666;font-size:14px;">If you have any questions, reply to this email and we\'ll be happy to help.</p>' +
+            '</div>'
+          );
+        } catch (emailErr) {
+          console.error('Failed to send approval email:', emailErr.message);
+        }
+      }
+
       return res.status(200).json({ provider: result });
 
     } else {

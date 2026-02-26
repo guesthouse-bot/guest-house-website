@@ -619,6 +619,84 @@
 
         .toggle-btn:hover { background: var(--color-surface-secondary); }
 
+        /* Applicant cards */
+        .applicant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+        .applicant-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px 22px;
+            transition: box-shadow 0.15s;
+        }
+        .applicant-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .applicant-card-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 2px;
+        }
+        .applicant-card-business {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 10px;
+        }
+        .applicant-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .applicant-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--color-surface-secondary);
+            color: var(--color-charcoal);
+        }
+        .applicant-card-email {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 14px;
+        }
+        .applicant-card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-approve {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #067647;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .btn-approve:hover { opacity: 0.85; }
+        .btn-approve:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-reject {
+            padding: 7px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-white);
+            color: var(--color-text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-reject:hover { background: var(--color-surface-secondary); color: var(--color-error); border-color: var(--color-error); }
+        .btn-reject:disabled { opacity: 0.4; cursor: not-allowed; }
+
         /* Filter row */
         .filter-row {
             display: flex;
@@ -1435,6 +1513,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     Stagers
                 </button>
+                <button class="section-nav-btn" data-section="applicants">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                    Applicants
+                </button>
             </nav>
         </aside>
 
@@ -1690,6 +1772,18 @@
                     </div>
                 </div>
 
+                <!-- Section 4: Applicants -->
+                <div class="section" id="section-applicants">
+                    <div class="section-header">
+                        <h2>Applicants</h2>
+                    </div>
+                    <div id="applicantsContent">
+                        <div class="empty-state">
+                            <p>Loading applicants...</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -1778,7 +1872,8 @@
             'dashboard': 'Overview',
             'jobs': 'New Quote',
             'active-jobs': 'All Quotes',
-            'providers': 'Stagers'
+            'providers': 'Stagers',
+            'applicants': 'Applicants'
         };
 
         // App state
@@ -1863,6 +1958,7 @@
             if (section === 'dashboard') loadDashboard();
             if (section === 'active-jobs') loadJobs();
             if (section === 'providers') loadProviders();
+            if (section === 'applicants') loadApplicants();
 
             // Push browser history
             if (pushState !== false) {
@@ -2159,6 +2255,16 @@
             dashCountdowns = {};
 
             try {
+                // Fetch pending applicants for Network section
+                var pendingApplicants = [];
+                try {
+                    var appResp = await fetch('/api/providers?status=pending');
+                    if (appResp.ok) {
+                        var appData = await appResp.json();
+                        pendingApplicants = appData.providers || [];
+                    }
+                } catch (e) {}
+
                 // Fetch jobs
                 var allJobs = [];
                 try {
@@ -2317,7 +2423,36 @@
                 html += '</div>';
                 html += '</div>'; // close ov-split
 
-                // 4. Recent Jobs (completed + no_bids)
+                // 4. Network — Pending Applicants
+                html += '<div class="ov-network" style="margin-top:24px;">';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Network';
+                if (pendingApplicants.length > 0) {
+                    html += '<span class="ov-attention-count">' + pendingApplicants.length + '</span>';
+                }
+                html += '</span>';
+                if (pendingApplicants.length > 0) {
+                    html += '<button class="ov-view-all-btn" data-action="view-applicants">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>';
+                }
+                html += '</div>';
+                if (pendingApplicants.length === 0) {
+                    html += '<div class="ov-empty-state">No pending applicants.</div>';
+                } else {
+                    pendingApplicants.forEach(function(a) {
+                        html += '<div class="alert-banner" style="margin-bottom:8px;">';
+                        html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
+                        html += '<div class="alert-banner-text" style="flex:1;"><strong>' + esc(a.name) + '</strong>';
+                        if (a.businessName) html += ' &middot; ' + esc(a.businessName);
+                        html += ' &middot; ' + capitalize(a.role);
+                        if (a.city || a.state) html += ' &middot; ' + esc((a.city || '') + (a.city && a.state ? ', ' : '') + (a.state || ''));
+                        html += '</div>';
+                        html += '<button class="btn-approve btn-sm" data-applicant-id="' + esc(a.id) + '" style="padding:5px 12px;font-size:12px;">Approve</button>';
+                        html += '<button class="btn-reject btn-sm" data-applicant-id="' + esc(a.id) + '" style="padding:5px 12px;font-size:12px;">Reject</button>';
+                        html += '</div>';
+                    });
+                }
+                html += '</div>';
+
+                // 5. Recent Jobs (completed + no_bids)
                 var recentJobs = completedJobs.concat(noBidsJobs);
                 if (recentJobs.length > 0) {
                     html += '<div class="ov-jobs">';
@@ -2364,13 +2499,21 @@
                     });
                 });
 
-                // Bind "View All" button → All Quotes section
+                // Bind "View All" buttons
                 container.querySelectorAll('.ov-view-all-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        var allBidsBtn = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
-                        if (allBidsBtn) allBidsBtn.click();
+                        if (btn.dataset.action === 'view-applicants') {
+                            var appBtn = document.querySelector('.section-nav-btn[data-section="applicants"]');
+                            if (appBtn) appBtn.click();
+                        } else {
+                            var allBidsBtn = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
+                            if (allBidsBtn) allBidsBtn.click();
+                        }
                     });
                 });
+
+                // Bind dashboard applicant approve/reject buttons
+                bindApplicantButtons(container);
 
                 // Bind expand/collapse on bid cards
                 container.querySelectorAll('[data-dash-toggle]').forEach(function(el) {
@@ -2984,6 +3127,90 @@
 
                 btn.disabled = false;
                 btn.textContent = 'Add Provider';
+            });
+        }
+
+        // Applicants
+        async function loadApplicants() {
+            var container = document.getElementById('applicantsContent');
+            if (!container) return;
+
+            try {
+                var response = await fetch('/api/providers?status=pending');
+                var data = await response.json();
+                var applicants = data.providers || [];
+
+                if (applicants.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>No pending applicants.</p></div>';
+                    return;
+                }
+
+                var html = '<div class="applicant-grid">';
+                applicants.forEach(function(a) {
+                    html += '<div class="applicant-card">';
+                    html += '<div class="applicant-card-name">' + esc(a.name) + '</div>';
+                    if (a.businessName) html += '<div class="applicant-card-business">' + esc(a.businessName) + '</div>';
+                    html += '<div class="applicant-card-meta">';
+                    html += '<span class="applicant-tag">' + capitalize(a.role) + '</span>';
+                    if (a.city || a.state) html += '<span class="applicant-tag">' + esc((a.city || '') + (a.city && a.state ? ', ' : '') + (a.state || '')) + '</span>';
+                    if (a.created) html += '<span class="applicant-tag">' + formatDate(a.created) + '</span>';
+                    html += '</div>';
+                    html += '<div class="applicant-card-email">' + esc(a.email) + '</div>';
+                    html += '<div class="applicant-card-actions">';
+                    html += '<button class="btn-approve" data-applicant-id="' + esc(a.id) + '">Approve</button>';
+                    html += '<button class="btn-reject" data-applicant-id="' + esc(a.id) + '">Reject</button>';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+                container.innerHTML = html;
+
+                bindApplicantButtons(container);
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><p>Error loading applicants: ' + esc(err.message) + '</p></div>';
+            }
+        }
+
+        function bindApplicantButtons(container) {
+            container.querySelectorAll('.btn-approve').forEach(function(btn) {
+                btn.addEventListener('click', async function() {
+                    btn.disabled = true;
+                    btn.textContent = 'Approving...';
+                    try {
+                        var resp = await fetch('/api/providers', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: btn.dataset.applicantId, status: 'approved' }),
+                        });
+                        if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                        loadApplicants();
+                        loadDashboard();
+                    } catch (err) {
+                        alert('Error approving: ' + err.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Approve';
+                    }
+                });
+            });
+            container.querySelectorAll('.btn-reject').forEach(function(btn) {
+                btn.addEventListener('click', async function() {
+                    btn.disabled = true;
+                    btn.textContent = 'Rejecting...';
+                    try {
+                        var resp = await fetch('/api/providers', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: btn.dataset.applicantId, status: 'rejected' }),
+                        });
+                        if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                        loadApplicants();
+                        loadDashboard();
+                    } catch (err) {
+                        alert('Error rejecting: ' + err.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Reject';
+                    }
+                });
             });
         }
 
