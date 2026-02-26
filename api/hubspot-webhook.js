@@ -26,16 +26,10 @@ var HUBSPOT_HEADERS = function() {
   };
 };
 
-// AZ zip regex — matches 85000–86599
-var AZ_ZIP_REGEX = /\b(8[56]\d{3})\b/;
-
-function parseArizonaZip(dealName) {
-  if (!dealName) return null;
-  var match = dealName.match(AZ_ZIP_REGEX);
-  if (!match) return null;
-  var zip = parseInt(match[1], 10);
-  if (zip >= 85000 && zip <= 86599) return match[1];
-  return null;
+// Detect Arizona deals by state abbreviation in deal name
+function isArizonaDeal(dealName) {
+  if (!dealName) return false;
+  return /\bAZ\b/i.test(dealName);
 }
 
 // Retry helper for HubSpot rate limiting and transient errors
@@ -134,9 +128,8 @@ async function processDeal(dealId, req) {
   var deal = await dealResp.json();
   var props = deal.properties || {};
 
-  // 2. Parse AZ zip from deal name
-  var zip = parseArizonaZip(props.dealname);
-  if (!zip) {
+  // 2. Check if deal is in Arizona
+  if (!isArizonaDeal(props.dealname)) {
     return { skipped: true, reason: 'not_arizona', dealName: props.dealname };
   }
 
@@ -240,7 +233,7 @@ async function processDeal(dealId, req) {
     created: true,
     jobId: jobId,
     dealId: dealId,
-    zip: zip,
+    market: 'arizona',
     bidsCreated: bidsCreated,
     emailsSent: emailsSent,
   };
