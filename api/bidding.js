@@ -663,13 +663,22 @@ function isArizonaDeal(dealName) {
 
 function extractDealId(body) {
   if (!body) return null;
+  // Custom body with objectId key
   if (body.objectId) return String(body.objectId);
+  // Nested object format
   if (body.object && body.object.objectId) return String(body.object.objectId);
+  // Array of subscription events
   if (Array.isArray(body) && body.length > 0) {
     var first = body[0];
     if (first.objectId) return String(first.objectId);
   }
+  // "Include all triggered deal properties" sends hs_object_id at top level or in properties
+  if (body.hs_object_id) return String(body.hs_object_id);
+  if (body.properties && body.properties.hs_object_id) return String(body.properties.hs_object_id);
+  // HubSpot v3 object format
   if (body.id) return String(body.id);
+  // Last resort: look for vid or canonical-vid
+  if (body.vid) return String(body.vid);
   return null;
 }
 
@@ -692,7 +701,7 @@ async function fetchWithRetry(url, options, retries) {
 async function handleHubspotWebhook(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  console.log('HubSpot webhook received:', JSON.stringify(req.body));
+  console.log('HubSpot webhook received. Body:', JSON.stringify(req.body), 'Body keys:', Object.keys(req.body || {}));
 
   var secret = process.env.HUBSPOT_WEBHOOK_SECRET;
   if (secret) {
