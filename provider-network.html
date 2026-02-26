@@ -994,7 +994,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                     Overview
                 </button>
-                <div class="sidebar-nav-label">Homes</div>
+                <div class="sidebar-nav-label">Quotes</div>
                 <button class="section-nav-btn" data-section="jobs">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                     New Quote
@@ -1007,13 +1007,14 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     Awarded Quotes
                 </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    All Quotes
+                </button>
+                <div class="sidebar-nav-label" style="margin-top:8px;">Homes</div>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="completed">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     Completed Homes
-                </button>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    All Homes
                 </button>
                 <div class="sidebar-nav-label" style="margin-top:8px;">Network</div>
                 <button class="section-nav-btn" data-section="providers">
@@ -1251,7 +1252,7 @@
         var sectionTitles = {
             'dashboard': 'Overview',
             'jobs': 'New Quote',
-            'active-jobs': 'All Homes',
+            'active-jobs': 'All Quotes',
             'providers': 'Stagers'
         };
 
