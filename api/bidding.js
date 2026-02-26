@@ -16,6 +16,7 @@ module.exports = async function handler(req, res) {
     case 'check-deadlines': return handleCheckDeadlines(req, res);
     case 'dashboard-stats': return handleDashboardStats(req, res);
     case 'delete-job': return handleDeleteJob(req, res);
+    case 'delete-bid': return handleDeleteBid(req, res);
     case 'hubspot-webhook': return handleHubspotWebhook(req, res);
     case 'hubspot-poll': return handleHubspotPoll(req, res);
     case 'hubspot-debug': return handleHubspotDebug(req, res);
@@ -642,6 +643,27 @@ async function handleDeleteJob(req, res) {
     });
 
     return res.status(200).json({ success: true, jobId: jobId, bidsDeleted: bidsDeleted });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+async function handleDeleteBid(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var bidId = req.body && req.body.bidId;
+    if (!bidId) return res.status(400).json({ error: 'Missing bidId' });
+
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    await fetch(fb.BASE_URL + '/bids/' + bidId, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + accessToken },
+    });
+
+    return res.status(200).json({ success: true, bidId: bidId });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

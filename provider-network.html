@@ -2271,7 +2271,7 @@
 
                 // Right — Awarded
                 html += '<div class="ov-split-right">';
-                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded Bids</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
                 if (awardedJobs.length === 0) {
                     html += '<div class="ov-empty-state">No awarded jobs yet.</div>';
                 } else {
@@ -2412,7 +2412,7 @@
                     return;
                 }
 
-                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th>' + (job.status === 'bidding' ? '<th>Action</th>' : '') + '</tr></thead><tbody>';
+                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody>';
 
                 bids.forEach(function(bid) {
                     var rowClass = bid.status === 'won' ? ' class="bid-won"' : '';
@@ -2426,11 +2426,12 @@
                         html += '<td class="bid-pending">-</td>';
                     }
                     html += '<td><span class="status-badge status-' + esc(bid.status === 'won' ? 'awarded' : bid.status === 'lost' ? 'cancelled' : 'bidding') + '">' + esc(bid.status) + '</span></td>';
+                    html += '<td>';
                     if (job.status === 'bidding' && bid.submittedAt) {
-                        html += '<td><button class="btn btn-success btn-sm dash-award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button></td>';
-                    } else if (job.status === 'bidding') {
-                        html += '<td></td>';
+                        html += '<button class="btn btn-success btn-sm dash-award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button> ';
                     }
+                    html += '<button class="btn btn-sm dash-delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:#dc3545;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">Delete</button>';
+                    html += '</td>';
                     html += '</tr>';
                 });
 
@@ -2448,6 +2449,13 @@
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         dashAwardJob(btn.dataset.jobId, btn.dataset.bidId, btn);
+                    });
+                });
+
+                panel.querySelectorAll('.dash-delete-bid-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteBid(btn.dataset.bidId, btn.dataset.jobId, btn, function() { loadDashBids(btn.dataset.jobId); });
                     });
                 });
 
@@ -2489,6 +2497,26 @@
                 alert('Error: ' + err.message);
                 btn.disabled = false;
                 btn.textContent = bidId ? 'Award' : 'Auto-Award Lowest Bid';
+            }
+        }
+
+        async function deleteBid(bidId, jobId, btn, reloadFn) {
+            if (!confirm('Permanently delete this bid?')) return;
+            btn.disabled = true;
+            btn.textContent = 'Deleting...';
+            try {
+                var response = await fetch('/api/bidding?action=delete-bid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bidId: bidId }),
+                });
+                var data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+                if (reloadFn) reloadFn();
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = 'Delete';
             }
         }
 
@@ -2603,7 +2631,7 @@
                     return;
                 }
 
-                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th>' + (job.status === 'bidding' ? '<th>Action</th>' : '') + '</tr></thead><tbody>';
+                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody>';
 
                 bids.forEach(function(bid) {
                     var rowClass = bid.status === 'won' ? ' class="bid-won"' : '';
@@ -2617,11 +2645,12 @@
                         html += '<td class="bid-pending">-</td>';
                     }
                     html += '<td><span class="status-badge status-' + esc(bid.status === 'won' ? 'awarded' : bid.status === 'lost' ? 'cancelled' : 'bidding') + '">' + esc(bid.status) + '</span></td>';
+                    html += '<td>';
                     if (job.status === 'bidding' && bid.submittedAt) {
-                        html += '<td><button class="btn btn-success btn-sm award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button></td>';
-                    } else if (job.status === 'bidding') {
-                        html += '<td></td>';
+                        html += '<button class="btn btn-success btn-sm award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button> ';
                     }
+                    html += '<button class="btn btn-sm delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:#dc3545;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">Delete</button>';
+                    html += '</td>';
                     html += '</tr>';
                 });
 
@@ -2640,6 +2669,13 @@
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         awardJob(btn.dataset.jobId, btn.dataset.bidId, btn);
+                    });
+                });
+
+                panel.querySelectorAll('.delete-bid-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteBid(btn.dataset.bidId, btn.dataset.jobId, btn, function() { loadBids(btn.dataset.jobId); });
                     });
                 });
 
