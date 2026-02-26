@@ -1663,7 +1663,7 @@
                         </select>
                         <select id="filterProviderStatus">
                             <option value="">All statuses</option>
-                            <option value="active">Active</option>
+                            <option value="active" selected>Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
@@ -1809,11 +1809,15 @@
             }
         });
 
+        var _initialized = false;
         function init() {
-            setupNav();
-            setupQuoteWizard();
-            setupProviderModal();
-            setupFilters();
+            if (!_initialized) {
+                _initialized = true;
+                try { setupNav(); } catch(e) { console.error('setupNav error:', e); }
+                try { setupQuoteWizard(); } catch(e) { console.error('setupQuoteWizard error:', e); }
+                try { setupProviderModal(); } catch(e) { console.error('setupProviderModal error:', e); }
+                try { setupFilters(); } catch(e) { console.error('setupFilters error:', e); }
+            }
             loadDashboard();
             loadProviders();
 
@@ -2199,8 +2203,8 @@
                 html += '<div class="kpi-row">';
                 html += '<div class="kpi-card"><div class="kpi-label">Collecting Bids</div><div class="kpi-value">' + kpiBidding + '</div></div>';
                 html += '<div class="kpi-card"><div class="kpi-label">Awarded</div><div class="kpi-value">' + kpiAwarded + '</div></div>';
-                html += '<div class="kpi-card"><div class="kpi-label">Total Properties</div><div class="kpi-value">' + totalProperties + '</div></div>';
                 html += '<div class="kpi-card"><div class="kpi-label">Avg Time to Award</div><div class="kpi-value">' + (avgTimeToAward > 0 ? avgTimeToAward + 'h' : '—') + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Completed</div><div class="kpi-value">' + completedJobs.length + '</div></div>';
                 html += '</div>';
 
                 // 2. Ready for Review
@@ -2906,6 +2910,7 @@
                 if (!name || !email || !role || !market) {
                     msg.className = 'form-message error';
                     msg.textContent = 'Please fill in all required fields.';
+                    msg.style.display = 'block';
                     return;
                 }
 
@@ -2931,6 +2936,7 @@
                     if (data.existing) {
                         msg.className = 'form-message error';
                         msg.textContent = 'Provider with this email already exists.';
+                        msg.style.display = 'block';
                     } else {
                         modal.classList.remove('open');
                         loadProviders();
@@ -2938,6 +2944,7 @@
                 } catch (err) {
                     msg.className = 'form-message error';
                     msg.textContent = 'Error: ' + err.message;
+                    msg.style.display = 'block';
                 }
 
                 btn.disabled = false;

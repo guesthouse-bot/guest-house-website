@@ -1,5 +1,12 @@
 var fb = require('./_firebase');
 
+// Placeholder stagers used when no real providers match the market
+var PLACEHOLDER_STAGERS = [
+  { name: 'Desert Rose Staging', email: 'info@desertrosestaging.com' },
+  { name: 'Cactus & Co Interiors', email: 'bids@cactuscointeriors.com' },
+  { name: 'Southwest Home Styling', email: 'quotes@swhomestyling.com' },
+];
+
 // Consolidated bidding router — dispatches on ?action= parameter
 module.exports = async function handler(req, res) {
   fb.setCors(res);
@@ -82,11 +89,17 @@ async function handleJobs(req, res) {
       ];
       var providerDocs = await fb.runQuery('providers', providerFilters, accessToken);
 
+      // If no matching providers, use placeholder stagers
+      var providers = providerDocs.map(function(d) { return fb.fromFirestoreFields(d.document.fields); });
+      if (providers.length === 0) {
+        providers = PLACEHOLDER_STAGERS;
+      }
+
       var bidsCreated = 0;
       var emailsSent = 0;
 
-      for (var i = 0; i < providerDocs.length; i++) {
-        var provider = fb.fromFirestoreFields(providerDocs[i].document.fields);
+      for (var i = 0; i < providers.length; i++) {
+        var provider = providers[i];
         var token = fb.generateToken();
 
         await fb.createDocument('bids', {
@@ -110,25 +123,27 @@ async function handleJobs(req, res) {
         });
 
         var redacted = fb.redactAddress(body.address);
-        await fb.sendEmail(
-          provider.email,
-          'New Job Available — ' + redacted,
-          '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
-            '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
-            '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
-            '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
-            '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
-              '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
-              (body.sqft ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Size:</strong> <span style="color:#666;">' + body.sqft + ' sq ft</span></div>' : '') +
-              (body.rooms ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Rooms:</strong> <span style="color:#666;">' + body.rooms + '</span></div>' : '') +
-              (body.timeline ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Timeline:</strong> <span style="color:#666;">' + body.timeline + '</span></div>' : '') +
-              '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + deadlineStr + '</span></div>' +
-            '</div>' +
-            '<a href="' + bidUrl + '" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">Submit Your Bid</a>' +
-            '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>' +
-          '</div>'
-        );
-        emailsSent++;
+        try {
+          await fb.sendEmail(
+            provider.email,
+            'New Job Available — ' + redacted,
+            '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+              '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+              '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
+              '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
+              '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
+                '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
+                (body.sqft ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Size:</strong> <span style="color:#666;">' + body.sqft + ' sq ft</span></div>' : '') +
+                (body.rooms ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Rooms:</strong> <span style="color:#666;">' + body.rooms + '</span></div>' : '') +
+                (body.timeline ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Timeline:</strong> <span style="color:#666;">' + body.timeline + '</span></div>' : '') +
+                '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + deadlineStr + '</span></div>' +
+              '</div>' +
+              '<a href="' + bidUrl + '" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">Submit Your Bid</a>' +
+              '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>' +
+            '</div>'
+          );
+          emailsSent++;
+        } catch (emailErr) { console.log('Email skipped for', provider.email); }
       }
 
       var job = fb.fromFirestoreFields(jobDoc.fields);
@@ -878,11 +893,17 @@ async function processHubspotDeal(dealId) {
     { field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: 'active' } },
   ], accessToken);
 
+  // If no matching providers, use placeholder stagers
+  var providers = providerDocs.map(function(d) { return fb.fromFirestoreFields(d.document.fields); });
+  if (providers.length === 0) {
+    providers = PLACEHOLDER_STAGERS;
+  }
+
   var bidsCreated = 0;
   var emailsSent = 0;
 
-  for (var i = 0; i < providerDocs.length; i++) {
-    var provider = fb.fromFirestoreFields(providerDocs[i].document.fields);
+  for (var i = 0; i < providers.length; i++) {
+    var provider = providers[i];
     var token = fb.generateToken();
 
     await fb.createDocument('bids', {
@@ -903,22 +924,24 @@ async function processHubspotDeal(dealId) {
     });
     var redacted = fb.redactAddress(props.dealname || '');
 
-    await fb.sendEmail(
-      provider.email,
-      'New Job Available \u2014 ' + redacted,
-      '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
-        '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
-        '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
-        '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
-        '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
-          '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
-          '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + deadlineStr + '</span></div>' +
-        '</div>' +
-        '<a href="' + bidUrl + '" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">Submit Your Bid</a>' +
-        '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>' +
-      '</div>'
-    );
-    emailsSent++;
+    try {
+      await fb.sendEmail(
+        provider.email,
+        'New Job Available \u2014 ' + redacted,
+        '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+          '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+          '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
+          '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
+          '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
+            '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
+            '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + deadlineStr + '</span></div>' +
+          '</div>' +
+          '<a href="' + bidUrl + '" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">Submit Your Bid</a>' +
+          '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>' +
+        '</div>'
+      );
+      emailsSent++;
+    } catch (emailErr) { console.log('Email skipped for', provider.email); }
   }
 
   return { created: true, jobId: jobId, dealId: dealId, dealName: props.dealname, market: 'arizona', bidsCreated: bidsCreated, emailsSent: emailsSent };
