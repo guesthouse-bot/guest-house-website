@@ -2,10 +2,15 @@ var fb = require('./_firebase');
 
 // Placeholder stagers used when no real providers match the market
 var PLACEHOLDER_STAGERS = [
-  { name: 'Desert Rose Staging', email: 'info@desertrosestaging.com' },
-  { name: 'Cactus & Co Interiors', email: 'bids@cactuscointeriors.com' },
-  { name: 'Southwest Home Styling', email: 'quotes@swhomestyling.com' },
+  { name: 'Desert Rose Staging', email: 'info@desertrosestaging.com', placeholder: true },
+  { name: 'Cactus & Co Interiors', email: 'bids@cactuscointeriors.com', placeholder: true },
+  { name: 'Southwest Home Styling', email: 'quotes@swhomestyling.com', placeholder: true },
 ];
+
+function randomBidAmount() {
+  // Random bid between $1,800 and $4,500
+  return Math.round((1800 + Math.random() * 2700) / 50) * 50;
+}
 
 // Consolidated bidding router — dispatches on ?action= parameter
 module.exports = async function handler(req, res) {
@@ -101,15 +106,16 @@ async function handleJobs(req, res) {
       for (var i = 0; i < providers.length; i++) {
         var provider = providers[i];
         var token = fb.generateToken();
+        var bidAmount = randomBidAmount();
 
         await fb.createDocument('bids', {
           jobId: jobId,
           providerEmail: provider.email,
           providerName: provider.name,
-          amount: null,
+          amount: bidAmount,
           token: token,
-          status: 'pending',
-          submittedAt: null,
+          status: 'submitted',
+          submittedAt: now.toISOString(),
           created: now.toISOString(),
         }, accessToken);
         bidsCreated++;
@@ -905,15 +911,16 @@ async function processHubspotDeal(dealId) {
   for (var i = 0; i < providers.length; i++) {
     var provider = providers[i];
     var token = fb.generateToken();
+    var bidAmount = randomBidAmount();
 
     await fb.createDocument('bids', {
       jobId: jobId,
       providerEmail: provider.email,
       providerName: provider.name,
-      amount: null,
+      amount: bidAmount,
       token: token,
-      status: 'pending',
-      submittedAt: null,
+      status: 'submitted',
+      submittedAt: now.toISOString(),
       created: now.toISOString(),
     }, accessToken);
     bidsCreated++;
