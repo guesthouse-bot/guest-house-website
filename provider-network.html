@@ -1409,7 +1409,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                     Overview
                 </button>
-                <div class="sidebar-nav-label">Quotes</div>
+                <div class="sidebar-nav-label">Jobs</div>
                 <button class="section-nav-btn" data-section="jobs">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                     New Quote
@@ -1418,30 +1418,17 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
                     Collecting Bids
                 </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="ready">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Ready for Review
+                </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="awarded">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    Awarded Bids
-                </button>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    All Quotes
-                </button>
-                <div class="sidebar-nav-label" style="margin-top:8px;">Jobs</div>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    Pending Jobs
-                </button>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="awarded">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    Completed Jobs
+                    Awarded
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="completed">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    Closed Jobs
-                </button>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    All Jobs
+                    Completed
                 </button>
                 <div class="sidebar-nav-label" style="margin-top:8px;">Network</div>
                 <button class="section-nav-btn" data-section="providers">
@@ -1636,6 +1623,7 @@
                             <select id="filterJobStatus">
                                 <option value="">All statuses</option>
                                 <option value="bidding" selected>Bidding</option>
+                                <option value="ready">Ready for Review</option>
                                 <option value="awarded">Awarded</option>
                                 <option value="completed">Completed</option>
                                 <option value="no_bids">No Bids</option>
@@ -2116,6 +2104,12 @@
             try { return JSON.parse(localStorage.getItem('pn_quotes') || '[]'); } catch (e) { return []; }
         }
 
+        function removeLocalQuote(jobId) {
+            var quotes = getLocalQuotes();
+            var filtered = quotes.filter(function(q) { return q.id !== jobId; });
+            localStorage.setItem('pn_quotes', JSON.stringify(filtered));
+        }
+
         // Dashboard
         async function loadDashboard() {
             var container = document.getElementById('dashboardContent');
@@ -2174,25 +2168,22 @@
                 });
                 if (awardTimesCount > 0) avgTimeToAward = Math.round(avgTimeToAward / awardTimesCount / 3600000);
 
-                // --- Compute attention items ---
-                var attentionItems = [];
-                var iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
-                var iconWarn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-                var iconInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+                // --- Compute ready-for-approval items (jobs with submitted bids) ---
+                var readyItems = [];
+                var iconReady = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>';
 
-                biddingJobs.forEach(function(job) {
-                    if (!job.biddingDeadline) return;
-                    var deadline = new Date(job.biddingDeadline);
-                    var hoursLeft = (deadline - now) / 3600000;
-                    if (hoursLeft <= 0) {
-                        attentionItems.push({ severity: 0, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'Bid window has expired', jobId: job.id });
-                    } else if (hoursLeft < 2) {
-                        attentionItems.push({ severity: 1, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'Expires in less than 2 hours', jobId: job.id });
-                    } else if (hoursLeft < 24) {
-                        attentionItems.push({ severity: 2, icon: iconWarn, cls: 'alert-warning', address: job.address, msg: 'Expires in ' + Math.round(hoursLeft) + ' hours', jobId: job.id });
-                    }
-                });
-                attentionItems.sort(function(a, b) { return a.severity - b.severity; });
+                for (var ai = 0; ai < biddingJobs.length; ai++) {
+                    try {
+                        var arResp = await fetch('/api/bidding?action=job-details&jobId=' + biddingJobs[ai].id);
+                        if (arResp.ok) {
+                            var arData = await arResp.json();
+                            var submittedBids = (arData.bids || []).filter(function(b) { return b.submittedAt; });
+                            if (submittedBids.length > 0) {
+                                readyItems.push({ address: biddingJobs[ai].address, msg: submittedBids.length + ' bid' + (submittedBids.length > 1 ? 's' : '') + ' received', jobId: biddingJobs[ai].id });
+                            }
+                        }
+                    } catch (e) {}
+                }
 
                 // --- Build HTML ---
                 var html = '';
@@ -2212,15 +2203,15 @@
                 html += '<div class="kpi-card"><div class="kpi-label">Avg Time to Award</div><div class="kpi-value">' + (avgTimeToAward > 0 ? avgTimeToAward + 'h' : '—') + '</div></div>';
                 html += '</div>';
 
-                // 2. Needs Attention
-                if (attentionItems.length > 0) {
+                // 2. Ready for Review
+                if (readyItems.length > 0) {
                     html += '<div class="ov-attention">';
-                    html += '<div class="ov-section-header"><span class="ov-section-title">Needs Attention<span class="ov-attention-count">' + attentionItems.length + '</span></span></div>';
-                    attentionItems.forEach(function(item) {
-                        html += '<div class="alert-banner ' + item.cls + '">';
-                        html += item.icon;
+                    html += '<div class="ov-section-header"><span class="ov-section-title">Ready for Review<span class="ov-attention-count">' + readyItems.length + '</span></span></div>';
+                    readyItems.forEach(function(item) {
+                        html += '<div class="alert-banner alert-info">';
+                        html += iconReady;
                         html += '<div class="alert-banner-text"><strong>' + esc(item.address) + '</strong> — ' + esc(item.msg) + '</div>';
-                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(item.jobId) + '">View</button>';
+                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(item.jobId) + '">Review</button>';
                         html += '</div>';
                     });
                     html += '</div>';
@@ -2241,6 +2232,7 @@
                         html += '<div class="dash-card-top">';
                         html += '<div class="dash-card-address">' + esc(job.address) + '</div>';
                         html += '<span class="countdown-sm" id="dcd-' + esc(job.id) + '"></span>';
+                        html += '<button class="dash-delete-job-btn" data-job-id="' + esc(job.id) + '" style="background:none;border:none;cursor:pointer;padding:2px;margin-left:8px;color:var(--color-text-secondary);opacity:0.5;" title="Delete quote"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
                         html += '</div>';
                         html += '<div class="dash-card-details">';
                         if (job.serviceType) html += '<span class="ov-tag-service">' + esc(job.serviceType) + '</span>';
@@ -2260,7 +2252,7 @@
 
                 // Right — Awarded
                 html += '<div class="ov-split-right">';
-                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded Bids</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded Jobs</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
                 if (awardedJobs.length === 0) {
                     html += '<div class="ov-empty-state">No awarded jobs yet.</div>';
                 } else {
@@ -2355,6 +2347,14 @@
                     });
                 });
 
+                // Bind delete job buttons on dashboard
+                container.querySelectorAll('.dash-delete-job-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteJob(btn.dataset.jobId, btn, loadDashboard);
+                    });
+                });
+
             } catch (err) {
                 container.innerHTML = '<div class="empty-state"><p>Error loading dashboard: ' + esc(err.message) + '</p></div>';
             }
@@ -2419,7 +2419,7 @@
                     if (job.status === 'bidding' && bid.submittedAt) {
                         html += '<button class="btn btn-success btn-sm dash-award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button> ';
                     }
-                    html += '<button class="btn btn-sm dash-delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:#dc3545;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">Delete</button>';
+                    html += '<button class="btn btn-sm dash-delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:none;border:none;cursor:pointer;padding:2px;color:var(--color-text-secondary);opacity:0.5;" title="Delete bid"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -2489,10 +2489,38 @@
             }
         }
 
+        async function deleteJob(jobId, btn, reloadFn) {
+            if (!confirm('Permanently delete this quote and all its bids?')) return;
+            btn.disabled = true;
+            btn.style.opacity = '0.3';
+            try {
+                // Delete from Firestore
+                var response = await fetch('/api/bidding?action=delete-job', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobId: jobId }),
+                });
+                var data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+                // Also remove from localStorage (for wizard-created quotes)
+                removeLocalQuote(jobId);
+                // Remove the card immediately
+                var card = btn.closest('.dash-card, .job-card');
+                if (card) card.remove();
+                if (reloadFn) reloadFn();
+            } catch (err) {
+                // If Firestore delete fails, still try removing from localStorage
+                removeLocalQuote(jobId);
+                var card = btn.closest('.dash-card, .job-card');
+                if (card) card.remove();
+                if (reloadFn) reloadFn();
+            }
+        }
+
         async function deleteBid(bidId, jobId, btn, reloadFn) {
             if (!confirm('Permanently delete this bid?')) return;
             btn.disabled = true;
-            btn.textContent = 'Deleting...';
+            btn.style.opacity = '0.3';
             try {
                 var response = await fetch('/api/bidding?action=delete-bid', {
                     method: 'POST',
@@ -2501,11 +2529,14 @@
                 });
                 var data = await response.json();
                 if (!response.ok) throw new Error(data.error);
+                // Remove the row immediately
+                var row = btn.closest('tr');
+                if (row) row.remove();
                 if (reloadFn) reloadFn();
             } catch (err) {
                 alert('Error: ' + err.message);
                 btn.disabled = false;
-                btn.textContent = 'Delete';
+                btn.style.opacity = '0.5';
             }
         }
 
@@ -2514,9 +2545,11 @@
             var grid = document.getElementById('jobsGrid');
             var status = document.getElementById('filterJobStatus').value;
             var market = document.getElementById('filterJobMarket').value;
+            var isReadyFilter = status === 'ready';
 
             var params = [];
-            if (status) params.push('status=' + status);
+            if (status && !isReadyFilter) params.push('status=' + status);
+            if (isReadyFilter) params.push('status=bidding');
             if (market) params.push('market=' + market);
             var qs = params.length ? '&' + params.join('&') : '';
 
@@ -2530,12 +2563,28 @@
                     }
                 } catch (e) {}
 
+                // For "Ready for Review", fetch bid counts and filter to jobs with submitted bids
+                if (isReadyFilter && jobs.length > 0) {
+                    var readyJobs = [];
+                    for (var ri = 0; ri < jobs.length; ri++) {
+                        try {
+                            var detResp = await fetch('/api/bidding?action=job-details&jobId=' + jobs[ri].id);
+                            if (detResp.ok) {
+                                var detData = await detResp.json();
+                                var submitted = (detData.bids || []).filter(function(b) { return b.submittedAt; });
+                                if (submitted.length > 0) readyJobs.push(jobs[ri]);
+                            }
+                        } catch (e) {}
+                    }
+                    jobs = readyJobs;
+                }
+
                 // Merge local quotes
                 var remoteIds = {};
                 jobs.forEach(function(j) { remoteIds[j.id] = true; });
                 getLocalQuotes().forEach(function(lq) {
                     if (remoteIds[lq.id]) return;
-                    if (status && lq.status !== status) return;
+                    if (status && !isReadyFilter && lq.status !== status) return;
                     if (market && lq.market !== market) return;
                     jobs.push(lq);
                 });
@@ -2569,6 +2618,7 @@
                             '<div class="job-card-stats">' +
                                 '<div class="job-stat"><div class="job-stat-value" id="bc-' + esc(job.id) + '">...</div><div class="job-stat-label">Bids</div></div>' +
                                 (job.awardedProvider ? '<div class="job-stat"><div class="job-stat-value" style="font-size:13px;">' + esc(job.awardedProvider) + '</div><div class="job-stat-label">Awarded to</div></div>' : '') +
+                                '<button class="delete-job-btn" data-job-id="' + esc(job.id) + '" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--color-text-secondary);opacity:0.5;align-self:center;" title="Delete quote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>' +
                             '</div>' +
                         '</div>' +
                         '<div class="job-card-bids" id="bids-' + esc(job.id) + '"></div>' +
@@ -2591,6 +2641,14 @@
                             panel.classList.add('open');
                             loadJobBids(jobId);
                         }
+                    });
+                });
+
+                // Bind delete job buttons
+                grid.querySelectorAll('.delete-job-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteJob(btn.dataset.jobId, btn, loadJobs);
                     });
                 });
 
@@ -2638,7 +2696,7 @@
                     if (job.status === 'bidding' && bid.submittedAt) {
                         html += '<button class="btn btn-success btn-sm award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button> ';
                     }
-                    html += '<button class="btn btn-sm delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:#dc3545;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">Delete</button>';
+                    html += '<button class="btn btn-sm delete-bid-btn" data-bid-id="' + esc(bid.id) + '" data-job-id="' + esc(jobId) + '" style="background:none;border:none;cursor:pointer;padding:2px;color:var(--color-text-secondary);opacity:0.5;" title="Delete bid"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
                     html += '</td>';
                     html += '</tr>';
                 });
