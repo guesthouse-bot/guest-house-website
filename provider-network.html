@@ -51,13 +51,14 @@
             --color-surface: #FFFFFF;
             --color-surface-secondary: #F7F7F7;
             --color-border: #DDDDDD;
+            --sidebar-width: 240px;
         }
 
         body {
             font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.5;
             color: var(--color-text-primary);
-            background: var(--color-surface);
+            background: var(--color-surface-secondary);
         }
 
         /* Auth gate */
@@ -117,89 +118,207 @@
         #authForm button[type="submit"]:hover { opacity: 0.85; }
         #authError { color: #ef4444; font-size: 13px; margin: 0; display: none; }
 
-        /* Main layout */
-        .main-content { display: none; }
-
-        .page-header {
-            border-bottom: 1px solid var(--color-border);
-            padding: 24px 0;
+        /* Dashboard layout */
+        .main-content {
+            display: none;
+            min-height: 100vh;
         }
 
-        .page-header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 3rem;
+        .main-content.visible {
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--color-white);
+            border-right: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 200;
+        }
+
+        .sidebar-logo {
+            padding: 0 24px;
+            border-bottom: 1px solid var(--color-border);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            min-height: 61px;
         }
 
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+        .sidebar-logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--color-onyx);
+        }
+
+        .sidebar-logo svg {
+            width: 22px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo span {
+            font-size: 20px;
+            font-weight: 700;
             letter-spacing: -0.02em;
         }
 
-        .page-logo {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            text-decoration: none;
+        .sidebar-nav {
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
         }
 
-        /* Section nav */
-        .section-nav {
-            border-bottom: 1px solid var(--color-border);
+        .sidebar-nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            padding: 16px 12px 8px;
+        }
+
+        .section-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 450;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            width: 100%;
+        }
+
+        .section-nav-btn:hover {
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+        }
+
+        .section-nav-btn.active {
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+            font-weight: 500;
+        }
+
+        .section-nav-btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            stroke-width: 1.75;
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+        }
+
+        .sidebar-footer a:hover {
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+        }
+
+        .sidebar-footer a svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            stroke-width: 1.75;
+        }
+
+        /* Main content area */
+        .content-area {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
             background: var(--color-white);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 40px;
+            min-height: 61px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .section-nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            display: flex;
-            gap: 32px;
+        .content-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
-        .section-nav-btn {
-            padding: 16px 0;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 500;
+        .content-header-meta {
+            font-size: 13px;
             color: var(--color-text-secondary);
-            cursor: pointer;
-            transition: color 0.2s, border-color 0.2s;
         }
 
-        .section-nav-btn:hover { color: var(--color-onyx); }
-        .section-nav-btn.active { color: var(--color-onyx); border-bottom-color: var(--color-onyx); }
+        .content-body {
+            padding: 32px 40px 60px;
+            flex: 1;
+        }
 
         /* Sections */
-        .section { max-width: 1200px; margin: 0 auto; padding: 40px 3rem 60px; display: none; }
+        .section { display: none; }
         .section.active { display: block; }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 16px;
         }
 
         .section-header h2 {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
             letter-spacing: -0.01em;
         }
 
         /* Forms */
+        .form-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 28px;
+        }
+
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -223,7 +342,7 @@
         .field input,
         .field select,
         .field textarea {
-            padding: 12px 16px;
+            padding: 11px 14px;
             border: 1px solid var(--color-border);
             border-radius: 10px;
             font-size: 14px;
@@ -254,7 +373,7 @@
         .field textarea { resize: vertical; min-height: 80px; }
 
         .btn {
-            padding: 12px 24px;
+            padding: 11px 22px;
             border: none;
             border-radius: 10px;
             font-family: inherit;
@@ -271,7 +390,9 @@
         .btn-secondary { background: var(--color-surface-secondary); color: var(--color-onyx); border: 1px solid var(--color-border); }
         .btn-success { background: #067647; color: var(--color-white); }
         .btn-danger { background: var(--color-error); color: var(--color-white); }
-        .btn-sm { padding: 8px 16px; font-size: 13px; }
+        .btn-sm { padding: 7px 14px; font-size: 13px; }
+        .btn-cta { background: var(--color-golden); color: var(--color-onyx); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .btn-cta:hover { background: #d4a85e; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
 
         .form-actions {
             margin-top: 24px;
@@ -293,7 +414,7 @@
         /* Job cards */
         .jobs-grid {
             display: grid;
-            gap: 16px;
+            gap: 12px;
         }
 
         .job-card {
@@ -307,7 +428,7 @@
         .job-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
         .job-card-header {
-            padding: 20px 24px;
+            padding: 18px 22px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -326,7 +447,7 @@
 
         .job-card-meta {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             font-size: 13px;
             color: var(--color-text-secondary);
             flex-wrap: wrap;
@@ -378,7 +499,7 @@
         .job-card-bids {
             display: none;
             border-top: 1px solid var(--color-border);
-            padding: 20px 24px;
+            padding: 20px 22px;
             background: var(--color-surface-secondary);
         }
 
@@ -440,6 +561,9 @@
         /* Provider table */
         .provider-table-wrapper {
             overflow-x: auto;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
         }
 
         .provider-table {
@@ -450,14 +574,14 @@
 
         .provider-table th {
             text-align: left;
-            padding: 12px 16px;
+            padding: 14px 16px;
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.04em;
             color: var(--color-text-secondary);
-            border-bottom: 2px solid var(--color-border);
-            white-space: nowrap;
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-white);
         }
 
         .provider-table td {
@@ -466,6 +590,7 @@
             color: var(--color-charcoal);
         }
 
+        .provider-table tr:last-child td { border-bottom: none; }
         .provider-table tr:hover td { background: var(--color-surface-secondary); }
 
         .status-dot {
@@ -495,13 +620,13 @@
         /* Filter row */
         .filter-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .filter-row select {
-            padding: 8px 32px 8px 12px;
+            padding: 7px 30px 7px 12px;
             border: 1px solid var(--color-border);
             border-radius: 8px;
             font-family: inherit;
@@ -514,6 +639,219 @@
             background-repeat: no-repeat;
             background-position: right 10px center;
             cursor: pointer;
+        }
+
+        /* KPI cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .kpi-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            letter-spacing: -0.02em;
+        }
+
+        @media (max-width: 860px) {
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-row { grid-template-columns: 1fr; }
+        }
+
+        /* Alert banners */
+        .alert-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border-left: 4px solid;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .alert-banner:last-child { margin-bottom: 24px; }
+
+        .alert-banner svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .alert-banner-text {
+            flex: 1;
+        }
+
+        .alert-banner-text strong {
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .alert-expired {
+            background: #FEF3F2;
+            border-left-color: var(--color-error);
+            color: #7A271A;
+        }
+
+        .alert-warning {
+            background: #FFFBEB;
+            border-left-color: var(--color-sunflower);
+            color: #7A5D0B;
+        }
+
+        .alert-banner .btn {
+            flex-shrink: 0;
+        }
+
+        /* Dashboard lanes */
+        .dash-lane {
+            margin-bottom: 32px;
+        }
+
+        .dash-lane:last-child { margin-bottom: 0; }
+
+        .dash-lane-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .dash-lane-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .dash-lane-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 7px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        .dash-lane-empty {
+            padding: 24px;
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            background: var(--color-white);
+            border: 1px dashed var(--color-border);
+            border-radius: 10px;
+        }
+
+        /* Dashboard card grid — KPI-style compact tiles */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .dash-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+            position: relative;
+        }
+
+        .dash-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+        .dash-card-address {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .dash-card-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .dash-card-tag {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background: var(--color-surface-secondary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .dash-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .dash-card-stat {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .dash-card-stat strong {
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .dash-card-bids {
+            display: none;
+            border-top: 1px solid var(--color-border);
+            margin: 14px -20px -20px;
+            padding: 16px 20px 20px;
+            background: var(--color-surface-secondary);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .dash-card-bids.open { display: block; }
+
+        @media (max-width: 1060px) {
+            .dash-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .dash-grid { grid-template-columns: 1fr; }
         }
 
         /* Empty state */
@@ -561,11 +899,58 @@
             margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .page-header-inner, .section-nav-inner, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 300;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--color-onyx);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 150;
+        }
+
+        @media (max-width: 860px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.25s ease;
+                z-index: 250;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-toggle { display: flex; }
+            .sidebar-overlay.open { display: block; }
+            .content-area {
+                margin-left: 0;
+            }
+            .content-header {
+                padding: 16px 20px 16px 64px;
+            }
+            .content-body {
+                padding: 24px 20px 60px;
+            }
             .form-grid { grid-template-columns: 1fr; }
             .job-card-header { flex-direction: column; }
-            .section-nav-inner { gap: 20px; overflow-x: auto; }
         }
     </style>
 </head>
@@ -586,145 +971,198 @@
         </div>
     </div>
 
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <div class="page-header">
-            <div class="page-header-inner">
-                <h1 class="page-title">Provider Network</h1>
-                <a href="motherboard.html" class="page-logo">Guest House</a>
-            </div>
-        </div>
 
-        <div class="section-nav">
-            <div class="section-nav-inner">
-                <button class="section-nav-btn active" data-section="jobs">Create Job</button>
-                <button class="section-nav-btn" data-section="active-jobs">Active Jobs</button>
-                <button class="section-nav-btn" data-section="providers">Provider Directory</button>
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <a href="motherboard.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Prept</span>
+                </a>
             </div>
-        </div>
+            <nav class="sidebar-nav">
+                <button class="section-nav-btn active" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                    Overview
+                </button>
+                <div class="sidebar-nav-label">Homes</div>
+                <button class="section-nav-btn" data-section="jobs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    New Home
+                </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+                    Active Bids
+                </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="awarded">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Awarded Homes
+                </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="completed">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Completed Homes
+                </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    All Homes
+                </button>
+                <div class="sidebar-nav-label" style="margin-top:8px;">Network</div>
+                <button class="section-nav-btn" data-section="providers">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Stagers
+                </button>
+            </nav>
+        </aside>
 
-        <!-- Section 1: Create Job -->
-        <div class="section active" id="section-jobs">
-            <div class="section-header">
-                <h2>Create New Job</h2>
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="content-header">
+                <h1 id="contentTitle">Overview</h1>
+                <button class="btn btn-cta" id="newHomeBtn">+ New Home</button>
             </div>
-            <div class="form-grid" id="jobForm">
-                <div class="field form-grid-full">
-                    <label>Address *</label>
-                    <input type="text" id="jobAddress" placeholder="123 Main St, Denver, CO 80202">
-                </div>
-                <div class="field">
-                    <label>Square Footage</label>
-                    <input type="text" id="jobSqft" placeholder="2,400">
-                </div>
-                <div class="field">
-                    <label>Rooms</label>
-                    <input type="text" id="jobRooms" placeholder="e.g. 4 BR / 3 BA">
-                </div>
-                <div class="field">
-                    <label>Timeline</label>
-                    <input type="text" id="jobTimeline" placeholder="e.g. Stage by March 5">
-                </div>
-                <div class="field">
-                    <label>Market *</label>
-                    <select id="jobMarket">
-                        <option value="" disabled selected>Select market</option>
-                        <option value="colorado">Colorado</option>
-                        <option value="california">California</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Provider Type *</label>
-                    <select id="jobProviderType">
-                        <option value="" disabled selected>Select type</option>
-                        <option value="stager">Stager</option>
-                        <option value="cleaner">Cleaner</option>
-                        <option value="mover">Mover</option>
-                        <option value="media">Media</option>
-                        <option value="stylist">Stylist</option>
-                    </select>
-                </div>
-                <div class="field form-grid-full">
-                    <label>Notes</label>
-                    <textarea id="jobNotes" placeholder="Any special instructions or details..."></textarea>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-primary" id="createJobBtn">Create Job & Notify Providers</button>
-            </div>
-            <div class="form-message" id="jobMessage"></div>
-        </div>
+            <div class="content-body">
 
-        <!-- Section 2: Active Jobs -->
-        <div class="section" id="section-active-jobs">
-            <div class="section-header">
-                <h2>Jobs</h2>
-                <div class="filter-row">
-                    <select id="filterJobStatus">
-                        <option value="">All statuses</option>
-                        <option value="bidding" selected>Bidding</option>
-                        <option value="awarded">Awarded</option>
-                        <option value="completed">Completed</option>
-                        <option value="no_bids">No Bids</option>
-                    </select>
-                    <select id="filterJobMarket">
-                        <option value="">All markets</option>
-                        <option value="colorado">Colorado</option>
-                        <option value="california">California</option>
-                    </select>
+                <!-- Dashboard -->
+                <div class="section active" id="section-dashboard">
+                    <div id="dashboardContent">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            <p>Loading dashboard...</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="jobs-grid" id="jobsGrid">
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    <p>Loading jobs...</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Section 3: Provider Directory -->
-        <div class="section" id="section-providers">
-            <div class="section-header">
-                <h2>Provider Directory</h2>
-                <button class="btn btn-primary btn-sm" id="addProviderBtn">+ Add Provider</button>
-            </div>
-            <div class="filter-row" style="margin-bottom:20px;">
-                <select id="filterProviderMarket">
-                    <option value="">All markets</option>
-                    <option value="colorado">Colorado</option>
-                    <option value="california">California</option>
-                </select>
-                <select id="filterProviderRole">
-                    <option value="">All roles</option>
-                    <option value="stager">Stager</option>
-                    <option value="cleaner">Cleaner</option>
-                    <option value="mover">Mover</option>
-                    <option value="media">Media</option>
-                    <option value="stylist">Stylist</option>
-                </select>
-                <select id="filterProviderStatus">
-                    <option value="">All statuses</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
-            </div>
-            <div class="provider-table-wrapper">
-                <table class="provider-table" id="providerTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Business</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Market</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="providerBody">
-                        <tr><td colspan="7" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
-                    </tbody>
-                </table>
+                <!-- Section 1: New Home -->
+                <div class="section" id="section-jobs">
+                    <div class="form-card">
+                        <div class="section-header">
+                            <h2>New Home Details</h2>
+                        </div>
+                        <div class="form-grid" id="jobForm">
+                            <div class="field form-grid-full">
+                                <label>Address *</label>
+                                <input type="text" id="jobAddress" placeholder="123 Main St, Phoenix, AZ 85001">
+                            </div>
+                            <div class="field">
+                                <label>Square Footage</label>
+                                <input type="text" id="jobSqft" placeholder="2,400">
+                            </div>
+                            <div class="field">
+                                <label>Rooms</label>
+                                <input type="text" id="jobRooms" placeholder="e.g. 4 BR / 3 BA">
+                            </div>
+                            <div class="field">
+                                <label>Timeline</label>
+                                <input type="text" id="jobTimeline" placeholder="e.g. Stage by March 5">
+                            </div>
+                            <div class="field">
+                                <label>Market *</label>
+                                <select id="jobMarket">
+                                    <option value="" disabled selected>Select market</option>
+                                    <option value="arizona">Arizona</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Provider Type *</label>
+                                <select id="jobProviderType">
+                                    <option value="" disabled selected>Select type</option>
+                                    <option value="stager">Stager</option>
+                                </select>
+                            </div>
+                            <div class="field form-grid-full">
+                                <label>Notes</label>
+                                <textarea id="jobNotes" placeholder="Any special instructions or details..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="createJobBtn">Create Home & Notify Providers</button>
+                        </div>
+                        <div class="form-message" id="jobMessage"></div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Active Jobs -->
+                <div class="section" id="section-active-jobs">
+                    <div class="section-header">
+                        <h2>Jobs</h2>
+                        <div class="filter-row">
+                            <select id="filterJobStatus">
+                                <option value="">All statuses</option>
+                                <option value="bidding" selected>Bidding</option>
+                                <option value="awarded">Awarded</option>
+                                <option value="completed">Completed</option>
+                                <option value="no_bids">No Bids</option>
+                            </select>
+                            <select id="filterJobMarket">
+                                <option value="">All markets</option>
+                                <option value="arizona">Arizona</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="jobs-grid" id="jobsGrid">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            <p>Loading jobs...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Provider Directory -->
+                <div class="section" id="section-providers">
+                    <div class="section-header">
+                        <h2>Provider Directory</h2>
+                        <button class="btn btn-primary btn-sm" id="addProviderBtn">+ Add Provider</button>
+                    </div>
+                    <div class="filter-row" style="margin-bottom:16px;">
+                        <select id="filterProviderMarket">
+                            <option value="">All markets</option>
+                            <option value="arizona">Arizona</option>
+                        </select>
+                        <select id="filterProviderRole">
+                            <option value="">All roles</option>
+                            <option value="stager">Stager</option>
+                            <option value="cleaner">Cleaner</option>
+                            <option value="mover">Mover</option>
+                            <option value="media">Media</option>
+                            <option value="stylist">Stylist</option>
+                        </select>
+                        <select id="filterProviderStatus">
+                            <option value="">All statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="provider-table-wrapper">
+                        <table class="provider-table" id="providerTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Business</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Market</th>
+                                    <th>Status</th>
+                                    <th>Jobs Won</th>
+                                    <th>Avg Bid</th>
+                                    <th>Win Rate</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="providerBody">
+                                <tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -751,18 +1189,13 @@
                     <select id="providerRole">
                         <option value="" disabled selected>Select role</option>
                         <option value="stager">Stager</option>
-                        <option value="cleaner">Cleaner</option>
-                        <option value="mover">Mover</option>
-                        <option value="media">Media</option>
-                        <option value="stylist">Stylist</option>
                     </select>
                 </div>
                 <div class="field">
                     <label>Market *</label>
                     <select id="providerMarket">
                         <option value="" disabled selected>Select market</option>
-                        <option value="colorado">Colorado</option>
-                        <option value="california">California</option>
+                        <option value="arizona">Arizona</option>
                     </select>
                 </div>
             </div>
@@ -787,16 +1220,47 @@
         }
 
         function hideContent() {
-            mainContent.style.display = 'none';
+            mainContent.classList.remove('visible');
             gate.style.display = 'flex';
+            document.getElementById('sidebarToggle').style.display = 'none';
         }
 
         function showContent() {
             gate.style.display = 'none';
-            mainContent.style.display = 'block';
+            mainContent.classList.add('visible');
             init();
         }
 
+        // Mobile sidebar
+        var sidebar = document.getElementById('sidebar');
+        var sidebarOverlay = document.getElementById('sidebarOverlay');
+        var sidebarToggle = document.getElementById('sidebarToggle');
+
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('open');
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('open');
+        });
+
+        // Section title mapping
+        var sectionTitles = {
+            'dashboard': 'Overview',
+            'jobs': 'New Home',
+            'active-jobs': 'All Homes',
+            'providers': 'Stagers'
+        };
+
+        // App state
+        var jobs = [];
+        var providers = [];
+        var countdownIntervals = {};
+        var dashCountdowns = {};
+
+        // Auth check — must come AFTER all var assignments above
         if (sessionStorage.getItem('pn_auth') === '1') {
             showContent();
         } else {
@@ -818,18 +1282,18 @@
             }
         });
 
-        // App state
-        var jobs = [];
-        var providers = [];
-        var countdownIntervals = {};
-
         function init() {
             setupNav();
             setupCreateJob();
             setupProviderModal();
             setupFilters();
-            loadJobs();
+            loadDashboard();
             loadProviders();
+
+            document.getElementById('newHomeBtn').addEventListener('click', function() {
+                var jobsBtn = document.querySelector('.section-nav-btn[data-section="jobs"]');
+                if (jobsBtn) jobsBtn.click();
+            });
         }
 
         // Section navigation
@@ -842,7 +1306,21 @@
                     document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
                     document.getElementById('section-' + btn.dataset.section).classList.add('active');
 
-                    // Refresh data when switching to Active Jobs or Providers
+                    // Update content header — use button text if it has a filter override
+                    var title = btn.textContent.trim() || sectionTitles[btn.dataset.section] || 'Provider Network';
+                    document.getElementById('contentTitle').textContent = title;
+
+                    // Apply status filter if nav item has data-filter
+                    if (btn.dataset.section === 'active-jobs' && btn.dataset.filter !== undefined) {
+                        document.getElementById('filterJobStatus').value = btn.dataset.filter;
+                    }
+
+                    // Close mobile sidebar
+                    sidebar.classList.remove('open');
+                    sidebarOverlay.classList.remove('open');
+
+                    // Refresh data when switching sections
+                    if (btn.dataset.section === 'dashboard') loadDashboard();
                     if (btn.dataset.section === 'active-jobs') loadJobs();
                     if (btn.dataset.section === 'providers') loadProviders();
                 });
@@ -903,8 +1381,268 @@
                 }
 
                 btn.disabled = false;
-                btn.textContent = 'Create Job & Notify Providers';
+                btn.textContent = 'Create Home & Notify Providers';
             });
+        }
+
+        // Dashboard
+        async function loadDashboard() {
+            var container = document.getElementById('dashboardContent');
+            if (!container) { console.error('dashboardContent not found'); return; }
+
+            // Clear old dashboard countdowns
+            Object.keys(dashCountdowns).forEach(function(k) { clearInterval(dashCountdowns[k]); });
+            dashCountdowns = {};
+
+            try {
+                // Fetch jobs and dashboard stats in parallel
+                var jobsPromise = fetch('/api/bidding?action=jobs');
+                var statsPromise = fetch('/api/bidding?action=dashboard-stats');
+
+                var response = await jobsPromise;
+                if (!response.ok) throw new Error('API returned ' + response.status);
+                var data = await response.json();
+                var allJobs = data.jobs || [];
+
+                var statsData = null;
+                try {
+                    var statsResponse = await statsPromise;
+                    if (statsResponse.ok) statsData = await statsResponse.json();
+                } catch (e) { /* stats are optional */ }
+
+                allJobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
+
+                var lanes = [
+                    { key: 'bidding', title: 'Active Home Bids', jobs: [] },
+                    { key: 'awarded', title: 'Awarded Homes', jobs: [] },
+                    { key: 'completed', title: 'Completed Homes', jobs: [] },
+                    { key: 'no_bids', title: 'No Bid Homes', jobs: [] },
+                ];
+
+                allJobs.forEach(function(job) {
+                    for (var i = 0; i < lanes.length; i++) {
+                        if (job.status === lanes[i].key) {
+                            lanes[i].jobs.push(job);
+                            return;
+                        }
+                    }
+                });
+
+                var html = '';
+
+                // KPI cards
+                if (statsData && statsData.kpis) {
+                    var k = statsData.kpis;
+                    html += '<div class="kpi-row">';
+                    html += '<div class="kpi-card"><div class="kpi-label">Active Homes</div><div class="kpi-value">' + k.activeHomes + '</div></div>';
+                    html += '<div class="kpi-card"><div class="kpi-label">Awarded Homes</div><div class="kpi-value">' + k.awardedHomes + '</div></div>';
+                    html += '<div class="kpi-card"><div class="kpi-label">Active Stagers</div><div class="kpi-value">' + k.totalStagers + '</div></div>';
+                    html += '<div class="kpi-card"><div class="kpi-label">Avg Bid Price</div><div class="kpi-value">$' + formatAmount(k.avgBidPrice) + '</div></div>';
+                    html += '</div>';
+                }
+
+                // Alert banners
+                if (statsData && statsData.alerts && statsData.alerts.length > 0) {
+                    statsData.alerts.forEach(function(alert) {
+                        var cls = alert.type === 'expired' ? 'alert-expired' : 'alert-warning';
+                        var icon = alert.type === 'expired'
+                            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+                            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+                        html += '<div class="alert-banner ' + cls + '">';
+                        html += icon;
+                        html += '<div class="alert-banner-text"><strong>' + esc(alert.address) + '</strong> — ' + esc(alert.message) + '</div>';
+                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(alert.jobId) + '">View</button>';
+                        html += '</div>';
+                    });
+                }
+
+                lanes.forEach(function(lane) {
+                    html += '<div class="dash-lane">';
+                    html += '<div class="dash-lane-header">';
+                    html += '<span class="dash-lane-title">' + esc(lane.title) + '</span>';
+                    html += '<span class="dash-lane-count">' + lane.jobs.length + '</span>';
+                    html += '</div>';
+
+                    if (lane.jobs.length === 0) {
+                        html += '<div class="dash-lane-empty">No ' + esc(lane.title.toLowerCase()) + '</div>';
+                    } else {
+                        html += '<div class="dash-grid">';
+                        lane.jobs.forEach(function(job) {
+                            html += '<div class="dash-card" data-dash-toggle="' + esc(job.id) + '">' +
+                                '<div class="dash-card-address">' + esc(job.address) + '</div>' +
+                                '<div class="dash-card-details">' +
+                                    (job.sqft ? '<span class="dash-card-tag">' + esc(job.sqft) + ' sqft</span>' : '') +
+                                    (job.rooms ? '<span class="dash-card-tag">' + esc(job.rooms) + '</span>' : '') +
+                                    '<span class="dash-card-tag">' + capitalize(job.market) + '</span>' +
+                                '</div>' +
+                                '<div class="dash-card-footer">' +
+                                    '<span class="dash-card-stat"><strong id="dbc-' + esc(job.id) + '">...</strong> bids</span>' +
+                                    (job.status === 'bidding' ? '<span class="countdown-sm" id="dcd-' + esc(job.id) + '"></span>' : '') +
+                                    (job.awardedProvider ? '<span class="dash-card-stat">' + esc(job.awardedProvider) + '</span>' : '') +
+                                '</div>' +
+                                '<div class="dash-card-bids" id="dbids-' + esc(job.id) + '"></div>' +
+                            '</div>';
+                        });
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                });
+
+                container.innerHTML = html;
+
+                // Start countdowns for bidding jobs
+                lanes[0].jobs.forEach(function(job) {
+                    startDashCountdown(job.id, job.biddingDeadline);
+                });
+
+                // Bind alert View buttons
+                container.querySelectorAll('.alert-view-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var jobId = btn.dataset.jobId;
+                        // Navigate to Active Bids section filtered to bidding
+                        var bidsNavBtn = document.querySelector('.section-nav-btn[data-filter="bidding"]');
+                        if (bidsNavBtn) bidsNavBtn.click();
+                    });
+                });
+
+                // Bind expand/collapse
+                container.querySelectorAll('[data-dash-toggle]').forEach(function(el) {
+                    el.addEventListener('click', function() {
+                        var jobId = el.dataset.dashToggle;
+                        var panel = document.getElementById('dbids-' + jobId);
+                        if (panel.classList.contains('open')) {
+                            panel.classList.remove('open');
+                        } else {
+                            panel.classList.add('open');
+                            loadDashBids(jobId);
+                        }
+                    });
+                });
+
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><p>Error loading dashboard: ' + esc(err.message) + '</p></div>';
+            }
+        }
+
+        function startDashCountdown(jobId, deadlineStr) {
+            var deadline = new Date(deadlineStr);
+            var el = document.getElementById('dcd-' + jobId);
+            if (!el) return;
+            function update() {
+                var now = new Date();
+                var diff = deadline - now;
+                if (diff <= 0) {
+                    el.textContent = 'Expired';
+                    el.classList.add('urgent');
+                    clearInterval(dashCountdowns[jobId]);
+                    return;
+                }
+                var hours = Math.floor(diff / 3600000);
+                var mins = Math.floor((diff % 3600000) / 60000);
+                el.textContent = hours + 'h ' + mins + 'm left';
+                if (hours < 2) el.classList.add('urgent');
+            }
+            update();
+            dashCountdowns[jobId] = setInterval(update, 60000);
+        }
+
+        async function loadDashBids(jobId) {
+            var panel = document.getElementById('dbids-' + jobId);
+            panel.innerHTML = '<p style="color:var(--color-text-secondary);font-size:13px;">Loading bids...</p>';
+
+            try {
+                var response = await fetch('/api/bidding?action=job-details&jobId=' + jobId);
+                var data = await response.json();
+                var bids = data.bids || [];
+                var job = data.job;
+
+                var submittedCount = bids.filter(function(b) { return b.submittedAt; }).length;
+                var bcEl = document.getElementById('dbc-' + jobId);
+                if (bcEl) bcEl.textContent = submittedCount + '/' + bids.length;
+
+                if (bids.length === 0) {
+                    panel.innerHTML = '<p style="color:var(--color-text-secondary);font-size:13px;">No providers were notified for this job.</p>';
+                    return;
+                }
+
+                var html = '<table class="bids-table"><thead><tr><th>Provider</th><th>Bid Amount</th><th>Submitted</th><th>Status</th>' + (job.status === 'bidding' ? '<th>Action</th>' : '') + '</tr></thead><tbody>';
+
+                bids.forEach(function(bid) {
+                    var rowClass = bid.status === 'won' ? ' class="bid-won"' : '';
+                    html += '<tr' + rowClass + '>';
+                    html += '<td>' + esc(bid.providerName) + '<br><span style="font-size:12px;color:var(--color-text-secondary);">' + esc(bid.providerEmail) + '</span></td>';
+                    if (bid.submittedAt) {
+                        html += '<td class="bid-amount">$' + formatAmount(bid.amount) + '</td>';
+                        html += '<td>' + formatDate(bid.submittedAt) + '</td>';
+                    } else {
+                        html += '<td class="bid-pending">Not submitted</td>';
+                        html += '<td class="bid-pending">-</td>';
+                    }
+                    html += '<td><span class="status-badge status-' + esc(bid.status === 'won' ? 'awarded' : bid.status === 'lost' ? 'cancelled' : 'bidding') + '">' + esc(bid.status) + '</span></td>';
+                    if (job.status === 'bidding' && bid.submittedAt) {
+                        html += '<td><button class="btn btn-success btn-sm dash-award-btn" data-job-id="' + esc(jobId) + '" data-bid-id="' + esc(bid.id) + '">Award</button></td>';
+                    } else if (job.status === 'bidding') {
+                        html += '<td></td>';
+                    }
+                    html += '</tr>';
+                });
+
+                html += '</tbody></table>';
+
+                if (job.status === 'bidding' && submittedCount > 0) {
+                    html += '<div class="bids-actions">' +
+                        '<button class="btn btn-primary btn-sm dash-auto-award-btn" data-job-id="' + esc(jobId) + '">Auto-Award Lowest Bid</button>' +
+                    '</div>';
+                }
+
+                panel.innerHTML = html;
+
+                panel.querySelectorAll('.dash-award-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        dashAwardJob(btn.dataset.jobId, btn.dataset.bidId, btn);
+                    });
+                });
+
+                var autoBtn = panel.querySelector('.dash-auto-award-btn');
+                if (autoBtn) {
+                    autoBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        dashAwardJob(autoBtn.dataset.jobId, null, autoBtn);
+                    });
+                }
+
+            } catch (err) {
+                panel.innerHTML = '<p style="color:var(--color-error);font-size:13px;">Error: ' + esc(err.message) + '</p>';
+            }
+        }
+
+        async function dashAwardJob(jobId, bidId, btn) {
+            if (!confirm('Are you sure you want to award this job' + (bidId ? '' : ' to the lowest bidder') + '?')) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Awarding...';
+
+            try {
+                var payload = { jobId: jobId };
+                if (bidId) payload.bidId = bidId;
+                else payload.auto = true;
+
+                var response = await fetch('/api/bidding?action=award-job', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                var data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+
+                alert('Job awarded to ' + data.awardedTo + ' ($' + formatAmount(data.amount) + ')');
+                loadDashboard();
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = bidId ? 'Award' : 'Auto-Award Lowest Bid';
+            }
         }
 
         // Load Jobs
@@ -1123,16 +1861,33 @@
             var qs = params.length ? '?' + params.join('&') : '';
 
             try {
-                var response = await fetch('/api/providers' + qs);
+                // Fetch providers and stager stats in parallel
+                var provResponse = fetch('/api/providers' + qs);
+                var statsResponse = fetch('/api/bidding?action=dashboard-stats');
+
+                var response = await provResponse;
                 var data = await response.json();
                 providers = data.providers || [];
 
+                var stagerStats = {};
+                try {
+                    var sRes = await statsResponse;
+                    if (sRes.ok) {
+                        var sData = await sRes.json();
+                        stagerStats = sData.stagerStats || {};
+                    }
+                } catch (e) { /* stats are optional */ }
+
                 if (providers.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--color-text-secondary);padding:32px;">No providers found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">No providers found</td></tr>';
                     return;
                 }
 
                 tbody.innerHTML = providers.map(function(p) {
+                    var stats = stagerStats[p.email];
+                    var jobsWon = stats ? stats.jobsWon : null;
+                    var avgBid = stats ? stats.avgBid : null;
+                    var winRate = stats ? stats.winRate : null;
                     return '<tr>' +
                         '<td style="font-weight:500;">' + esc(p.name) + '</td>' +
                         '<td>' + esc(p.businessName || '-') + '</td>' +
@@ -1140,6 +1895,9 @@
                         '<td>' + capitalize(p.role) + '</td>' +
                         '<td>' + capitalize(p.market) + '</td>' +
                         '<td><span class="status-dot ' + esc(p.status) + '"></span>' + capitalize(p.status) + '</td>' +
+                        '<td>' + (jobsWon !== null ? jobsWon : '\u2014') + '</td>' +
+                        '<td>' + (avgBid ? '$' + formatAmount(avgBid) : '\u2014') + '</td>' +
+                        '<td>' + (winRate !== null && stats && stats.totalBids > 0 ? winRate + '%' : '\u2014') + '</td>' +
                         '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="toggle-status" data-current="' + esc(p.status) + '">' + (p.status === 'active' ? 'Deactivate' : 'Activate') + '</button></td>' +
                     '</tr>';
                 }).join('');
@@ -1164,7 +1922,7 @@
                 });
 
             } catch (err) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--color-error);padding:32px;">Error: ' + esc(err.message) + '</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-error);padding:32px;">Error: ' + esc(err.message) + '</td></tr>';
             }
         }
 

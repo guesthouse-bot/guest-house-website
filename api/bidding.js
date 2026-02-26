@@ -15,6 +15,7 @@ module.exports = async function handler(req, res) {
     case 'submit-bid': return handleSubmitBid(req, res);
     case 'award-job': return handleAwardJob(req, res);
     case 'check-deadlines': return handleCheckDeadlines(req, res);
+    case 'dashboard-stats': return handleDashboardStats(req, res);
     default: return res.status(400).json({ error: 'Unknown action: ' + action });
   }
 };
@@ -104,15 +105,16 @@ async function handleJobs(req, res) {
           weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit',
         });
 
+        var redacted = fb.redactAddress(body.address);
         await fb.sendEmail(
           provider.email,
-          'New Job Available — ' + body.address,
+          'New Job Available — ' + redacted,
           '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
             '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
             '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New job available in your market</h2>' +
             '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + provider.name.split(' ')[0] + ', a new staging job is available for bidding.</p>' +
             '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
-              '<div style="margin-bottom:8px;"><strong style="color:#343434;">Address:</strong> <span style="color:#666;">' + body.address + '</span></div>' +
+              '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redacted + '</span></div>' +
               (body.sqft ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Size:</strong> <span style="color:#666;">' + body.sqft + ' sq ft</span></div>' : '') +
               (body.rooms ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Rooms:</strong> <span style="color:#666;">' + body.rooms + '</span></div>' : '') +
               (body.timeline ? '<div style="margin-bottom:8px;"><strong style="color:#343434;">Timeline:</strong> <span style="color:#666;">' + body.timeline + '</span></div>' : '') +
@@ -207,14 +209,14 @@ async function handleSubmitBid(req, res) {
 
       var now = new Date();
       if (job.status !== 'bidding' || now > new Date(job.biddingDeadline)) {
-        return res.status(200).json({ status: 'deadline_passed', job: { address: job.address, biddingDeadline: job.biddingDeadline } });
+        return res.status(200).json({ status: 'deadline_passed', job: { address: fb.redactAddress(job.address), biddingDeadline: job.biddingDeadline } });
       }
 
       return res.status(200).json({
         status: 'open',
         providerName: bid.providerName,
         job: {
-          address: job.address,
+          address: fb.redactAddress(job.address),
           sqft: job.sqft,
           rooms: job.rooms,
           timeline: job.timeline,
@@ -261,15 +263,16 @@ async function handleSubmitBid(req, res) {
         submittedAt: now.toISOString(),
       }, accessToken);
 
+      var redactedAddr = fb.redactAddress(job.address);
       await fb.sendEmail(
         bid.providerEmail,
-        'Bid Confirmed — ' + job.address,
+        'Bid Confirmed — ' + redactedAddr,
         '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
           '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
           '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Bid received</h2>' +
           '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Thanks ' + bid.providerName.split(' ')[0] + ', your bid has been submitted. We\'ll notify you when the job is awarded.</p>' +
           '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
-            '<div style="margin-bottom:8px;"><strong style="color:#343434;">Job:</strong> <span style="color:#666;">' + job.address + '</span></div>' +
+            '<div style="margin-bottom:8px;"><strong style="color:#343434;">Location:</strong> <span style="color:#666;">' + redactedAddr + '</span></div>' +
             '<div style="margin-bottom:8px;"><strong style="color:#343434;">Your bid:</strong> <span style="color:#080808;font-size:20px;font-weight:600;">$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</span></div>' +
             '<div><strong style="color:#343434;">Deadline:</strong> <span style="color:#666;">' + new Date(job.biddingDeadline).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '</span></div>' +
           '</div>' +
@@ -344,6 +347,7 @@ async function handleAwardJob(req, res) {
       awardedAt: now,
     }, accessToken);
 
+    var redactedAddr = fb.redactAddress(job.address);
     for (var i = 0; i < bids.length; i++) {
       var bid = bids[i];
       var newStatus = bid.id === winningBidId ? 'won' : 'lost';
@@ -352,13 +356,13 @@ async function handleAwardJob(req, res) {
       if (bid.id === winningBidId) {
         await fb.sendEmail(
           bid.providerEmail,
-          'You Won the Job! — ' + job.address,
+          'You Won the Job! — ' + redactedAddr,
           '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
             '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
             '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Congratulations! You\'ve been awarded the job</h2>' +
             '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + bid.providerName.split(' ')[0] + ', great news! Your bid of $' + Number(bid.amount).toFixed(2) + ' was selected.</p>' +
             '<div style="background:#ECFDF3;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
-              '<div style="margin-bottom:8px;"><strong style="color:#067647;">Address:</strong> <span style="color:#343434;">' + job.address + '</span></div>' +
+              '<div style="margin-bottom:8px;"><strong style="color:#067647;">Location:</strong> <span style="color:#343434;">' + redactedAddr + '</span></div>' +
               '<div style="margin-bottom:8px;"><strong style="color:#067647;">Your bid:</strong> <span style="color:#080808;font-size:20px;font-weight:600;">$' + Number(bid.amount).toFixed(2) + '</span></div>' +
               (job.timeline ? '<div><strong style="color:#067647;">Timeline:</strong> <span style="color:#343434;">' + job.timeline + '</span></div>' : '') +
             '</div>' +
@@ -368,11 +372,11 @@ async function handleAwardJob(req, res) {
       } else if (bid.submittedAt) {
         await fb.sendEmail(
           bid.providerEmail,
-          'Job Update — ' + job.address,
+          'Job Update — ' + redactedAddr,
           '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
             '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
             '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Job awarded to another provider</h2>' +
-            '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + bid.providerName.split(' ')[0] + ', thanks for submitting your bid for ' + job.address + '. This job has been awarded to another provider.</p>' +
+            '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + bid.providerName.split(' ')[0] + ', thanks for submitting your bid for a job in ' + redactedAddr + '. This job has been awarded to another provider.</p>' +
             '<p style="color:#666;font-size:14px;">We\'ll notify you when new jobs become available in your market. Thanks for being a Guest House partner!</p>' +
           '</div>'
         );
@@ -461,6 +465,7 @@ async function handleCheckDeadlines(req, res) {
           awardedAt: now.toISOString(),
         }, accessToken);
 
+        var cronRedacted = fb.redactAddress(job.address);
         for (var j = 0; j < bids.length; j++) {
           var bid = bids[j];
           var newStatus = bid.id === winner.id ? 'won' : 'lost';
@@ -469,13 +474,13 @@ async function handleCheckDeadlines(req, res) {
           if (bid.id === winner.id) {
             await fb.sendEmail(
               bid.providerEmail,
-              'You Won the Job! — ' + job.address,
+              'You Won the Job! — ' + cronRedacted,
               '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
                 '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
                 '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Congratulations! You\'ve been awarded the job</h2>' +
                 '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + bid.providerName.split(' ')[0] + ', your bid of $' + Number(bid.amount).toFixed(2) + ' was the winning bid.</p>' +
                 '<div style="background:#ECFDF3;border-radius:12px;padding:20px 24px;">' +
-                  '<div style="margin-bottom:8px;"><strong style="color:#067647;">Address:</strong> <span style="color:#343434;">' + job.address + '</span></div>' +
+                  '<div style="margin-bottom:8px;"><strong style="color:#067647;">Location:</strong> <span style="color:#343434;">' + cronRedacted + '</span></div>' +
                   '<div><strong style="color:#067647;">Your bid:</strong> <span style="color:#080808;font-size:20px;font-weight:600;">$' + Number(bid.amount).toFixed(2) + '</span></div>' +
                 '</div>' +
                 '<p style="color:#666;font-size:14px;margin-top:24px;">A member of the Guest House team will reach out with next steps.</p>' +
@@ -484,11 +489,11 @@ async function handleCheckDeadlines(req, res) {
           } else if (bid.submittedAt) {
             await fb.sendEmail(
               bid.providerEmail,
-              'Job Update — ' + job.address,
+              'Job Update — ' + cronRedacted,
               '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
                 '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
                 '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Job awarded to another provider</h2>' +
-                '<p style="color:#666;font-size:15px;line-height:1.6;">Hi ' + bid.providerName.split(' ')[0] + ', thanks for your bid on ' + job.address + '. This job has been awarded to another provider. We\'ll notify you when new jobs become available.</p>' +
+                '<p style="color:#666;font-size:15px;line-height:1.6;">Hi ' + bid.providerName.split(' ')[0] + ', thanks for your bid on a job in ' + cronRedacted + '. This job has been awarded to another provider. We\'ll notify you when new jobs become available.</p>' +
               '</div>'
             );
           }
@@ -499,6 +504,102 @@ async function handleCheckDeadlines(req, res) {
     }
 
     return res.status(200).json({ processed: results.length, results: results });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// === DASHBOARD STATS ===
+async function handleDashboardStats(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    // Fetch all jobs, bids, and active stager providers in parallel
+    var jobDocs = await fb.runQuery('jobs', [], accessToken);
+    var bidDocs = await fb.runQuery('bids', [], accessToken);
+    var stagerDocs = await fb.runQuery('providers', [
+      { field: { fieldPath: 'role' }, op: 'EQUAL', value: { stringValue: 'stager' } },
+      { field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: 'active' } },
+    ], accessToken);
+
+    var allJobs = jobDocs.map(function(item) {
+      var data = fb.fromFirestoreFields(item.document.fields);
+      data.id = fb.docId(item.document.name);
+      return data;
+    });
+
+    var allBids = bidDocs.map(function(item) {
+      var data = fb.fromFirestoreFields(item.document.fields);
+      data.id = fb.docId(item.document.name);
+      return data;
+    });
+
+    // KPIs
+    var activeHomes = allJobs.filter(function(j) { return j.status === 'bidding'; }).length;
+    var awardedHomes = allJobs.filter(function(j) { return j.status === 'awarded'; }).length;
+    var totalStagers = stagerDocs.length;
+
+    var submittedBids = allBids.filter(function(b) { return b.submittedAt && b.amount; });
+    var avgBidPrice = 0;
+    if (submittedBids.length > 0) {
+      var total = submittedBids.reduce(function(sum, b) { return sum + Number(b.amount); }, 0);
+      avgBidPrice = Math.round((total / submittedBids.length) * 100) / 100;
+    }
+
+    // Alerts
+    var now = new Date();
+    var twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    var alerts = [];
+
+    var biddingJobs = allJobs.filter(function(j) { return j.status === 'bidding'; });
+    biddingJobs.forEach(function(job) {
+      var deadline = new Date(job.biddingDeadline);
+      var jobBids = allBids.filter(function(b) { return b.jobId === job.id && b.submittedAt && b.amount; });
+
+      if (deadline < now) {
+        alerts.push({ type: 'expired', jobId: job.id, address: job.address, message: 'Bidding expired \u2014 no auto-award yet' });
+      } else if (deadline < twoHoursFromNow && jobBids.length === 0) {
+        alerts.push({ type: 'low_response', jobId: job.id, address: job.address, message: '0 bids with <2h remaining' });
+      }
+    });
+
+    // Stager stats
+    var stagerStats = {};
+    allBids.forEach(function(bid) {
+      if (!bid.providerEmail) return;
+      if (!stagerStats[bid.providerEmail]) {
+        stagerStats[bid.providerEmail] = { jobsWon: 0, totalBids: 0, bidSum: 0, avgBid: 0, winRate: 0 };
+      }
+      if (bid.submittedAt && bid.amount) {
+        stagerStats[bid.providerEmail].totalBids++;
+        stagerStats[bid.providerEmail].bidSum += Number(bid.amount);
+      }
+      if (bid.status === 'won') {
+        stagerStats[bid.providerEmail].jobsWon++;
+      }
+    });
+
+    Object.keys(stagerStats).forEach(function(email) {
+      var s = stagerStats[email];
+      s.avgBid = s.totalBids > 0 ? Math.round((s.bidSum / s.totalBids) * 100) / 100 : 0;
+      s.winRate = s.totalBids > 0 ? Math.round((s.jobsWon / s.totalBids) * 100) : 0;
+      delete s.bidSum;
+    });
+
+    return res.status(200).json({
+      kpis: {
+        activeHomes: activeHomes,
+        awardedHomes: awardedHomes,
+        totalStagers: totalStagers,
+        avgBidPrice: avgBidPrice,
+      },
+      alerts: alerts,
+      stagerStats: stagerStats,
+    });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
