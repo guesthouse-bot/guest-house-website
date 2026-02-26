@@ -954,6 +954,420 @@
             .form-grid { grid-template-columns: 1fr; }
             .job-card-header { flex-direction: column; }
         }
+
+        /* Quote Wizard */
+        .quote-wizard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            padding: 48px 24px 80px;
+            position: relative;
+        }
+        .quote-step { display: none; width: 100%; max-width: 600px; text-align: center; }
+        .quote-step.active { display: block; }
+        .quote-question {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--color-onyx);
+            margin-bottom: 32px;
+        }
+        .quote-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .quote-option {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 14px;
+            padding: 28px 16px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            text-align: center;
+        }
+        .quote-option:hover { border-color: var(--color-charcoal); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .quote-option.selected { border-color: var(--color-onyx); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .quote-option-icon { font-size: 2rem; margin-bottom: 10px; }
+        .quote-option-title { font-size: 15px; font-weight: 600; color: var(--color-onyx); margin-bottom: 4px; }
+        .quote-option-sub { font-size: 13px; color: var(--color-text-secondary); }
+        .quote-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        .quote-input-group label { font-size: 13px; font-weight: 500; color: var(--color-charcoal); }
+        .quote-input-group input,
+        .quote-input-group textarea {
+            padding: 13px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            width: 100%;
+        }
+        .quote-input-group input:focus,
+        .quote-input-group textarea:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.06);
+        }
+        .quote-input-group textarea { resize: vertical; min-height: 100px; }
+        .quote-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .quote-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 24px 20px;
+            text-align: center;
+        }
+        .quote-progress-bar {
+            height: 4px;
+            background: var(--color-border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .quote-progress-fill {
+            height: 100%;
+            background: var(--color-onyx);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .quote-progress-label { font-size: 12px; color: var(--color-text-secondary); font-weight: 500; }
+        /* Multi-select option cards */
+        .quote-option.multi-selected { border-color: var(--color-onyx); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .quote-option .check-mark {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--color-onyx);
+            color: #fff;
+            font-size: 13px;
+            line-height: 22px;
+            text-align: center;
+        }
+        .quote-option { position: relative; }
+        .quote-option.multi-selected .check-mark { display: block; }
+        /* Room tiles grid */
+        .quote-tiles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .quote-tile {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 14px 12px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            user-select: none;
+        }
+        .quote-tile:hover { border-color: var(--color-charcoal); }
+        .quote-tile.selected { border-color: var(--color-onyx); background: var(--color-surface-secondary); box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+        .quote-tile-icon { font-size: 1.4rem; margin-bottom: 4px; }
+        /* Calendar */
+        .quote-calendar {
+            max-width: 360px;
+            margin: 0 auto 24px;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 20px;
+            user-select: none;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .cal-header button {
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--color-charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .cal-header button:hover { background: var(--color-surface-secondary); }
+        .cal-title { font-size: 15px; font-weight: 600; color: var(--color-onyx); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .cal-dow { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; padding: 4px 0 8px; }
+        .cal-day {
+            padding: 8px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.1s;
+            color: var(--color-charcoal);
+        }
+        .cal-day:hover { background: var(--color-surface-secondary); }
+        .cal-day.today { font-weight: 700; color: var(--color-onyx); }
+        .cal-day.selected { background: var(--color-onyx); color: #fff; font-weight: 600; }
+        .cal-day.disabled { color: var(--color-border); pointer-events: none; }
+        .cal-day.empty { pointer-events: none; }
+        .cal-selected-label { margin-top: 12px; font-size: 14px; color: var(--color-text-secondary); text-align: center; }
+        .cal-selected-label strong { color: var(--color-onyx); }
+        .quote-review {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        .quote-review-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+        .quote-review-row:last-child { border-bottom: none; }
+        .quote-review-label { color: var(--color-text-secondary); font-weight: 500; }
+        .quote-review-value { color: var(--color-onyx); font-weight: 500; text-align: right; max-width: 60%; }
+        @media (max-width: 600px) {
+            .quote-options { grid-template-columns: 1fr; }
+            .quote-tiles { grid-template-columns: repeat(2, 1fr); }
+            .quote-question { font-size: 1.25rem; }
+        }
+        /* Dashboard Overview redesign */
+        .ov-welcome { margin-bottom: 28px; }
+        .ov-greeting {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+        .ov-subtitle {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        .ov-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .ov-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--color-onyx);
+        }
+        .ov-attention { margin-bottom: 24px; }
+        .ov-attention-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 7px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #FEF3F2;
+            color: var(--color-error);
+            margin-left: 8px;
+        }
+        .alert-info {
+            background: #EFF6FF;
+            border-left-color: #3B82F6;
+            color: #1E3A5F;
+        }
+        .ov-split {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 28px;
+            margin-bottom: 36px;
+        }
+        .ov-split-left, .ov-split-right { min-width: 0; }
+        .ov-bid-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dash-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .dash-card-top .countdown-sm {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .ov-tag-service {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-deep);
+            background: #EFF6FF;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .ov-awarded-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+        .ov-awarded-card:last-child { margin-bottom: 0; }
+        .ov-awarded-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .ov-awarded-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--color-deep);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
+        .ov-awarded-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+        .ov-awarded-date {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+        .ov-awarded-address {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .ov-jobs { margin-bottom: 8px; }
+        .ov-jobs-scroll {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-border) transparent;
+        }
+        .ov-jobs-scroll::-webkit-scrollbar { height: 6px; }
+        .ov-jobs-scroll::-webkit-scrollbar-thumb {
+            background: var(--color-border);
+            border-radius: 3px;
+        }
+        .ov-job-card {
+            flex: 0 0 220px;
+            scroll-snap-align: start;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .ov-job-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .ov-job-badge.completed { background: #ECFDF5; color: #065F46; }
+        .ov-job-badge.no_bids { background: #FEF3F2; color: #7A271A; }
+        .ov-job-address {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 6px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .ov-job-meta {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+        .ov-empty-state {
+            padding: 24px;
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            background: var(--color-white);
+            border: 1px dashed var(--color-border);
+            border-radius: 10px;
+        }
+        .ov-empty-link {
+            color: var(--color-deep);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .ov-view-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-deep);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .ov-view-all-btn:hover { text-decoration: underline; }
+        @media (max-width: 1060px) {
+            .ov-split { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 860px) {
+            .ov-greeting { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .ov-greeting { font-size: 1.25rem; }
+        }
     </style>
 </head>
 <body>
@@ -994,22 +1408,22 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                     Overview
                 </button>
-                <div class="sidebar-nav-label">Quotes</div>
+                <div class="sidebar-nav-label">Bids</div>
                 <button class="section-nav-btn" data-section="jobs">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                    New Quote
-                </button>
-                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    All Quotes
+                    New Bid
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="bidding">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
-                    Active Quotes
+                    Collecting Bids
                 </button>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="awarded">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    Awarded Quotes
+                    Awarded Bids
+                </button>
+                <button class="section-nav-btn" data-section="active-jobs" data-filter="">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    All Bids
                 </button>
                 <div class="sidebar-nav-label" style="margin-top:8px;">Listings</div>
                 <button class="section-nav-btn" data-section="active-jobs" data-filter="">
@@ -1040,7 +1454,7 @@
         <div class="content-area">
             <div class="content-header">
                 <h1 id="contentTitle">Overview</h1>
-                <button class="btn btn-cta" id="newHomeBtn">+ New Quote</button>
+                <button class="btn btn-cta" id="newHomeBtn">+ New Bid</button>
             </div>
             <div class="content-body">
 
@@ -1054,52 +1468,162 @@
                     </div>
                 </div>
 
-                <!-- Section 1: New Quote -->
+                <!-- Section 1: New Quote (Wizard) -->
                 <div class="section" id="section-jobs">
-                    <div class="form-card">
-                        <div class="section-header">
-                            <h2>New Quote Details</h2>
-                        </div>
-                        <div class="form-grid" id="jobForm">
-                            <div class="field form-grid-full">
-                                <label>Address *</label>
-                                <input type="text" id="jobAddress" placeholder="123 Main St, Phoenix, AZ 85001">
-                            </div>
-                            <div class="field">
-                                <label>Square Footage</label>
-                                <input type="text" id="jobSqft" placeholder="2,400">
-                            </div>
-                            <div class="field">
-                                <label>Rooms</label>
-                                <input type="text" id="jobRooms" placeholder="e.g. 4 BR / 3 BA">
-                            </div>
-                            <div class="field">
-                                <label>Timeline</label>
-                                <input type="text" id="jobTimeline" placeholder="e.g. Stage by March 5">
-                            </div>
-                            <div class="field">
-                                <label>Market *</label>
-                                <select id="jobMarket">
-                                    <option value="" disabled selected>Select market</option>
-                                    <option value="arizona">Arizona</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label>Provider Type *</label>
-                                <select id="jobProviderType">
-                                    <option value="" disabled selected>Select type</option>
-                                    <option value="stager">Stager</option>
-                                </select>
-                            </div>
-                            <div class="field form-grid-full">
-                                <label>Notes</label>
-                                <textarea id="jobNotes" placeholder="Any special instructions or details..."></textarea>
+                    <div class="quote-wizard" id="quoteWizard">
+
+                        <!-- Plan -->
+                        <div class="quote-step active" data-step-id="plan">
+                            <h2 class="quote-question">What's the plan for this home?</h2>
+                            <div class="quote-options" id="wizPlanOptions">
+                                <div class="quote-option" data-value="Keeping items">
+                                    <div class="quote-option-icon">📦</div>
+                                    <div class="quote-option-title">Keeping items</div>
+                                    <div class="quote-option-sub">Homeowner is staying put</div>
+                                </div>
+                                <div class="quote-option" data-value="Taking everything out">
+                                    <div class="quote-option-icon">🚚</div>
+                                    <div class="quote-option-title">Taking everything out</div>
+                                    <div class="quote-option-sub">Full cleanout needed</div>
+                                </div>
+                                <div class="quote-option" data-value="Exploring options">
+                                    <div class="quote-option-icon">🔍</div>
+                                    <div class="quote-option-title">Exploring options</div>
+                                    <div class="quote-option-sub">Not sure yet</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-actions">
-                            <button class="btn btn-primary" id="createJobBtn">Create Home & Notify Providers</button>
+
+                        <!-- Address -->
+                        <div class="quote-step" data-step-id="address">
+                            <h2 class="quote-question">Where's the property?</h2>
+                            <div class="quote-input-group">
+                                <label for="wizAddress">Address</label>
+                                <input type="text" id="wizAddress" placeholder="123 Main St, Phoenix, AZ 85001">
+                            </div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
                         </div>
-                        <div class="form-message" id="jobMessage"></div>
+
+                        <!-- Services -->
+                        <div class="quote-step" data-step-id="services">
+                            <h2 class="quote-question">What services do you need?</h2>
+                            <div class="quote-options" id="wizServiceOptions" style="grid-template-columns:repeat(3,1fr);">
+                                <div class="quote-option" data-value="Staging">
+                                    <span class="check-mark">&#10003;</span>
+                                    <div class="quote-option-icon">🏠</div>
+                                    <div class="quote-option-title">Staging</div>
+                                    <div class="quote-option-sub">Furniture &amp; decor</div>
+                                </div>
+                                <div class="quote-option" data-value="Deep Clean">
+                                    <span class="check-mark">&#10003;</span>
+                                    <div class="quote-option-icon">🧹</div>
+                                    <div class="quote-option-title">Deep Clean</div>
+                                    <div class="quote-option-sub">Top-to-bottom clean</div>
+                                </div>
+                                <div class="quote-option" data-value="Moving">
+                                    <span class="check-mark">&#10003;</span>
+                                    <div class="quote-option-icon">🚛</div>
+                                    <div class="quote-option-title">Moving</div>
+                                    <div class="quote-option-sub">Pack &amp; haul</div>
+                                </div>
+                                <div class="quote-option" data-value="Photography">
+                                    <span class="check-mark">&#10003;</span>
+                                    <div class="quote-option-icon">📸</div>
+                                    <div class="quote-option-title">Photography</div>
+                                    <div class="quote-option-sub">Listing photos</div>
+                                </div>
+                                <div class="quote-option" data-value="Styling">
+                                    <span class="check-mark">&#10003;</span>
+                                    <div class="quote-option-icon">✨</div>
+                                    <div class="quote-option-title">Styling</div>
+                                    <div class="quote-option-sub">Design consultation</div>
+                                </div>
+                            </div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Square footage -->
+                        <div class="quote-step" data-step-id="sqft">
+                            <h2 class="quote-question">How big is the home?</h2>
+                            <div class="quote-input-group">
+                                <label for="wizSqft">Square footage</label>
+                                <input type="text" id="wizSqft" placeholder="2,400">
+                            </div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Rooms (conditional — staging only) -->
+                        <div class="quote-step" data-step-id="rooms">
+                            <h2 class="quote-question">Which rooms need staging?</h2>
+                            <div class="quote-tiles" id="wizRoomTiles">
+                                <div class="quote-tile" data-value="Living Room"><div class="quote-tile-icon">🛋️</div>Living Room</div>
+                                <div class="quote-tile" data-value="Dining Room"><div class="quote-tile-icon">🍽️</div>Dining Room</div>
+                                <div class="quote-tile" data-value="Kitchen"><div class="quote-tile-icon">🍳</div>Kitchen</div>
+                                <div class="quote-tile" data-value="Primary Bedroom"><div class="quote-tile-icon">🛏️</div>Primary Bedroom</div>
+                                <div class="quote-tile" data-value="Office"><div class="quote-tile-icon">💼</div>Office</div>
+                                <div class="quote-tile" data-value="Bedroom 2"><div class="quote-tile-icon">🛏️</div>Bedroom 2</div>
+                                <div class="quote-tile" data-value="Bedroom 3"><div class="quote-tile-icon">🛏️</div>Bedroom 3</div>
+                                <div class="quote-tile" data-value="Bedroom 4"><div class="quote-tile-icon">🛏️</div>Bedroom 4</div>
+                                <div class="quote-tile" data-value="Bathroom"><div class="quote-tile-icon">🛁</div>Bathroom</div>
+                                <div class="quote-tile" data-value="Entryway"><div class="quote-tile-icon">🚪</div>Entryway</div>
+                                <div class="quote-tile" data-value="Patio"><div class="quote-tile-icon">🌿</div>Patio</div>
+                                <div class="quote-tile" data-value="Other"><div class="quote-tile-icon">➕</div>Other</div>
+                            </div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Timeline (calendar) -->
+                        <div class="quote-step" data-step-id="timeline">
+                            <h2 class="quote-question">When do you need this done?</h2>
+                            <div class="quote-calendar" id="wizCalendar"></div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="quote-step" data-step-id="notes">
+                            <h2 class="quote-question">Anything else?</h2>
+                            <div class="quote-input-group">
+                                <label for="wizNotes">Notes (optional)</label>
+                                <textarea id="wizNotes" placeholder="Any special instructions or details..."></textarea>
+                            </div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary wiz-next">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Review -->
+                        <div class="quote-step" data-step-id="review">
+                            <h2 class="quote-question">Review & Submit</h2>
+                            <div class="quote-review" id="wizReview"></div>
+                            <div class="quote-nav">
+                                <button class="btn btn-secondary wiz-back">Back</button>
+                                <button class="btn btn-primary" id="wizSubmit">Get your bid</button>
+                            </div>
+                            <div class="form-message" id="wizMessage" style="max-width:600px;margin:16px auto 0;"></div>
+                        </div>
+
+                        <!-- Progress bar -->
+                        <div class="quote-progress">
+                            <div class="quote-progress-bar"><div class="quote-progress-fill" id="wizProgressFill" style="width:12.5%"></div></div>
+                            <div class="quote-progress-label" id="wizProgressLabel">Step 1 of 8</div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -1263,8 +1787,8 @@
         // Section title mapping
         var sectionTitles = {
             'dashboard': 'Overview',
-            'jobs': 'New Quote',
-            'active-jobs': 'All Quotes',
+            'jobs': 'New Bid',
+            'active-jobs': 'All Bids',
             'providers': 'Stagers'
         };
 
@@ -1298,7 +1822,7 @@
 
         function init() {
             setupNav();
-            setupCreateJob();
+            setupQuoteWizard();
             setupProviderModal();
             setupFilters();
             loadDashboard();
@@ -1341,62 +1865,254 @@
             });
         }
 
-        // Create Job
-        function setupCreateJob() {
-            document.getElementById('createJobBtn').addEventListener('click', async function() {
-                var btn = this;
-                var address = document.getElementById('jobAddress').value.trim();
-                var market = document.getElementById('jobMarket').value;
-                var providerType = document.getElementById('jobProviderType').value;
-                var msg = document.getElementById('jobMessage');
+        // Quote Wizard
+        function setupQuoteWizard() {
+            var quoteData = { plan: '', address: '', services: [], sqft: '', rooms: [], timeline: '', notes: '' };
+            var allStepIds = ['plan','address','services','sqft','rooms','timeline','notes','review'];
+            var stepOrder = allStepIds.slice(); // active step list (rooms is conditional)
+            var curIdx = 0;
 
-                if (!address || !market || !providerType) {
-                    msg.className = 'form-message error';
-                    msg.textContent = 'Please fill in all required fields.';
-                    return;
+            function buildStepOrder() {
+                var hasStaging = quoteData.services.indexOf('Staging') !== -1;
+                stepOrder = allStepIds.filter(function(id) {
+                    if (id === 'rooms' && !hasStaging) return false;
+                    return true;
+                });
+            }
+
+            function getStepEl(id) {
+                return document.querySelector('.quote-step[data-step-id="' + id + '"]');
+            }
+
+            function showStep(idx) {
+                curIdx = idx;
+                var activeId = stepOrder[idx];
+                document.querySelectorAll('.quote-step').forEach(function(s) { s.classList.remove('active'); });
+                getStepEl(activeId).classList.add('active');
+                document.getElementById('wizProgressFill').style.width = ((idx + 1) / stepOrder.length * 100) + '%';
+                document.getElementById('wizProgressLabel').textContent = 'Step ' + (idx + 1) + ' of ' + stepOrder.length;
+                if (activeId === 'review') buildReview();
+                if (activeId === 'timeline') renderCalendar();
+            }
+
+            function nextStep() { if (curIdx < stepOrder.length - 1) showStep(curIdx + 1); }
+            function prevStep() { if (curIdx > 0) showStep(curIdx - 1); }
+
+            // Collect data from current step before advancing
+            function collectAndNext() {
+                var id = stepOrder[curIdx];
+                if (id === 'address') {
+                    var addr = document.getElementById('wizAddress').value.trim();
+                    if (!addr) { document.getElementById('wizAddress').focus(); return; }
+                    quoteData.address = addr;
+                }
+                if (id === 'services') {
+                    if (quoteData.services.length === 0) return; // must pick at least one
+                    buildStepOrder(); // re-evaluate if rooms step is needed
+                }
+                if (id === 'sqft') {
+                    quoteData.sqft = document.getElementById('wizSqft').value.trim();
+                }
+                if (id === 'notes') {
+                    quoteData.notes = document.getElementById('wizNotes').value.trim();
+                }
+                nextStep();
+            }
+
+            // Generic back/next buttons
+            document.querySelectorAll('.wiz-back').forEach(function(btn) {
+                btn.addEventListener('click', prevStep);
+            });
+            document.querySelectorAll('.wiz-next').forEach(function(btn) {
+                btn.addEventListener('click', collectAndNext);
+            });
+
+            // Step: Plan (single-select, auto-advance)
+            document.querySelectorAll('#wizPlanOptions .quote-option').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('#wizPlanOptions .quote-option').forEach(function(c) { c.classList.remove('selected'); });
+                    card.classList.add('selected');
+                    quoteData.plan = card.dataset.value;
+                    setTimeout(nextStep, 250);
+                });
+            });
+
+            // Step: Services (multi-select)
+            document.querySelectorAll('#wizServiceOptions .quote-option').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    card.classList.toggle('multi-selected');
+                    var val = card.dataset.value;
+                    var idx = quoteData.services.indexOf(val);
+                    if (idx === -1) quoteData.services.push(val);
+                    else quoteData.services.splice(idx, 1);
+                });
+            });
+
+            // Step: Rooms (multi-select tiles)
+            document.querySelectorAll('#wizRoomTiles .quote-tile').forEach(function(tile) {
+                tile.addEventListener('click', function() {
+                    tile.classList.toggle('selected');
+                    var val = tile.dataset.value;
+                    var idx = quoteData.rooms.indexOf(val);
+                    if (idx === -1) quoteData.rooms.push(val);
+                    else quoteData.rooms.splice(idx, 1);
+                });
+            });
+
+            // Step: Timeline (calendar)
+            var calYear, calMonth, calSelectedDate = null;
+            (function() { var d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth(); })();
+
+            function renderCalendar() {
+                var today = new Date(); today.setHours(0,0,0,0);
+                var firstDay = new Date(calYear, calMonth, 1).getDay();
+                var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+                var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+                var html = '<div class="cal-header">';
+                html += '<button id="calPrev">&larr;</button>';
+                html += '<span class="cal-title">' + monthNames[calMonth] + ' ' + calYear + '</span>';
+                html += '<button id="calNext">&rarr;</button>';
+                html += '</div>';
+                html += '<div class="cal-grid">';
+                ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(d) { html += '<div class="cal-dow">' + d + '</div>'; });
+                for (var i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+                for (var d = 1; d <= daysInMonth; d++) {
+                    var dt = new Date(calYear, calMonth, d);
+                    var cls = 'cal-day';
+                    if (dt < today) cls += ' disabled';
+                    if (dt.getTime() === today.getTime()) cls += ' today';
+                    if (calSelectedDate && dt.getTime() === calSelectedDate.getTime()) cls += ' selected';
+                    html += '<div class="' + cls + '" data-date="' + calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0') + '">' + d + '</div>';
+                }
+                html += '</div>';
+                if (calSelectedDate) {
+                    html += '<div class="cal-selected-label">Selected: <strong>' + calSelectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' }) + '</strong></div>';
                 }
 
+                var container = document.getElementById('wizCalendar');
+                container.innerHTML = html;
+
+                document.getElementById('calPrev').addEventListener('click', function() {
+                    calMonth--;
+                    if (calMonth < 0) { calMonth = 11; calYear--; }
+                    renderCalendar();
+                });
+                document.getElementById('calNext').addEventListener('click', function() {
+                    calMonth++;
+                    if (calMonth > 11) { calMonth = 0; calYear++; }
+                    renderCalendar();
+                });
+                container.querySelectorAll('.cal-day:not(.empty):not(.disabled)').forEach(function(el) {
+                    el.addEventListener('click', function() {
+                        var parts = el.dataset.date.split('-');
+                        calSelectedDate = new Date(+parts[0], +parts[1]-1, +parts[2]);
+                        quoteData.timeline = calSelectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        renderCalendar();
+                    });
+                });
+            }
+
+            // Review
+            function buildReview() {
+                var rows = [
+                    { label: 'Plan', value: quoteData.plan },
+                    { label: 'Address', value: quoteData.address },
+                    { label: 'Services', value: quoteData.services.join(', ') || '—' },
+                    { label: 'Square footage', value: quoteData.sqft || '—' },
+                ];
+                if (quoteData.rooms.length > 0) {
+                    rows.push({ label: 'Rooms', value: quoteData.rooms.join(', ') });
+                }
+                rows.push({ label: 'Timeline', value: quoteData.timeline || '—' });
+                rows.push({ label: 'Notes', value: quoteData.notes || '—' });
+                rows.push({ label: 'Market', value: 'Arizona' });
+                document.getElementById('wizReview').innerHTML = rows.map(function(r) {
+                    return '<div class="quote-review-row"><span class="quote-review-label">' + esc(r.label) + '</span><span class="quote-review-value">' + esc(r.value) + '</span></div>';
+                }).join('');
+            }
+
+            // Submit
+            document.getElementById('wizSubmit').addEventListener('click', async function() {
+                var btn = this;
+                var msg = document.getElementById('wizMessage');
                 btn.disabled = true;
-                btn.textContent = 'Creating job...';
+                btn.textContent = 'Sending...';
                 msg.className = 'form-message';
                 msg.style.display = 'none';
 
+                var payload = {
+                    address: quoteData.address,
+                    sqft: quoteData.sqft,
+                    rooms: quoteData.rooms.join(', '),
+                    timeline: quoteData.timeline,
+                    market: 'arizona',
+                    providerType: 'stager',
+                    notes: (quoteData.plan ? 'Plan: ' + quoteData.plan + '. ' : '')
+                         + (quoteData.services.length ? 'Services: ' + quoteData.services.join(', ') + '. ' : '')
+                         + (quoteData.notes || ''),
+                };
+
+                var bidsCreated = 0;
                 try {
                     var response = await fetch('/api/bidding?action=jobs', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            address: address,
-                            sqft: document.getElementById('jobSqft').value.trim(),
-                            rooms: document.getElementById('jobRooms').value.trim(),
-                            timeline: document.getElementById('jobTimeline').value.trim(),
-                            market: market,
-                            providerType: providerType,
-                            notes: document.getElementById('jobNotes').value.trim(),
-                        }),
+                        body: JSON.stringify(payload),
                     });
                     var data = await response.json();
                     if (!response.ok) throw new Error(data.error);
-
-                    msg.className = 'form-message success';
-                    msg.textContent = 'Job created! ' + data.bidsCreated + ' provider(s) notified via email.';
-
-                    // Clear form
-                    document.getElementById('jobAddress').value = '';
-                    document.getElementById('jobSqft').value = '';
-                    document.getElementById('jobRooms').value = '';
-                    document.getElementById('jobTimeline').value = '';
-                    document.getElementById('jobNotes').value = '';
-                    document.getElementById('jobMarket').selectedIndex = 0;
-                    document.getElementById('jobProviderType').selectedIndex = 0;
+                    bidsCreated = data.bidsCreated || 0;
                 } catch (err) {
-                    msg.className = 'form-message error';
-                    msg.textContent = 'Error: ' + err.message;
+                    console.warn('API call failed, quote saved locally:', err.message);
                 }
 
+                var localQuotes = [];
+                try { localQuotes = JSON.parse(localStorage.getItem('pn_quotes') || '[]'); } catch (e) {}
+                localQuotes.push({
+                    id: 'local-' + Date.now(),
+                    address: payload.address,
+                    sqft: payload.sqft,
+                    rooms: payload.rooms,
+                    timeline: payload.timeline,
+                    market: payload.market,
+                    providerType: payload.providerType,
+                    notes: payload.notes,
+                    services: quoteData.services.slice(),
+                    status: 'bidding',
+                    created: new Date().toISOString(),
+                    plan: quoteData.plan,
+                });
+                localStorage.setItem('pn_quotes', JSON.stringify(localQuotes));
+
+                msg.className = 'form-message success';
+                msg.textContent = bidsCreated
+                    ? 'Bid created! ' + bidsCreated + ' stager(s) notified.'
+                    : 'Bid created! It will appear in Collecting Bids.';
+
+                setTimeout(function() {
+                    quoteData = { plan: '', address: '', services: [], sqft: '', rooms: [], timeline: '', notes: '' };
+                    calSelectedDate = null;
+                    document.getElementById('wizAddress').value = '';
+                    document.getElementById('wizSqft').value = '';
+                    document.getElementById('wizNotes').value = '';
+                    document.querySelectorAll('#wizPlanOptions .quote-option').forEach(function(c) { c.classList.remove('selected'); });
+                    document.querySelectorAll('#wizServiceOptions .quote-option').forEach(function(c) { c.classList.remove('multi-selected'); });
+                    document.querySelectorAll('#wizRoomTiles .quote-tile').forEach(function(c) { c.classList.remove('selected'); });
+                    msg.className = 'form-message';
+                    msg.style.display = 'none';
+                    buildStepOrder();
+                    showStep(0);
+                }, 3000);
+
                 btn.disabled = false;
-                btn.textContent = 'Create Home & Notify Providers';
+                btn.textContent = 'Get your bid';
             });
+        }
+
+        // Local quotes helper
+        function getLocalQuotes() {
+            try { return JSON.parse(localStorage.getItem('pn_quotes') || '[]'); } catch (e) { return []; }
         }
 
         // Dashboard
@@ -1409,117 +2125,233 @@
             dashCountdowns = {};
 
             try {
-                // Fetch jobs and dashboard stats in parallel
-                var jobsPromise = fetch('/api/bidding?action=jobs');
-                var statsPromise = fetch('/api/bidding?action=dashboard-stats');
-
-                var response = await jobsPromise;
-                if (!response.ok) throw new Error('API returned ' + response.status);
-                var data = await response.json();
-                var allJobs = data.jobs || [];
-
-                var statsData = null;
+                // Fetch jobs
+                var allJobs = [];
                 try {
-                    var statsResponse = await statsPromise;
-                    if (statsResponse.ok) statsData = await statsResponse.json();
-                } catch (e) { /* stats are optional */ }
+                    var response = await fetch('/api/bidding?action=jobs');
+                    if (response.ok) {
+                        var data = await response.json();
+                        allJobs = data.jobs || [];
+                    }
+                } catch (e) {}
+
+                // Merge local quotes (avoid duplicates)
+                var remoteIds = {};
+                allJobs.forEach(function(j) { remoteIds[j.id] = true; });
+                getLocalQuotes().forEach(function(lq) {
+                    if (!remoteIds[lq.id]) allJobs.push(lq);
+                });
 
                 allJobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
 
-                var lanes = [
-                    { key: 'bidding', title: 'Active Home Bids', jobs: [] },
-                    { key: 'awarded', title: 'Awarded Quotes', jobs: [] },
-                    { key: 'completed', title: 'Completed Homes', jobs: [] },
-                    { key: 'no_bids', title: 'No Bid Homes', jobs: [] },
-                ];
+                var now = new Date();
+
+                // Categorize jobs
+                var biddingJobs = [];
+                var awardedJobs = [];
+                var completedJobs = [];
+                var noBidsJobs = [];
 
                 allJobs.forEach(function(job) {
-                    for (var i = 0; i < lanes.length; i++) {
-                        if (job.status === lanes[i].key) {
-                            lanes[i].jobs.push(job);
-                            return;
+                    if (job.status === 'bidding') biddingJobs.push(job);
+                    else if (job.status === 'awarded') awardedJobs.push(job);
+                    else if (job.status === 'completed') completedJobs.push(job);
+                    else if (job.status === 'no_bids') noBidsJobs.push(job);
+                });
+
+                // --- Compute client-side KPIs ---
+                var totalProperties = allJobs.length;
+                var kpiBidding = biddingJobs.length;
+                var kpiAwarded = awardedJobs.length;
+                var avgTimeToAward = 0;
+                var awardTimesCount = 0;
+                awardedJobs.forEach(function(j) {
+                    if (j.awardedAt && j.created) {
+                        var diff = new Date(j.awardedAt) - new Date(j.created);
+                        if (diff > 0) { avgTimeToAward += diff; awardTimesCount++; }
+                    }
+                });
+                if (awardTimesCount > 0) avgTimeToAward = Math.round(avgTimeToAward / awardTimesCount / 3600000);
+
+                // --- Compute attention items ---
+                var attentionItems = [];
+                var iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+                var iconWarn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+                var iconInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+
+                biddingJobs.forEach(function(job) {
+                    if (!job.biddingDeadline) return;
+                    var deadline = new Date(job.biddingDeadline);
+                    var hoursLeft = (deadline - now) / 3600000;
+                    if (hoursLeft <= 0) {
+                        attentionItems.push({ severity: 0, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'Bid window has expired', jobId: job.id });
+                    } else if (hoursLeft < 2) {
+                        attentionItems.push({ severity: 1, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'Expires in less than 2 hours', jobId: job.id });
+                    } else if (hoursLeft < 24) {
+                        attentionItems.push({ severity: 2, icon: iconWarn, cls: 'alert-warning', address: job.address, msg: 'Expires in ' + Math.round(hoursLeft) + ' hours', jobId: job.id });
+                    }
+                });
+                noBidsJobs.forEach(function(job) {
+                    attentionItems.push({ severity: 0, icon: iconAlert, cls: 'alert-expired', address: job.address, msg: 'No bids received', jobId: job.id });
+                });
+                awardedJobs.forEach(function(job) {
+                    if (job.awardedAt) {
+                        var hoursSinceAward = (now - new Date(job.awardedAt)) / 3600000;
+                        if (hoursSinceAward < 48) {
+                            attentionItems.push({ severity: 3, icon: iconInfo, cls: 'alert-info', address: job.address, msg: 'Awarded ' + Math.round(hoursSinceAward) + 'h ago', jobId: job.id });
                         }
                     }
                 });
+                attentionItems.sort(function(a, b) { return a.severity - b.severity; });
 
+                // --- Build HTML ---
                 var html = '';
 
-                // KPI cards
-                if (statsData && statsData.kpis) {
-                    var k = statsData.kpis;
-                    html += '<div class="kpi-row">';
-                    html += '<div class="kpi-card"><div class="kpi-label">Active Homes</div><div class="kpi-value">' + k.activeHomes + '</div></div>';
-                    html += '<div class="kpi-card"><div class="kpi-label">Awarded Quotes</div><div class="kpi-value">' + k.awardedHomes + '</div></div>';
-                    html += '<div class="kpi-card"><div class="kpi-label">Active Stagers</div><div class="kpi-value">' + k.totalStagers + '</div></div>';
-                    html += '<div class="kpi-card"><div class="kpi-label">Avg Bid Price</div><div class="kpi-value">$' + formatAmount(k.avgBidPrice) + '</div></div>';
+                // 1. Welcome + KPIs
+                var hour = now.getHours();
+                var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+                html += '<div class="ov-welcome">';
+                html += '<div class="ov-greeting">' + greeting + '</div>';
+                html += '<div class="ov-subtitle">Here\'s what\'s happening with your properties.</div>';
+                html += '</div>';
+
+                html += '<div class="kpi-row">';
+                html += '<div class="kpi-card"><div class="kpi-label">Collecting Bids</div><div class="kpi-value">' + kpiBidding + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Awarded</div><div class="kpi-value">' + kpiAwarded + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Total Properties</div><div class="kpi-value">' + totalProperties + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Avg Time to Award</div><div class="kpi-value">' + (avgTimeToAward > 0 ? avgTimeToAward + 'h' : '—') + '</div></div>';
+                html += '</div>';
+
+                // 2. Needs Attention
+                if (attentionItems.length > 0) {
+                    html += '<div class="ov-attention">';
+                    html += '<div class="ov-section-header"><span class="ov-section-title">Needs Attention<span class="ov-attention-count">' + attentionItems.length + '</span></span></div>';
+                    attentionItems.forEach(function(item) {
+                        html += '<div class="alert-banner ' + item.cls + '">';
+                        html += item.icon;
+                        html += '<div class="alert-banner-text"><strong>' + esc(item.address) + '</strong> — ' + esc(item.msg) + '</div>';
+                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(item.jobId) + '">View</button>';
+                        html += '</div>';
+                    });
                     html += '</div>';
                 }
 
-                // Alert banners
-                if (statsData && statsData.alerts && statsData.alerts.length > 0) {
-                    statsData.alerts.forEach(function(alert) {
-                        var cls = alert.type === 'expired' ? 'alert-expired' : 'alert-warning';
-                        var icon = alert.type === 'expired'
-                            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-                            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-                        html += '<div class="alert-banner ' + cls + '">';
-                        html += icon;
-                        html += '<div class="alert-banner-text"><strong>' + esc(alert.address) + '</strong> — ' + esc(alert.message) + '</div>';
-                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(alert.jobId) + '">View</button>';
+                // 3. Two-column split
+                html += '<div class="ov-split">';
+
+                // Left — Collecting Bids
+                html += '<div class="ov-split-left">';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Collecting Bids</span><span class="dash-lane-count">' + biddingJobs.length + '</span></div>';
+                if (biddingJobs.length === 0) {
+                    html += '<div class="ov-empty-state">No active bids. <span class="ov-empty-link" data-action="new-bid">Create a new bid to get started.</span></div>';
+                } else {
+                    html += '<div class="ov-bid-list">';
+                    biddingJobs.forEach(function(job) {
+                        html += '<div class="dash-card" data-dash-toggle="' + esc(job.id) + '">';
+                        html += '<div class="dash-card-top">';
+                        html += '<div class="dash-card-address">' + esc(job.address) + '</div>';
+                        html += '<span class="countdown-sm" id="dcd-' + esc(job.id) + '"></span>';
+                        html += '</div>';
+                        html += '<div class="dash-card-details">';
+                        if (job.serviceType) html += '<span class="ov-tag-service">' + esc(job.serviceType) + '</span>';
+                        if (job.sqft) html += '<span class="dash-card-tag">' + esc(job.sqft) + ' sqft</span>';
+                        html += '<span class="dash-card-tag">' + capitalize(job.market) + '</span>';
+                        html += '</div>';
+                        html += '<div class="dash-card-footer">';
+                        html += '<span class="dash-card-stat"><strong id="dbc-' + esc(job.id) + '">...</strong> bids</span>';
+                        if (job.biddingDeadline) html += '<span class="dash-card-stat">Closes ' + formatDate(job.biddingDeadline) + '</span>';
+                        html += '</div>';
+                        html += '<div class="dash-card-bids" id="dbids-' + esc(job.id) + '"></div>';
+                        html += '</div>';
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+
+                // Right — Awarded
+                html += '<div class="ov-split-right">';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
+                if (awardedJobs.length === 0) {
+                    html += '<div class="ov-empty-state">No awarded jobs yet.</div>';
+                } else {
+                    awardedJobs.forEach(function(job) {
+                        var provName = job.awardedProvider || 'Unknown';
+                        var initials = provName.split(' ').map(function(w) { return w.charAt(0).toUpperCase(); }).join('').substring(0, 2);
+                        html += '<div class="ov-awarded-card">';
+                        html += '<div class="ov-awarded-header">';
+                        html += '<div class="ov-awarded-avatar">' + esc(initials) + '</div>';
+                        html += '<div>';
+                        html += '<div class="ov-awarded-name">' + esc(provName) + '</div>';
+                        if (job.awardedAt) html += '<div class="ov-awarded-date">Awarded ' + formatDate(job.awardedAt) + '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<div class="ov-awarded-address">' + esc(job.address) + '</div>';
+                        html += '<div class="dash-card-details">';
+                        html += '<span class="dash-card-tag">' + capitalize(job.market) + '</span>';
+                        if (job.serviceType) html += '<span class="ov-tag-service">' + esc(job.serviceType) + '</span>';
+                        html += '</div>';
                         html += '</div>';
                     });
                 }
+                html += '</div>';
+                html += '</div>'; // close ov-split
 
-                lanes.forEach(function(lane) {
-                    html += '<div class="dash-lane">';
-                    html += '<div class="dash-lane-header">';
-                    html += '<span class="dash-lane-title">' + esc(lane.title) + '</span>';
-                    html += '<span class="dash-lane-count">' + lane.jobs.length + '</span>';
+                // 4. Recent Jobs (completed + no_bids)
+                var recentJobs = completedJobs.concat(noBidsJobs);
+                if (recentJobs.length > 0) {
+                    html += '<div class="ov-jobs">';
+                    html += '<div class="ov-section-header"><span class="ov-section-title">Recent Jobs</span>';
+                    html += '<button class="ov-view-all-btn">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>';
                     html += '</div>';
-
-                    if (lane.jobs.length === 0) {
-                        html += '<div class="dash-lane-empty">No ' + esc(lane.title.toLowerCase()) + '</div>';
-                    } else {
-                        html += '<div class="dash-grid">';
-                        lane.jobs.forEach(function(job) {
-                            html += '<div class="dash-card" data-dash-toggle="' + esc(job.id) + '">' +
-                                '<div class="dash-card-address">' + esc(job.address) + '</div>' +
-                                '<div class="dash-card-details">' +
-                                    (job.sqft ? '<span class="dash-card-tag">' + esc(job.sqft) + ' sqft</span>' : '') +
-                                    (job.rooms ? '<span class="dash-card-tag">' + esc(job.rooms) + '</span>' : '') +
-                                    '<span class="dash-card-tag">' + capitalize(job.market) + '</span>' +
-                                '</div>' +
-                                '<div class="dash-card-footer">' +
-                                    '<span class="dash-card-stat"><strong id="dbc-' + esc(job.id) + '">...</strong> bids</span>' +
-                                    (job.status === 'bidding' ? '<span class="countdown-sm" id="dcd-' + esc(job.id) + '"></span>' : '') +
-                                    (job.awardedProvider ? '<span class="dash-card-stat">' + esc(job.awardedProvider) + '</span>' : '') +
-                                '</div>' +
-                                '<div class="dash-card-bids" id="dbids-' + esc(job.id) + '"></div>' +
-                            '</div>';
-                        });
+                    html += '<div class="ov-jobs-scroll">';
+                    recentJobs.forEach(function(job) {
+                        var badgeLabel = job.status === 'completed' ? 'Completed' : 'No Bids';
+                        html += '<div class="ov-job-card">';
+                        html += '<span class="ov-job-badge ' + esc(job.status) + '">' + badgeLabel + '</span>';
+                        html += '<div class="ov-job-address">' + esc(job.address) + '</div>';
+                        html += '<div class="ov-job-meta">';
+                        html += capitalize(job.market);
+                        if (job.sqft) html += ' &middot; ' + esc(job.sqft) + ' sqft';
+                        if (job.created) html += '<br>' + formatDate(job.created);
                         html += '</div>';
-                    }
+                        html += '</div>';
+                    });
                     html += '</div>';
-                });
+                    html += '</div>';
+                }
 
                 container.innerHTML = html;
 
                 // Start countdowns for bidding jobs
-                lanes[0].jobs.forEach(function(job) {
+                biddingJobs.forEach(function(job) {
                     startDashCountdown(job.id, job.biddingDeadline);
                 });
 
                 // Bind alert View buttons
                 container.querySelectorAll('.alert-view-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        var jobId = btn.dataset.jobId;
-                        // Navigate to Active Quotes section filtered to bidding
                         var bidsNavBtn = document.querySelector('.section-nav-btn[data-filter="bidding"]');
                         if (bidsNavBtn) bidsNavBtn.click();
                     });
                 });
 
-                // Bind expand/collapse
+                // Bind "Create a new bid" link
+                container.querySelectorAll('[data-action="new-bid"]').forEach(function(el) {
+                    el.addEventListener('click', function() {
+                        var wizBtn = document.querySelector('.section-nav-btn[data-section="quote-wizard"]') || document.querySelector('[data-action="start-wizard"]');
+                        if (wizBtn) wizBtn.click();
+                    });
+                });
+
+                // Bind "View All" button → All Bids section
+                container.querySelectorAll('.ov-view-all-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var allBidsBtn = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
+                        if (allBidsBtn) allBidsBtn.click();
+                    });
+                });
+
+                // Bind expand/collapse on bid cards
                 container.querySelectorAll('[data-dash-toggle]').forEach(function(el) {
                     el.addEventListener('click', function() {
                         var jobId = el.dataset.dashToggle;
@@ -1671,9 +2503,24 @@
             var qs = params.length ? '&' + params.join('&') : '';
 
             try {
-                var response = await fetch('/api/bidding?action=jobs' + qs);
-                var data = await response.json();
-                jobs = data.jobs || [];
+                jobs = [];
+                try {
+                    var response = await fetch('/api/bidding?action=jobs' + qs);
+                    if (response.ok) {
+                        var data = await response.json();
+                        jobs = data.jobs || [];
+                    }
+                } catch (e) {}
+
+                // Merge local quotes
+                var remoteIds = {};
+                jobs.forEach(function(j) { remoteIds[j.id] = true; });
+                getLocalQuotes().forEach(function(lq) {
+                    if (remoteIds[lq.id]) return;
+                    if (status && lq.status !== status) return;
+                    if (market && lq.market !== market) return;
+                    jobs.push(lq);
+                });
 
                 // Clear old countdowns
                 Object.keys(countdownIntervals).forEach(function(k) { clearInterval(countdownIntervals[k]); });
