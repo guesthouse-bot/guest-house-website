@@ -1401,7 +1401,7 @@
             <div class="sidebar-logo">
                 <a href="motherboard.html">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    <span>Turbo Lister</span>
+                    <span>TurboStager</span>
                 </a>
             </div>
             <nav class="sidebar-nav">
@@ -1828,34 +1828,69 @@
         }
 
         // Section navigation
+        function navigateToSection(section, filter, pushState) {
+            var btns = document.querySelectorAll('.section-nav-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); });
+
+            // Find matching nav button
+            var matchBtn = null;
+            btns.forEach(function(b) {
+                if (b.dataset.section === section && (filter === undefined || b.dataset.filter === filter)) {
+                    matchBtn = b;
+                }
+            });
+            // Fallback: match by section only
+            if (!matchBtn) {
+                btns.forEach(function(b) {
+                    if (b.dataset.section === section) matchBtn = b;
+                });
+            }
+            if (matchBtn) matchBtn.classList.add('active');
+
+            document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+            document.getElementById('section-' + section).classList.add('active');
+
+            var title = (matchBtn ? matchBtn.textContent.trim() : '') || sectionTitles[section] || 'Provider Network';
+            document.getElementById('contentTitle').textContent = title;
+
+            if (section === 'active-jobs' && filter !== undefined) {
+                document.getElementById('filterJobStatus').value = filter;
+            }
+
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('open');
+
+            if (section === 'dashboard') loadDashboard();
+            if (section === 'active-jobs') loadJobs();
+            if (section === 'providers') loadProviders();
+
+            // Push browser history
+            if (pushState !== false) {
+                var hash = '#' + section + (filter ? '/' + filter : '');
+                history.pushState({ section: section, filter: filter }, '', hash);
+            }
+        }
+
         function setupNav() {
             var btns = document.querySelectorAll('.section-nav-btn');
             btns.forEach(function(btn) {
                 btn.addEventListener('click', function() {
-                    btns.forEach(function(b) { b.classList.remove('active'); });
-                    btn.classList.add('active');
-                    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-                    document.getElementById('section-' + btn.dataset.section).classList.add('active');
-
-                    // Update content header — use button text if it has a filter override
-                    var title = btn.textContent.trim() || sectionTitles[btn.dataset.section] || 'Provider Network';
-                    document.getElementById('contentTitle').textContent = title;
-
-                    // Apply status filter if nav item has data-filter
-                    if (btn.dataset.section === 'active-jobs' && btn.dataset.filter !== undefined) {
-                        document.getElementById('filterJobStatus').value = btn.dataset.filter;
-                    }
-
-                    // Close mobile sidebar
-                    sidebar.classList.remove('open');
-                    sidebarOverlay.classList.remove('open');
-
-                    // Refresh data when switching sections
-                    if (btn.dataset.section === 'dashboard') loadDashboard();
-                    if (btn.dataset.section === 'active-jobs') loadJobs();
-                    if (btn.dataset.section === 'providers') loadProviders();
+                    navigateToSection(btn.dataset.section, btn.dataset.filter, true);
                 });
             });
+
+            // Handle browser back/forward
+            window.addEventListener('popstate', function(e) {
+                if (e.state && e.state.section) {
+                    navigateToSection(e.state.section, e.state.filter, false);
+                } else {
+                    // No state = initial page, go to dashboard
+                    navigateToSection('dashboard', undefined, false);
+                }
+            });
+
+            // Set initial state without pushing (replaceState)
+            history.replaceState({ section: 'dashboard' }, '', '#dashboard');
         }
 
         // Quote Wizard
@@ -2197,7 +2232,7 @@
                 var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
                 html += '<div class="ov-welcome">';
                 html += '<div class="ov-greeting">' + greeting + '</div>';
-                html += '<div class="ov-subtitle">Here\'s what\'s happening with your properties.</div>';
+                html += '<div class="ov-subtitle">Here\'s what\'s happening with your listings</div>';
                 html += '</div>';
 
                 html += '<div class="kpi-row">';
