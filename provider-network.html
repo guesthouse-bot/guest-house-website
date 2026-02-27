@@ -1428,6 +1428,46 @@
             color: var(--color-text-secondary);
             margin-bottom: 16px;
         }
+        .page-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 24px;
+        }
+        .page-tab {
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+            bottom: -1px;
+        }
+        .page-tab:hover { color: var(--color-text); }
+        .page-tab.active {
+            color: var(--color-text);
+            border-bottom-color: var(--color-text);
+        }
+        .page-tab .tab-count {
+            display: inline-block;
+            background: var(--color-bg-tertiary);
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .page-tab.active .tab-count {
+            background: var(--color-text);
+            color: var(--color-bg);
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
         .ov-quote-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1772,109 +1812,82 @@
                     </div>
                 </div>
 
-                <!-- Section: Quotes (Open/Paid) -->
+                <!-- Section: Quotes -->
                 <div class="section" id="section-quotes">
-                    <div class="section-header">
-                        <h2 id="quotesTitle">Quotes</h2>
-                    </div>
                     <div id="quotesContent">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                            <p>No quotes yet</p>
-                        </div>
+                        <div class="empty-state"><p>Loading quotes...</p></div>
                     </div>
                 </div>
 
-                <!-- Section 2: Active Jobs -->
+                <!-- Section 2: Jobs -->
                 <div class="section" id="section-active-jobs">
-                    <div class="section-header">
-                        <h2>Jobs</h2>
-                        <div class="filter-row">
-                            <select id="filterJobStatus">
-                                <option value="">All statuses</option>
-                                <option value="bidding" selected>Bidding</option>
-                                <option value="ready">Ready for Review</option>
-                                <option value="awarded">Awarded</option>
-                                <option value="completed">Completed</option>
-                                <option value="no_bids">No Bids</option>
-                            </select>
-                            <select id="filterJobMarket">
-                                <option value="">All markets</option>
-                                <option value="arizona">Arizona</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="jobs-grid" id="jobsGrid">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                            <p>Loading jobs...</p>
-                        </div>
+                    <div id="jobsContent">
+                        <div class="empty-state"><p>Loading jobs...</p></div>
                     </div>
                 </div>
 
                 <!-- Section: Listings -->
                 <div class="section" id="section-listings">
-                    <div class="section-header">
-                        <h2 id="listingsTitle">Listings</h2>
-                    </div>
                     <div id="listingsContent">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                            <p>No listings yet</p>
-                        </div>
+                        <div class="empty-state"><p>Loading listings...</p></div>
                     </div>
                 </div>
 
-                <!-- Section 3: Provider Directory -->
+                <!-- Section: Vendors -->
                 <div class="section" id="section-vendors">
-                    <div id="applicantsContent">
-                        <div class="empty-state">
-                            <p>Loading applicants...</p>
+                    <div class="page-tabs" id="vendorTabs">
+                        <button class="page-tab active" data-tab="vendor-applicants">New Applicants<span class="tab-count" id="applicantTabCount">0</span></button>
+                        <button class="page-tab" data-tab="vendor-accounts">Accounts<span class="tab-count" id="accountTabCount">0</span></button>
+                    </div>
+                    <div class="tab-panel active" id="panel-vendor-applicants">
+                        <div id="applicantsContent">
+                            <div class="empty-state"><p>Loading applicants...</p></div>
                         </div>
                     </div>
-                    <div class="section-header" style="margin-top:32px;">
-                        <h2>Accounts</h2>
-                        <button class="btn btn-primary btn-sm" id="addProviderBtn">+ Add Provider</button>
-                    </div>
-                    <div class="filter-row" style="margin-bottom:16px;">
-                        <select id="filterProviderMarket">
-                            <option value="">All markets</option>
-                            <option value="arizona">Arizona</option>
-                        </select>
-                        <select id="filterProviderRole">
-                            <option value="">All roles</option>
-                            <option value="stager">Stager</option>
-                            <option value="cleaner">Cleaner</option>
-                            <option value="mover">Mover</option>
-                            <option value="media">Media</option>
-                            <option value="stylist">Stylist</option>
-                        </select>
-                        <select id="filterProviderStatus">
-                            <option value="">All statuses</option>
-                            <option value="active" selected>Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-                    <div class="provider-table-wrapper">
-                        <table class="provider-table" id="providerTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Business</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Market</th>
-                                    <th>Status</th>
-                                    <th>Jobs Won</th>
-                                    <th>Avg Bid</th>
-                                    <th>Win Rate</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="providerBody">
-                                <tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
-                            </tbody>
-                        </table>
+                    <div class="tab-panel" id="panel-vendor-accounts">
+                        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+                            <button class="btn btn-primary btn-sm" id="addProviderBtn">+ Add Provider</button>
+                        </div>
+                        <div class="filter-row" style="margin-bottom:16px;">
+                            <select id="filterProviderMarket">
+                                <option value="">All markets</option>
+                                <option value="arizona">Arizona</option>
+                            </select>
+                            <select id="filterProviderRole">
+                                <option value="">All roles</option>
+                                <option value="stager">Stager</option>
+                                <option value="cleaner">Cleaner</option>
+                                <option value="mover">Mover</option>
+                                <option value="media">Media</option>
+                                <option value="stylist">Stylist</option>
+                            </select>
+                            <select id="filterProviderStatus">
+                                <option value="">All statuses</option>
+                                <option value="active" selected>Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="provider-table-wrapper">
+                            <table class="provider-table" id="providerTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Business</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Market</th>
+                                        <th>Status</th>
+                                        <th>Jobs Won</th>
+                                        <th>Avg Bid</th>
+                                        <th>Win Rate</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="providerBody">
+                                    <tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -2007,6 +2020,9 @@
                 try { setupQuoteWizard(); } catch(e) { console.error('setupQuoteWizard error:', e); }
                 try { setupProviderModal(); } catch(e) { console.error('setupProviderModal error:', e); }
                 try { setupFilters(); } catch(e) { console.error('setupFilters error:', e); }
+                // Bind static vendor tabs
+                var vendorTabsEl = document.getElementById('vendorTabs');
+                if (vendorTabsEl) bindPageTabs(vendorTabsEl.parentElement);
             }
             loadDashboard();
             loadProviders();
@@ -2049,6 +2065,7 @@
             if (section === 'dashboard') loadDashboard();
             if (section === 'quotes') loadQuotes();
             if (section === 'active-jobs') loadJobs();
+            if (section === 'listings') loadListings();
             if (section === 'vendors') { loadApplicants(); loadProviders(); }
 
             // Push browser history
@@ -2337,6 +2354,58 @@
         }
 
         // Dashboard
+        function buildQuoteCard(job, allServices, svcIcons) {
+            var jobSvcs = job.services || [];
+            var svcCount = Array.isArray(jobSvcs) ? jobSvcs.length : 0;
+            var pct = Math.round((svcCount / allServices.length) * 100);
+            var svcs = Array.isArray(jobSvcs) ? jobSvcs : (typeof jobSvcs === 'string' && jobSvcs ? jobSvcs.split(', ') : []);
+            var iconsHtml = '';
+            allServices.forEach(function(s) {
+                var isActive = svcs.indexOf(s) !== -1;
+                iconsHtml += '<div class="ov-svc-icon ' + (isActive ? 'active' : 'inactive') + '" title="' + esc(s) + '">' + (svcIcons[s] || '') + '</div>';
+            });
+            var created = job.created ? new Date(job.created).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
+
+            var h = '<div class="ov-quote-card">';
+            h += '<div class="ov-quote-card-top">';
+            h += '<div class="ov-quote-card-address">' + esc(job.address || 'Untitled Quote') + '</div>';
+            h += '<div class="ov-quote-card-actions">';
+            h += '<button class="dash-delete-job-btn" data-job-id="' + esc(job.id) + '" title="Delete quote" style="background:none;border:none;cursor:pointer;padding:2px;color:var(--color-text-secondary);opacity:0.5;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
+            h += '</div></div>';
+            h += '<div class="ov-quote-card-dates">';
+            if (created) h += 'Created ' + created + '<br>';
+            h += job.timeline ? 'Target install ' + esc(job.timeline) : 'Target install date not set';
+            h += '</div>';
+            h += '<div class="ov-quote-card-services">' + iconsHtml + '</div>';
+            h += '<div class="ov-quote-card-progress">' + pct + '% of recommended services. Add more to sell faster.</div>';
+            h += '</div>';
+            return h;
+        }
+
+        var svcIconDefs = {
+            'Staging': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+            'Deep Clean': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M8 6h8"/><path d="M9 6l-3 16h12L15 6"/></svg>',
+            'Moving': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+            'Photography': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+            'Styling': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+        };
+        var allServiceNames = ['Staging','Deep Clean','Moving','Photography','Styling'];
+
+        function bindPageTabs(container) {
+            container.querySelectorAll('.page-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    // Deactivate sibling tabs
+                    tab.parentElement.querySelectorAll('.page-tab').forEach(function(t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    // Find all sibling panels in the same parent container
+                    var wrapper = tab.parentElement.parentElement;
+                    wrapper.querySelectorAll(':scope > .tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                    var panel = document.getElementById('panel-' + tab.dataset.tab);
+                    if (panel) panel.classList.add('active');
+                });
+            });
+        }
+
         async function loadQuotes() {
             var container = document.getElementById('quotesContent');
             if (!container) return;
@@ -2351,82 +2420,49 @@
                     }
                 } catch (e) {}
 
-                // Merge local quotes (avoid duplicates)
                 var remoteIds = {};
                 allJobs.forEach(function(j) { remoteIds[j.id] = true; });
                 getLocalQuotes().forEach(function(lq) {
                     if (!remoteIds[lq.id]) allJobs.push(lq);
                 });
-
                 allJobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
 
-                // --- Service icon helper ---
-                var allServices = ['Staging','Deep Clean','Moving','Photography','Styling'];
-                var svcIcons = {
-                    'Staging': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
-                    'Deep Clean': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M8 6h8"/><path d="M9 6l-3 16h12L15 6"/></svg>',
-                    'Moving': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
-                    'Photography': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-                    'Styling': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-                };
-
-                function buildServiceIcons(jobServices) {
-                    var svcs = Array.isArray(jobServices) ? jobServices : (typeof jobServices === 'string' && jobServices ? jobServices.split(', ') : []);
-                    var out = '';
-                    allServices.forEach(function(s) {
-                        var isActive = svcs.indexOf(s) !== -1;
-                        out += '<div class="ov-svc-icon ' + (isActive ? 'active' : 'inactive') + '" title="' + esc(s) + '">' + (svcIcons[s] || '') + '</div>';
-                    });
-                    return out;
-                }
-
-                function formatDateShort(d) {
-                    return new Date(d).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
-                }
+                // Categorize: open = bidding/draft/local, paid = paid/completed, cancelled = cancelled
+                var openQ = [], paidQ = [], cancelledQ = [];
+                allJobs.forEach(function(job) {
+                    if (job.status === 'cancelled') cancelledQ.push(job);
+                    else if (job.status === 'paid' || job.status === 'completed') paidQ.push(job);
+                    else openQ.push(job);
+                });
 
                 var html = '';
+                html += '<div class="page-tabs" data-tab-group="quotes">';
+                html += '<button class="page-tab active" data-tab="quotes-open">Open<span class="tab-count">' + openQ.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="quotes-paid">Paid<span class="tab-count">' + paidQ.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="quotes-cancelled">Cancelled<span class="tab-count">' + cancelledQ.length + '</span></button>';
+                html += '</div>';
 
-                html += '<div class="ov-dash-section-sub" style="margin-bottom:20px;">Manage your quotes, make a payment and easily share with others to get on the market faster</div>';
-
-                if (allJobs.length === 0) {
-                    html += '<div class="empty-state"><p>No quotes yet. <span class="ov-empty-link" data-action="new-bid" style="cursor:pointer;color:var(--color-primary);text-decoration:underline;">Create a new quote to get started.</span></p></div>';
-                } else {
-                    html += '<div class="ov-quote-grid">';
-                    allJobs.forEach(function(job) {
-                        var jobSvcs = job.services || [];
-                        var svcCount = Array.isArray(jobSvcs) ? jobSvcs.length : 0;
-                        var pct = Math.round((svcCount / allServices.length) * 100);
-
-                        html += '<div class="ov-quote-card">';
-                        html += '<div class="ov-quote-card-top">';
-                        html += '<div class="ov-quote-card-address">' + esc(job.address || 'Untitled Quote') + '</div>';
-                        html += '<div class="ov-quote-card-actions">';
-                        html += '<button class="dash-delete-job-btn" data-job-id="' + esc(job.id) + '" title="Delete quote" style="background:none;border:none;cursor:pointer;padding:2px;color:var(--color-text-secondary);opacity:0.5;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '<div class="ov-quote-card-dates">';
-                        if (job.created) html += 'Created ' + formatDateShort(job.created) + '<br>';
-                        if (job.timeline) html += 'Target install ' + esc(job.timeline);
-                        else html += 'Target install date not set';
-                        html += '</div>';
-                        html += '<div class="ov-quote-card-services">' + buildServiceIcons(jobSvcs) + '</div>';
-                        html += '<div class="ov-quote-card-progress">' + pct + '% of recommended services. Add more to sell faster.</div>';
-                        html += '</div>';
-                    });
-                    html += '</div>';
+                function renderGrid(items, emptyMsg) {
+                    if (items.length === 0) return '<div class="empty-state"><p>' + emptyMsg + '</p></div>';
+                    var g = '<div class="ov-quote-grid">';
+                    items.forEach(function(job) { g += buildQuoteCard(job, allServiceNames, svcIconDefs); });
+                    g += '</div>';
+                    return g;
                 }
 
-                container.innerHTML = html;
+                html += '<div class="tab-panel active" id="panel-quotes-open">' + renderGrid(openQ, 'No open quotes. <span class="ov-empty-link" data-action="new-bid" style="cursor:pointer;color:var(--color-primary);text-decoration:underline;">Create a new quote.</span>') + '</div>';
+                html += '<div class="tab-panel" id="panel-quotes-paid">' + renderGrid(paidQ, 'No paid quotes yet.') + '</div>';
+                html += '<div class="tab-panel" id="panel-quotes-cancelled">' + renderGrid(cancelledQ, 'No cancelled quotes.') + '</div>';
 
-                // Bind "Create a new bid" link
+                container.innerHTML = html;
+                bindPageTabs(container);
+
                 container.querySelectorAll('[data-action="new-bid"]').forEach(function(el) {
                     el.addEventListener('click', function() {
                         var wizBtn = document.querySelector('.section-nav-btn[data-section="jobs"]');
                         if (wizBtn) wizBtn.click();
                     });
                 });
-
-                // Bind delete job buttons
                 container.querySelectorAll('.dash-delete-job-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -2437,6 +2473,24 @@
             } catch (err) {
                 container.innerHTML = '<div class="empty-state"><p>Error loading quotes: ' + esc(err.message) + '</p></div>';
             }
+        }
+
+        function loadListings() {
+            var container = document.getElementById('listingsContent');
+            if (!container) return;
+
+            var html = '';
+            html += '<div class="page-tabs" data-tab-group="listings">';
+            html += '<button class="page-tab active" data-tab="listings-planning">Planning<span class="tab-count">0</span></button>';
+            html += '<button class="page-tab" data-tab="listings-active">Active<span class="tab-count">0</span></button>';
+            html += '<button class="page-tab" data-tab="listings-closed">Closed<span class="tab-count">0</span></button>';
+            html += '</div>';
+            html += '<div class="tab-panel active" id="panel-listings-planning"><div class="empty-state"><p>No listings in planning.</p></div></div>';
+            html += '<div class="tab-panel" id="panel-listings-active"><div class="empty-state"><p>No active listings.</p></div></div>';
+            html += '<div class="tab-panel" id="panel-listings-closed"><div class="empty-state"><p>No closed listings.</p></div></div>';
+
+            container.innerHTML = html;
+            bindPageTabs(container);
         }
 
         async function loadDashboard() {
@@ -2517,8 +2571,8 @@
                 html += '<div class="kpi-row">';
                 html += '<div class="kpi-card"><div class="kpi-label">Quotes</div><div class="kpi-value">' + allJobs.length + '</div></div>';
                 html += '<div class="kpi-card"><div class="kpi-label">Collecting Bids</div><div class="kpi-value">' + biddingJobs.length + '</div></div>';
-                html += '<div class="kpi-card"><div class="kpi-label">Awarded</div><div class="kpi-value">' + awardedJobs.length + '</div></div>';
-                html += '<div class="kpi-card"><div class="kpi-label">Applicants</div><div class="kpi-value">' + pendingApplicants.length + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Planning Listings</div><div class="kpi-value">' + awardedJobs.length + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Active Listings</div><div class="kpi-value">' + pendingApplicants.length + '</div></div>';
                 html += '</div>';
 
                 // Quotes section
@@ -2855,97 +2909,86 @@
         }
 
         // Load Jobs
-        async function loadJobs() {
-            var grid = document.getElementById('jobsGrid');
-            var status = document.getElementById('filterJobStatus').value;
-            var market = document.getElementById('filterJobMarket').value;
-            var isReadyFilter = status === 'ready';
+        function renderJobCards(jobList) {
+            if (jobList.length === 0) return '<div class="empty-state"><p>No jobs found.</p></div>';
+            return '<div class="jobs-grid">' + jobList.map(function(job) {
+                return '<div class="job-card" data-job-id="' + esc(job.id) + '">' +
+                    '<div class="job-card-header" data-toggle="' + esc(job.id) + '">' +
+                        '<div class="job-card-info">' +
+                            '<h3>' + esc(job.address) + '</h3>' +
+                            '<div class="job-card-meta">' +
+                                '<span class="status-badge status-' + esc(job.status) + '">' + esc(job.status) + '</span>' +
+                                (job.sqft ? '<span>' + esc(job.sqft) + ' sq ft</span>' : '') +
+                                (job.rooms ? '<span>' + esc(job.rooms) + '</span>' : '') +
+                                '<span>' + capitalize(job.market) + '</span>' +
+                                '<span>' + capitalize(job.providerType) + '</span>' +
+                                (job.status === 'bidding' ? '<span class="countdown-sm" id="cd-' + esc(job.id) + '"></span>' : '') +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="job-card-stats">' +
+                            '<div class="job-stat"><div class="job-stat-value" id="bc-' + esc(job.id) + '">...</div><div class="job-stat-label">Bids</div></div>' +
+                            (job.awardedProvider ? '<div class="job-stat"><div class="job-stat-value" style="font-size:13px;">' + esc(job.awardedProvider) + '</div><div class="job-stat-label">Awarded to</div></div>' : '') +
+                            '<button class="delete-job-btn" data-job-id="' + esc(job.id) + '" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--color-text-secondary);opacity:0.5;align-self:center;" title="Delete quote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="job-card-bids" id="bids-' + esc(job.id) + '"></div>' +
+                '</div>';
+            }).join('') + '</div>';
+        }
 
-            var params = [];
-            if (status && !isReadyFilter) params.push('status=' + status);
-            if (isReadyFilter) params.push('status=bidding');
-            if (market) params.push('market=' + market);
-            var qs = params.length ? '&' + params.join('&') : '';
+        async function loadJobs() {
+            var container = document.getElementById('jobsContent');
+            if (!container) return;
 
             try {
                 jobs = [];
                 try {
-                    var response = await fetch('/api/bidding?action=jobs' + qs);
+                    var response = await fetch('/api/bidding?action=jobs');
                     if (response.ok) {
                         var data = await response.json();
                         jobs = data.jobs || [];
                     }
                 } catch (e) {}
 
-                // For "Ready for Review", fetch bid counts and filter to jobs with submitted bids
-                if (isReadyFilter && jobs.length > 0) {
-                    var readyJobs = [];
-                    for (var ri = 0; ri < jobs.length; ri++) {
-                        try {
-                            var detResp = await fetch('/api/bidding?action=job-details&jobId=' + jobs[ri].id);
-                            if (detResp.ok) {
-                                var detData = await detResp.json();
-                                var submitted = (detData.bids || []).filter(function(b) { return b.submittedAt; });
-                                if (submitted.length > 0) readyJobs.push(jobs[ri]);
-                            }
-                        } catch (e) {}
-                    }
-                    jobs = readyJobs;
-                }
-
                 // Merge local quotes
                 var remoteIds = {};
                 jobs.forEach(function(j) { remoteIds[j.id] = true; });
                 getLocalQuotes().forEach(function(lq) {
-                    if (remoteIds[lq.id]) return;
-                    if (status && !isReadyFilter && lq.status !== status) return;
-                    if (market && lq.market !== market) return;
-                    jobs.push(lq);
+                    if (!remoteIds[lq.id]) jobs.push(lq);
                 });
+                jobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
 
-                // Clear old countdowns
                 Object.keys(countdownIntervals).forEach(function(k) { clearInterval(countdownIntervals[k]); });
                 countdownIntervals = {};
 
-                if (jobs.length === 0) {
-                    grid.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><p>No jobs found</p></div>';
-                    return;
-                }
+                var biddingJobs = [], awardedJobs = [], cancelledJobs = [];
+                jobs.forEach(function(job) {
+                    if (job.status === 'awarded') awardedJobs.push(job);
+                    else if (job.status === 'cancelled') cancelledJobs.push(job);
+                    else if (job.status === 'bidding') biddingJobs.push(job);
+                });
 
-                // Sort by created date descending
-                jobs.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
+                var html = '';
+                html += '<div class="page-tabs" data-tab-group="jobs">';
+                html += '<button class="page-tab active" data-tab="jobs-bidding">Collecting Bids<span class="tab-count">' + biddingJobs.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="jobs-awarded">Awarded<span class="tab-count">' + awardedJobs.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="jobs-cancelled">Cancelled<span class="tab-count">' + cancelledJobs.length + '</span></button>';
+                html += '</div>';
 
-                grid.innerHTML = jobs.map(function(job) {
-                    return '<div class="job-card" data-job-id="' + esc(job.id) + '">' +
-                        '<div class="job-card-header" data-toggle="' + esc(job.id) + '">' +
-                            '<div class="job-card-info">' +
-                                '<h3>' + esc(job.address) + '</h3>' +
-                                '<div class="job-card-meta">' +
-                                    '<span class="status-badge status-' + esc(job.status) + '">' + esc(job.status) + '</span>' +
-                                    (job.sqft ? '<span>' + esc(job.sqft) + ' sq ft</span>' : '') +
-                                    (job.rooms ? '<span>' + esc(job.rooms) + '</span>' : '') +
-                                    '<span>' + capitalize(job.market) + '</span>' +
-                                    '<span>' + capitalize(job.providerType) + '</span>' +
-                                    (job.status === 'bidding' ? '<span class="countdown-sm" id="cd-' + esc(job.id) + '"></span>' : '') +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="job-card-stats">' +
-                                '<div class="job-stat"><div class="job-stat-value" id="bc-' + esc(job.id) + '">...</div><div class="job-stat-label">Bids</div></div>' +
-                                (job.awardedProvider ? '<div class="job-stat"><div class="job-stat-value" style="font-size:13px;">' + esc(job.awardedProvider) + '</div><div class="job-stat-label">Awarded to</div></div>' : '') +
-                                '<button class="delete-job-btn" data-job-id="' + esc(job.id) + '" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--color-text-secondary);opacity:0.5;align-self:center;" title="Delete quote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="job-card-bids" id="bids-' + esc(job.id) + '"></div>' +
-                    '</div>';
-                }).join('');
+                html += '<div class="tab-panel active" id="panel-jobs-bidding">' + renderJobCards(biddingJobs) + '</div>';
+                html += '<div class="tab-panel" id="panel-jobs-awarded">' + renderJobCards(awardedJobs) + '</div>';
+                html += '<div class="tab-panel" id="panel-jobs-cancelled">' + renderJobCards(cancelledJobs) + '</div>';
+
+                container.innerHTML = html;
+                bindPageTabs(container);
 
                 // Start countdowns
-                jobs.forEach(function(job) {
-                    if (job.status === 'bidding') startCountdown(job.id, job.biddingDeadline);
+                biddingJobs.forEach(function(job) {
+                    startCountdown(job.id, job.biddingDeadline);
                 });
 
                 // Toggle expand + load bids
-                grid.querySelectorAll('[data-toggle]').forEach(function(el) {
+                container.querySelectorAll('[data-toggle]').forEach(function(el) {
                     el.addEventListener('click', function() {
                         var jobId = el.dataset.toggle;
                         var panel = document.getElementById('bids-' + jobId);
@@ -2959,7 +3002,7 @@
                 });
 
                 // Bind delete job buttons
-                grid.querySelectorAll('.delete-job-btn').forEach(function(btn) {
+                container.querySelectorAll('.delete-job-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         deleteJob(btn.dataset.jobId, btn, loadJobs);
@@ -2967,7 +3010,7 @@
                 });
 
             } catch (err) {
-                grid.innerHTML = '<div class="empty-state"><p>Error loading jobs: ' + esc(err.message) + '</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>Error loading jobs: ' + esc(err.message) + '</p></div>';
             }
         }
 
@@ -3129,6 +3172,9 @@
                 var data = await response.json();
                 providers = data.providers || [];
 
+                var acctCountEl = document.getElementById('accountTabCount');
+                if (acctCountEl) acctCountEl.textContent = providers.length;
+
                 var stagerStats = {};
                 try {
                     var sRes = await statsResponse;
@@ -3273,6 +3319,9 @@
                 var data = await response.json();
                 var applicants = data.providers || [];
 
+                var countEl = document.getElementById('applicantTabCount');
+                if (countEl) countEl.textContent = applicants.length;
+
                 if (applicants.length === 0) {
                     container.innerHTML = '<div class="empty-state"><p>No pending applicants.</p></div>';
                     return;
@@ -3347,8 +3396,6 @@
 
         // Filters
         function setupFilters() {
-            document.getElementById('filterJobStatus').addEventListener('change', loadJobs);
-            document.getElementById('filterJobMarket').addEventListener('change', loadJobs);
             document.getElementById('filterProviderMarket').addEventListener('change', loadProviders);
             document.getElementById('filterProviderRole').addEventListener('change', loadProviders);
             document.getElementById('filterProviderStatus').addEventListener('change', loadProviders);
