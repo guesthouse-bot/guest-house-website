@@ -1410,6 +1410,91 @@
             color: var(--color-text-secondary);
             line-height: 1.5;
         }
+        /* Dashboard quote cards */
+        .ov-dash-section {
+            margin-bottom: 32px;
+        }
+        .ov-dash-section-header {
+            margin-bottom: 6px;
+        }
+        .ov-dash-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            letter-spacing: -0.02em;
+        }
+        .ov-dash-section-sub {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 16px;
+        }
+        .ov-quote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .ov-quote-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: box-shadow 0.15s;
+        }
+        .ov-quote-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .ov-quote-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .ov-quote-card-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            line-height: 1.3;
+        }
+        .ov-quote-card-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .ov-quote-card-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--color-text-secondary);
+            transition: color 0.15s;
+        }
+        .ov-quote-card-actions button:hover { color: var(--color-onyx); }
+        .ov-quote-card-actions svg { width: 18px; height: 18px; }
+        .ov-quote-card-dates {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .ov-quote-card-services {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .ov-svc-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ov-svc-icon svg { width: 16px; height: 16px; }
+        .ov-svc-icon.active { background: var(--color-surface-secondary); color: var(--color-charcoal); }
+        .ov-svc-icon.inactive { background: var(--color-surface-secondary); color: var(--color-border); }
+        .ov-quote-card-progress {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
         .ov-empty-state {
             padding: 24px;
             text-align: center;
@@ -2378,6 +2463,30 @@
                     } catch (e) {}
                 }
 
+                // --- Service icon helper ---
+                var allServices = ['Staging','Deep Clean','Moving','Photography','Styling'];
+                var svcIcons = {
+                    'Staging': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+                    'Deep Clean': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M8 6h8"/><path d="M9 6l-3 16h12L15 6"/></svg>',
+                    'Moving': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+                    'Photography': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+                    'Styling': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+                };
+
+                function buildServiceIcons(jobServices) {
+                    var svcs = Array.isArray(jobServices) ? jobServices : (typeof jobServices === 'string' && jobServices ? jobServices.split(', ') : []);
+                    var html = '';
+                    allServices.forEach(function(s) {
+                        var isActive = svcs.indexOf(s) !== -1;
+                        html += '<div class="ov-svc-icon ' + (isActive ? 'active' : 'inactive') + '" title="' + esc(s) + '">' + (svcIcons[s] || '') + '</div>';
+                    });
+                    return html;
+                }
+
+                function formatDateShort(d) {
+                    return new Date(d).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
+                }
+
                 // --- Build HTML ---
                 var html = '';
 
@@ -2390,34 +2499,56 @@
                 html += '</div>';
 
                 html += '<div class="kpi-row">';
+                html += '<div class="kpi-card"><div class="kpi-label">Quotes</div><div class="kpi-value">' + allJobs.length + '</div></div>';
                 html += '<div class="kpi-card"><div class="kpi-label">Collecting Bids</div><div class="kpi-value">' + kpiBidding + '</div></div>';
                 html += '<div class="kpi-card"><div class="kpi-label">Awarded</div><div class="kpi-value">' + kpiAwarded + '</div></div>';
-                html += '<div class="kpi-card"><div class="kpi-label">Avg Time to Bid</div><div class="kpi-value">' + (avgTimeToAward > 0 ? avgTimeToAward + 'h' : '—') + '</div></div>';
-                html += '<div class="kpi-card"><div class="kpi-label">Completed</div><div class="kpi-value">' + completedJobs.length + '</div></div>';
+                html += '<div class="kpi-card"><div class="kpi-label">Applicants</div><div class="kpi-value">' + pendingApplicants.length + '</div></div>';
                 html += '</div>';
 
-                // 2. Ready for Review
-                if (readyItems.length > 0) {
-                    html += '<div class="ov-attention">';
-                    html += '<div class="ov-section-header"><span class="ov-section-title">Ready for Review<span class="ov-attention-count">' + readyItems.length + '</span></span></div>';
-                    readyItems.forEach(function(item) {
-                        html += '<div class="alert-banner alert-info">';
-                        html += iconReady;
-                        html += '<div class="alert-banner-text"><strong>' + esc(item.address) + '</strong> — ' + esc(item.msg) + '</div>';
-                        html += '<button class="btn btn-sm btn-secondary alert-view-btn" data-job-id="' + esc(item.jobId) + '">Review</button>';
+                // 2. Quotes section
+                html += '<div class="ov-dash-section">';
+                html += '<div class="ov-dash-section-header"><div class="ov-dash-section-title">Recent quotes</div></div>';
+                html += '<div class="ov-dash-section-sub">Manage your quotes, make a payment and easily share with others to get on the market faster</div>';
+                if (allJobs.length === 0) {
+                    html += '<div class="ov-empty-state">No quotes yet. <span class="ov-empty-link" data-action="new-bid">Create a new quote to get started.</span></div>';
+                } else {
+                    html += '<div class="ov-quote-grid">';
+                    var recentQuotes = allJobs.slice(0, 6);
+                    recentQuotes.forEach(function(job) {
+                        var jobSvcs = job.services || (job.notes ? [] : []);
+                        var svcCount = Array.isArray(jobSvcs) ? jobSvcs.length : 0;
+                        var pct = Math.round((svcCount / allServices.length) * 100);
+
+                        html += '<div class="ov-quote-card">';
+                        html += '<div class="ov-quote-card-top">';
+                        html += '<div class="ov-quote-card-address">' + esc(job.address || 'Untitled Quote') + '</div>';
+                        html += '<div class="ov-quote-card-actions">';
+                        html += '<button title="View details" data-action="view-quote" data-job-id="' + esc(job.id) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<div class="ov-quote-card-dates">';
+                        if (job.created) html += 'Created ' + formatDateShort(job.created) + '<br>';
+                        if (job.timeline) html += 'Target install ' + esc(job.timeline);
+                        else html += 'Target install date not set';
+                        html += '</div>';
+                        html += '<div class="ov-quote-card-services">' + buildServiceIcons(jobSvcs) + '</div>';
+                        html += '<div class="ov-quote-card-progress">' + pct + '% of recommended services. Add more to sell faster.</div>';
                         html += '</div>';
                     });
                     html += '</div>';
                 }
+                html += '</div>';
 
-                // 3. Two-column split
+                // 3. Jobs section — two-column split
+                html += '<div class="ov-dash-section">';
+                html += '<div class="ov-dash-section-header"><div class="ov-dash-section-title">Jobs</div></div>';
                 html += '<div class="ov-split">';
 
                 // Left — Collecting Bids
                 html += '<div class="ov-split-left">';
                 html += '<div class="ov-section-header"><span class="ov-section-title">Collecting Bids</span><span class="dash-lane-count">' + biddingJobs.length + '</span></div>';
                 if (biddingJobs.length === 0) {
-                    html += '<div class="ov-empty-state">No active bids. <span class="ov-empty-link" data-action="new-bid">Create a new quote to get started.</span></div>';
+                    html += '<div class="ov-empty-state">No active bids.</div>';
                 } else {
                     html += '<div class="ov-bid-list">';
                     biddingJobs.forEach(function(job) {
@@ -2445,7 +2576,7 @@
 
                 // Right — Awarded
                 html += '<div class="ov-split-right">';
-                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded Jobs</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
+                html += '<div class="ov-section-header"><span class="ov-section-title">Awarded</span><span class="dash-lane-count">' + awardedJobs.length + '</span></div>';
                 if (awardedJobs.length === 0) {
                     html += '<div class="ov-empty-state">No awarded jobs yet.</div>';
                 } else {
@@ -2470,18 +2601,21 @@
                 }
                 html += '</div>';
                 html += '</div>'; // close ov-split
+                html += '</div>'; // close Jobs section
 
-                // 4. Vendors — Pending Applicants
-                html += '<div class="ov-network" style="margin-top:24px;">';
-                html += '<div class="ov-section-header"><span class="ov-section-title">Vendors';
-                if (pendingApplicants.length > 0) {
-                    html += '<span class="ov-attention-count">' + pendingApplicants.length + '</span>';
-                }
-                html += '</span>';
-                if (pendingApplicants.length > 0) {
-                    html += '<button class="ov-view-all-btn" data-action="view-applicants">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>';
-                }
+                // 4. Listings section (placeholder)
+                html += '<div class="ov-dash-section">';
+                html += '<div class="ov-dash-section-header"><div class="ov-dash-section-title">Listings</div></div>';
+                html += '<div class="ov-empty-state">No listings yet.</div>';
                 html += '</div>';
+
+                // 5. Vendors — Pending Applicants
+                html += '<div class="ov-dash-section">';
+                html += '<div class="ov-dash-section-header"><div class="ov-dash-section-title">Vendors';
+                if (pendingApplicants.length > 0) {
+                    html += '<span class="ov-attention-count" style="margin-left:8px;">' + pendingApplicants.length + '</span>';
+                }
+                html += '</div></div>';
                 if (pendingApplicants.length === 0) {
                     html += '<div class="ov-empty-state">No pending applicants.</div>';
                 } else {
@@ -2499,30 +2633,6 @@
                     });
                 }
                 html += '</div>';
-
-                // 5. Recent Jobs (completed + no_bids)
-                var recentJobs = completedJobs.concat(noBidsJobs);
-                if (recentJobs.length > 0) {
-                    html += '<div class="ov-jobs">';
-                    html += '<div class="ov-section-header"><span class="ov-section-title">Recent Jobs</span>';
-                    html += '<button class="ov-view-all-btn">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>';
-                    html += '</div>';
-                    html += '<div class="ov-jobs-scroll">';
-                    recentJobs.forEach(function(job) {
-                        var badgeLabel = job.status === 'completed' ? 'Completed' : 'No Bids';
-                        html += '<div class="ov-job-card">';
-                        html += '<span class="ov-job-badge ' + esc(job.status) + '">' + badgeLabel + '</span>';
-                        html += '<div class="ov-job-address">' + esc(job.address) + '</div>';
-                        html += '<div class="ov-job-meta">';
-                        html += capitalize(job.market);
-                        if (job.sqft) html += ' &middot; ' + esc(job.sqft) + ' sqft';
-                        if (job.created) html += '<br>' + formatDate(job.created);
-                        html += '</div>';
-                        html += '</div>';
-                    });
-                    html += '</div>';
-                    html += '</div>';
-                }
 
                 container.innerHTML = html;
 
@@ -2550,13 +2660,27 @@
                 // Bind "View All" buttons
                 container.querySelectorAll('.ov-view-all-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        if (btn.dataset.action === 'view-applicants') {
-                            var appBtn = document.querySelector('.section-nav-btn[data-section="applicants"]');
-                            if (appBtn) appBtn.click();
+                        var action = btn.dataset.action;
+                        var target;
+                        if (action === 'view-applicants') {
+                            target = document.querySelector('.section-nav-btn[data-section="applicants"]');
+                        } else if (action === 'view-quotes') {
+                            target = document.querySelector('.section-nav-btn[data-section="quotes"]');
+                        } else if (action === 'view-listings') {
+                            target = document.querySelector('.section-nav-btn[data-section="listings"]');
                         } else {
-                            var allBidsBtn = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
-                            if (allBidsBtn) allBidsBtn.click();
+                            target = document.querySelector('.section-nav-btn[data-section="bids"]') || document.querySelector('.section-nav-btn[data-filter="all"]');
                         }
+                        if (target) target.click();
+                    });
+                });
+
+                // Bind quote card view buttons
+                container.querySelectorAll('[data-action="view-quote"]').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var jobId = btn.dataset.jobId;
+                        var quotesBtn = document.querySelector('.section-nav-btn[data-section="quotes"]');
+                        if (quotesBtn) quotesBtn.click();
                     });
                 });
 
