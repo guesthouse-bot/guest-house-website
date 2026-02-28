@@ -2207,8 +2207,6 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 20px;
-            padding-top: 8px;
-            border-top: 1px solid var(--color-border);
         }
         /* Quote View — Package Selection */
         .qv-back {
@@ -4265,63 +4263,6 @@
                 // --- Build HTML ---
                 var html = '';
 
-                // Welcome greeting
-                var hour = now.getHours();
-                var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-                html += '<div class="ov-welcome">';
-                html += '<div class="ov-greeting">' + greeting + '</div>';
-                html += '<div class="ov-subtitle">Here\'s what\'s happening with your listings</div>';
-                html += '</div>';
-
-                // TODAY SECTION
-                html += '<div class="today-section">';
-                html += '<div class="today-title">Today</div>';
-                html += '<div class="today-divider"></div>';
-                html += '<div class="today-body">';
-
-                // Chart area
-                html += '<div class="today-chart-area">';
-                html += '<div class="today-chart-header">';
-                // Metric selector
-                html += '<div class="today-metric-col">';
-                html += '<div class="today-metric-label"><select id="todayMetricSelect">';
-                Object.keys(metricLabels).forEach(function(k) {
-                    html += '<option value="' + k + '"' + (k === curMetric ? ' selected' : '') + '>' + metricLabels[k] + '</option>';
-                });
-                html += '</select></div>';
-                html += '<div class="today-metric-value">' + todayCount + '</div>';
-                html += '<div class="today-metric-sub">' + timeStr + '</div>';
-                html += '</div>';
-                // Compare date
-                html += '<div class="today-compare-col">';
-                html += '<div class="today-compare-label"><input type="date" id="todayCompareDate" value="' + curCompare + '"></div>';
-                html += '<div class="today-compare-value">' + compCount + '</div>';
-                html += '</div>';
-                html += '</div>';
-                // Canvas
-                html += '<div class="today-canvas-wrap"><canvas id="todayChart"></canvas></div>';
-                html += '<div class="today-chart-xaxis"><span>12:00 AM</span><span>6:00 AM</span><span>12:00 PM</span><span>6:00 PM</span><span>12:00 AM</span></div>';
-                html += '</div>';
-
-                // Needs attention
-                html += '<div class="needs-attention">';
-                html += '<div class="needs-attention-title">Needs attention</div>';
-                if (attentionItems.length === 0) {
-                    html += '<div class="empty-state" style="padding:24px 0;"><p>Nothing needs attention right now.</p></div>';
-                } else {
-                    attentionItems.slice(0, 10).forEach(function(item) {
-                        html += '<div class="attention-item">';
-                        html += '<div class="attention-dot ' + item.type + '"></div>';
-                        html += '<div class="attention-text">' + item.text + '</div>';
-                        html += '<button class="attention-action" data-nav="' + item.action + '">' + item.label + '</button>';
-                        html += '</div>';
-                    });
-                }
-                html += '</div>';
-
-                html += '</div>'; // .today-body
-                html += '</div>'; // .today-section
-
                 // YOUR OVERVIEW SECTION
                 html += '<div class="overview-section-title">Your overview</div>';
 
@@ -4493,55 +4434,10 @@
                 html += sparkCard('Closed Listings', curClosedListing, prevClosedListing, 'sparkClosed', 'listings');
                 // 6. Vendor Applies
                 html += sparkCard('Vendor Applies', curVendorApplies, prevVendorApplies, 'sparkApplies', 'vendors');
-                // 7. Vendor Signups
-                html += sparkCard('Vendor Signups', curVendorSignups, prevVendorSignups, 'sparkSignups', 'vendors');
 
                 html += '</div>'; // .ov-cards-grid
 
                 container.innerHTML = html;
-
-                // --- Draw chart ---
-                (function drawTodayChart() {
-                    var canvas = document.getElementById('todayChart');
-                    if (!canvas) return;
-                    var dpr = window.devicePixelRatio || 1;
-                    var rect = canvas.parentElement.getBoundingClientRect();
-                    canvas.width = rect.width * dpr;
-                    canvas.height = rect.height * dpr;
-                    var ctx = canvas.getContext('2d');
-                    ctx.scale(dpr, dpr);
-                    var w = rect.width, h = rect.height;
-
-                    var md2 = getMetricData(curMetric, todayDate);
-                    var todayHourly = hourlyCountsForDate(md2.items, md2.field, todayDate, md2.filter);
-                    var compHourly = hourlyCountsForDate(md2.items, md2.field, compDate, md2.filter);
-                    var maxVal = Math.max(1, Math.max.apply(null, todayHourly.concat(compHourly)));
-
-                    var pad = { top: 10, bottom: 10, left: 0, right: 0 };
-                    var cw = w - pad.left - pad.right;
-                    var ch = h - pad.top - pad.bottom;
-                    var curHour = isSameDay(now, todayDate) ? now.getHours() + 1 : 24;
-
-                    function drawLine(data, color, dashed, limit) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = color;
-                        ctx.lineWidth = 2.5;
-                        if (dashed) ctx.setLineDash([6, 4]);
-                        else ctx.setLineDash([]);
-                        var pts = limit || data.length;
-                        for (var i = 0; i < pts; i++) {
-                            var x = pad.left + (i / 23) * cw;
-                            var y = pad.top + ch - (data[i] / maxVal) * ch;
-                            if (i === 0) ctx.moveTo(x, y);
-                            else ctx.lineTo(x, y);
-                        }
-                        ctx.stroke();
-                        ctx.setLineDash([]);
-                    }
-
-                    drawLine(compHourly, '#CCCCCC', true, 24);
-                    drawLine(todayHourly, '#635BFF', false, curHour);
-                })();
 
                 // --- Draw sparklines ---
                 (function drawSparklines() {
@@ -4583,27 +4479,10 @@
                     drawSpark('sparkActive', [], 'created', null);
                     drawSpark('sparkClosed', [], 'created', null);
                     drawSpark('sparkApplies', pendingApplicants, 'created', null);
-                    drawSpark('sparkSignups', allProviders, 'createdAt', null);
                 })();
 
-                // --- Bind today controls ---
-                var metricSelect = document.getElementById('todayMetricSelect');
-                if (metricSelect) {
-                    metricSelect.addEventListener('change', function() {
-                        window._dashMetric = metricSelect.value;
-                        loadDashboard();
-                    });
-                }
-                var compInput = document.getElementById('todayCompareDate');
-                if (compInput) {
-                    compInput.addEventListener('change', function() {
-                        window._dashCompareDate = compInput.value;
-                        loadDashboard();
-                    });
-                }
-
-                // Bind attention + "More details" nav buttons
-                container.querySelectorAll('.attention-action[data-nav], .ov-more-details[data-nav]').forEach(function(btn) {
+                // Bind "More details" nav buttons
+                container.querySelectorAll('.ov-more-details[data-nav]').forEach(function(btn) {
                     btn.addEventListener('click', function() {
                         var section = btn.dataset.nav;
                         var navBtn = document.querySelector('.section-nav-btn[data-section="' + section + '"]');
