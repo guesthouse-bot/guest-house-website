@@ -843,6 +843,21 @@
             padding: 0;
         }
         .ov-more-details:hover { text-decoration: underline; }
+        .ov-new-quotes-feed {
+            margin-top: 8px;
+        }
+        .ov-feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .ov-feed-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            letter-spacing: -0.02em;
+        }
         .ov-filter-bar {
             display: flex;
             align-items: center;
@@ -3507,7 +3522,7 @@
                     providerType: payload.providerType,
                     notes: payload.notes,
                     services: quoteData.services.slice(),
-                    status: 'bidding',
+                    status: 'open',
                     created: new Date().toISOString(),
                     plan: quoteData.plan,
                 });
@@ -3826,7 +3841,7 @@
                         providerType: 'stager',
                         notes: 'Package: ' + (pkgNames[selectedPkg] || 'None') + '. Services: ' + svcLines.join(', '),
                         services: qd.services ? qd.services.slice() : [],
-                        status: 'bidding',
+                        status: 'open',
                         created: new Date().toISOString(),
                         plan: qd.plan,
                         total: grandTotal,
@@ -4495,6 +4510,24 @@
                 html += sparkCard('Vendor Signups', curVendorSignups, prevVendorSignups, 'sparkSignups', 'vendors');
 
                 html += '</div>'; // .ov-cards-grid
+
+                // NEW QUOTES FEED
+                var recentQuotes = allJobs.slice(0, 6);
+                html += '<div class="ov-new-quotes-feed">';
+                html += '<div class="ov-feed-header">';
+                html += '<div class="ov-feed-title">New quotes</div>';
+                html += '<button class="ov-more-details" data-nav="quotes">View all</button>';
+                html += '</div>';
+                if (recentQuotes.length === 0) {
+                    html += '<div class="empty-state" style="padding:24px 0;"><p>No quotes yet. Create your first quote to get started.</p></div>';
+                } else {
+                    html += '<div class="ov-quote-grid">';
+                    recentQuotes.forEach(function(job) {
+                        html += buildQuoteCard(job, allServiceNames, svcIconDefs);
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
 
                 container.innerHTML = html;
 
