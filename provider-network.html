@@ -4491,6 +4491,8 @@
                 html += sparkCard('Closed Listings', curClosedListing, prevClosedListing, 'sparkClosed', 'listings');
                 // 6. Vendor Applies
                 html += sparkCard('Vendor Applies', curVendorApplies, prevVendorApplies, 'sparkApplies', 'vendors');
+                // 7. Vendor Signups
+                html += sparkCard('Vendor Signups', curVendorSignups, prevVendorSignups, 'sparkSignups', 'vendors');
 
                 html += '</div>'; // .ov-cards-grid
 
@@ -4579,6 +4581,7 @@
                     drawSpark('sparkActive', [], 'created', null);
                     drawSpark('sparkClosed', [], 'created', null);
                     drawSpark('sparkApplies', pendingApplicants, 'created', null);
+                    drawSpark('sparkSignups', allProviders, 'createdAt', null);
                 })();
 
                 // --- Bind today controls ---
