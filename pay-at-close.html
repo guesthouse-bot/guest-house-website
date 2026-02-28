@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href*="guesthouseshop.com/smart-quote"]');
+        if (link && typeof gtag === 'function') {
+            gtag('event', 'quote_start', {
+                event_category: 'engagement',
+                event_label: link.href,
+            });
+        }
+    });
+    </script>
+
     <meta name="description" content="Guest House Pay at Close - Defer staging costs until your home sells. No upfront payment, no interest. Stage now, pay when you close.">
     <title>Pay at Close | Guest House</title>
     <style>
@@ -63,6 +81,26 @@
             color: var(--color-text-primary);
             background: var(--color-surface);
         }
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
 
         header {
             position: fixed;
@@ -1016,6 +1054,9 @@
 </head>
 <body>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1507,6 +1548,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>

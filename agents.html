@@ -4,7 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Guest House for Real Estate Agents - Stage listings faster, sell for more. Premium staging services that help agents win more listings and close faster.">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href*="guesthouseshop.com/smart-quote"]');
+        if (link && typeof gtag === 'function') {
+            gtag('event', 'quote_start', {
+                event_category: 'engagement',
+                event_label: link.href,
+            });
+        }
+    });
+    </script>
+
+    <meta name="description" content="Guest House for Real Estate Agents - Win more listings by promising sellers their home will be listed faster. Staging, photography, and prep coordinated in days, not weeks.">
     <title>For Agents | Guest House</title>
     <style>
         @font-face {
@@ -65,6 +83,26 @@
         }
 
         /* Header - always dark text on this page */
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
         header {
             position: fixed;
             top: 0;
@@ -827,204 +865,225 @@
 
         /* Deliverable Preview */
         .deliverable-section {
-            padding: 0 3rem 120px;
-            max-width: 1100px;
+            padding: 0 3rem 6rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .deliverable-card {
-            background: var(--color-mist);
-            border-radius: 24px;
-            padding: 48px;
+        .service-tiles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .service-tile {
             position: relative;
+            border-radius: 20px;
             overflow: hidden;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            contain: layout style paint;
+            min-height: 440px;
         }
 
-        .deliverable-header {
-            display: flex;
-            align-items: center;
+        .service-tile.tile-call {
+            background: #4A4540;
+            color: white;
             justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--color-border);
         }
 
-        .deliverable-meta {
+        .tile-call-visual {
+            flex: 1;
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: center;
+            position: relative;
+            padding: 40px 32px 0;
         }
 
-        .deliverable-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--color-deep);
+        .tile-call-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .tile-call-ring img {
+            width: 168px;
+            height: 168px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .tile-call-badge {
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: var(--color-onyx);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 100px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .tile-call-ui {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .tile-call-ui-dot {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
         }
 
-        .deliverable-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
+        .tile-call-ui-dot.accept { background: #22c55e; }
+        .tile-call-ui-dot.mute { background: rgba(255,255,255,0.15); }
+        .tile-call-ui-dot.video { background: rgba(255,255,255,0.15); }
+
+        .tile-call-ui-dot svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
         }
 
-        .deliverable-info p {
-            font-size: 0.875rem;
-            color: var(--color-text-secondary);
+        .tile-call .tile-overlay { display: none; }
+        .tile-call .tile-content { padding: 32px; }
+        .tile-call .tile-name { color: white; }
+        .tile-call .tile-desc { color: rgba(255,255,255,0.9); }
+
+        @media (max-width: 900px) {
+            .tile-call-ring { width: 150px; height: 150px; }
+            .tile-call-ring img { width: 140px; height: 140px; }
         }
 
-        .deliverable-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #E8F5E9;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #2E7D32;
-        }
-
-        .deliverable-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
-        }
-
-        .tip-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tip-card {
-            position: relative;
-            background: white;
-            border-radius: 16px;
-            padding: 0;
-            display: grid;
-            grid-template-columns: 1fr 200px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .tip-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-        }
-
-        .tip-card-left {
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            align-self: center;
-        }
-
-        .tip-card-visual {
-            overflow: hidden;
-        }
-
-        .tip-card-visual img {
+        .service-tile .tile-bg {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .tip-card-visual.illustration {
-            background: var(--color-mist);
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 0.75rem;
-        }
-
-        .tip-card-visual.illustration img {
-            object-fit: contain;
-            object-position: top;
-            width: 85%;
-            height: 115%;
-        }
-
-        .tip-card-visual.laptop-visual {
-            background: var(--color-bone);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .tip-card-visual.laptop-visual .laptop-frame {
-            width: 90%;
-            max-width: 180px;
-        }
-
-        .tip-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-golden);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .tip-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--color-onyx);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .tip-content {
-            flex: 1;
-        }
-
-        .tip-content h5 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .tip-content p {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5;
-        }
-
-        .tip-badge {
+        .service-tile .tile-overlay {
             position: absolute;
-            top: 16px;
-            right: 216px;
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--color-bone);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-deep);
-            z-index: 1;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.0) 100%);
         }
 
-        .tip-content .btn-small {
+        .service-tile .tile-content {
+            position: relative;
+            z-index: 1;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .service-tile .tile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .service-tile .tile-desc {
+            font-size: 0.9375rem;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.5;
+            max-width: 400px;
+        }
+
+        .tile-cta {
+            position: relative;
+            z-index: 1;
+            margin: 0 28px 0;
+            align-self: center;
+            text-decoration: none;
+        }
+
+        .tile-sub-cta {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 0.9375rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin: 12px 0 28px;
+            align-self: center;
+        }
+
+        .tile-sub-cta:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .deliverable-section { padding: 0 1.5rem 80px; }
+            .service-tiles { grid-template-columns: 1fr; gap: 16px; }
+            .service-tile { min-height: 320px; }
+            .service-tile .tile-content { padding: 24px; }
+            .tile-cta { margin: 0 24px 24px; }
+        }
+
+        .more-services {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .more-services-label {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+        }
+
+        .more-services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .more-service-chip {
             display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 20px;
-            font-size: 0.875rem;
-            margin-top: 16px;
+            border-radius: 100px;
+            border: 1px solid var(--color-div);
+            background: white;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .more-service-chip svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .additional-services {
@@ -1255,111 +1314,6 @@
             overflow: hidden;
         }
 
-        .laptop-frame {
-            width: 90%;
-            max-width: 280px;
-        }
-
-        .laptop-screen {
-            background: #1a1a1a;
-            border-radius: 8px 8px 0 0;
-            padding: 6px;
-            aspect-ratio: 16/10;
-        }
-
-        .checklist-ui {
-            background: #fff;
-            border-radius: 4px;
-            height: 100%;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .checklist-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 8px;
-        }
-
-        .checklist-avatar {
-            width: 20px;
-            height: 20px;
-            background: var(--color-onyx);
-            color: white;
-            border-radius: 4px;
-            font-size: 8px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .checklist-title {
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--color-onyx);
-        }
-
-        .checklist-items {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 8px;
-            background: #f8f8f8;
-            border-radius: 4px;
-        }
-
-        .checklist-check {
-            width: 14px;
-            height: 14px;
-            background: var(--color-onyx);
-            color: white;
-            border-radius: 3px;
-            font-size: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .checklist-text {
-            font-size: 8px;
-            color: var(--color-onyx);
-            flex: 1;
-        }
-
-        .checklist-badge {
-            font-size: 6px;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: 600;
-        }
-
-        .checklist-badge.high {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .checklist-badge.quick {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .laptop-base {
-            height: 8px;
-            background: #e5e5e5;
-            border-radius: 0 0 4px 4px;
-        }
 
         @media (max-width: 900px) {
             .prep-option-card {
@@ -2340,6 +2294,9 @@
 </head>
 <body>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2615,23 +2572,23 @@
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
-                Built for agents
+                Win more listings
             </div>
-            <h1>Quoted in seconds.<br>Scheduled in minutes.<br>Listed in days.</h1>
+            <h1>List and sell homes<br>faster than anyone</h1>
             <p class="hero-subtitle">
-                Guest House coordinates every detail for staging, cleaning, photography and more, all in one place. So you can focus on what really matters — helping your clients sell their home.
+                Walk into every listing appointment with a concrete plan. Guest House gets homes staged, photographed, and market-ready in days — so sellers choose you over agents who can't move as fast.
             </p>
             <div class="hero-cta">
                 <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-value">2,500</span>
-                    <span class="stat-label">Homes prepped faster</span>
+                    <span class="stat-value">2,500+</span>
+                    <span class="stat-label">Listings prepped & live</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value">20+</span>
-                    <span class="stat-label">Hours saved per listing</span>
+                    <span class="stat-value">Days</span>
+                    <span class="stat-label">From signed to market-ready</span>
                 </div>
                 <div class="stat">
                     <span class="stat-value">100%</span>
@@ -2668,8 +2625,8 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                 </div>
-                <h3>Get instant quotes</h3>
-                <p>Build quotes for staging, cleaning, photos and more in seconds. Share with sellers for fast payment—no waiting for callbacks.</p>
+                <h3>Walk in with a plan</h3>
+                <p>Pull up instant quotes for staging, cleaning, and photos right in the listing appointment. Sellers sign when they see you already have everything figured out.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2678,8 +2635,8 @@
                         <path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h3>List & sell faster</h3>
-                <p>Get listings market-ready in days, not weeks. Faster prep means more showings and quicker sales for your clients.</p>
+                <h3>Listed in days, not weeks</h3>
+                <p>Promise sellers a faster timeline — and deliver. Homes go from signed listing to live on MLS in days, not the weeks other agents need.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2688,8 +2645,8 @@
                         <path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h3>More time for clients & leads</h3>
-                <p>Stop chasing vendors and juggling schedules. Get hours back every week to focus on the things that actually grows your business.</p>
+                <h3>Stand out in every pitch</h3>
+                <p>Show sellers a polished prep plan with real pricing before other agents even return their call. That's how you win the listing.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2698,130 +2655,95 @@
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>White-glove, zero hassle</h3>
-                <p>Deliver a premium experience to every client without lifting a finger. We handle the details, you look like a hero.</p>
+                <h3>Sellers remember this</h3>
+                <p>Deliver a premium, organized experience that earns referrals. When sellers tell friends how smooth the process was, your name comes up first.</p>
             </div>
         </div>
     </section>
 
     <section class="section-headline" style="padding-bottom: 2rem;">
-        <h2>Every prep service you need,<br>all in one place</h2>
-        <p style="font-size: 1.0625rem; color: var(--color-text-secondary); max-width: 560px; margin: 0.75rem auto 0;">Professional staging and design expertise, now accessible for any listing at any budget—with pay-at-close options available.</p>
+        <h2>Everything you need to list faster,<br>all in one place</h2>
     </section>
     <section class="deliverable-section" id="services">
-        <div class="deliverable-card">
-            <div class="tip-cards">
-                <a href="design-advice.html" class="tip-card">
-                    <span class="tip-badge">Budget-Friendly</span>
-                    <div class="tip-card-left">
-                        <div class="tip-icon">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M8 10h.01M12 10h.01M16 10h.01M9 16h6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
-                            </svg>
-                        </div>
-                        <div class="tip-content">
-                            <h5>Expert Design Advice</h5>
-                            <p>Expert guidance to make your home show-ready with what you already have.</p>
-                            <span class="btn btn-primary btn-small">Get your quote</span>
-                        </div>
+        <div class="service-tiles">
+            <div class="service-tile tile-call">
+                <div class="tile-call-visual">
+                    <div class="tile-call-ring">
+                        <img src="design-advisor-headshot.png" alt="Guest House design advisor" fetchpriority="high">
+                        <div class="tile-call-badge">Designer</div>
                     </div>
-                    <div class="tip-card-visual laptop-visual">
-                        <div class="laptop-frame">
-                            <div class="laptop-screen">
-                                <div class="checklist-ui">
-                                    <div class="checklist-header">
-                                        <div class="checklist-avatar">GH</div>
-                                        <div class="checklist-title">Your Instant Checklist</div>
-                                    </div>
-                                    <div class="checklist-items">
-                                        <div class="checklist-item">
-                                            <div class="checklist-check">✓</div>
-                                            <div class="checklist-text">Declutter entryway</div>
-                                            <span class="checklist-badge high">High Impact</span>
-                                        </div>
-                                        <div class="checklist-item">
-                                            <div class="checklist-check">✓</div>
-                                            <div class="checklist-text">Brighten living room</div>
-                                            <span class="checklist-badge quick">Quick Win</span>
-                                        </div>
-                                        <div class="checklist-item">
-                                            <div class="checklist-check">✓</div>
-                                            <div class="checklist-text">Stage kitchen for photos</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="laptop-base"></div>
-                        </div>
-                    </div>
-                </a>
-                <a href="style-for-you.html" class="tip-card">
-                    <div class="tip-card-left">
-                        <div class="tip-icon">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-                                <line x1="16" y1="8" x2="2" y2="22"/>
-                                <line x1="17.5" y1="15" x2="9" y2="15"/>
-                            </svg>
-                        </div>
-                        <div class="tip-content">
-                            <h5>In-Person Styling</h5>
-                            <p>Our designers declutter and stage your existing furnishings to create a fresh, photo-ready interior.</p>
-                            <span class="btn btn-primary btn-small">Get your quote</span>
-                        </div>
-                    </div>
-                    <div class="tip-card-visual illustration">
-                        <img src="in-person-styling.png" alt="In-person styling" decoding="async" loading="lazy">
-                    </div>
-                </a>
-                <a href="full-service-staging.html" class="tip-card">
-                    <span class="tip-badge">Most Popular</span>
-                    <div class="tip-card-left">
-                        <div class="tip-icon">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                <polyline points="9 22 9 12 15 12 15 22"/>
-                            </svg>
-                        </div>
-                        <div class="tip-content">
-                            <h5>Full-Service Staging</h5>
-                            <p>We furnish your vacant home with premium pieces and deliver MLS-ready photos.</p>
-                            <span class="btn btn-primary btn-small">Get your quote</span>
-                        </div>
-                    </div>
-                    <div class="tip-card-visual">
-                        <img src="full-service-staging.jpg" alt="Full-service staging">
-                    </div>
-                </a>
-            </div>
-            <div class="additional-services">
-                <p class="services-intro">Plus, homeowners can pay at close for:</p>
-                <div class="services-list">
-                    <span class="service-pill">Staging</span>
-                    <span class="service-pill">Photos</span>
-                    <span class="service-pill">Deep Cleaning</span>
-                    <span class="service-pill">Moving</span>
-                    <span class="service-pill">3D Tours</span>
-                    <span class="service-pill">Drone Video</span>
-                    <span class="service-pill">Junk Removal</span>
-                    <span class="service-pill">Painting</span>
-                    <span class="service-pill">Landscaping</span>
-                    <span class="service-pill">Repairs</span>
                 </div>
+                <div class="tile-call-ui">
+                    <div class="tile-call-ui-dot mute"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+                    <div class="tile-call-ui-dot accept"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                    <div class="tile-call-ui-dot video"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                </div>
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">Expert Design Advice</h3>
+                    <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan tailored to your listing.</p>
+                </div>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
+            </div>
+            <div class="service-tile">
+                <img src="in-person-styling-tile.jpg" alt="In-person styling" class="tile-bg" fetchpriority="high" width="384" height="440" style="object-position: center center;">
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">In-Person Styling</h3>
+                    <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
+                </div>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="style-for-you.html" class="tile-sub-cta">See how In-Person Styling works</a>
+            </div>
+            <div class="service-tile">
+                <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" fetchpriority="high" width="384" height="440">
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">Full-Service Staging</h3>
+                    <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
+                </div>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="full-service-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
+            </div>
+        </div>
+        <div class="more-services">
+            <p class="more-services-label">Plus, easily book:</p>
+            <div class="more-services-grid">
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Deep Cleaning
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 22 4 22 16 16 12 16 8"/></svg>
+                    Listing Photos & Video
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    Matterport & 3D Tours
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><polygon points="12 15 17 21 7 21 12 15"/></svg>
+                    Drone Photos & Video
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M12 6v12"/><path d="M1 12h22"/></svg>
+                    Moving
+                </span>
             </div>
         </div>
     </section>
 
     <section class="benefits-section">
         <div class="benefits-inner">
-            <h2 class="benefits-headline">Save 20+ hours on every listing</h2>
+            <h2 class="benefits-headline">Give sellers more support, automatically</h2>
 
             <div class="benefits-grid">
                 <!-- Large featured card -->
                 <div class="benefit-card benefit-card-large">
                     <div class="benefit-card-content">
-                        <h3>Automated scheduling that just works</h3>
-                        <p>Stop playing phone tag with vendors. We coordinate staging, cleaning, and photography automatically—services happen in the right order, on your timeline.</p>
+                        <h3>Your listing timeline, locked in</h3>
+                        <p>The moment you sign a listing, your prep schedule is set. Cleaning, staging, and photography happen in sequence — so you can tell sellers exactly when they'll be live.</p>
                     </div>
                     <div class="benefit-card-visual">
                         <div class="visual-timeline">
@@ -2852,8 +2774,8 @@
                 <!-- Two smaller cards -->
                 <div class="benefit-card benefit-card-small">
                     <div class="benefit-card-content">
-                        <h3>Share invoice. Get sellers to pay fast.</h3>
-                        <p>Send professional invoices to sellers with one click. They pay online instantly—no more chasing checks or awkward conversations.</p>
+                        <h3>Sellers pay in one click</h3>
+                        <p>Send a professional invoice and sellers pay online instantly. No awkward money conversations — just a smooth experience that builds trust.</p>
                     </div>
                     <div class="benefit-card-visual-small">
                         <div class="invoice-preview">
@@ -2868,8 +2790,8 @@
 
                 <div class="benefit-card benefit-card-small">
                     <div class="benefit-card-content">
-                        <h3>Real-time updates. No surprises.</h3>
-                        <p>Know exactly when your listing will be ready. Track every step in your dashboard and get notified the moment photos are delivered.</p>
+                        <h3>Keep sellers in the loop</h3>
+                        <p>Sellers love knowing exactly where things stand. Share real-time progress updates so they see firsthand how fast you're getting their home to market.</p>
                     </div>
                     <div class="benefit-card-visual-small">
                         <div class="status-updates">
@@ -2897,7 +2819,7 @@
 
     <section class="testimonials-scroll-section">
         <div class="testimonials-scroll-header">
-            <h2>Trusted by top agents and teams</h2>
+            <h2>How top agents win more listings with Guest House</h2>
         </div>
         <div class="testimonials-scroll-container">
             <div class="testimonials-scroll-track">
@@ -2988,7 +2910,7 @@
 
     <section class="how-it-works" id="how-it-works">
         <div class="how-it-works-inner">
-            <h2>Built to handle the busy work</h2>
+            <h2>How it works</h2>
             <div class="timeline-pills">
                 <span class="timeline-pill">1</span>
                 <span class="timeline-pill">2</span>
@@ -3001,53 +2923,53 @@
             </div>
             <div class="steps">
                 <div class="step">
-                    <h3>Tell us about your listing</h3>
+                    <h3>Build your listing plan</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Answer a few questions
+                            Enter your listing details
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Get smart service recommendations
+                            Get a tailored prep plan with pricing
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            See your quote in seconds
+                            Share with sellers to win the listing
                         </li>
                     </ul>
                 </div>
                 <div class="step">
-                    <h3>We handle everything</h3>
+                    <h3>We prep the home fast</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            We schedule vendors
+                            Cleaning, staging, and photos scheduled automatically
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Staging and services are coordinated
+                            Everything coordinated in the right order
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            You stay in the loop
+                            Sellers see progress in real time
                         </li>
                     </ul>
                 </div>
                 <div class="step">
-                    <h3>Go live and sell</h3>
+                    <h3>Go live and sell fast</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Receive MLS-ready photos
+                            MLS-ready photos delivered
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Get more showings
+                            Listing goes live ahead of schedule
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Close faster for more
+                            Sellers refer you to everyone they know
                         </li>
                     </ul>
                 </div>
@@ -3056,8 +2978,8 @@
     </section>
 
     <section class="cta-section">
-        <h2>Save 20+ hours &amp; earn more with every listing</h2>
-        <p>Join thousands of customers who get listings market-ready and beautiful effortlessly.</p>
+        <h2>Win more listings. Get them live faster.</h2>
+        <p>Join thousands of agents who close more deals by getting sellers to market in days, not weeks.</p>
         <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
     </section>
 
@@ -3095,6 +3017,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>

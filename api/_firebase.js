@@ -192,6 +192,16 @@ function docId(docName) {
   return docName.split('/').pop();
 }
 
+// Redact street address — "123 Main St, Denver, CO 80202" → "Denver, CO 80202"
+function redactAddress(address) {
+  if (!address) return '';
+  var parts = address.split(',');
+  if (parts.length >= 2) {
+    return parts.slice(1).join(',').trim();
+  }
+  return address;
+}
+
 // Send email via SendGrid
 async function sendEmail(to, subject, htmlContent) {
   var apiKey = process.env.SENDGRID_API_KEY;
@@ -240,6 +250,7 @@ module.exports = {
   toFirestoreFields: toFirestoreFields,
   fromFirestoreFields: fromFirestoreFields,
   docId: docId,
+  redactAddress: redactAddress,
   sendEmail: sendEmail,
   setCors: setCors,
   BASE_URL: BASE_URL,

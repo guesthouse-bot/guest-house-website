@@ -97,6 +97,26 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
 
         header {
             position: fixed;
@@ -3932,6 +3952,10 @@
                 padding: 4rem 1.5rem;
             }
 
+            .testimonials-stats {
+                grid-template-columns: 1fr;
+            }
+
             .testimonials-grid {
                 grid-template-columns: 1fr;
             }
@@ -3958,6 +3982,139 @@
 
             .footer-section {
                 min-width: 100%;
+            }
+
+            /* Mobile announcement bar */
+            .announcement-bar {
+                font-size: 0.75rem;
+                padding: 8px 1rem;
+                line-height: 1.5;
+            }
+
+            /* Mobile social proof */
+            .social-proof {
+                padding: 2rem 1.5rem 3rem;
+            }
+
+            .logos-bar::before {
+                width: 120px;
+            }
+
+            .trusted-label {
+                font-size: 0.6875rem;
+                padding-right: 1rem;
+            }
+
+            .logos {
+                gap: 2.5rem;
+                left: 100px;
+            }
+
+            /* Mobile pricing grid */
+            .pricing {
+                padding: 4rem 1.5rem 5rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .pricing-header h2 {
+                font-size: 2rem;
+            }
+
+            .pricing-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .pricing-card h3 {
+                font-size: 1.375rem;
+            }
+
+            /* Mobile features grid */
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            /* Mobile timeline overflow fix */
+            .timeline-pills {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: center;
+                padding: 0 1rem;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
+            /* Mobile ROI */
+            .roi-section {
+                padding: 4rem 1.5rem;
+            }
+
+            /* Mobile additional services */
+            .additional-services {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Small phones */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-cta .btn {
+                font-size: 0.9375rem;
+                padding: 0.875rem 1.25rem;
+            }
+
+            .hero-stats {
+                gap: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .announcement-bar {
+                font-size: 0.6875rem;
+                padding: 6px 0.75rem;
+            }
+
+            .service-tile {
+                min-height: 280px;
+            }
+
+            .section-headline h2 {
+                font-size: 1.75rem;
+            }
+
+            .comparison-column {
+                padding: 1.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.25rem;
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            nav {
+                padding: 0.75rem 1rem;
             }
         }
 
@@ -4190,6 +4347,9 @@
 </head>
 <body>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="#" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4668,7 +4828,7 @@
                 <div class="tile-call-visual">
                     <div class="tile-call-ring">
                         <img src="design-advisor-headshot.png" alt="Guest House design advisor" fetchpriority="high">
-                        <div class="tile-call-badge">Design Advisor</div>
+                        <div class="tile-call-badge">Designer</div>
                     </div>
                 </div>
                 <div class="tile-call-ui">
@@ -4679,7 +4839,7 @@
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Expert Design Advice</h3>
-                    <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan — no commitment required.</p>
+                    <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan tailored to your listing.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
                 <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
@@ -5033,6 +5193,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>

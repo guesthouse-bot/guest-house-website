@@ -28,6 +28,31 @@ async function getAccessToken(serviceAccount) {
   return data.access_token;
 }
 
+// Convert 1-based column number to spreadsheet letter (1=A, 26=Z, 27=AA, etc.)
+function colToLetter(col) {
+  var result = '';
+  while (col > 0) {
+    col--;
+    result = String.fromCharCode(65 + (col % 26)) + result;
+    col = Math.floor(col / 26);
+  }
+  return result;
+}
+
+// Get the cell reference for a given year/month's net income
+// Actuals (2026): row 178, Z=Jan, AA=Feb, ... AK=Dec (column = 25 + month)
+// Actuals (2023 - 2025): row 638, B=Jan 2023, ... AK=Dec 2025 (column = 2 + (year-2023)*12 + (month-1))
+function getNetIncomeCell(year, month) {
+  if (year === 2026) {
+    var col = 25 + month;
+    return "'Actuals (2026)'!" + colToLetter(col) + "178";
+  } else if (year >= 2023 && year <= 2025) {
+    var col = 2 + (year - 2023) * 12 + (month - 1);
+    return "'Actuals (2023 - 2025)'!" + colToLetter(col) + "638";
+  }
+  return null;
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -45,12 +70,29 @@ module.exports = async function handler(req, res) {
   try {
     var accessToken = await getAccessToken(serviceAccount);
 
-    // Batch read: expenses, cash on hand, and renewal forecaster data
+    // Determine trailing 2 months for runway calculation
+    var now = new Date();
+    var curMonth1 = now.getMonth() + 1; // current month, 1-indexed
+
+    var trail1Month = curMonth1 - 1;
+    var trail1Year = now.getFullYear();
+    if (trail1Month < 1) { trail1Month += 12; trail1Year--; }
+
+    var trail2Month = curMonth1 - 2;
+    var trail2Year = now.getFullYear();
+    if (trail2Month < 1) { trail2Month += 12; trail2Year--; }
+
+    var trail1Cell = getNetIncomeCell(trail1Year, trail1Month);
+    var trail2Cell = getNetIncomeCell(trail2Year, trail2Month);
+
+    // Batch read: expenses, cash on hand, renewal forecaster, trailing net income
     var ranges = [
       "'Financial Model (2026)'!AL62",
       "'Actuals (2026)'!Z179",
       "'Renewal Forecaster'!A1:F200",
     ];
+    if (trail1Cell) ranges.push(trail1Cell);
+    if (trail2Cell) ranges.push(trail2Cell);
     var encodedRanges = ranges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
     var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedRanges + '&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
 
@@ -80,9 +122,18 @@ module.exports = async function handler(req, res) {
       cashOnHand = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
     }
 
+    // Parse trailing net income from actuals (indexes 3 and 4 in valueRanges)
+    var trailingNetIncome = [];
+    for (var ti = 3; ti <= 4; ti++) {
+      if (valueRanges[ti] && valueRanges[ti].values && valueRanges[ti].values[0]) {
+        var rawNI = valueRanges[ti].values[0][0];
+        var ni = typeof rawNI === 'number' ? rawNI : parseFloat(String(rawNI).replace(/[$,]/g, '')) || 0;
+        trailingNetIncome.push(ni);
+      }
+    }
+
     // Parse Renewal Forecaster and compute current month forecast
     var renewalForecast = 0;
-    var now = new Date();
     var currentMonth = now.getMonth(); // 0-indexed
     var currentYear = now.getFullYear();
 
@@ -134,6 +185,7 @@ module.exports = async function handler(req, res) {
       monthly_expenses: expenses,
       cash_on_hand: cashOnHand,
       renewal_forecast: renewalForecast,
+      trailing_net_income: trailingNetIncome,
     });
 
   } catch (err) {

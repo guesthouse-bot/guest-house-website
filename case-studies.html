@@ -64,6 +64,26 @@
             color: var(--color-text-primary);
             background: var(--color-surface);
         }
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
 
         header {
             position: fixed;
@@ -609,6 +629,43 @@
             pointer-events: none;
         }
 
+        .case-study-card-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .case-study-card-badge img {
+            height: 80px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        .case-study-card-small .case-study-card-badge {
+            top: 16px;
+            left: 16px;
+        }
+
+        .case-study-card-small .case-study-card-badge img {
+            height: 36px;
+        }
+
+        .case-study-card-badge img.badge-no-filter {
+            filter: none;
+            border-radius: 6px;
+            opacity: 1;
+        }
+
+        .case-study-card-badge img.badge-lg {
+            height: 48px;
+        }
+
+        .case-study-card-badge img.badge-sm {
+            height: 24px;
+        }
+
         .case-study-card-large .case-study-card-content {
             position: relative;
             z-index: 1;
@@ -617,21 +674,21 @@
             color: white;
         }
 
-        .case-study-card-large .case-study-card-address {
+        .case-study-card-large .case-study-card-headline {
             font-size: clamp(1.5rem, 2.5vw, 2.25rem);
             font-weight: 500;
             letter-spacing: -0.02em;
             line-height: 1.2;
-            margin-bottom: 8px;
             color: white;
         }
 
-        .case-study-card-large .case-study-card-agent {
+        .case-study-card-large .case-study-card-meta {
             font-size: 0.8125rem;
             font-weight: 500;
             color: rgba(255,255,255,0.7);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin-top: 8px;
         }
 
         /* Small cards (right column) — image + text below */
@@ -643,6 +700,7 @@
             flex: 1;
             overflow: hidden;
             min-height: 0;
+            position: relative;
         }
 
         .case-study-card-small .case-study-card-image img {
@@ -653,21 +711,21 @@
             padding: 20px 24px 24px;
         }
 
-        .case-study-card-small .case-study-card-address {
+        .case-study-card-small .case-study-card-headline {
             font-size: 1.0625rem;
             font-weight: 500;
             letter-spacing: -0.01em;
             line-height: 1.35;
-            margin-bottom: 6px;
             color: var(--color-text-primary);
         }
 
-        .case-study-card-small .case-study-card-agent {
+        .case-study-card-small .case-study-card-meta {
             font-size: 0.75rem;
             font-weight: 500;
             color: var(--color-text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin-top: 6px;
         }
 
         @keyframes fadeInUp {
@@ -1155,7 +1213,7 @@
                 padding: 24px;
             }
 
-            .case-study-card-large .case-study-card-address {
+            .case-study-card-large .case-study-card-headline {
                 font-size: 1.25rem;
             }
 
@@ -1175,6 +1233,9 @@
 </head>
 <body>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1452,29 +1513,38 @@
         <div class="case-studies-grid">
             <a href="case-study-836-carlsbad.html" class="case-study-card case-study-card-large">
                 <img src="images/836-carlsbad.webp" alt="836 Carlsbad St staged living room">
+                <div class="case-study-card-badge">
+                    <img src="images/exp-realty-logo.png" alt="eXp Realty">
+                </div>
                 <div class="case-study-card-content">
-                    <div class="case-study-card-address">836 Carlsbad St, San Diego, CA</div>
-                    <div class="case-study-card-agent">Listed by Cody Stamm</div>
+                    <div class="case-study-card-headline">How Cody Stamm sold this property for $75K over asking in just 8 days</div>
+                    <div class="case-study-card-meta">836 Carlsbad St, San Diego</div>
                 </div>
             </a>
 
             <a href="case-study-3640-lipan.html" class="case-study-card case-study-card-small">
                 <div class="case-study-card-image">
                     <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
+                    <div class="case-study-card-badge">
+                        <img src="images/agency-logo.png" alt="The Agency" class="badge-no-filter badge-lg">
+                    </div>
                 </div>
                 <div class="case-study-card-content">
-                    <div class="case-study-card-address">3640 Lipan St, Denver, CO</div>
-                    <div class="case-study-card-agent">Listed by Connor Cole / The Agency</div>
+                    <div class="case-study-card-headline">Connor Cole sells listing for $1M in just 3 days</div>
+                    <div class="case-study-card-meta">3640 Lipan St, Denver</div>
                 </div>
             </a>
 
             <a href="case-study-500-manhattan.html" class="case-study-card case-study-card-small">
                 <div class="case-study-card-image">
                     <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area">
+                    <div class="case-study-card-badge">
+                        <img src="images/compass-logo.webp" alt="Compass" class="badge-sm">
+                    </div>
                 </div>
                 <div class="case-study-card-content">
-                    <div class="case-study-card-address">500 Manhattan Dr, Boulder, CO</div>
-                    <div class="case-study-card-agent">Listed by Dorothy Pacheco / Compass</div>
+                    <div class="case-study-card-headline">How Dorothy Pacheco sold this home the day photos went live</div>
+                    <div class="case-study-card-meta">500 Manhattan Dr, Boulder</div>
                 </div>
             </a>
             <a href="#see-more-homes" class="btn btn-secondary see-more-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>See more homes</a>
@@ -1759,6 +1829,7 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>

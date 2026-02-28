@@ -63,6 +63,26 @@
             color: var(--color-text-primary);
             background: var(--color-surface);
         }
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
 
         header {
             position: fixed;
@@ -559,6 +579,12 @@
             height: 24px;
             background: var(--color-border);
         }
+        .filter-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
         .filter-btn {
             padding: 8px 20px;
             border-radius: 8px;
@@ -570,7 +596,36 @@
             transition: all 0.15s;
             background: var(--color-onyx);
             color: var(--color-white);
-            margin-left: auto;
+        }
+        /* Export PDF Button */
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--color-text-secondary);
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .export-btn:hover {
+            color: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+        .export-btn.exporting {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .export-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
         .filter-btn:hover {
             background: var(--color-charcoal);
@@ -593,9 +648,18 @@
             .filter-divider {
                 display: none;
             }
+            .filter-actions {
+                width: 100%;
+                margin-left: 0;
+            }
             .filter-btn {
                 margin-left: 0;
                 width: 100%;
+                padding: 12px 20px;
+            }
+            .export-btn {
+                width: 100%;
+                justify-content: center;
                 padding: 12px 20px;
             }
             .compare-toggle-group {
@@ -1060,6 +1124,9 @@
 </head>
 <body>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1407,7 +1474,17 @@
                     <input type="date" class="filter-date" id="compareDateTo">
                 </div>
             </div>
-            <button class="filter-btn" id="applyFilters">Apply</button>
+            <div class="filter-actions">
+                <button class="filter-btn" id="applyFilters">Apply</button>
+                <button class="export-btn" id="exportPdfBtn" onclick="exportDashboardPDF()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download PDF
+                </button>
+            </div>
         </div>
     </section>
 
@@ -1949,6 +2026,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
@@ -3178,6 +3257,172 @@
                 active.classList.add('active');
             });
         })();
+        // ---- PDF Export ----
+        async function exportDashboardPDF() {
+            var btn = document.getElementById('exportPdfBtn');
+            btn.classList.add('exporting');
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Generating PDF...';
+
+            // Add spin keyframe if not present
+            if (!document.getElementById('spin-style')) {
+                var s = document.createElement('style');
+                s.id = 'spin-style';
+                s.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+                document.head.appendChild(s);
+            }
+
+            // Wait for html2pdf library to load
+            if (typeof html2pdf === 'undefined') {
+                await new Promise(function(resolve, reject) {
+                    var script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+
+            // Gather current filter context
+            var period = document.getElementById('filterPeriod');
+            var periodLabel = period.options[period.selectedIndex].text;
+            var market = document.getElementById('filterMarket');
+            var marketLabel = market.options[market.selectedIndex].text;
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Helper to read KPI text from DOM
+            function getVal(id) {
+                var el = document.getElementById(id);
+                return el ? el.textContent.trim() : '\u2014';
+            }
+            function getChange(id) {
+                var el = document.getElementById(id + '-change');
+                if (!el || !el.textContent.trim() || el.className === 'kpi-change') return '';
+                var cls = el.classList.contains('positive') ? '#067647' : el.classList.contains('negative') ? '#B42318' : '#666';
+                return '<span style="color:' + cls + ';font-size:11px;font-weight:600;margin-left:6px;">' + el.textContent.trim() + '</span>';
+            }
+
+            // Build KPI row HTML
+            function kpiRow(label, id) {
+                return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid #f0f0f0;">' +
+                    '<span style="color:#666;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">' + label + '</span>' +
+                    '<span style="font-size:18px;font-weight:600;color:#080808;">' + getVal(id) + getChange(id) + '</span>' +
+                    '</div>';
+            }
+
+            // Build section HTML
+            function sectionBlock(title, rows) {
+                return '<div style="margin-bottom:28px;">' +
+                    '<h2 style="font-size:16px;font-weight:600;color:#080808;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #080808;">' + title + '</h2>' +
+                    rows.join('') +
+                    '</div>';
+            }
+
+            // Assemble PDF content
+            var pdfHTML = '<div id="pdf-export-container" style="font-family:Helvetica,Arial,sans-serif;padding:40px 48px;max-width:800px;color:#080808;line-height:1.5;">' +
+
+                // Header
+                '<div style="text-align:center;margin-bottom:36px;padding-bottom:24px;border-bottom:2px solid #080808;">' +
+                    '<h1 style="font-size:28px;font-weight:600;letter-spacing:-0.02em;margin:0 0 6px;">Guest House Company Performance</h1>' +
+                    '<p style="color:#666;font-size:13px;margin:0;">' + periodLabel + ' &bull; ' + marketLabel + ' &bull; Generated ' + dateStr + '</p>' +
+                '</div>' +
+
+                // Company KPIs
+                sectionBlock('Company KPIs', [
+                    '<div style="margin-bottom:8px;"><span style="font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Actuals</span></div>',
+                    kpiRow('Total Bookings', 'kpi-bookings'),
+                    kpiRow('Total Revenue', 'kpi-revenue'),
+                    '<div style="margin:12px 0 8px;"><span style="font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Forecasted</span></div>',
+                    kpiRow('Expected Renewal Revenue', 'kpi-renewal-forecast'),
+                    kpiRow('Expected Bookings Revenue', 'kpi-bookings-forecast'),
+                    kpiRow('Expected Total Revenue', 'kpi-expected-total-revenue'),
+                    kpiRow('Gross Margin', 'kpi-gross-margin'),
+                    kpiRow('Net Income', 'kpi-net-income'),
+                    kpiRow('Cash On Hand', 'kpi-cash-on-hand'),
+                    kpiRow('Runway', 'kpi-runway'),
+                ]) +
+
+                // Sales KPIs - Overview
+                sectionBlock('Sales KPIs - Overview', [
+                    kpiRow('Accounts Created', 'kpi-accounts'),
+                    kpiRow('Quotes Requested', 'kpi-quotes'),
+                    kpiRow('Total Bookings', 'kpi-total-bookings'),
+                    kpiRow('Conversion Rate', 'kpi-conversion'),
+                    kpiRow('Total Revenue', 'kpi-total-revenue'),
+                    kpiRow('Bookings Revenue', 'kpi-bookings-rev'),
+                    kpiRow('Renewal Revenue', 'kpi-renewal-rev'),
+                    kpiRow('AOV (at close)', 'kpi-aov-close'),
+                    kpiRow('AOV (total)', 'kpi-aov-total'),
+                    kpiRow('Sales Cycle', 'kpi-sales-cycle'),
+                ]) +
+
+                // Sales KPIs - Customer Level
+                sectionBlock('Sales KPIs - Customer Level', [
+                    kpiRow('Active Users', 'kpi-active-users'),
+                    kpiRow('Quotes / User', 'kpi-quotes-user'),
+                    kpiRow('Bookings / User', 'kpi-bookings-user'),
+                    kpiRow('Revenue / User', 'kpi-rev-user'),
+                    kpiRow('ARPU', 'kpi-arpu'),
+                ]) +
+
+                // Marketing KPIs
+                sectionBlock('Marketing KPIs', [
+                    kpiRow('Sessions', 'kpi-ga-sessions'),
+                    kpiRow('Unique Visitors', 'kpi-ga-users'),
+                    kpiRow('Quote Starts', 'kpi-ga-quote-starts'),
+                    kpiRow('Quotes Requested', 'kpi-ga-quotes-requested'),
+                    kpiRow('Bounce Rate', 'kpi-ga-bounce'),
+                    kpiRow('Avg Session Duration', 'kpi-ga-duration'),
+                    kpiRow('Pages / Session', 'kpi-ga-pages'),
+                    kpiRow('Site-to-Quote Rate', 'kpi-ga-site-to-quote'),
+                ]) +
+
+                // Ops KPIs
+                sectionBlock('Ops KPIs', [
+                    kpiRow('Vendor Applications', 'kpi-vendor-apps'),
+                    kpiRow('Vendor Signups', 'kpi-vendor-signups'),
+                    kpiRow('Homes Completed', 'kpi-jobs-completed'),
+                    kpiRow('Revenue / Home', 'kpi-rev-home'),
+                    kpiRow('Cost / Home', 'kpi-cost-home'),
+                    kpiRow('Margin / Home', 'kpi-margin-home'),
+                    kpiRow('NPS', 'kpi-nps'),
+                    kpiRow('Quote-to-Install (days)', 'kpi-quote-to-install'),
+                ]) +
+
+                // Footer
+                '<div style="text-align:center;margin-top:32px;padding-top:16px;border-top:1px solid #ddd;">' +
+                    '<p style="color:#999;font-size:11px;margin:0;">Confidential &mdash; Guest House Internal Use Only</p>' +
+                '</div>' +
+            '</div>';
+
+            // Create temporary element
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = pdfHTML;
+            wrapper.style.position = 'fixed';
+            wrapper.style.left = '-9999px';
+            wrapper.style.top = '0';
+            document.body.appendChild(wrapper);
+
+            try {
+                var element = wrapper.firstElementChild;
+                var opt = {
+                    margin: [10, 10, 10, 10],
+                    filename: 'Guest-House-Performance-' + now.toISOString().slice(0, 10) + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+                };
+                await html2pdf().set(opt).from(element).save();
+            } catch (err) {
+                console.error('PDF export error:', err);
+                alert('Failed to generate PDF. Please try again.');
+            } finally {
+                document.body.removeChild(wrapper);
+                btn.classList.remove('exporting');
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF Report';
+            }
+        }
     </script>
 </body>
 </html>

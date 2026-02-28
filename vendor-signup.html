@@ -81,6 +81,26 @@
             color: var(--color-text-primary);
             background: var(--color-surface);
         }
+        .announcement-bar {
+            background: #F2F2F2;
+            color: #080808;
+            text-align: center;
+            padding: 10px 1.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
+        }
+        .announcement-bar a {
+            color: #080808;
+            text-decoration: underline;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .announcement-bar a:hover {
+            opacity: 0.8;
+        }
+
 
         header {
             position: fixed;
@@ -1168,6 +1188,9 @@
     })();
     </script>
     <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1481,6 +1504,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
@@ -1554,10 +1579,6 @@
 
     const ROLES = [
       { id:"stager", label:"Stager", icon:"\u{1F3E0}", desc:"Home staging & design services" },
-      { id:"cleaner", label:"Cleaner", icon:"\u2728", desc:"Residential & turnover cleaning" },
-      { id:"mover", label:"Mover", icon:"\u{1F69A}", desc:"Moving & furniture delivery services" },
-      { id:"media", label:"Media", icon:"\u{1F4F8}", desc:"Real estate photography & media" },
-      { id:"stylist", label:"Stylist", icon:"\u{1F3A8}", desc:"Interior design & styling services" },
     ];
 
     /* Rate fields config per role — only Cleaner and Media have rates */
@@ -1764,8 +1785,7 @@
         html += '<div class="form-field"><label>Market <span class="req">*</span></label>' +
             '<select data-key="market" class="form-select">' +
             '<option value=""' + (!fv("market") ? ' selected' : '') + ' disabled>Select your market</option>' +
-            '<option value="colorado"' + (fv("market")==="colorado" ? ' selected' : '') + '>Colorado</option>' +
-            '<option value="california"' + (fv("market")==="california" ? ' selected' : '') + '>California</option>' +
+            '<option value="arizona"' + (fv("market")==="arizona" ? ' selected' : '') + '>Arizona</option>' +
             '</select></div>';
 
         // File uploads
