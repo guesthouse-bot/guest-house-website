@@ -654,6 +654,60 @@
             border-color: var(--color-onyx);
             background: var(--color-surface-secondary);
         }
+        .form-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-checkbox-card {
+            text-align: left;
+            padding: 18px 22px;
+            border-radius: 14px;
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .form-checkbox-card:hover {
+            border-color: var(--color-text-secondary);
+        }
+        .form-checkbox-card.selected {
+            border-color: var(--color-onyx);
+            background: var(--color-surface-secondary);
+        }
+        .form-check-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--color-border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .form-checkbox-card.selected .form-check-icon {
+            background: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+        .form-check-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--color-white);
+            fill: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .form-checkbox-card.selected .form-check-icon svg {
+            opacity: 1;
+        }
         .form-role-card .role-icon {
             font-size: 2rem;
             margin-bottom: 12px;
@@ -1167,7 +1221,9 @@
     <script>
     (function(){
         var pw = "1Cavalunch1";
-        if (sessionStorage.getItem("vendor_pw_ok") === "1") {
+        // Skip password gate when arriving via email link with pid
+        var urlPid = new URLSearchParams(window.location.search).get("pid");
+        if (urlPid || sessionStorage.getItem("vendor_pw_ok") === "1") {
             document.getElementById("pwGate").style.display = "none";
             return;
         }
@@ -1577,6 +1633,9 @@
     // Google Apps Script Web App URL
     // Submissions go to /api/vendor-signup-submit (Vercel serverless → Google Sheets)
 
+    // Read provider ID from URL (set when arriving from acceptance email)
+    var PROVIDER_PID = new URLSearchParams(window.location.search).get("pid") || "";
+
     const ROLES = [
       { id:"stager", label:"Stager", icon:"\u{1F3E0}", desc:"Home staging & design services" },
       { id:"cleaner", label:"Cleaner", icon:"\u2728", desc:"Residential & turnover cleaning" },
@@ -1721,6 +1780,28 @@
     const fv = k => formData[k] || "";
     const fs = (k, val) => { formData[k] = val; };
     function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function fvArr(k) { return Array.isArray(formData[k]) ? formData[k] : []; }
+    function fvHas(k, val) { return fvArr(k).indexOf(val) !== -1; }
+    function fsToggle(k, val) {
+        var arr = fvArr(k);
+        var idx = arr.indexOf(val);
+        if (idx === -1) arr.push(val); else arr.splice(idx, 1);
+        formData[k] = arr;
+    }
+
+    function fmultiselectHTML(label, key, options, opts) {
+        opts = opts || {};
+        var req = opts.required ? ' <span class="req">*</span>' : '';
+        var html = '<div class="form-field"><label>' + label + req + '</label><div class="form-checkboxes">';
+        options.forEach(function(opt) {
+            var sel = fvHas(key, opt) ? "selected" : "";
+            html += '<button type="button" class="form-checkbox-card ' + sel + '" data-ms="' + key + '" data-msval="' + esc(opt) + '">' +
+                '<div class="form-check-icon"><svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+                esc(opt) + '</button>';
+        });
+        html += '</div></div>';
+        return html;
+    }
 
     function readFileAsBase64(file) {
         return new Promise(function(resolve, reject) {
@@ -1794,13 +1875,8 @@
         html += ffHTML("Business / company name","business_name",{required:true});
         html += '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>';
         html += ffHTML("Email address","email",{required:true, type:"email", placeholder:"you@company.com"});
-        html += '<div class="form-field"><label>Market <span class="req">*</span></label>' +
-            '<select data-key="market" class="form-select">' +
-            '<option value=""' + (!fv("market") ? ' selected' : '') + ' disabled>Select your market</option>' +
-            '<option value="arizona"' + (fv("market")==="arizona" ? ' selected' : '') + '>Arizona</option>' +
-            '<option value="colorado"' + (fv("market")==="colorado" ? ' selected' : '') + '>Colorado</option>' +
-            '<option value="california"' + (fv("market")==="california" ? ' selected' : '') + '>California</option>' +
-            '</select></div>';
+        html += fmultiselectHTML("What areas do you service?", "locations", ["Phoenix","Scottsdale","Denver","Boulder","Colorado Springs","San Diego","Orange County"], {required:true});
+        html += fmultiselectHTML("What is your lead time for booking your services?", "lead_time", ["Same day","Next-day","2-3 business days","More than a week","More than 2 weeks"], {required:true});
 
         // File uploads
         html += '<div class="form-section-title">Documents</div>';
@@ -1890,7 +1966,7 @@
     function canAdvance() {
         switch (step) {
             case 0: return !!selectedRole;
-            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fv("market") && fileW9 && fileInsurance;
+            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fvArr("locations").length > 0 && fvArr("lead_time").length > 0 && fileW9 && fileInsurance;
             case 2:
                 var expected = (fv("first_name") + " " + fv("last_name")).trim().toLowerCase();
                 return agreementChecked && signatureName.trim().toLowerCase() === expected && expected.length > 0;
@@ -1931,6 +2007,13 @@
             if (el.tagName === "SELECT") {
                 el.addEventListener("change", function() { fs(el.dataset.key, el.value); updateNext(); });
             }
+        });
+        // Multi-select buttons
+        qsa("[data-ms]", card()).forEach(function(el) {
+            el.onclick = function() {
+                fsToggle(el.dataset.ms, el.dataset.msval);
+                render();
+            };
         });
         // File uploads
         var w9Input = qs("#w9Input", card());
@@ -2024,24 +2107,45 @@
                 var errBody = await submitRes.json().catch(function() { return {}; });
                 throw new Error(errBody.error || "Submission failed");
             }
-            // Also register as a provider in Firestore for bidding system
-            try {
-                await fetch("/api/providers", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: fv("email"),
-                        name: (fv("first_name") + " " + fv("last_name")).trim(),
-                        businessName: fv("business_name"),
-                        role: selectedRole,
-                        market: fv("market"),
-                        status: "active",
-                        source: "vendor_signup",
-                    }),
-                });
-            } catch (providerErr) {
-                console.warn("Provider registration failed (non-blocking):", providerErr);
+
+            if (PROVIDER_PID) {
+                // PATCH existing provider doc to activate and record agreement details
+                try {
+                    await fetch("/api/providers", {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            id: PROVIDER_PID,
+                            status: "active",
+                            signedAgreementVersion: AGREEMENT_VERSION,
+                            w9Filename: fileW9 ? fileW9.name : "",
+                            insuranceFilename: fileInsurance ? fileInsurance.name : "",
+                        }),
+                    });
+                } catch (providerErr) {
+                    console.warn("Provider PATCH failed (non-blocking):", providerErr);
+                }
+            } else {
+                // Legacy: register as a new provider in Firestore
+                try {
+                    await fetch("/api/providers", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            email: fv("email"),
+                            name: (fv("first_name") + " " + fv("last_name")).trim(),
+                            businessName: fv("business_name"),
+                            role: selectedRole,
+                            market: fvArr("locations").join(", "),
+                            status: "active",
+                            source: "vendor_signup",
+                        }),
+                    });
+                } catch (providerErr) {
+                    console.warn("Provider registration failed (non-blocking):", providerErr);
+                }
             }
+
             submitting = false;
             render(true);
         } catch (err) {
@@ -2063,7 +2167,8 @@
             first_name: fv("first_name"),
             last_name: fv("last_name"),
             email: fv("email"),
-            market: fv("market"),
+            market: fvArr("locations").join(", "),
+            lead_time: fvArr("lead_time").join(", "),
 
             // Documents (base64-encoded)
             w9_filename: fileW9 ? fileW9.name : "",

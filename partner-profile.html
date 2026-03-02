@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="View your Guest House partner profile and job history.">
+    <title>Partner Profile | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-bone: #E9E6E3;
+            --color-error: #C4544C;
+            --color-border: #DDDDDD;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface-secondary);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        .profile-container {
+            background: var(--color-white);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+            max-width: 640px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .profile-header {
+            padding: 32px 32px 0;
+        }
+
+        .profile-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .profile-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .profile-section {
+            padding: 0 32px 24px;
+        }
+
+        .profile-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+
+        .profile-row:last-child { border-bottom: none; }
+
+        .profile-label {
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .profile-value {
+            color: var(--color-onyx);
+            font-weight: 500;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.active { background: #ECFDF3; color: #067647; }
+        .status-badge.accepted { background: #EFF6FF; color: #1D4ED8; }
+        .status-badge.needs_review { background: #FEF3C7; color: #92400E; }
+        .status-badge.hold { background: #EDE9FE; color: #5B21B6; }
+        .status-badge.inactive { background: #FEF2F2; color: #B91C1C; }
+
+        .bids-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .bids-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .bids-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+        .bids-table tr:last-child td { border-bottom: none; }
+
+        .loading-state, .error-state {
+            text-align: center;
+            padding: 60px 32px;
+        }
+        .error-state { color: var(--color-error); }
+        .loading-state p, .error-state p { font-size: 15px; margin-top: 12px; }
+
+        @media (max-width: 500px) {
+            body { padding: 16px; }
+            .profile-header, .profile-section { padding-left: 20px; padding-right: 20px; }
+            .profile-row { flex-direction: column; gap: 2px; }
+            .profile-value { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Guest House
+            </div>
+        </div>
+        <div id="profileContent">
+            <div class="loading-state">
+                <p>Loading your profile...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var content = document.getElementById('profileContent');
+
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function capitalize(s) {
+            return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+        }
+
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatAmount(n) {
+            return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        var token = new URLSearchParams(window.location.search).get('token');
+        if (!token) {
+            content.innerHTML = '<div class="error-state"><p>Missing token. Please use the link from your email.</p></div>';
+            return;
+        }
+
+        fetch('/api/providers?action=profile&token=' + encodeURIComponent(token))
+            .then(function(r) {
+                if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || 'Failed to load profile'); });
+                return r.json();
+            })
+            .then(function(data) {
+                var p = data.provider;
+                var bids = data.bids || [];
+
+                var statusLabels = { active: 'Active', accepted: 'Accepted', needs_review: 'Needs Review', hold: 'Hold', inactive: 'Inactive' };
+
+                // Header
+                document.querySelector('.profile-header').innerHTML =
+                    '<div class="profile-logo">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' +
+                        ' Guest House' +
+                    '</div>' +
+                    '<div class="profile-name">' + esc(p.name) + '</div>' +
+                    '<div class="profile-subtitle">' + capitalize(p.role || '') + ' &middot; ' + capitalize(p.market || '') + '</div>';
+
+                var h = '';
+
+                // Contact Info
+                h += '<div class="profile-section"><h3>Contact Information</h3>';
+                h += '<div class="profile-row"><span class="profile-label">Email</span><span class="profile-value">' + esc(p.email) + '</span></div>';
+                if (p.phone) h += '<div class="profile-row"><span class="profile-label">Phone</span><span class="profile-value">' + esc(p.phone) + '</span></div>';
+                if (p.businessName) h += '<div class="profile-row"><span class="profile-label">Business</span><span class="profile-value">' + esc(p.businessName) + '</span></div>';
+                if (p.city || p.state) h += '<div class="profile-row"><span class="profile-label">Location</span><span class="profile-value">' + esc((p.city || '') + (p.city && p.state ? ', ' : '') + (p.state || '')) + '</span></div>';
+                h += '<div class="profile-row"><span class="profile-label">Status</span><span class="profile-value"><span class="status-badge ' + esc(p.status) + '">' + (statusLabels[p.status] || capitalize(p.status || '')) + '</span></span></div>';
+                h += '</div>';
+
+                // Contract Status
+                h += '<div class="profile-section"><h3>Contract</h3>';
+                if (p.signedAt) {
+                    h += '<div class="profile-row"><span class="profile-label">Agreement</span><span class="profile-value">Signed</span></div>';
+                    h += '<div class="profile-row"><span class="profile-label">Signed Date</span><span class="profile-value">' + formatDate(p.signedAt) + '</span></div>';
+                    if (p.signedAgreementVersion) h += '<div class="profile-row"><span class="profile-label">Version</span><span class="profile-value">v' + esc(p.signedAgreementVersion) + '</span></div>';
+                } else {
+                    h += '<div class="profile-row"><span class="profile-label">Agreement</span><span class="profile-value" style="color:var(--color-text-secondary);">Not yet signed</span></div>';
+                }
+                if (p.w9Filename) h += '<div class="profile-row"><span class="profile-label">W-9</span><span class="profile-value">' + esc(p.w9Filename) + '</span></div>';
+                if (p.insuranceFilename) h += '<div class="profile-row"><span class="profile-label">Insurance</span><span class="profile-value">' + esc(p.insuranceFilename) + '</span></div>';
+                if (p.created) h += '<div class="profile-row"><span class="profile-label">Member Since</span><span class="profile-value">' + formatDate(p.created) + '</span></div>';
+                h += '</div>';
+
+                // Application Data
+                if (p.applicationData) {
+                    try {
+                        var appData = typeof p.applicationData === 'string' ? JSON.parse(p.applicationData) : p.applicationData;
+                        h += '<div class="profile-section"><h3>Application</h3>';
+                        Object.keys(appData).forEach(function(key) {
+                            var val = appData[key];
+                            if (val && typeof val !== 'object') {
+                                var label = key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); });
+                                h += '<div class="profile-row"><span class="profile-label">' + esc(label) + '</span><span class="profile-value">' + esc(String(val)) + '</span></div>';
+                            }
+                        });
+                        h += '</div>';
+                    } catch (e) {}
+                }
+
+                // Job History
+                if (bids.length > 0) {
+                    bids.sort(function(a, b) { return new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0); });
+                    h += '<div class="profile-section"><h3>Job History (' + bids.length + ')</h3>';
+                    h += '<table class="bids-table"><thead><tr><th>Date</th><th>Job</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+                    bids.forEach(function(bid) {
+                        var isIncomplete = bid.status === 'awarded' || bid.status === 'won';
+                        h += '<tr' + (isIncomplete ? ' style="background:#FEF3C7;"' : '') + '>';
+                        h += '<td>' + (bid.submittedAt ? formatDate(bid.submittedAt) : '\u2014') + '</td>';
+                        h += '<td>' + esc(bid.jobAddress || bid.jobId || '\u2014') + '</td>';
+                        h += '<td>' + (bid.amount ? '$' + formatAmount(bid.amount) : '\u2014') + '</td>';
+                        h += '<td>' + capitalize(bid.status || '') + '</td>';
+                        h += '</tr>';
+                    });
+                    h += '</tbody></table></div>';
+                } else {
+                    h += '<div class="profile-section"><h3>Job History</h3>';
+                    h += '<p style="color:var(--color-text-secondary);font-size:14px;">No bids submitted yet.</p>';
+                    h += '</div>';
+                }
+
+                content.innerHTML = h;
+            })
+            .catch(function(err) {
+                content.innerHTML = '<div class="error-state"><p>' + esc(err.message) + '</p></div>';
+            });
+    })();
+    </script>
+</body>
+</html>

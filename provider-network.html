@@ -605,6 +605,97 @@
 
         .status-dot.active { background: #067647; }
         .status-dot.inactive { background: var(--color-error); }
+        .status-dot.needs_review { background: #D97706; }
+        .status-dot.accepted { background: #2563EB; }
+        .status-dot.hold { background: #7C3AED; }
+        .status-dot.rejected { background: var(--color-error); }
+
+        .applicant-status-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .applicant-status-tag.needs_review { background: #FEF3C7; color: #92400E; }
+        .applicant-status-tag.hold { background: #EDE9FE; color: #5B21B6; }
+        .applicant-status-tag.pending { background: #FEF3C7; color: #92400E; }
+
+        /* Partner Review Modal */
+        .partner-review-modal .modal {
+            max-width: 640px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .partner-review-section {
+            margin-bottom: 24px;
+        }
+        .partner-review-section h4 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .partner-review-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+        .partner-review-row .label {
+            color: var(--color-text-secondary);
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+        .partner-review-row .value {
+            color: var(--color-onyx);
+            text-align: right;
+            word-break: break-word;
+        }
+        .partner-status-select {
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            background: var(--color-white);
+            cursor: pointer;
+        }
+        .partner-review-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 16px;
+            border-top: 1px solid var(--color-border);
+        }
+        .partner-bids-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .partner-bids-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            padding: 8px 8px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .partner-bids-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
 
         .toggle-btn {
             padding: 4px 12px;
@@ -2994,6 +3085,9 @@
                                 <option value="">All statuses</option>
                                 <option value="active" selected>Active</option>
                                 <option value="inactive">Inactive</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="needs_review">Needs Review</option>
+                                <option value="hold">Hold</option>
                             </select>
                         </div>
                         <div class="provider-table-wrapper">
@@ -3085,6 +3179,16 @@
                 <button class="btn btn-secondary" id="cancelProviderBtn">Cancel</button>
             </div>
             <div class="form-message" id="providerMessage"></div>
+        </div>
+    </div>
+
+    <!-- Partner Review Modal -->
+    <div class="modal-overlay partner-review-modal" id="partnerReviewModal">
+        <div class="modal">
+            <h3 id="partnerReviewTitle">Partner Review</h3>
+            <div id="partnerReviewContent">
+                <p style="color:var(--color-text-secondary);text-align:center;padding:24px;">Loading...</p>
+            </div>
         </div>
     </div>
 
@@ -4099,8 +4203,12 @@
         }
 
         function buildApplicantCard(a) {
-            var h = '<div class="applicant-card" data-applicant-id="' + esc(a.id) + '">';
+            var statusLabel = { needs_review: 'Needs Review', hold: 'Hold', pending: 'Needs Review' };
+            var h = '<div class="applicant-card" data-applicant-id="' + esc(a.id) + '" style="cursor:pointer;">';
+            h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
             h += '<div class="applicant-card-name">' + esc(a.name) + '</div>';
+            if (a.status && statusLabel[a.status]) h += '<span class="applicant-status-tag ' + esc(a.status) + '">' + statusLabel[a.status] + '</span>';
+            h += '</div>';
             if (a.businessName) h += '<div class="applicant-card-business">' + esc(a.businessName) + '</div>';
             h += '<div class="applicant-card-meta">';
             h += '<span class="applicant-tag">' + capitalize(a.role || '') + '</span>';
@@ -5819,13 +5927,20 @@
                         '<td>' + esc(p.email) + '</td>' +
                         '<td>' + capitalize(p.role) + '</td>' +
                         '<td>' + capitalize(p.market) + '</td>' +
-                        '<td><span class="status-dot ' + esc(p.status) + '"></span>' + capitalize(p.status) + '</td>' +
+                        '<td><span class="status-dot ' + esc(p.status) + '"></span>' + ({ needs_review: 'Needs Review' }[p.status] || capitalize(p.status)) + '</td>' +
                         '<td>' + (jobsWon !== null ? jobsWon : '\u2014') + '</td>' +
                         '<td>' + (avgBid ? '$' + formatAmount(avgBid) : '\u2014') + '</td>' +
                         '<td>' + (winRate !== null && stats && stats.totalBids > 0 ? winRate + '%' : '\u2014') + '</td>' +
-                        '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="toggle-status" data-current="' + esc(p.status) + '">' + (p.status === 'active' ? 'Deactivate' : 'Activate') + '</button></td>' +
+                        '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="view-provider">View</button> <button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="toggle-status" data-current="' + esc(p.status) + '">' + (p.status === 'active' ? 'Deactivate' : 'Activate') + '</button></td>' +
                     '</tr>';
                 }).join('');
+
+                // Bind view buttons
+                tbody.querySelectorAll('[data-action="view-provider"]').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        openPartnerReview(btn.dataset.providerId);
+                    });
+                });
 
                 // Bind toggle buttons
                 tbody.querySelectorAll('[data-action="toggle-status"]').forEach(function(btn) {
@@ -5934,15 +6049,22 @@
             });
         }
 
-        // Applicants
+        // Applicants — fetch needs_review, hold, AND pending (backward compat)
         async function loadApplicants() {
             var container = document.getElementById('applicantsContent');
             if (!container) return;
 
             try {
-                var response = await fetch('/api/providers?status=pending');
-                var data = await response.json();
-                var applicants = data.providers || [];
+                var results = await Promise.all([
+                    fetch('/api/providers?status=needs_review').then(function(r) { return r.json(); }),
+                    fetch('/api/providers?status=hold').then(function(r) { return r.json(); }),
+                    fetch('/api/providers?status=pending').then(function(r) { return r.json(); }),
+                ]);
+                var applicants = [].concat(
+                    results[0].providers || [],
+                    results[1].providers || [],
+                    results[2].providers || []
+                );
 
                 var countEl = document.getElementById('applicantTabCount');
                 if (countEl) countEl.textContent = applicants.length;
@@ -5978,27 +6100,38 @@
         }
 
         function bindApplicantButtons(container) {
+            // Click on card to open review modal (ignore clicks on buttons/toggles)
+            container.querySelectorAll('.applicant-card').forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('button') || e.target.closest('a')) return;
+                    var id = card.dataset.applicantId;
+                    if (id) openPartnerReview(id);
+                });
+            });
             container.querySelectorAll('.btn-approve').forEach(function(btn) {
-                btn.addEventListener('click', async function() {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
                     btn.disabled = true;
-                    btn.textContent = 'Approving...';
+                    btn.textContent = 'Accepting...';
                     try {
                         var resp = await fetch('/api/providers', {
                             method: 'PATCH',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ id: btn.dataset.applicantId, status: 'approved' }),
+                            body: JSON.stringify({ id: btn.dataset.applicantId, status: 'accepted' }),
                         });
                         if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
                         loadApplicants();
+                        loadProviders();
                     } catch (err) {
-                        alert('Error approving: ' + err.message);
+                        alert('Error accepting: ' + err.message);
                         btn.disabled = false;
                         btn.textContent = 'Approve';
                     }
                 });
             });
             container.querySelectorAll('.btn-reject').forEach(function(btn) {
-                btn.addEventListener('click', async function() {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
                     btn.disabled = true;
                     btn.textContent = 'Rejecting...';
                     try {
@@ -6017,6 +6150,145 @@
                 });
             });
         }
+
+        // Partner Review Modal
+        async function openPartnerReview(providerId) {
+            var modal = document.getElementById('partnerReviewModal');
+            var content = document.getElementById('partnerReviewContent');
+            document.getElementById('partnerReviewTitle').textContent = 'Partner Review';
+            content.innerHTML = '<p style="color:var(--color-text-secondary);text-align:center;padding:24px;">Loading...</p>';
+            modal.classList.add('open');
+
+            try {
+                var resp = await fetch('/api/providers?action=get-provider&id=' + providerId);
+                if (!resp.ok) throw new Error('Failed to load provider');
+                var data = await resp.json();
+                var p = data.provider;
+                var bids = data.bids || [];
+
+                document.getElementById('partnerReviewTitle').textContent = p.name || 'Partner Review';
+
+                var statusLabels = { needs_review: 'Needs Review', accepted: 'Accepted', hold: 'Hold', rejected: 'Rejected', active: 'Active', inactive: 'Inactive', pending: 'Needs Review' };
+
+                var h = '<div class="partner-review-section"><h4>Contact Information</h4>';
+                h += '<div class="partner-review-row"><span class="label">Name</span><span class="value">' + esc(p.name || '') + '</span></div>';
+                h += '<div class="partner-review-row"><span class="label">Email</span><span class="value">' + esc(p.email || '') + '</span></div>';
+                if (p.phone) h += '<div class="partner-review-row"><span class="label">Phone</span><span class="value">' + esc(p.phone) + '</span></div>';
+                if (p.businessName) h += '<div class="partner-review-row"><span class="label">Business</span><span class="value">' + esc(p.businessName) + '</span></div>';
+                if (p.city || p.state) h += '<div class="partner-review-row"><span class="label">Location</span><span class="value">' + esc((p.city || '') + (p.city && p.state ? ', ' : '') + (p.state || '')) + '</span></div>';
+                h += '<div class="partner-review-row"><span class="label">Role</span><span class="value">' + capitalize(p.role || '') + '</span></div>';
+                h += '<div class="partner-review-row"><span class="label">Market</span><span class="value">' + capitalize(p.market || '') + '</span></div>';
+                if (p.created) h += '<div class="partner-review-row"><span class="label">Applied</span><span class="value">' + formatDate(p.created) + '</span></div>';
+                h += '<div class="partner-review-row"><span class="label">Status</span><span class="value"><span class="status-dot ' + esc(p.status) + '"></span>' + (statusLabels[p.status] || capitalize(p.status || '')) + '</span></div>';
+                if (p.acceptedAt) h += '<div class="partner-review-row"><span class="label">Accepted</span><span class="value">' + formatDate(p.acceptedAt) + '</span></div>';
+                if (p.signedAt) h += '<div class="partner-review-row"><span class="label">Signed</span><span class="value">' + formatDate(p.signedAt) + '</span></div>';
+                h += '</div>';
+
+                // Application data
+                if (p.applicationData) {
+                    try {
+                        var appData = typeof p.applicationData === 'string' ? JSON.parse(p.applicationData) : p.applicationData;
+                        h += '<div class="partner-review-section"><h4>Application Answers</h4>';
+                        Object.keys(appData).forEach(function(key) {
+                            var val = appData[key];
+                            if (val && typeof val !== 'object') {
+                                var label = key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); });
+                                h += '<div class="partner-review-row"><span class="label">' + esc(label) + '</span><span class="value">' + esc(String(val)) + '</span></div>';
+                            }
+                        });
+                        h += '</div>';
+                    } catch (e) {}
+                }
+
+                // Job history
+                if (bids.length > 0) {
+                    h += '<div class="partner-review-section"><h4>Job History (' + bids.length + ' bids)</h4>';
+                    h += '<table class="partner-bids-table"><thead><tr><th>Date</th><th>Job</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+                    bids.sort(function(a, b) { return new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0); });
+                    bids.forEach(function(bid) {
+                        h += '<tr>';
+                        h += '<td>' + (bid.submittedAt ? formatDate(bid.submittedAt) : '\u2014') + '</td>';
+                        h += '<td>' + esc(bid.jobAddress || bid.jobId || '\u2014') + '</td>';
+                        h += '<td>' + (bid.amount ? '$' + formatAmount(bid.amount) : '\u2014') + '</td>';
+                        h += '<td>' + capitalize(bid.status || '') + '</td>';
+                        h += '</tr>';
+                    });
+                    h += '</tbody></table></div>';
+                }
+
+                // Actions
+                h += '<div class="partner-review-actions">';
+                h += '<select class="partner-status-select" id="reviewStatusSelect">';
+                ['needs_review', 'accepted', 'hold', 'rejected', 'active', 'inactive'].forEach(function(s) {
+                    h += '<option value="' + s + '"' + (p.status === s || (p.status === 'pending' && s === 'needs_review') ? ' selected' : '') + '>' + (statusLabels[s] || capitalize(s)) + '</option>';
+                });
+                h += '</select>';
+                h += '<button class="btn btn-primary btn-sm" id="reviewUpdateBtn" data-provider-id="' + esc(p.id) + '">Update Status</button>';
+                if (p.status === 'accepted') {
+                    h += '<button class="btn btn-secondary btn-sm" id="reviewResendBtn" data-provider-id="' + esc(p.id) + '">Re-send Signup Email</button>';
+                }
+                h += '</div>';
+
+                content.innerHTML = h;
+
+                // Bind update button
+                document.getElementById('reviewUpdateBtn').addEventListener('click', async function() {
+                    var btn = this;
+                    var newStatus = document.getElementById('reviewStatusSelect').value;
+                    btn.disabled = true;
+                    btn.textContent = 'Updating...';
+                    try {
+                        var resp = await fetch('/api/providers', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
+                        });
+                        if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                        modal.classList.remove('open');
+                        loadApplicants();
+                        loadProviders();
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Update Status';
+                    }
+                });
+
+                // Bind resend button if present
+                var resendBtn = document.getElementById('reviewResendBtn');
+                if (resendBtn) {
+                    resendBtn.addEventListener('click', async function() {
+                        var btn = this;
+                        btn.disabled = true;
+                        btn.textContent = 'Sending...';
+                        try {
+                            var resp = await fetch('/api/providers?action=resend-signup', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: btn.dataset.providerId }),
+                            });
+                            if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                            btn.textContent = 'Sent!';
+                            setTimeout(function() { btn.textContent = 'Re-send Signup Email'; btn.disabled = false; }, 2000);
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                            btn.disabled = false;
+                            btn.textContent = 'Re-send Signup Email';
+                        }
+                    });
+                }
+            } catch (err) {
+                content.innerHTML = '<p style="color:var(--color-error);text-align:center;padding:24px;">Error: ' + esc(err.message) + '</p>';
+            }
+        }
+
+        // Close partner review modal
+        (function() {
+            var modal = document.getElementById('partnerReviewModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+        })();
 
         // Filters
         function setupFilters() {
