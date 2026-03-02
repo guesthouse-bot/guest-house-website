@@ -29,6 +29,10 @@ module.exports = async function handler(req, res) {
     case 'dashboard-stats': return handleDashboardStats(req, res);
     case 'delete-job': return handleDeleteJob(req, res);
     case 'delete-bid': return handleDeleteBid(req, res);
+    case 'update-job-status': return handleUpdateJobStatus(req, res);
+    case 'create-hubspot-deal': return handleCreateHubspotDeal(req, res);
+    case 'listings': return handleListings(req, res);
+    case 'update-listing-status': return handleUpdateListingStatus(req, res);
     case 'hubspot-webhook': return handleHubspotWebhook(req, res);
     case 'hubspot-poll': return handleHubspotPoll(req, res);
     case 'hubspot-debug': return handleHubspotDebug(req, res);
@@ -408,10 +412,30 @@ async function handleAwardJob(req, res) {
       }
     }
 
+    // Auto-create a listing in planning
+    var listingDoc = await fb.createDocument('listings', {
+      jobId: body.jobId,
+      address: job.address || '',
+      market: job.market || '',
+      providerType: job.providerType || '',
+      sqft: job.sqft || '',
+      rooms: job.rooms || '',
+      timeline: job.timeline || '',
+      notes: job.notes || '',
+      awardedProvider: winningBid.providerEmail,
+      awardedProviderName: winningBid.providerName || '',
+      awardedAmount: winningBid.amount,
+      status: 'planning',
+      created: now,
+    }, accessToken);
+
+    var listingId = fb.docId(listingDoc.name);
+
     return res.status(200).json({
       success: true,
       awardedTo: winningBid.providerEmail,
       amount: winningBid.amount,
+      listingId: listingId,
     });
 
   } catch (err) {
@@ -669,6 +693,176 @@ async function handleDeleteJob(req, res) {
   }
 }
 
+// === UPDATE JOB STATUS ===
+async function handleUpdateJobStatus(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var body = req.body;
+    if (!body.jobId || !body.status) return res.status(400).json({ error: 'Missing jobId or status' });
+
+    var allowed = ['open', 'bidding', 'awarded', 'paid', 'completed', 'cancelled'];
+    if (allowed.indexOf(body.status) === -1) {
+      return res.status(400).json({ error: 'Invalid status: ' + body.status });
+    }
+
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    await fb.updateDocument('jobs/' + body.jobId, { status: body.status }, accessToken);
+
+    return res.status(200).json({ success: true, jobId: body.jobId, status: body.status });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// === LISTINGS ===
+async function handleListings(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    var filters = [];
+    if (req.query.status) {
+      filters.push({ field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: req.query.status } });
+    }
+
+    var docs = await fb.runQuery('listings', filters, accessToken);
+    var listings = docs.map(function(item) {
+      var data = fb.fromFirestoreFields(item.document.fields);
+      data.id = fb.docId(item.document.name);
+      return data;
+    });
+
+    return res.status(200).json({ listings: listings });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// === UPDATE LISTING STATUS ===
+async function handleUpdateListingStatus(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    var body = req.body;
+    if (!body.listingId || !body.status) return res.status(400).json({ error: 'Missing listingId or status' });
+
+    var allowed = ['planning', 'active', 'closed'];
+    if (allowed.indexOf(body.status) === -1) {
+      return res.status(400).json({ error: 'Invalid status: ' + body.status });
+    }
+
+    var serviceAccount = fb.getServiceAccount();
+    var accessToken = await fb.getAccessToken(serviceAccount);
+
+    await fb.updateDocument('listings/' + body.listingId, { status: body.status }, accessToken);
+
+    return res.status(200).json({ success: true, listingId: body.listingId, status: body.status });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+// === CREATE HUBSPOT DEAL ===
+async function handleCreateHubspotDeal(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  var TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
+  if (!TOKEN) return res.status(500).json({ error: 'HubSpot access token not configured' });
+
+  var hsHeaders = {
+    'Authorization': 'Bearer ' + TOKEN,
+    'Content-Type': 'application/json',
+  };
+
+  var body = req.body;
+  if (!body || !body.dealname) {
+    return res.status(400).json({ error: 'Missing required field: dealname' });
+  }
+
+  try {
+    // Fetch pipeline stages to find "Quote Requested" stage ID
+    var stagesResp = await fetch(
+      'https://api.hubapi.com/crm/v3/pipelines/deals/default/stages',
+      { method: 'GET', headers: hsHeaders }
+    );
+
+    var stageId = 'appointmentscheduled';
+    if (stagesResp.ok) {
+      var stagesData = await stagesResp.json();
+      var stages = stagesData.results || stagesData;
+      for (var i = 0; i < stages.length; i++) {
+        var label = (stages[i].label || '').toLowerCase().trim();
+        if (label === 'quote requested' || label === 'quotes requested') {
+          stageId = stages[i].id;
+          break;
+        }
+      }
+    }
+
+    // Build deal properties
+    var properties = {
+      dealname: body.dealname,
+      pipeline: 'default',
+      dealstage: stageId,
+    };
+    if (body.amount) properties.amount = String(body.amount);
+    if (body.address) properties.property_address = body.address;
+    if (body.propertySize) properties.property_size = body.propertySize;
+    if (body.propertyStatus) properties.property_status = body.propertyStatus;
+    if (body.targetPrice) properties.target_list_price = body.targetPrice;
+    if (body.handsOn) properties.hands_on_preference = body.handsOn;
+    if (body.installDate) properties.install_date = body.installDate;
+    if (body.plan) properties.plan = body.plan;
+    if (body.market) properties.market = body.market;
+
+    // Create the deal
+    var dealResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals', {
+      method: 'POST',
+      headers: hsHeaders,
+      body: JSON.stringify({ properties: properties }),
+    });
+
+    if (!dealResp.ok) {
+      var err = await dealResp.json();
+      return res.status(dealResp.status).json({ error: err.message || 'Failed to create deal' });
+    }
+
+    var deal = await dealResp.json();
+
+    // Create line items if provided
+    if (body.lineItems && body.lineItems.length > 0) {
+      for (var j = 0; j < body.lineItems.length; j++) {
+        var li = body.lineItems[j];
+        await fetch('https://api.hubapi.com/crm/v3/objects/line_items', {
+          method: 'POST',
+          headers: hsHeaders,
+          body: JSON.stringify({
+            properties: {
+              name: li.name,
+              price: String(li.price),
+              quantity: '1',
+            },
+            associations: [{
+              to: { id: deal.id },
+              types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 20 }],
+            }],
+          }),
+        });
+      }
+    }
+
+    return res.status(200).json({ success: true, dealId: deal.id, stageId: stageId });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
 async function handleDeleteBid(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -800,7 +994,118 @@ async function handleHubspotPoll(req, res) {
       }
     }
 
-    return res.status(200).json({ processed: results.length, results: results });
+    // Auto-award jobs when HubSpot deal moves to closedwon
+    var closedWonResults = [];
+    try {
+      var closedWonStageIds = await resolveClosedWonStageIds();
+      var closedWonDeals = [];
+      for (var cw = 0; cw < closedWonStageIds.length; cw++) {
+        var cwDeals = await searchDealsByStage(closedWonStageIds[cw]);
+        closedWonDeals = closedWonDeals.concat(cwDeals);
+      }
+
+      if (closedWonDeals.length > 0) {
+        var serviceAccount = fb.getServiceAccount();
+        var accessToken = await fb.getAccessToken(serviceAccount);
+
+        for (var d = 0; d < closedWonDeals.length; d++) {
+          var dealId = String(closedWonDeals[d].id);
+          try {
+            // Find matching job by hubspotDealId
+            var jobDocs = await fb.runQuery('jobs', [
+              { field: { fieldPath: 'hubspotDealId' }, op: 'EQUAL', value: { stringValue: dealId } },
+            ], accessToken);
+
+            if (jobDocs.length === 0) continue;
+
+            var jobData = fb.fromFirestoreFields(jobDocs[0].document.fields);
+            var jobId = fb.docId(jobDocs[0].document.name);
+
+            if (jobData.status !== 'bidding') {
+              closedWonResults.push({ dealId: dealId, jobId: jobId, skipped: true, reason: 'not_bidding', status: jobData.status });
+              continue;
+            }
+
+            // Find submitted bids
+            var bidDocs = await fb.runQuery('bids', [
+              { field: { fieldPath: 'jobId' }, op: 'EQUAL', value: { stringValue: jobId } },
+            ], accessToken);
+
+            var bids = bidDocs.map(function(item) {
+              var bid = fb.fromFirestoreFields(item.document.fields);
+              bid.id = fb.docId(item.document.name);
+              return bid;
+            });
+
+            var submittedBids = bids.filter(function(b) { return b.submittedAt && b.amount; });
+
+            if (submittedBids.length === 0) {
+              closedWonResults.push({ dealId: dealId, jobId: jobId, skipped: true, reason: 'no_submitted_bids' });
+              continue;
+            }
+
+            // Auto-award to lowest bidder
+            submittedBids.sort(function(a, b) { return a.amount - b.amount; });
+            var winner = submittedBids[0];
+            var awardNow = new Date().toISOString();
+
+            await fb.updateDocument('jobs/' + jobId, {
+              status: 'awarded',
+              awardedBidId: winner.id,
+              awardedProvider: winner.providerEmail,
+              awardedAt: awardNow,
+            }, accessToken);
+
+            // Update bid statuses and send emails
+            var redactedAddr = fb.redactAddress(jobData.address);
+            for (var b = 0; b < bids.length; b++) {
+              var bid = bids[b];
+              var newStatus = bid.id === winner.id ? 'won' : 'lost';
+              await fb.updateDocument('bids/' + bid.id, { status: newStatus }, accessToken);
+
+              if (bid.id === winner.id) {
+                try {
+                  await fb.sendEmail(
+                    bid.providerEmail,
+                    'You Won the Job! — ' + redactedAddr,
+                    '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+                      '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+                      '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Congratulations! You\'ve been awarded the job</h2>' +
+                      '<p style="color:#666;font-size:15px;line-height:1.6;margin-bottom:24px;">Hi ' + bid.providerName.split(' ')[0] + ', great news! Your bid of $' + Number(bid.amount).toFixed(2) + ' was selected.</p>' +
+                      '<div style="background:#ECFDF3;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
+                        '<div style="margin-bottom:8px;"><strong style="color:#067647;">Location:</strong> <span style="color:#343434;">' + redactedAddr + '</span></div>' +
+                        '<div><strong style="color:#067647;">Your bid:</strong> <span style="color:#080808;font-size:20px;font-weight:600;">$' + Number(bid.amount).toFixed(2) + '</span></div>' +
+                      '</div>' +
+                      '<p style="color:#666;font-size:14px;">A member of the Guest House team will reach out with next steps.</p>' +
+                    '</div>'
+                  );
+                } catch (emailErr) { console.log('Winner email skipped for', bid.providerEmail); }
+              } else if (bid.submittedAt) {
+                try {
+                  await fb.sendEmail(
+                    bid.providerEmail,
+                    'Job Update — ' + redactedAddr,
+                    '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+                      '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+                      '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Job awarded to another provider</h2>' +
+                      '<p style="color:#666;font-size:15px;line-height:1.6;">Hi ' + bid.providerName.split(' ')[0] + ', thanks for your bid. This job has been awarded to another provider. We\'ll notify you when new jobs become available.</p>' +
+                    '</div>'
+                  );
+                } catch (emailErr) { console.log('Loser email skipped for', bid.providerEmail); }
+              }
+            }
+
+            closedWonResults.push({ dealId: dealId, jobId: jobId, action: 'auto_awarded', winner: winner.providerEmail, amount: winner.amount });
+          } catch (cwErr) {
+            closedWonResults.push({ dealId: dealId, error: cwErr.message });
+          }
+        }
+      }
+    } catch (cwOuterErr) {
+      console.error('ClosedWon check error:', cwOuterErr.message);
+    }
+
+    return res.status(200).json({ processed: results.length, results: results, closedWon: closedWonResults });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -965,6 +1270,21 @@ async function resolveCommitStageIds() {
   (data.results || data).forEach(function(s) {
     var label = (s.label || '').toLowerCase();
     if (label.indexOf('commit') !== -1 || label.indexOf('seller approved') !== -1) ids.push(s.id);
+  });
+  return ids;
+}
+
+async function resolveClosedWonStageIds() {
+  var resp = await fetchWithRetry(
+    'https://api.hubapi.com/crm/v3/pipelines/deals/default/stages',
+    { method: 'GET', headers: HS_HEADERS() }
+  );
+  if (!resp.ok) return [];
+  var data = await resp.json();
+  var ids = [];
+  (data.results || data).forEach(function(s) {
+    var label = (s.label || '').toLowerCase();
+    if (label.indexOf('closed won') !== -1 || label === 'closedwon') ids.push(s.id);
   });
   return ids;
 }

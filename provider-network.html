@@ -853,10 +853,90 @@
             margin-bottom: 16px;
         }
         .ov-feed-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--color-onyx);
             letter-spacing: -0.02em;
+        }
+        .ov-collect-bids-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .ov-collect-bids-btn:hover { opacity: 0.85; }
+        .ov-collect-bids-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .ov-feed-see-all {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            margin-top: 8px;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .ov-feed-see-all:hover { background: var(--color-surface-secondary); color: var(--color-onyx); }
+        .applicant-card-details {
+            display: none;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--color-border);
+        }
+        .applicant-card.expanded .applicant-card-details { display: block; }
+        .applicant-card-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-top: 10px;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+        .applicant-card-toggle:hover { color: var(--color-onyx); }
+        .applicant-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 13px;
+            border-bottom: 1px solid var(--color-surface-secondary);
+        }
+        .applicant-detail-row:last-child { border-bottom: none; }
+        .applicant-detail-label { color: var(--color-text-secondary); font-weight: 500; }
+        .applicant-detail-value { color: var(--color-onyx); text-align: right; max-width: 60%; }
+        .nav-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9px;
+            background: var(--color-error);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: auto;
         }
         .ov-filter-bar {
             display: flex;
@@ -1875,6 +1955,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-left: auto;
         }
         .profile-menu {
             position: relative;
@@ -2059,6 +2140,28 @@
         }
         .quotes-section-grid {
             margin-bottom: 8px;
+        }
+
+        /* Drag-and-drop zones */
+        .drag-drop-zone {
+            min-height: 60px;
+            border: 2px dashed transparent;
+            border-radius: 12px;
+            transition: border-color 0.2s, background 0.2s;
+            padding: 0 0 8px;
+        }
+        .drag-drop-zone.drag-over {
+            border-color: #635BFF;
+            background: rgba(99,91,255,0.04);
+        }
+        .ov-quote-card[draggable="true"] {
+            cursor: grab;
+        }
+        .ov-quote-card[draggable="true"]:active {
+            cursor: grabbing;
+        }
+        .ov-quote-card.dragging {
+            opacity: 0.4;
         }
 
         /* Today section */
@@ -2439,6 +2542,20 @@
             transition: opacity 0.15s;
         }
         .qv-checkout:hover { opacity: 0.85; }
+        .qv-save-quote {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            color: var(--color-onyx);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .qv-save-quote:hover { background: var(--color-surface-secondary); border-color: var(--color-onyx); }
         @media (max-width: 900px) {
             .qv-layout { grid-template-columns: 1fr; }
             .qv-sidebar { position: static; }
@@ -2477,8 +2594,8 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
                 <a href="motherboard.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    <span>TurboStager</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" fill="#080808" style="height:18px;width:auto;"><path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z"/><path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z"/><path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z"/></svg>
+                    <span>Guest House</span>
                 </a>
             </div>
             <nav class="sidebar-nav">
@@ -2520,7 +2637,7 @@
         <!-- Content Area -->
         <div class="content-area">
             <div class="content-header">
-                <h1 id="contentTitle">Overview</h1>
+                <h1 id="contentTitle" style="display:none;">Overview</h1>
                 <div class="header-right">
                     <div id="regionPills"></div>
                     <button class="btn btn-cta" id="newHomeBtn">+ New Quote</button>
@@ -2568,7 +2685,7 @@
 
                         <!-- Address -->
                         <div class="quote-step active" data-step-id="address">
-                            <h2 class="quote-question">Where's the property?</h2>
+                            <h2 class="quote-question">Let's get started. Where's the property?</h2>
                             <div class="quote-input-group">
                                 <label for="wizAddress">Address</label>
                                 <div class="address-autocomplete">
@@ -3766,6 +3883,7 @@
                 }
 
                 html += '<button class="qv-checkout" id="qvCheckout">Checkout</button>';
+                html += '<button class="qv-save-quote" id="qvSaveQuote">Save Quote</button>';
                 html += '</div>'; // .qv-sidebar
 
                 html += '</div>'; // .qv-layout
@@ -3858,6 +3976,47 @@
                     var quotesBtn = document.querySelector('.section-nav-btn[data-section="quotes"]');
                     if (quotesBtn) quotesBtn.click();
                 });
+
+                container.querySelector('#qvSaveQuote').addEventListener('click', function() {
+                    var lineItems = [];
+                    if (selectedPkg && selectedPkg !== 'none') {
+                        lineItems.push({ name: pkgNames[selectedPkg], price: pkgPriceVal[selectedPkg], type: 'staging' });
+                    }
+                    Object.keys(selectedSvcs).forEach(function(sid) {
+                        if (!selectedSvcs[sid]) return;
+                        Object.keys(catalog).forEach(function(cat) {
+                            catalog[cat].forEach(function(s) {
+                                if (s.id === sid) lineItems.push({ name: s.name, price: s.price, type: cat });
+                            });
+                        });
+                    });
+
+                    var dateInput = container.querySelector('#qvInstallDate');
+                    var localQuotes = [];
+                    try { localQuotes = JSON.parse(localStorage.getItem('pn_quotes') || '[]'); } catch (e) {}
+                    localQuotes.push({
+                        id: 'local-' + Date.now(),
+                        address: qd.address,
+                        sqft: qd.sqft,
+                        rooms: qd.rooms ? qd.rooms.join(', ') : '',
+                        timeline: dateInput ? dateInput.value : '',
+                        market: 'arizona',
+                        providerType: 'stager',
+                        notes: 'Package: ' + (pkgNames[selectedPkg] || 'None') + '. Services: ' + svcLines.join(', '),
+                        services: qd.services ? qd.services.slice() : [],
+                        status: 'open',
+                        created: new Date().toISOString(),
+                        plan: qd.plan,
+                        total: grandTotal,
+                        lineItems: lineItems,
+                    });
+                    localStorage.setItem('pn_quotes', JSON.stringify(localQuotes));
+
+                    alert('Quote saved! You can find it in your Quotes.');
+                    if (window._resetWizard) window._resetWizard();
+                    var quotesBtn = document.querySelector('.section-nav-btn[data-section="quotes"]');
+                    if (quotesBtn) quotesBtn.click();
+                });
             }
 
             render();
@@ -3865,37 +4024,34 @@
 
         // HubSpot integration
         function createHubSpotDeal(data) {
-            // POST to your server-side endpoint that proxies to HubSpot API
-            // This stub shows the expected payload structure
-            var hubspotPayload = {
-                properties: {
-                    dealname: 'Staging Quote — ' + data.address,
-                    amount: String(data.total),
-                    pipeline: 'default',
-                    dealstage: 'appointmentscheduled',
-                    property_address: data.address,
-                    property_size: data.propertySize,
-                    property_status: data.propertyStatus,
-                    target_list_price: data.targetPrice,
-                    hands_on_preference: data.handsOn,
-                    install_date: data.installDate,
-                    plan: data.plan,
-                },
+            var payload = {
+                dealname: 'Staging Quote — ' + data.address,
+                amount: data.total,
+                address: data.address,
+                propertySize: data.propertySize,
+                propertyStatus: data.propertyStatus,
+                targetPrice: data.targetPrice,
+                handsOn: data.handsOn,
+                installDate: data.installDate,
+                plan: data.plan,
                 lineItems: data.lineItems.map(function(li) {
-                    return { name: li.name, price: String(li.price), quantity: '1', category: li.type };
+                    return { name: li.name, price: li.price };
                 }),
             };
 
-            // Uncomment and configure when your HubSpot proxy endpoint is ready:
-            // fetch('/api/hubspot/deals', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(hubspotPayload),
-            // }).then(function(r) { return r.json(); })
-            //   .then(function(result) { console.log('HubSpot deal created:', result); })
-            //   .catch(function(err) { console.error('HubSpot error:', err); });
-
-            console.log('HubSpot payload ready:', hubspotPayload);
+            fetch('/api/bidding?action=create-hubspot-deal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            }).then(function(r) { return r.json(); })
+              .then(function(result) {
+                  if (result.success) {
+                      console.log('HubSpot deal created:', result.dealId);
+                  } else {
+                      console.error('HubSpot error:', result.error);
+                  }
+              })
+              .catch(function(err) { console.error('HubSpot error:', err); });
         }
 
         // Local quotes helper
@@ -3922,7 +4078,8 @@
             });
             var created = job.created ? new Date(job.created).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
 
-            var h = '<div class="ov-quote-card">';
+            var cardStatus = job.status || 'open';
+            var h = '<div class="ov-quote-card" draggable="true" data-job-id="' + esc(job.id) + '" data-job-status="' + esc(cardStatus) + '">';
             h += '<div class="ov-quote-card-top">';
             h += '<div class="ov-quote-card-address">' + esc(job.address || 'Untitled Quote') + '</div>';
             h += '<div class="ov-quote-card-actions">';
@@ -3934,8 +4091,59 @@
             h += '</div>';
             h += '<div class="ov-quote-card-services">' + iconsHtml + '</div>';
             h += '<div class="ov-quote-card-progress">' + pct + '% of recommended services. Add more to sell faster.</div>';
+            if (job.status !== 'bidding' && job.status !== 'awarded' && job.status !== 'paid' && job.status !== 'completed' && job.status !== 'cancelled') {
+                h += '<button class="ov-collect-bids-btn" data-quote-id="' + esc(job.id) + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Start Collecting Bids</button>';
+            }
             h += '</div>';
             return h;
+        }
+
+        function buildApplicantCard(a) {
+            var h = '<div class="applicant-card" data-applicant-id="' + esc(a.id) + '">';
+            h += '<div class="applicant-card-name">' + esc(a.name) + '</div>';
+            if (a.businessName) h += '<div class="applicant-card-business">' + esc(a.businessName) + '</div>';
+            h += '<div class="applicant-card-meta">';
+            h += '<span class="applicant-tag">' + capitalize(a.role || '') + '</span>';
+            if (a.city || a.state) h += '<span class="applicant-tag">' + esc((a.city || '') + (a.city && a.state ? ', ' : '') + (a.state || '')) + '</span>';
+            if (a.created) h += '<span class="applicant-tag">' + formatDate(a.created) + '</span>';
+            h += '</div>';
+            h += '<div class="applicant-card-email">' + esc(a.email) + '</div>';
+            // Application details (expandable)
+            if (a.applicationData) {
+                try {
+                    var appData = typeof a.applicationData === 'string' ? JSON.parse(a.applicationData) : a.applicationData;
+                    h += '<button class="applicant-card-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> View application</button>';
+                    h += '<div class="applicant-card-details">';
+                    Object.keys(appData).forEach(function(key) {
+                        var val = appData[key];
+                        if (val && typeof val !== 'object') {
+                            var label = key.replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); });
+                            h += '<div class="applicant-detail-row"><span class="applicant-detail-label">' + esc(label) + '</span><span class="applicant-detail-value">' + esc(String(val)) + '</span></div>';
+                        }
+                    });
+                    h += '</div>';
+                } catch (e) {}
+            }
+            h += '<div class="applicant-card-actions">';
+            h += '<button class="btn-approve" data-applicant-id="' + esc(a.id) + '">Approve</button>';
+            h += '<button class="btn-reject" data-applicant-id="' + esc(a.id) + '">Reject</button>';
+            h += '</div>';
+            h += '</div>';
+            return h;
+        }
+
+        function bindApplicantToggle(container) {
+            container.querySelectorAll('.applicant-card-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var card = btn.closest('.applicant-card');
+                    if (card) {
+                        card.classList.toggle('expanded');
+                        var isExpanded = card.classList.contains('expanded');
+                        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="' + (isExpanded ? '18 15 12 9 6 15' : '6 9 12 15 18 9') + '"/></svg> ' + (isExpanded ? 'Hide application' : 'View application');
+                    }
+                });
+            });
         }
 
         var svcIconDefs = {
@@ -4012,16 +4220,24 @@
                 html += '<button class="page-tab" data-tab="quotes-cancelled">Cancelled<span class="tab-count">' + cancelledQ.length + '</span></button>';
                 html += '</div>';
 
-                // All tab — grouped by section banners
+                // All tab — grouped by section banners wrapped in drag-drop zones
                 var allHtml = '';
+                allHtml += '<div class="drag-drop-zone" data-drop-status="open">';
                 allHtml += '<div class="quotes-section-banner banner-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Open</div>';
                 allHtml += renderGrid(openQ, 'No open quotes.');
+                allHtml += '</div>';
+                allHtml += '<div class="drag-drop-zone" data-drop-status="bidding">';
                 allHtml += '<div class="quotes-section-banner banner-bidding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Collecting Bids</div>';
                 allHtml += renderGrid(biddingQ, 'No quotes collecting bids.');
+                allHtml += '</div>';
+                allHtml += '<div class="drag-drop-zone" data-drop-status="paid">';
                 allHtml += '<div class="quotes-section-banner banner-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Bookings</div>';
                 allHtml += renderGrid(paidQ, 'No bookings yet.');
+                allHtml += '</div>';
+                allHtml += '<div class="drag-drop-zone" data-drop-status="cancelled">';
                 allHtml += '<div class="quotes-section-banner banner-cancelled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Cancelled</div>';
                 allHtml += renderGrid(cancelledQ, 'No cancelled quotes.');
+                allHtml += '</div>';
 
                 html += '<div class="tab-panel active" id="panel-quotes-all">' + allHtml + '</div>';
                 html += '<div class="tab-panel" id="panel-quotes-open">' + renderGrid(openQ, 'No open quotes. <span class="ov-empty-link" data-action="new-bid" style="cursor:pointer;color:var(--color-primary);text-decoration:underline;">Create a new quote.</span>') + '</div>';
@@ -4045,39 +4261,317 @@
                     });
                 });
 
+                container.querySelectorAll('.ov-collect-bids-btn').forEach(function(btn) {
+                    btn.addEventListener('click', async function(e) {
+                        e.stopPropagation();
+                        var quoteId = btn.dataset.quoteId;
+                        var quote = allJobs.find(function(j) { return j.id === quoteId; });
+                        if (!quote) return;
+
+                        btn.disabled = true;
+                        btn.textContent = 'Sending...';
+
+                        try {
+                            var resp = await fetch('/api/bidding?action=jobs', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    address: quote.address || '',
+                                    market: quote.market || 'arizona',
+                                    providerType: quote.providerType || 'stager',
+                                    sqft: quote.sqft || '',
+                                    rooms: quote.rooms || '',
+                                    timeline: quote.timeline || '',
+                                    notes: quote.notes || '',
+                                }),
+                            });
+                            var data = await resp.json();
+                            if (!resp.ok) throw new Error(data.error);
+
+                            removeLocalQuote(quoteId);
+                            loadQuotes();
+                            loadDashboard();
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                            btn.disabled = false;
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Start Collecting Bids';
+                        }
+                    });
+                });
+
+                // Wire up drag-and-drop on the All tab
+                setupQuoteDragDrop(container, allJobs);
+
             } catch (err) {
                 container.innerHTML = '<div class="empty-state"><p>Error loading quotes: ' + esc(err.message) + '</p></div>';
             }
         }
 
-        function loadListings() {
+        // === DRAG-AND-DROP FOR QUOTES ===
+        function setupQuoteDragDrop(container, allJobs) {
+            var allPanel = container.querySelector('#panel-quotes-all');
+            if (!allPanel) return;
+
+            var cards = allPanel.querySelectorAll('.ov-quote-card[draggable="true"]');
+            var zones = allPanel.querySelectorAll('.drag-drop-zone');
+
+            cards.forEach(function(card) {
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', card.dataset.jobId);
+                    e.dataTransfer.effectAllowed = 'move';
+                    card.classList.add('dragging');
+                });
+                card.addEventListener('dragend', function() {
+                    card.classList.remove('dragging');
+                    zones.forEach(function(z) { z.classList.remove('drag-over'); });
+                });
+            });
+
+            zones.forEach(function(zone) {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    zone.classList.add('drag-over');
+                });
+                zone.addEventListener('dragleave', function(e) {
+                    if (!zone.contains(e.relatedTarget)) {
+                        zone.classList.remove('drag-over');
+                    }
+                });
+                zone.addEventListener('drop', async function(e) {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+
+                    var jobId = e.dataTransfer.getData('text/plain');
+                    if (!jobId) return;
+
+                    var targetStatus = zone.dataset.dropStatus;
+                    var draggedCard = allPanel.querySelector('.ov-quote-card[data-job-id="' + jobId + '"]');
+                    var sourceStatus = draggedCard ? draggedCard.dataset.jobStatus : '';
+
+                    // No-op if dropped in same section
+                    if (sourceStatus === targetStatus) return;
+                    // Map 'open' source status — cards without bidding/awarded/paid/completed/cancelled are open
+                    if (!sourceStatus || (sourceStatus !== 'bidding' && sourceStatus !== 'awarded' && sourceStatus !== 'paid' && sourceStatus !== 'completed' && sourceStatus !== 'cancelled')) {
+                        sourceStatus = 'open';
+                    }
+                    if (sourceStatus === targetStatus) return;
+
+                    var job = allJobs.find(function(j) { return j.id === jobId; });
+                    if (!job) return;
+
+                    try {
+                        if (targetStatus === 'bidding') {
+                            // Collecting Bids — confirm then POST to create bidding job
+                            if (!confirm('This will go out to your vendors to bid on instantly. Continue?')) return;
+                            var resp = await fetch('/api/bidding?action=jobs', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    address: job.address || '',
+                                    market: job.market || 'arizona',
+                                    providerType: job.providerType || 'stager',
+                                    sqft: job.sqft || '',
+                                    rooms: job.rooms || '',
+                                    timeline: job.timeline || '',
+                                    notes: job.notes || '',
+                                }),
+                            });
+                            var data = await resp.json();
+                            if (!resp.ok) throw new Error(data.error || 'Failed to start bidding');
+                            removeLocalQuote(jobId);
+
+                        } else if (targetStatus === 'paid') {
+                            // Bookings — confirm then auto-award lowest bidder
+                            if (sourceStatus !== 'bidding') {
+                                alert('Only quotes that are collecting bids can be moved to Bookings.');
+                                return;
+                            }
+                            if (!confirm('This will automatically award the lowest-bidding vendor and kick the listing off. Continue?')) return;
+                            var resp2 = await fetch('/api/bidding?action=award-job', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ jobId: jobId, auto: true }),
+                            });
+                            var data2 = await resp2.json();
+                            if (!resp2.ok) throw new Error(data2.error || 'Failed to award job');
+
+                        } else if (targetStatus === 'cancelled') {
+                            // Cancelled — confirm then update status
+                            if (!confirm('Cancel this quote?')) return;
+                            var resp3 = await fetch('/api/bidding?action=update-job-status', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ jobId: jobId, status: 'cancelled' }),
+                            });
+                            var data3 = await resp3.json();
+                            if (!resp3.ok) throw new Error(data3.error || 'Failed to cancel');
+
+                        } else if (targetStatus === 'open') {
+                            // Move back to open — update status silently
+                            var resp4 = await fetch('/api/bidding?action=update-job-status', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ jobId: jobId, status: 'open' }),
+                            });
+                            var data4 = await resp4.json();
+                            if (!resp4.ok) throw new Error(data4.error || 'Failed to update status');
+                        }
+
+                        // Reload after successful action
+                        loadQuotes();
+                        loadListings();
+                        loadDashboard();
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                    }
+                });
+            });
+        }
+
+        // === DRAG-AND-DROP FOR LISTINGS ===
+        function setupListingDragDrop(container) {
+            var allPanel = container.querySelector('#panel-listings-all');
+            if (!allPanel) return;
+
+            var cards = allPanel.querySelectorAll('.ov-quote-card[draggable="true"]');
+            var zones = allPanel.querySelectorAll('.drag-drop-zone');
+
+            cards.forEach(function(card) {
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', card.dataset.jobId);
+                    e.dataTransfer.effectAllowed = 'move';
+                    card.classList.add('dragging');
+                });
+                card.addEventListener('dragend', function() {
+                    card.classList.remove('dragging');
+                    zones.forEach(function(z) { z.classList.remove('drag-over'); });
+                });
+            });
+
+            zones.forEach(function(zone) {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    zone.classList.add('drag-over');
+                });
+                zone.addEventListener('dragleave', function(e) {
+                    if (!zone.contains(e.relatedTarget)) {
+                        zone.classList.remove('drag-over');
+                    }
+                });
+                zone.addEventListener('drop', async function(e) {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+
+                    var jobId = e.dataTransfer.getData('text/plain');
+                    if (!jobId) return;
+
+                    var targetStatus = zone.dataset.dropStatus;
+                    var draggedCard = allPanel.querySelector('.ov-quote-card[data-job-id="' + jobId + '"]');
+                    var sourceStatus = draggedCard ? draggedCard.dataset.jobStatus : '';
+                    if (sourceStatus === targetStatus) return;
+
+                    try {
+                        var resp = await fetch('/api/bidding?action=update-listing-status', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ listingId: jobId, status: targetStatus }),
+                        });
+                        var data = await resp.json();
+                        if (!resp.ok) throw new Error(data.error || 'Failed to update status');
+                        loadListings();
+                        loadDashboard();
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                    }
+                });
+            });
+        }
+
+        function buildListingCard(listing) {
+            var created = listing.created ? new Date(listing.created).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
+            var h = '<div class="ov-quote-card" draggable="true" data-job-id="' + esc(listing.id) + '" data-job-status="' + esc(listing.status || 'planning') + '">';
+            h += '<div class="ov-quote-card-top">';
+            h += '<div class="ov-quote-card-address">' + esc(listing.address || 'Untitled Listing') + '</div>';
+            h += '</div>';
+            h += '<div class="ov-quote-card-dates">';
+            if (created) h += 'Created ' + created + '<br>';
+            if (listing.awardedProviderName) h += 'Provider: ' + esc(listing.awardedProviderName) + '<br>';
+            if (listing.awardedAmount) h += 'Awarded: $' + Number(listing.awardedAmount).toFixed(2);
+            h += '</div>';
+            if (listing.timeline) {
+                h += '<div class="ov-quote-card-progress">Target install: ' + esc(listing.timeline) + '</div>';
+            }
+            h += '</div>';
+            return h;
+        }
+
+        async function loadListings() {
             var container = document.getElementById('listingsContent');
             if (!container) return;
 
-            var html = '';
-            html += '<div class="page-tabs" data-tab-group="listings">';
-            html += '<button class="page-tab active" data-tab="listings-all">All<span class="tab-count">0</span></button>';
-            html += '<button class="page-tab" data-tab="listings-planning">Planning<span class="tab-count">0</span></button>';
-            html += '<button class="page-tab" data-tab="listings-active">Active<span class="tab-count">0</span></button>';
-            html += '<button class="page-tab" data-tab="listings-closed">Closed<span class="tab-count">0</span></button>';
-            html += '</div>';
+            try {
+                var allListings = [];
+                try {
+                    var response = await fetch('/api/bidding?action=listings');
+                    if (response.ok) {
+                        var data = await response.json();
+                        allListings = data.listings || [];
+                    }
+                } catch (e) {}
 
-            // All tab — grouped by section banners
-            var allListingsHtml = '';
-            allListingsHtml += '<div class="quotes-section-banner banner-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Planning</div>';
-            allListingsHtml += '<div class="empty-state"><p>No listings in planning.</p></div>';
-            allListingsHtml += '<div class="quotes-section-banner banner-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Active</div>';
-            allListingsHtml += '<div class="empty-state"><p>No active listings.</p></div>';
-            allListingsHtml += '<div class="quotes-section-banner banner-cancelled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Closed</div>';
-            allListingsHtml += '<div class="empty-state"><p>No closed listings.</p></div>';
+                allListings.sort(function(a, b) { return new Date(b.created) - new Date(a.created); });
 
-            html += '<div class="tab-panel active" id="panel-listings-all">' + allListingsHtml + '</div>';
-            html += '<div class="tab-panel" id="panel-listings-planning"><div class="empty-state"><p>No listings in planning.</p></div></div>';
-            html += '<div class="tab-panel" id="panel-listings-active"><div class="empty-state"><p>No active listings.</p></div></div>';
-            html += '<div class="tab-panel" id="panel-listings-closed"><div class="empty-state"><p>No closed listings.</p></div></div>';
+                var planningL = [], activeL = [], closedL = [];
+                allListings.forEach(function(l) {
+                    if (l.status === 'closed') closedL.push(l);
+                    else if (l.status === 'active') activeL.push(l);
+                    else planningL.push(l);
+                });
 
-            container.innerHTML = html;
-            bindPageTabs(container);
+                function renderListingGrid(items, emptyMsg) {
+                    if (items.length === 0) return '<div class="empty-state"><p>' + emptyMsg + '</p></div>';
+                    var g = '<div class="ov-quote-grid">';
+                    items.forEach(function(l) { g += buildListingCard(l); });
+                    g += '</div>';
+                    return g;
+                }
+
+                var html = '';
+                html += '<div class="page-tabs" data-tab-group="listings">';
+                html += '<button class="page-tab active" data-tab="listings-all">All<span class="tab-count">' + allListings.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="listings-planning">Planning<span class="tab-count">' + planningL.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="listings-active">Active<span class="tab-count">' + activeL.length + '</span></button>';
+                html += '<button class="page-tab" data-tab="listings-closed">Closed<span class="tab-count">' + closedL.length + '</span></button>';
+                html += '</div>';
+
+                var allListingsHtml = '';
+                allListingsHtml += '<div class="drag-drop-zone" data-drop-status="planning">';
+                allListingsHtml += '<div class="quotes-section-banner banner-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Planning</div>';
+                allListingsHtml += renderListingGrid(planningL, 'No listings in planning.');
+                allListingsHtml += '</div>';
+                allListingsHtml += '<div class="drag-drop-zone" data-drop-status="active">';
+                allListingsHtml += '<div class="quotes-section-banner banner-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Active</div>';
+                allListingsHtml += renderListingGrid(activeL, 'No active listings.');
+                allListingsHtml += '</div>';
+                allListingsHtml += '<div class="drag-drop-zone" data-drop-status="closed">';
+                allListingsHtml += '<div class="quotes-section-banner banner-cancelled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Closed</div>';
+                allListingsHtml += renderListingGrid(closedL, 'No closed listings.');
+                allListingsHtml += '</div>';
+
+                html += '<div class="tab-panel active" id="panel-listings-all">' + allListingsHtml + '</div>';
+                html += '<div class="tab-panel" id="panel-listings-planning">' + renderListingGrid(planningL, 'No listings in planning.') + '</div>';
+                html += '<div class="tab-panel" id="panel-listings-active">' + renderListingGrid(activeL, 'No active listings.') + '</div>';
+                html += '<div class="tab-panel" id="panel-listings-closed">' + renderListingGrid(closedL, 'No closed listings.') + '</div>';
+
+                container.innerHTML = html;
+                bindPageTabs(container);
+                setupListingDragDrop(container);
+
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><p>Error loading listings: ' + esc(err.message) + '</p></div>';
+            }
         }
 
         async function loadDashboard() {
@@ -4268,10 +4762,16 @@
                         }
                     }
                 });
-                // Open quotes with no bids
+                // Open quotes needing action
                 allJobs.forEach(function(job) {
                     if (job.status !== 'bidding' && job.status !== 'awarded' && job.status !== 'paid' && job.status !== 'completed' && job.status !== 'cancelled') {
-                        attentionItems.push({ type: 'info', text: '<strong>' + esc(job.address || 'Untitled') + '</strong> is still open', action: 'quotes', label: 'View' });
+                        // New quotes created today
+                        var createdDate = new Date(job.created);
+                        if (isSameDay(createdDate, todayDate)) {
+                            attentionItems.push({ type: 'info', text: '<strong>' + esc(job.address || 'Untitled') + '</strong> new quote', action: 'quotes', label: 'View' });
+                        } else {
+                            attentionItems.push({ type: 'info', text: '<strong>' + esc(job.address || 'Untitled') + '</strong> is still open', action: 'quotes', label: 'View' });
+                        }
                     }
                 });
 
@@ -4511,14 +5011,14 @@
 
                 html += '</div>'; // .ov-cards-grid
 
-                // NEW QUOTES FEED
-                var recentQuotes = allJobs.slice(0, 6);
+                // NEW QUOTES FEED (show 3 cards + See all)
+                var recentQuotes = allJobs.slice(0, 3);
                 html += '<div class="ov-new-quotes-feed">';
                 html += '<div class="ov-feed-header">';
                 html += '<div class="ov-feed-title">New quotes</div>';
                 html += '<button class="ov-more-details" data-nav="quotes">View all</button>';
                 html += '</div>';
-                if (recentQuotes.length === 0) {
+                if (allJobs.length === 0) {
                     html += '<div class="empty-state" style="padding:24px 0;"><p>No quotes yet. Create your first quote to get started.</p></div>';
                 } else {
                     html += '<div class="ov-quote-grid">';
@@ -4526,6 +5026,39 @@
                         html += buildQuoteCard(job, allServiceNames, svcIconDefs);
                     });
                     html += '</div>';
+                    if (allJobs.length > 3) {
+                        html += '<button class="ov-feed-see-all" data-nav="quotes">See all ' + allJobs.length + ' quotes</button>';
+                    }
+                }
+                html += '</div>';
+
+                // NEW LISTINGS FEED (placeholder)
+                html += '<div class="ov-new-quotes-feed">';
+                html += '<div class="ov-feed-header">';
+                html += '<div class="ov-feed-title">New listings</div>';
+                html += '<button class="ov-more-details" data-nav="listings">View all</button>';
+                html += '</div>';
+                html += '<div class="empty-state" style="padding:24px 0;"><p>No listings yet.</p></div>';
+                html += '</div>';
+
+                // NEW VENDORS FEED (show 3 cards + See all)
+                html += '<div class="ov-new-quotes-feed">';
+                html += '<div class="ov-feed-header">';
+                html += '<div class="ov-feed-title">New vendors</div>';
+                html += '<button class="ov-more-details" data-nav="vendors">View all</button>';
+                html += '</div>';
+                if (pendingApplicants.length === 0) {
+                    html += '<div class="empty-state" style="padding:24px 0;"><p>No pending vendor applications.</p></div>';
+                } else {
+                    var feedApplicants = pendingApplicants.slice(0, 3);
+                    html += '<div class="applicant-grid">';
+                    feedApplicants.forEach(function(a) {
+                        html += buildApplicantCard(a);
+                    });
+                    html += '</div>';
+                    if (pendingApplicants.length > 3) {
+                        html += '<button class="ov-feed-see-all" data-nav="vendors">See all ' + pendingApplicants.length + ' applicants</button>';
+                    }
                 }
                 html += '</div>';
 
@@ -4633,14 +5166,134 @@
                     });
                 }
 
-                // Bind attention + "More details" nav buttons
-                container.querySelectorAll('.attention-action[data-nav], .ov-more-details[data-nav]').forEach(function(btn) {
+                // Bind attention + "More details" + "See all" nav buttons
+                container.querySelectorAll('.attention-action[data-nav], .ov-more-details[data-nav], .ov-feed-see-all[data-nav]').forEach(function(btn) {
                     btn.addEventListener('click', function() {
                         var section = btn.dataset.nav;
                         var navBtn = document.querySelector('.section-nav-btn[data-section="' + section + '"]');
                         if (navBtn) navBtn.click();
                     });
                 });
+
+                // Bind dashboard delete job buttons
+                container.querySelectorAll('.dash-delete-job-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteJob(btn.dataset.jobId, btn, loadDashboard);
+                    });
+                });
+
+                // Bind "Start Collecting Bids" buttons on dashboard
+                container.querySelectorAll('.ov-collect-bids-btn').forEach(function(btn) {
+                    btn.addEventListener('click', async function(e) {
+                        e.stopPropagation();
+                        var quoteId = btn.dataset.quoteId;
+                        var quote = allJobs.find(function(j) { return j.id === quoteId; });
+                        if (!quote) return;
+
+                        btn.disabled = true;
+                        btn.textContent = 'Sending...';
+
+                        try {
+                            var resp = await fetch('/api/bidding?action=jobs', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    address: quote.address || '',
+                                    market: quote.market || 'arizona',
+                                    providerType: quote.providerType || 'stager',
+                                    sqft: quote.sqft || '',
+                                    rooms: quote.rooms || '',
+                                    timeline: quote.timeline || '',
+                                    notes: quote.notes || '',
+                                }),
+                            });
+                            var data = await resp.json();
+                            if (!resp.ok) throw new Error(data.error);
+
+                            removeLocalQuote(quoteId);
+                            loadDashboard();
+                            loadQuotes();
+                        } catch (err) {
+                            console.error('Collect bids error:', err.message);
+                            btn.disabled = false;
+                            btn.textContent = 'Start Collecting Bids';
+                        }
+                    });
+                });
+
+                // Bind approve/reject on dashboard vendor feed
+                function bindDashApplicantButtons(cont) {
+                    cont.querySelectorAll('.btn-approve').forEach(function(btn) {
+                        btn.addEventListener('click', async function(e) {
+                            e.stopPropagation();
+                            btn.disabled = true;
+                            btn.textContent = 'Approving...';
+                            try {
+                                var resp = await fetch('/api/providers', {
+                                    method: 'PATCH',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ id: btn.dataset.applicantId, status: 'approved' }),
+                                });
+                                if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                                loadDashboard();
+                                loadApplicants();
+                            } catch (err) {
+                                console.error('Approve error:', err.message);
+                                btn.disabled = false;
+                                btn.textContent = 'Approve';
+                            }
+                        });
+                    });
+                    cont.querySelectorAll('.btn-reject').forEach(function(btn) {
+                        btn.addEventListener('click', async function(e) {
+                            e.stopPropagation();
+                            btn.disabled = true;
+                            btn.textContent = 'Rejecting...';
+                            try {
+                                var resp = await fetch('/api/providers', {
+                                    method: 'PATCH',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ id: btn.dataset.applicantId, status: 'rejected' }),
+                                });
+                                if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                                loadDashboard();
+                                loadApplicants();
+                            } catch (err) {
+                                console.error('Reject error:', err.message);
+                                btn.disabled = false;
+                                btn.textContent = 'Reject';
+                            }
+                        });
+                    });
+                }
+                bindDashApplicantButtons(container);
+                bindApplicantToggle(container);
+
+                // Update nav badges with attention counts
+                var totalAttention = attentionItems.length;
+                var dashNavBtn = document.querySelector('.section-nav-btn[data-section="dashboard"]');
+                if (dashNavBtn) {
+                    var existingBadge = dashNavBtn.querySelector('.nav-badge');
+                    if (existingBadge) existingBadge.remove();
+                    if (totalAttention > 0) {
+                        var badge = document.createElement('span');
+                        badge.className = 'nav-badge';
+                        badge.textContent = totalAttention;
+                        dashNavBtn.appendChild(badge);
+                    }
+                }
+                var vendorsNavBtn = document.querySelector('.section-nav-btn[data-section="vendors"]');
+                if (vendorsNavBtn) {
+                    var existingVBadge = vendorsNavBtn.querySelector('.nav-badge');
+                    if (existingVBadge) existingVBadge.remove();
+                    if (pendingApplicants.length > 0) {
+                        var vBadge = document.createElement('span');
+                        vBadge.className = 'nav-badge';
+                        vBadge.textContent = pendingApplicants.length;
+                        vendorsNavBtn.appendChild(vBadge);
+                    }
+                }
 
                 // Bind date range filter
                 var periodSelect = document.getElementById('dashPeriodSelect');
@@ -4808,11 +5461,10 @@
                 var data = await response.json();
                 if (!response.ok) throw new Error(data.error);
 
-                alert('Job awarded to ' + data.awardedTo + ' ($' + formatAmount(data.amount) + ')');
                 loadDashboard();
                 loadJobs();
             } catch (err) {
-                alert('Error: ' + err.message);
+                console.error('Award error:', err.message);
                 btn.disabled = false;
                 btn.textContent = bidId ? 'Award' : 'Auto-Award Lowest Bid';
             }
@@ -5305,20 +5957,7 @@
 
                 var html = '<div class="applicant-grid">';
                 applicants.forEach(function(a) {
-                    html += '<div class="applicant-card">';
-                    html += '<div class="applicant-card-name">' + esc(a.name) + '</div>';
-                    if (a.businessName) html += '<div class="applicant-card-business">' + esc(a.businessName) + '</div>';
-                    html += '<div class="applicant-card-meta">';
-                    html += '<span class="applicant-tag">' + capitalize(a.role) + '</span>';
-                    if (a.city || a.state) html += '<span class="applicant-tag">' + esc((a.city || '') + (a.city && a.state ? ', ' : '') + (a.state || '')) + '</span>';
-                    if (a.created) html += '<span class="applicant-tag">' + formatDate(a.created) + '</span>';
-                    html += '</div>';
-                    html += '<div class="applicant-card-email">' + esc(a.email) + '</div>';
-                    html += '<div class="applicant-card-actions">';
-                    html += '<button class="btn-approve" data-applicant-id="' + esc(a.id) + '">Approve</button>';
-                    html += '<button class="btn-reject" data-applicant-id="' + esc(a.id) + '">Reject</button>';
-                    html += '</div>';
-                    html += '</div>';
+                    html += buildApplicantCard(a);
                 });
                 html += '</div>';
                 container.innerHTML = html;
@@ -5328,9 +5967,11 @@
                 if (allApp) {
                     allApp.innerHTML = html;
                     bindApplicantButtons(allApp);
+                    bindApplicantToggle(allApp);
                 }
 
                 bindApplicantButtons(container);
+                bindApplicantToggle(container);
             } catch (err) {
                 container.innerHTML = '<div class="empty-state"><p>Error loading applicants: ' + esc(err.message) + '</p></div>';
             }

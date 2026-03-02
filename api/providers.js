@@ -123,6 +123,31 @@ module.exports = async function handler(req, res) {
         }
       }
 
+      // Send rejection email
+      if (body.status === 'rejected' && result.email) {
+        try {
+          await fb.sendEmail(
+            result.email,
+            'Application Update — Guest House',
+            '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">' +
+              '<div style="margin-bottom:32px;"><strong style="font-size:18px;color:#080808;">Guest House</strong></div>' +
+              '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">Application update</h2>' +
+              '<p style="color:#444;font-size:15px;line-height:1.6;margin-bottom:24px;">' +
+                'Hi ' + (result.firstName || result.name || 'there') + ', thank you for your interest in joining the Guest House partner network. ' +
+                'After reviewing your application, we\'re unable to move forward at this time.' +
+              '</p>' +
+              '<p style="color:#444;font-size:15px;line-height:1.6;margin-bottom:24px;">' +
+                'This doesn\'t necessarily mean the door is closed — our needs change as we grow. ' +
+                'We encourage you to apply again in the future.' +
+              '</p>' +
+              '<p style="color:#666;font-size:14px;">If you have any questions, feel free to reply to this email.</p>' +
+            '</div>'
+          );
+        } catch (emailErr) {
+          console.error('Failed to send rejection email:', emailErr.message);
+        }
+      }
+
       return res.status(200).json({ provider: result });
 
     } else {
