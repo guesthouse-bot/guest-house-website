@@ -1418,7 +1418,6 @@
         <nav class="section-nav">
             <a href="#section-company" class="section-nav-link active">Company</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
-            <a href="#section-marketing" class="section-nav-link">Marketing</a>
             <a href="#section-operations" class="section-nav-link">Operations</a>
         </nav>
     </section>
@@ -1765,91 +1764,6 @@
         </div>
     </section>
 
-    <!-- Marketing KPIs -->
-    <section id="section-marketing">
-        <div class="kpi-section">
-            <div class="kpi-section-header">
-                <h2>Marketing KPIs</h2>
-            </div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">Sessions</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-sessions">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-sessions-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-sessions-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ga-sessions-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Unique Visitors</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-users">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-users-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-users-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ga-users-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quote Starts</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-quote-starts">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-quote-starts-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-quote-starts-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ga-quote-starts-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quotes Requested</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-quotes-requested">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-quotes-requested-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-quotes-requested-prev"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bounce Rate</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-bounce">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-bounce-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-bounce-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-ga-bounce-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Avg Session Duration</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-duration">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-duration-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-duration-prev"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Pages / Session</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-pages">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-pages-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-pages-prev"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Site-to-Quote Rate</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-ga-site-to-quote">&mdash;</span>
-                        <span class="kpi-change" id="kpi-ga-site-to-quote-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-ga-site-to-quote-prev"></div>
-                </div>
-            </div>
-            <!-- Traffic Sources - full width bar chart -->
-            <div class="kpi-grid" style="margin-top: 20px;">
-                <div class="kpi-card kpi-card-full">
-                    <div class="kpi-label">Traffic Sources</div>
-                    <div id="kpi-ga-traffic-sources" class="traffic-sources-chart"></div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Ops KPIs -->
     <section id="section-operations" class="kpi-section-grey">
@@ -3227,8 +3141,7 @@
             var sections = [
                 { id: 'section-company', link: navLinks[0] },
                 { id: 'section-sales', link: navLinks[1] },
-                { id: 'section-marketing', link: navLinks[2] },
-                { id: 'section-operations', link: navLinks[3] },
+                { id: 'section-operations', link: navLinks[2] },
             ];
 
             navLinks.forEach(function(link) {
@@ -3363,18 +3276,6 @@
                     kpiRow('Bookings / User', 'kpi-bookings-user'),
                     kpiRow('Revenue / User', 'kpi-rev-user'),
                     kpiRow('ARPU', 'kpi-arpu'),
-                ]) +
-
-                // Marketing KPIs
-                sectionBlock('Marketing KPIs', [
-                    kpiRow('Sessions', 'kpi-ga-sessions'),
-                    kpiRow('Unique Visitors', 'kpi-ga-users'),
-                    kpiRow('Quote Starts', 'kpi-ga-quote-starts'),
-                    kpiRow('Quotes Requested', 'kpi-ga-quotes-requested'),
-                    kpiRow('Bounce Rate', 'kpi-ga-bounce'),
-                    kpiRow('Avg Session Duration', 'kpi-ga-duration'),
-                    kpiRow('Pages / Session', 'kpi-ga-pages'),
-                    kpiRow('Site-to-Quote Rate', 'kpi-ga-site-to-quote'),
                 ]) +
 
                 // Ops KPIs
