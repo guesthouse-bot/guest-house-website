@@ -1709,58 +1709,6 @@
                     <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
                 </div>
             </div>
-
-            <!-- Customer Level -->
-            <div class="kpi-section-header" style="margin-top: 48px;">
-                <h2>Sales KPIs - Customer Level</h2>
-            </div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">Active Users</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-active-users">&mdash;</span>
-                        <span class="kpi-change" id="kpi-active-users-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-active-users-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-active-users-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quotes / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quotes-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quotes-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-quotes-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quotes-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bookings / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-bookings-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-bookings-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-bookings-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-bookings-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Revenue / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-rev-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-rev-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-rev-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-rev-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">ARPU</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-arpu">&mdash;</span>
-                        <span class="kpi-change" id="kpi-arpu-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-arpu-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-arpu-sparkline"></div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -3267,15 +3215,6 @@
                     kpiRow('AOV (at close)', 'kpi-aov-close'),
                     kpiRow('AOV (total)', 'kpi-aov-total'),
                     kpiRow('Sales Cycle', 'kpi-sales-cycle'),
-                ]) +
-
-                // Sales KPIs - Customer Level
-                sectionBlock('Sales KPIs - Customer Level', [
-                    kpiRow('Active Users', 'kpi-active-users'),
-                    kpiRow('Quotes / User', 'kpi-quotes-user'),
-                    kpiRow('Bookings / User', 'kpi-bookings-user'),
-                    kpiRow('Revenue / User', 'kpi-rev-user'),
-                    kpiRow('ARPU', 'kpi-arpu'),
                 ]) +
 
                 // Ops KPIs
