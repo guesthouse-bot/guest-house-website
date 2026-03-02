@@ -1876,7 +1876,10 @@
         html += '<div class="form-row">' + ffHTML("First name","first_name",{required:true}) + ffHTML("Last name","last_name",{required:true}) + '</div>';
         html += ffHTML("Email address","email",{required:true, type:"email", placeholder:"you@company.com"});
         html += fmultiselectHTML("What areas do you service?", "locations", ["Phoenix","Scottsdale","Denver","Boulder","Colorado Springs","San Diego","Orange County"], {required:true});
-        html += fmultiselectHTML("What is your lead time for booking your services?", "lead_time", ["Same day","Next-day","2-3 business days","More than a week","More than 2 weeks"], {required:true});
+        html += '<div class="form-field"><label>What is your lead time for booking your services? <span class="req">*</span></label>' +
+            '<select class="form-select" data-key="lead_time"><option value="">Select lead time</option>' +
+            ["Same day","Next-day","2-3 business days","More than a week","More than 2 weeks"].map(function(o) { return '<option value="' + esc(o) + '"' + (fv("lead_time") === o ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('') +
+            '</select></div>';
 
         // File uploads
         html += '<div class="form-section-title">Documents</div>';
@@ -1966,7 +1969,7 @@
     function canAdvance() {
         switch (step) {
             case 0: return !!selectedRole;
-            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fvArr("locations").length > 0 && fvArr("lead_time").length > 0 && fileW9 && fileInsurance;
+            case 1: return fv("business_name") && fv("first_name") && fv("last_name") && fv("email") && fvArr("locations").length > 0 && fv("lead_time") && fileW9 && fileInsurance;
             case 2:
                 var expected = (fv("first_name") + " " + fv("last_name")).trim().toLowerCase();
                 return agreementChecked && signatureName.trim().toLowerCase() === expected && expected.length > 0;
@@ -2168,7 +2171,7 @@
             last_name: fv("last_name"),
             email: fv("email"),
             market: fvArr("locations").join(", "),
-            lead_time: fvArr("lead_time").join(", "),
+            lead_time: fv("lead_time"),
 
             // Documents (base64-encoded)
             w9_filename: fileW9 ? fileW9.name : "",
