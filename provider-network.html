@@ -1923,7 +1923,7 @@
         }
         .page-tab .tab-count {
             display: inline-block;
-            background: var(--color-bg-tertiary);
+            background: var(--color-surface-secondary);
             color: var(--color-text-secondary);
             font-size: 11px;
             padding: 1px 6px;
@@ -1933,7 +1933,7 @@
         }
         .page-tab.active .tab-count {
             background: var(--color-text);
-            color: var(--color-bg);
+            color: var(--color-white);
         }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -5803,7 +5803,7 @@
                 panel.querySelectorAll('.delete-bid-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        deleteBid(btn.dataset.bidId, btn.dataset.jobId, btn, function() { loadBids(btn.dataset.jobId); });
+                        deleteBid(btn.dataset.bidId, btn.dataset.jobId, btn, function() { loadJobBids(btn.dataset.jobId); });
                     });
                 });
 
@@ -5961,10 +5961,32 @@
                     });
                 });
 
-                // Mirror into All tab
+                // Mirror into All tab and re-bind handlers
                 var allAccts = document.getElementById('vendorAllAccounts');
                 if (allAccts) {
                     allAccts.innerHTML = '<div class="provider-table-wrapper"><table class="provider-table"><thead>' + document.getElementById('providerTable').querySelector('thead').innerHTML + '</thead><tbody>' + tbody.innerHTML + '</tbody></table></div>';
+                    allAccts.querySelectorAll('[data-action="view-provider"]').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            openPartnerReview(btn.dataset.providerId);
+                        });
+                    });
+                    allAccts.querySelectorAll('[data-action="toggle-status"]').forEach(function(btn) {
+                        btn.addEventListener('click', async function() {
+                            var newStatus = btn.dataset.current === 'active' ? 'inactive' : 'active';
+                            btn.disabled = true;
+                            try {
+                                await fetch('/api/providers', {
+                                    method: 'PATCH',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
+                                });
+                                loadProviders();
+                            } catch (err) {
+                                alert('Error: ' + err.message);
+                                btn.disabled = false;
+                            }
+                        });
+                    });
                 }
 
             } catch (err) {
@@ -6055,10 +6077,13 @@
             if (!container) return;
 
             try {
+                var safeFetch = function(url) {
+                    return fetch(url).then(function(r) { return r.json(); }).catch(function() { return { providers: [] }; });
+                };
                 var results = await Promise.all([
-                    fetch('/api/providers?status=needs_review').then(function(r) { return r.json(); }),
-                    fetch('/api/providers?status=hold').then(function(r) { return r.json(); }),
-                    fetch('/api/providers?status=pending').then(function(r) { return r.json(); }),
+                    safeFetch('/api/providers?status=needs_review'),
+                    safeFetch('/api/providers?status=hold'),
+                    safeFetch('/api/providers?status=pending'),
                 ]);
                 var applicants = [].concat(
                     results[0].providers || [],
