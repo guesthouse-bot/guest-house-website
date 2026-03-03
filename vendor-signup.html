@@ -1631,7 +1631,7 @@
 
     <script>
     // Google Apps Script Web App URL
-    // Submissions go to /api/vendor-signup-submit (Vercel serverless → Google Sheets)
+    // Submissions go to /api/vendor-signups?action=submit (Vercel serverless → Google Sheets)
 
     // Read provider ID from URL (set when arriving from acceptance email)
     var PROVIDER_PID = new URLSearchParams(window.location.search).get("pid") || "";
@@ -2101,7 +2101,7 @@
 
         try {
             var payload = buildPayload();
-            var submitRes = await fetch("/api/vendor-signup-submit", {
+            var submitRes = await fetch("/api/vendor-signups?action=submit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
