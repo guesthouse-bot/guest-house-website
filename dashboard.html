@@ -527,7 +527,7 @@
             display: inline-block;
             margin-top: 2px;
         }
-        .schedule-status.bidding { background: #EFF6FF; color: #1D4ED8; }
+        .schedule-status.pending { background: #F3F4F6; color: #6B7280; }
         .schedule-status.awarded { background: #ECFDF3; color: #067647; }
         .schedule-status.pending { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
 
@@ -1410,11 +1410,11 @@
     // === LISTINGS ===
     var STAGES = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
     var STAGE_LABELS = {
-        quote_received: 'Quote Received',
-        vendors_scheduled: 'Vendors Scheduled',
-        prep_in_progress: 'Prep In Progress',
-        photos_ready: 'Photos Ready',
-        market_ready: 'Market Ready',
+        quote_received: 'Quote',
+        vendors_scheduled: 'Booked',
+        prep_in_progress: 'Prepping',
+        photos_ready: 'Live',
+        market_ready: 'Deinstall',
     };
 
     function renderListings() {
@@ -1472,8 +1472,10 @@
             h += '</div>';
         }
 
-        // Stage tracker
-        h += buildStageTracker(project.stage || 'quote_received');
+        // Stage tracker (only for full-service staging)
+        if (project.stagingPackage === 'full') {
+            h += buildStageTracker(project.stage || 'quote_received');
+        }
         h += '</div>';
         return h;
     }
@@ -1528,8 +1530,10 @@
         if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
         h += '</div></div>';
 
-        // Stage tracker
-        h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received') + '</div>';
+        // Stage tracker (only for full-service staging)
+        if (project.stagingPackage === 'full') {
+            h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received') + '</div>';
+        }
 
         // Grid
         h += '<div class="detail-grid">';
@@ -1541,7 +1545,7 @@
         if (project.propertyStatus) h += '<div class="detail-row"><span class="detail-row-label">Status</span><span class="detail-row-value">' + esc(project.propertyStatus) + '</span></div>';
         if (project.sqft) h += '<div class="detail-row"><span class="detail-row-label">Sq Ft</span><span class="detail-row-value">' + esc(project.sqft) + '</span></div>';
         if (project.rooms) h += '<div class="detail-row"><span class="detail-row-label">Rooms</span><span class="detail-row-value">' + esc(project.rooms) + '</span></div>';
-        if (project.targetPrice) h += '<div class="detail-row"><span class="detail-row-label">Target Price</span><span class="detail-row-value">' + esc(project.targetPrice) + '</span></div>';
+        if (project.targetPrice) h += '<div class="detail-row"><span class="detail-row-label">Target Price</span><span class="detail-row-value">' + formatPrice(project.targetPrice) + '</span></div>';
         if (project.installDate) h += '<div class="detail-row"><span class="detail-row-label">Install Date</span><span class="detail-row-value">' + esc(project.installDate) + '</span></div>';
         if (project.notes) h += '<div class="detail-row"><span class="detail-row-label">Notes</span><span class="detail-row-value">' + esc(project.notes) + '</span></div>';
         h += '</div>';
@@ -1556,7 +1560,8 @@
             schedKeys.sort(function(a, b) { return (schedule[a].date || '') > (schedule[b].date || '') ? 1 : -1; });
             schedKeys.forEach(function(key, idx) {
                 var item = schedule[key];
-                var statusCls = item.status === 'awarded' ? 'awarded' : (item.status === 'bidding' ? 'bidding' : 'pending');
+                var agentStatus = item.status === 'awarded' ? 'scheduled' : 'pending';
+                var statusCls = item.status === 'awarded' ? 'awarded' : 'pending';
                 h += '<div class="schedule-item">';
                 h += '<div class="schedule-dot-col"><div class="schedule-dot ' + (item.status === 'awarded' ? 'awarded' : 'active') + '"></div>';
                 if (idx < schedKeys.length - 1) h += '<div class="schedule-line-seg"></div>';
@@ -1564,7 +1569,7 @@
                 h += '<div class="schedule-info">';
                 h += '<div class="schedule-label">' + esc(item.label) + '</div>';
                 h += '<div class="schedule-date">' + esc(item.date) + '</div>';
-                h += '<span class="schedule-status ' + statusCls + '">' + esc(item.status) + '</span>';
+                h += '<span class="schedule-status ' + statusCls + '">' + esc(agentStatus) + '</span>';
                 h += '</div></div>';
             });
             h += '</div></div>';

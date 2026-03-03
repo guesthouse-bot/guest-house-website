@@ -5540,8 +5540,8 @@
                     html += '<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">';
                     html += '<span style="font-size:13px;font-weight:500;color:var(--color-charcoal);">Project Stage:</span>';
                     html += '<select class="dash-project-stage-select" data-project-id="' + esc(job.projectId) + '" style="padding:7px 32px 7px 12px;border:1px solid var(--color-border);border-radius:8px;font-size:13px;font-family:inherit;appearance:none;-webkit-appearance:none;background:#fff;cursor:pointer;">';
-                    var dProjectStages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
-                    var dProjectLabels = { quote_received: 'Quote Received', vendors_scheduled: 'Vendors Scheduled', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
+                    var dProjectStages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+                    var dProjectLabels = { quote_received: 'Quote Received', bidding: 'Bidding', vendors_scheduled: 'Booked', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
                     dProjectStages.forEach(function(s) {
                         html += '<option value="' + s + '">' + dProjectLabels[s] + '</option>';
                     });
@@ -5866,8 +5866,8 @@
                     html += '<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">';
                     html += '<span style="font-size:13px;font-weight:500;color:var(--color-charcoal);">Project Stage:</span>';
                     html += '<select class="project-stage-select" data-project-id="' + esc(job.projectId) + '" style="padding:7px 32px 7px 12px;border:1px solid var(--color-border);border-radius:8px;font-size:13px;font-family:inherit;appearance:none;-webkit-appearance:none;background:#fff url(\'data:image/svg+xml,%253Csvg xmlns=%2527http://www.w3.org/2000/svg%2527 width=%252712%2527 height=%252712%2527 viewBox=%25270 0 24 24%2527 fill=%2527none%2527 stroke=%2527%2523666%2527 stroke-width=%25272%2527%253E%253Cpolyline points=%25276 9 12 15 18 9%2527/%253E%253C/svg%253E\') no-repeat right 10px center;cursor:pointer;">';
-                    var projectStages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
-                    var projectStageLabels = { quote_received: 'Quote Received', vendors_scheduled: 'Vendors Scheduled', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
+                    var projectStages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+                    var projectStageLabels = { quote_received: 'Quote Received', bidding: 'Bidding', vendors_scheduled: 'Booked', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
                     projectStages.forEach(function(s) {
                         html += '<option value="' + s + '">' + projectStageLabels[s] + '</option>';
                     });

@@ -450,7 +450,7 @@ async function handleUpdateProjectStage(req, res) {
     var body = req.body;
     if (!body.projectId || !body.stage) return res.status(400).json({ error: 'Missing projectId or stage' });
 
-    var validStages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var validStages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
     if (validStages.indexOf(body.stage) === -1) {
       return res.status(400).json({ error: 'Invalid stage: ' + body.stage });
     }
@@ -465,8 +465,8 @@ async function handleUpdateProjectStage(req, res) {
     var now = new Date().toISOString();
     var updates = { stage: body.stage, updatedAt: now };
 
-    // Auto-scheduling when moving to vendors_scheduled
-    if (body.stage === 'vendors_scheduled') {
+    // Auto-scheduling when moving to bidding (jobs created, bid requests sent)
+    if (body.stage === 'bidding') {
       var scheduleResult = await runAutoScheduling(project, accessToken);
       if (scheduleResult.schedule) updates.schedule = JSON.stringify(scheduleResult.schedule);
       if (scheduleResult.jobIds) updates.jobIds = JSON.stringify(scheduleResult.jobIds);
@@ -621,14 +621,16 @@ async function sendStageEmail(project, stage, updates, accessToken) {
 
   var stageLabels = {
     quote_received: 'Quote Received',
-    vendors_scheduled: 'Vendors Scheduled',
+    bidding: 'Bidding',
+    vendors_scheduled: 'Booked',
     prep_in_progress: 'Listing Prep Underway',
     photos_ready: 'Photos Are Ready',
     market_ready: 'Market Ready!',
   };
 
   var subjects = {
-    vendors_scheduled: 'Vendors Scheduled — ' + address,
+    bidding: 'Bidding Open — ' + address,
+    vendors_scheduled: 'Vendors Booked — ' + address,
     prep_in_progress: 'Listing Prep Underway — ' + address,
     photos_ready: 'Photos Are Ready — ' + address,
     market_ready: 'Market Ready! — ' + address,
@@ -638,7 +640,8 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   if (!subject) return; // No email for quote_received (sent separately on create)
 
   var stageMessages = {
-    vendors_scheduled: 'Great news! Your vendors have been scheduled and everything is on track. Here\'s your timeline:',
+    bidding: 'Your project has been approved and we\'re now collecting bids from vendors. We\'ll have your team lined up soon.',
+    vendors_scheduled: 'Great news! Your vendors have been booked and everything is on track. Here\'s your timeline:',
     prep_in_progress: 'Your listing prep is underway. Our vendors are hard at work getting your property market-ready.',
     photos_ready: 'Your listing photos are ready! Your property is looking great and almost ready to hit the market.',
     market_ready: 'Congratulations! Your listing is fully prepped and market-ready. Time to go live!',
@@ -655,8 +658,8 @@ async function sendStageEmail(project, stage, updates, accessToken) {
     content += '<div style="margin-bottom:8px;"><strong style="color:#343434;">Install date:</strong> <span style="color:#666;">' + project.installDate + '</span></div>';
   }
 
-  // Show schedule if available (for vendors_scheduled)
-  if (stage === 'vendors_scheduled' && updates.schedule) {
+  // Show schedule if available (for bidding stage when jobs are created)
+  if (stage === 'bidding' && updates.schedule) {
     var schedule = {};
     try { schedule = JSON.parse(updates.schedule); } catch (e) {}
     var schedKeys = Object.keys(schedule);
@@ -674,7 +677,7 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   content += '</div>';
 
   // Stage progress indicator
-  var stages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+  var stages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
   var currentIdx = stages.indexOf(stage);
   content += '<div style="margin-bottom:24px;">';
   stages.forEach(function(s, idx) {
