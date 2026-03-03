@@ -3050,14 +3050,14 @@
                     <div class="page-tabs" id="vendorTabs">
                         <button class="page-tab active" data-tab="vendor-all">All<span class="tab-count" id="vendorAllTabCount">0</span></button>
                         <button class="page-tab" data-tab="vendor-applicants">New Applicants<span class="tab-count" id="applicantTabCount">0</span></button>
-                        <button class="page-tab" data-tab="vendor-accepted">Accepted<span class="tab-count" id="acceptedTabCount">0</span></button>
+                        <button class="page-tab" data-tab="vendor-accepted">Awaiting Signup<span class="tab-count" id="acceptedTabCount">0</span></button>
                         <button class="page-tab" data-tab="vendor-accounts">Active<span class="tab-count" id="accountTabCount">0</span></button>
                     </div>
                     <div class="tab-panel active" id="panel-vendor-all">
                         <div id="vendorAllContent">
                             <div class="quotes-section-banner banner-bidding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> New Applicants</div>
                             <div id="vendorAllApplicants"><div class="empty-state"><p>Loading applicants...</p></div></div>
-                            <div class="quotes-section-banner banner-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Accepted</div>
+                            <div class="quotes-section-banner banner-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Awaiting Signup</div>
                             <div id="vendorAllAccepted"><div class="empty-state"><p>Loading...</p></div></div>
                             <div class="quotes-section-banner banner-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Active</div>
                             <div id="vendorAllAccounts"><div class="empty-state"><p>Loading accounts...</p></div></div>
@@ -4207,7 +4207,7 @@
         }
 
         function buildApplicantCard(a) {
-            var statusLabel = { needs_review: 'Needs Review', hold: 'Hold', pending: 'Needs Review', accepted: 'Accepted' };
+            var statusLabel = { needs_review: 'Needs Review', hold: 'Hold', pending: 'Needs Review', accepted: 'Awaiting Signup' };
             var h = '<div class="applicant-card" data-applicant-id="' + esc(a.id) + '" style="cursor:pointer;">';
             h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
             h += '<div class="applicant-card-name">' + esc(a.name) + '</div>';
@@ -6161,9 +6161,9 @@
                 updateVendorAllCount();
 
                 if (accepted.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><p>No accepted vendors awaiting agreement.</p></div>';
+                    container.innerHTML = '<div class="empty-state"><p>No vendors awaiting signup. Accepted vendors will appear here until they complete their account setup.</p></div>';
                     var allAcc = document.getElementById('vendorAllAccepted');
-                    if (allAcc) allAcc.innerHTML = '<div class="empty-state"><p>No accepted vendors awaiting agreement.</p></div>';
+                    if (allAcc) allAcc.innerHTML = '<div class="empty-state"><p>No vendors awaiting signup. Accepted vendors will appear here until they complete their account setup.</p></div>';
                     return;
                 }
 
