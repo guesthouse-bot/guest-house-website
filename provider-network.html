@@ -4108,6 +4108,19 @@
                     });
                     localStorage.setItem('pn_quotes', JSON.stringify(localQuotes));
 
+                    // Send to HubSpot
+                    createHubSpotDeal({
+                        address: qd.address,
+                        propertySize: qd.propertySize,
+                        propertyStatus: qd.propertyStatus,
+                        plan: qd.plan,
+                        handsOn: qd.handsOn,
+                        targetPrice: qd.targetPrice,
+                        installDate: dateInput ? dateInput.value : '',
+                        lineItems: lineItems,
+                        total: grandTotal,
+                    });
+
                     alert('Quote saved! You can find it in your Quotes.');
                     if (window._resetWizard) window._resetWizard();
                     var quotesBtn = document.querySelector('.section-nav-btn[data-section="quotes"]');
