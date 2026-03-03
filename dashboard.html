@@ -309,36 +309,71 @@
             transition: box-shadow 0.2s, border-color 0.2s;
         }
         .listing-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #ccc; }
+        .listing-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
         .listing-card-address {
             font-size: 16px;
             font-weight: 600;
             color: var(--color-onyx);
-            margin-bottom: 8px;
             letter-spacing: -0.01em;
+            line-height: 1.3;
+            flex: 1;
+            margin-right: 12px;
         }
-        .listing-card-meta {
+        .listing-card-icons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .listing-card-icons button {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+        }
+        .listing-card-icons button:hover { color: var(--color-onyx); background: var(--color-surface-secondary); }
+        .listing-card-icons button svg { width: 18px; height: 18px; }
+        .listing-card-dates {
             font-size: 13px;
             color: var(--color-text-secondary);
+            line-height: 1.7;
             margin-bottom: 16px;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
         }
-        .listing-card-meta span { display: flex; align-items: center; gap: 4px; }
         .listing-card-services {
             display: flex;
-            gap: 6px;
+            gap: 10px;
             flex-wrap: wrap;
             margin-bottom: 16px;
         }
-        .service-badge {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
+        .service-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             background: var(--color-surface-secondary);
-            color: var(--color-text-secondary);
             border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+        }
+        .service-icon svg { width: 16px; height: 16px; }
+        .service-icon.active { background: #F0F7FF; border-color: #93C5FD; color: #2563EB; }
+        .listing-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
         .staging-badge {
             display: inline-block;
@@ -356,7 +391,6 @@
             gap: 8px;
             font-size: 13px;
             color: var(--color-text-secondary);
-            margin-top: 14px;
         }
         .listing-card-status .status-dot {
             width: 8px;
@@ -1472,43 +1506,85 @@
 
         // Bind card clicks
         container.querySelectorAll('.listing-card').forEach(function(card) {
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('[data-action]')) return;
                 var pid = card.dataset.projectId;
                 openListingDetail(pid);
+            });
+        });
+        // Open buttons
+        container.querySelectorAll('[data-action="open"]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openListingDetail(btn.dataset.projectId);
+            });
+        });
+        // Share buttons (email)
+        container.querySelectorAll('[data-action="share"]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var pid = btn.dataset.projectId;
+                var project = projectsData.find(function(p) { return p.id === pid; });
+                if (!project) return;
+                var subject = encodeURIComponent('Guest House Quote — ' + project.address);
+                var body = encodeURIComponent('Here is your Guest House listing prep quote for ' + project.address + '.\n\nView details: ' + window.location.origin + '/dashboard');
+                window.open('mailto:?subject=' + subject + '&body=' + body);
             });
         });
     }
 
     function buildListingCard(project) {
-        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
         var pkgNames = { consult: 'Virtual Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
 
         var h = '<div class="listing-card" data-project-id="' + esc(project.id) + '">';
+
+        // Header: address + icon buttons
+        h += '<div class="listing-card-header">';
         h += '<div class="listing-card-address">' + esc(project.address || 'Untitled') + '</div>';
-        h += '<div class="listing-card-meta">';
-        if (created) h += '<span>' + created + '</span>';
-        if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
+        h += '<div class="listing-card-icons">';
+        h += '<button data-action="open" data-project-id="' + esc(project.id) + '" title="Review & Pay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>';
+        h += '<button data-action="share" data-project-id="' + esc(project.id) + '" title="Share via email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>';
+        h += '</div></div>';
+
+        // Dates
+        h += '<div class="listing-card-dates">';
+        if (created) h += 'Quoted ' + created + '<br>';
+        if (project.installDate) h += 'Target install ' + new Date(project.installDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
         h += '</div>';
 
-        // Staging package badge (green) + service badges
+        // Service icons
         var services = [];
         try { services = JSON.parse(project.services || '[]'); } catch (e) {}
+        var allServiceIcons = [
+            { id: 'staging', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"/><path d="M2 11h20"/><path d="M8 19v2"/><path d="M16 19v2"/></svg>', label: 'Staging' },
+            { id: 'moving_pod', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', label: 'Moving' },
+            { id: 'photo_video', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>', label: 'Photos' },
+            { id: 'deep_clean', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h4l1-6h8l1 6h4"/><path d="M5 15V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10"/><line x1="9" y1="9" x2="15" y2="9"/></svg>', label: 'Cleaning' },
+        ];
+        var selectedIds = {};
+        services.forEach(function(s) { selectedIds[s.id] = true; });
+        // Staging is always active if package selected
+        if (project.stagingPackage && project.stagingPackage !== 'none') selectedIds['staging'] = true;
+
         h += '<div class="listing-card-services">';
-        if (project.stagingPackage && project.stagingPackage !== 'none') {
-            h += '<span class="staging-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
-        }
-        services.forEach(function(s) {
-            h += '<span class="service-badge">' + esc(s.name || s) + '</span>';
+        allServiceIcons.forEach(function(svc) {
+            var active = selectedIds[svc.id] ? ' active' : '';
+            h += '<div class="service-icon' + active + '" title="' + esc(svc.label) + '">' + svc.icon + '</div>';
         });
         h += '</div>';
 
-        // Current stage status
+        // Footer: staging badge + status
+        h += '<div class="listing-card-footer">';
         var stages = getStagesForPackage(project.stagingPackage);
         var currentStage = project.stage || 'quote_received';
-        // Map hidden backend stages to nearest visible stage
         var stageLabel = STAGE_LABELS[currentStage] || 'Quote';
         if (stages.indexOf(currentStage) === -1) stageLabel = STAGE_LABELS[stages[0]];
-        h += '<div class="listing-card-status"><span class="status-dot"></span> ' + esc(stageLabel) + '</div>';
+        if (project.stagingPackage && project.stagingPackage !== 'none') {
+            h += '<span class="staging-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
+        }
+        h += '<div class="listing-card-status">' + esc(stageLabel) + ' <span class="status-dot"></span></div>';
+        h += '</div>';
 
         h += '</div>';
         return h;
