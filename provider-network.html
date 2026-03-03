@@ -5888,7 +5888,9 @@
 
                 var response = await provResponse;
                 var data = await response.json();
-                providers = data.providers || [];
+                providers = (data.providers || []).filter(function(p) {
+                    return p.status !== 'deleted' && p.status !== 'needs_review' && p.status !== 'pending' && p.status !== 'hold' && p.status !== 'rejected';
+                });
 
                 var acctCountEl = document.getElementById('accountTabCount');
                 if (acctCountEl) acctCountEl.textContent = providers.length;
@@ -6200,41 +6202,46 @@
 
                 // Actions
                 h += '<div class="partner-review-actions">';
-                h += '<select class="partner-status-select" id="reviewStatusSelect">';
-                ['needs_review', 'accepted', 'hold', 'rejected', 'active', 'inactive'].forEach(function(s) {
-                    h += '<option value="' + s + '"' + (p.status === s || (p.status === 'pending' && s === 'needs_review') ? ' selected' : '') + '>' + (statusLabels[s] || capitalize(s)) + '</option>';
-                });
-                h += '</select>';
-                h += '<button class="btn btn-primary btn-sm" id="reviewUpdateBtn" data-provider-id="' + esc(p.id) + '">Update Status</button>';
+                var isApplicant = p.status === 'needs_review' || p.status === 'pending' || p.status === 'hold';
+                if (isApplicant) {
+                    h += '<button class="btn btn-primary btn-sm" id="reviewAcceptBtn" data-provider-id="' + esc(p.id) + '">Accept</button>';
+                    h += '<button class="btn btn-secondary btn-sm" id="reviewRejectBtn" data-provider-id="' + esc(p.id) + '">Reject</button>';
+                }
                 if (p.status === 'accepted') {
                     h += '<button class="btn btn-secondary btn-sm" id="reviewResendBtn" data-provider-id="' + esc(p.id) + '">Re-send Signup Email</button>';
                 }
+                h += '<button class="btn btn-sm" id="reviewRemoveBtn" data-provider-id="' + esc(p.id) + '" style="background:none;color:var(--color-error);border:1px solid var(--color-error);">Remove</button>';
                 h += '</div>';
 
                 content.innerHTML = h;
 
-                // Bind update button
-                document.getElementById('reviewUpdateBtn').addEventListener('click', async function() {
-                    var btn = this;
-                    var newStatus = document.getElementById('reviewStatusSelect').value;
-                    btn.disabled = true;
-                    btn.textContent = 'Updating...';
-                    try {
-                        var resp = await fetch('/api/providers', {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
-                        });
-                        if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
-                        modal.classList.remove('open');
-                        loadApplicants();
-                        loadProviders();
-                    } catch (err) {
-                        alert('Error: ' + err.message);
-                        btn.disabled = false;
-                        btn.textContent = 'Update Status';
-                    }
-                });
+                // Helper to handle status update actions
+                function bindStatusBtn(btnId, status, confirmMsg) {
+                    var btn = document.getElementById(btnId);
+                    if (!btn) return;
+                    btn.addEventListener('click', async function() {
+                        if (confirmMsg && !confirm(confirmMsg)) return;
+                        btn.disabled = true;
+                        try {
+                            var resp = await fetch('/api/providers', {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: btn.dataset.providerId, status: status }),
+                            });
+                            if (!resp.ok) { var d = await resp.json(); throw new Error(d.error); }
+                            modal.classList.remove('open');
+                            loadApplicants();
+                            loadProviders();
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                            btn.disabled = false;
+                        }
+                    });
+                }
+
+                bindStatusBtn('reviewAcceptBtn', 'accepted');
+                bindStatusBtn('reviewRejectBtn', 'rejected');
+                bindStatusBtn('reviewRemoveBtn', 'deleted', 'Permanently remove this vendor? This cannot be undone.');
 
                 // Bind resend button if present
                 var resendBtn = document.getElementById('reviewResendBtn');
