@@ -1292,9 +1292,15 @@
             btn.disabled = false;
             btn.textContent = 'Send Magic Link';
             if (data.success) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('authSent').classList.add('visible');
-                document.getElementById('authSentText').textContent = 'We sent a magic link to ' + email + '. Click it to sign in.';
+                if (data.token) {
+                    sessionStorage.setItem('agent_token', data.token);
+                    window.history.replaceState({}, '', '/dashboard');
+                    loadDashboard(data.token);
+                } else {
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('authSent').classList.add('visible');
+                    document.getElementById('authSentText').textContent = 'We sent a magic link to ' + email + '. Click it to sign in.';
+                }
             } else {
                 msg.textContent = data.error || 'Something went wrong';
                 msg.className = 'auth-message error';
@@ -1343,9 +1349,15 @@
             btn.disabled = false;
             btn.textContent = 'Create Account';
             if (data.success) {
-                document.getElementById('registerForm').style.display = 'none';
-                document.getElementById('authSent').classList.add('visible');
-                document.getElementById('authSentText').textContent = 'Account created! Check ' + payload.email + ' for your dashboard link.';
+                if (data.token) {
+                    sessionStorage.setItem('agent_token', data.token);
+                    window.history.replaceState({}, '', '/dashboard');
+                    loadDashboard(data.token);
+                } else {
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('authSent').classList.add('visible');
+                    document.getElementById('authSentText').textContent = 'Account created! Check ' + payload.email + ' for your dashboard link.';
+                }
             } else {
                 msg.textContent = data.error || 'Something went wrong';
                 msg.className = 'auth-message error';

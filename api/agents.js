@@ -97,7 +97,7 @@ async function handleRegister(req, res) {
       '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>'
     ));
 
-    return res.status(201).json({ success: true, message: 'Account created. Check your email for your dashboard link.' });
+    return res.status(201).json({ success: true, message: 'Account created. Check your email for your dashboard link.', token: token, dashUrl: dashUrl });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -142,7 +142,7 @@ async function handleLogin(req, res) {
       '<p style="color:#999;font-size:13px;margin-top:24px;">This link is unique to you. Do not share it.</p>'
     ));
 
-    return res.status(200).json({ success: true, message: 'Magic link sent. Check your email.' });
+    return res.status(200).json({ success: true, message: 'Magic link sent. Check your email.', token: token, dashUrl: dashUrl });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
