@@ -3081,13 +3081,8 @@
                                 <option value="media">Media</option>
                                 <option value="stylist">Stylist</option>
                             </select>
-                            <select id="filterProviderStatus">
+                            <select id="filterProviderStatus" style="display:none;">
                                 <option value="" selected>All statuses</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="accepted">Accepted</option>
-                                <option value="needs_review">Needs Review</option>
-                                <option value="hold">Hold</option>
                             </select>
                         </div>
                         <div class="provider-table-wrapper">
@@ -3099,7 +3094,6 @@
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Market</th>
-                                        <th>Status</th>
                                         <th>Jobs Won</th>
                                         <th>Avg Bid</th>
                                         <th>Win Rate</th>
@@ -3107,7 +3101,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="providerBody">
-                                    <tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
+                                    <tr><td colspan="9" style="text-align:center;color:var(--color-text-secondary);padding:32px;">Loading providers...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -5910,7 +5904,7 @@
                 } catch (e) { /* stats are optional */ }
 
                 if (providers.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-text-secondary);padding:32px;">No providers found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--color-text-secondary);padding:32px;">No providers found</td></tr>';
                     var allAccts = document.getElementById('vendorAllAccounts');
                     if (allAccts) allAccts.innerHTML = '<div class="empty-state"><p>No providers found.</p></div>';
                     return;
@@ -5927,11 +5921,10 @@
                         '<td>' + esc(p.email) + '</td>' +
                         '<td>' + capitalize(p.role) + '</td>' +
                         '<td>' + capitalize(p.market) + '</td>' +
-                        '<td><span class="status-dot ' + esc(p.status) + '"></span>' + ({ needs_review: 'Needs Review' }[p.status] || capitalize(p.status)) + '</td>' +
                         '<td>' + (jobsWon !== null ? jobsWon : '\u2014') + '</td>' +
                         '<td>' + (avgBid ? '$' + formatAmount(avgBid) : '\u2014') + '</td>' +
                         '<td>' + (winRate !== null && stats && stats.totalBids > 0 ? winRate + '%' : '\u2014') + '</td>' +
-                        '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="view-provider">View</button> <button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="toggle-status" data-current="' + esc(p.status) + '">' + (p.status === 'active' ? 'Deactivate' : 'Activate') + '</button></td>' +
+                        '<td><button class="toggle-btn" data-provider-id="' + esc(p.id) + '" data-action="view-provider">View</button></td>' +
                     '</tr>';
                 }).join('');
 
@@ -5939,25 +5932,6 @@
                 tbody.querySelectorAll('[data-action="view-provider"]').forEach(function(btn) {
                     btn.addEventListener('click', function() {
                         openPartnerReview(btn.dataset.providerId);
-                    });
-                });
-
-                // Bind toggle buttons
-                tbody.querySelectorAll('[data-action="toggle-status"]').forEach(function(btn) {
-                    btn.addEventListener('click', async function() {
-                        var newStatus = btn.dataset.current === 'active' ? 'inactive' : 'active';
-                        btn.disabled = true;
-                        try {
-                            await fetch('/api/providers', {
-                                method: 'PATCH',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
-                            });
-                            loadProviders();
-                        } catch (err) {
-                            alert('Error: ' + err.message);
-                            btn.disabled = false;
-                        }
                     });
                 });
 
@@ -5970,27 +5944,10 @@
                             openPartnerReview(btn.dataset.providerId);
                         });
                     });
-                    allAccts.querySelectorAll('[data-action="toggle-status"]').forEach(function(btn) {
-                        btn.addEventListener('click', async function() {
-                            var newStatus = btn.dataset.current === 'active' ? 'inactive' : 'active';
-                            btn.disabled = true;
-                            try {
-                                await fetch('/api/providers', {
-                                    method: 'PATCH',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ id: btn.dataset.providerId, status: newStatus }),
-                                });
-                                loadProviders();
-                            } catch (err) {
-                                alert('Error: ' + err.message);
-                                btn.disabled = false;
-                            }
-                        });
-                    });
                 }
 
             } catch (err) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-error);padding:32px;">Error: ' + esc(err.message) + '</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--color-error);padding:32px;">Error: ' + esc(err.message) + '</td></tr>';
             }
         }
 
