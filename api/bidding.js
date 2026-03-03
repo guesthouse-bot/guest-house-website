@@ -87,6 +87,7 @@ async function handleJobs(req, res) {
         awardedBidId: null,
         awardedProvider: null,
         awardedAt: null,
+        projectId: body.projectId || null,
       }, accessToken);
 
       var jobId = fb.docId(jobDoc.name);
@@ -430,6 +431,16 @@ async function handleAwardJob(req, res) {
     }, accessToken);
 
     var listingId = fb.docId(listingDoc.name);
+
+    // Update project stage if job is linked to a project
+    if (job.projectId) {
+      try {
+        await fb.updateDocument('projects/' + job.projectId, {
+          stage: 'vendors_scheduled',
+          updatedAt: now,
+        }, accessToken);
+      } catch (projErr) { console.log('Project update skipped:', projErr.message); }
+    }
 
     return res.status(200).json({
       success: true,

@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Guest House agent dashboard — create quotes, track listings, and manage listing prep.">
+    <title>Agent Dashboard | Guest House</title>
+    <style>
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Circular';
+            src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-error: #C4544C;
+            --color-sunflower: #D69B43;
+            --color-golden: #EBBC76;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+            --sidebar-width: 240px;
+        }
+
+        body {
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface-secondary);
+        }
+
+        /* ======= AUTH GATE ======= */
+        #authGate {
+            display: flex;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0a0a0a;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Circular', sans-serif;
+        }
+
+        .auth-inner {
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .auth-logo { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 40px; letter-spacing: -0.02em; }
+        .auth-tabs { display: flex; gap: 0; margin-bottom: 32px; border-bottom: 1px solid #333; }
+        .auth-tab {
+            flex: 1;
+            padding: 12px 0;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .auth-tab.active { color: #fff; border-bottom-color: #fff; }
+        .auth-tab:hover { color: #ccc; }
+
+        .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .auth-form.hidden { display: none; }
+
+        .auth-field { display: flex; flex-direction: column; gap: 6px; }
+        .auth-field label { font-size: 13px; color: #999; font-weight: 400; }
+        .auth-field input, .auth-field select {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #161616;
+            color: #fff;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .auth-field input:focus, .auth-field select:focus { border-color: #555; }
+        .auth-field select { appearance: none; -webkit-appearance: none; padding-right: 36px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center; cursor: pointer;
+        }
+        .auth-field select option { background: #161616; color: #fff; }
+
+        .auth-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .auth-submit {
+            padding: 13px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #fff;
+            color: #0a0a0a;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 8px;
+        }
+        .auth-submit:hover { opacity: 0.85; }
+        .auth-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .auth-message { font-size: 13px; text-align: center; margin-top: 4px; display: none; }
+        .auth-message.success { color: #4ade80; display: block; }
+        .auth-message.error { color: #ef4444; display: block; }
+
+        .auth-sent {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 0;
+        }
+        .auth-sent.visible { display: flex; }
+        .auth-sent svg { color: #4ade80; }
+        .auth-sent h3 { color: #fff; font-size: 18px; font-weight: 600; }
+        .auth-sent p { color: #888; font-size: 14px; }
+
+        /* ======= DASHBOARD LAYOUT ======= */
+        .main-content {
+            display: none;
+            min-height: 100vh;
+        }
+        .main-content.visible { display: flex; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--color-white);
+            border-right: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 200;
+        }
+        .sidebar-logo {
+            padding: 0 24px;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            min-height: 61px;
+        }
+        .sidebar-logo a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--color-onyx);
+            width: 100%;
+        }
+        .sidebar-logo svg { height: 10px; width: auto; flex-shrink: 0; }
+        .sidebar-logo span { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+        .section-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 450;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            width: 100%;
+        }
+        .section-nav-btn:hover { background: var(--color-surface-secondary); color: var(--color-onyx); }
+        .section-nav-btn.active { background: var(--color-surface-secondary); color: var(--color-onyx); font-weight: 500; }
+        .section-nav-btn svg { width: 18px; height: 18px; flex-shrink: 0; stroke-width: 1.75; }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--color-border);
+        }
+        .sidebar-agent-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-onyx);
+            padding: 4px 12px 2px;
+        }
+        .sidebar-agent-brokerage {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            padding: 0 12px 8px;
+        }
+        .sidebar-signout {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            width: 100%;
+        }
+        .sidebar-signout:hover { background: var(--color-surface-secondary); color: var(--color-onyx); }
+        .sidebar-signout svg { width: 16px; height: 16px; }
+
+        /* Content area */
+        .content-area {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-header {
+            background: var(--color-white);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 40px;
+            min-height: 61px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .content-header h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+        .content-body { padding: 32px 40px 60px; flex: 1; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* ======= BUTTONS ======= */
+        .btn {
+            padding: 11px 22px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-primary { background: var(--color-onyx); color: var(--color-white); }
+        .btn-secondary { background: var(--color-surface-secondary); color: var(--color-onyx); border: 1px solid var(--color-border); }
+
+        /* ======= LISTINGS GRID ======= */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+        .listing-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 24px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .listing-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #ccc; }
+        .listing-card-address {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .listing-card-meta {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .listing-card-meta span { display: flex; align-items: center; gap: 4px; }
+        .listing-card-services {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .service-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        /* 5-stage progress tracker */
+        .stage-tracker {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-top: 4px;
+        }
+        .stage-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        .stage-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .stage-dot svg { width: 10px; height: 10px; display: none; }
+        .stage-step.completed .stage-dot {
+            background: var(--color-onyx);
+            border-color: var(--color-onyx);
+        }
+        .stage-step.completed .stage-dot svg { display: block; color: #fff; }
+        .stage-step.current .stage-dot {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.12);
+        }
+        .stage-step.current .stage-dot::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-onyx);
+        }
+        .stage-label {
+            font-size: 10px;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .stage-step.completed .stage-label,
+        .stage-step.current .stage-label { color: var(--color-onyx); font-weight: 500; }
+        .stage-line {
+            flex: 1;
+            height: 2px;
+            background: var(--color-border);
+            margin: 0 -1px;
+            margin-top: -14px;
+            z-index: 1;
+        }
+        .stage-line.completed { background: var(--color-onyx); }
+
+        /* ======= LISTING DETAIL ======= */
+        .detail-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 24px;
+            padding: 0;
+        }
+        .detail-back:hover { color: var(--color-onyx); }
+        .detail-back svg { width: 16px; height: 16px; }
+
+        .detail-header {
+            margin-bottom: 32px;
+        }
+        .detail-address {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .detail-meta {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .detail-tracker {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+        .detail-tracker .stage-tracker { max-width: 600px; margin: 0 auto; }
+        .detail-tracker .stage-dot { width: 28px; height: 28px; }
+        .detail-tracker .stage-dot svg { width: 14px; height: 14px; }
+        .detail-tracker .stage-step.current .stage-dot::after { width: 10px; height: 10px; }
+        .detail-tracker .stage-label { font-size: 11px; margin-top: 6px; }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .detail-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 24px;
+        }
+        .detail-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-surface-secondary);
+            font-size: 14px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row-label { color: var(--color-text-secondary); }
+        .detail-row-value { font-weight: 500; color: var(--color-onyx); }
+        .detail-row-total { font-size: 16px; }
+        .detail-row-total .detail-row-value { font-size: 18px; font-weight: 700; }
+
+        /* Schedule timeline */
+        .schedule-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .schedule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+        }
+        .schedule-dot-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20px;
+            flex-shrink: 0;
+        }
+        .schedule-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--color-border);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        .schedule-dot.active { background: var(--color-onyx); }
+        .schedule-dot.awarded { background: #067647; }
+        .schedule-line-seg {
+            width: 2px;
+            flex: 1;
+            background: var(--color-border);
+            min-height: 16px;
+        }
+        .schedule-info { flex: 1; }
+        .schedule-label { font-size: 14px; font-weight: 500; color: var(--color-onyx); }
+        .schedule-date { font-size: 13px; color: var(--color-text-secondary); }
+        .schedule-status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .schedule-status.bidding { background: #EFF6FF; color: #1D4ED8; }
+        .schedule-status.awarded { background: #ECFDF3; color: #067647; }
+        .schedule-status.pending { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
+
+        /* ======= QUOTE WIZARD ======= */
+        .quote-wizard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            padding: 48px 24px 80px;
+            position: relative;
+        }
+        .quote-step { display: none; width: 100%; max-width: 600px; text-align: center; }
+        .quote-step.active { display: block; }
+        .quote-question {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--color-onyx);
+            margin-bottom: 32px;
+        }
+        .quote-question-sub {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-top: -8px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .quote-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .quote-option {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 14px;
+            padding: 28px 16px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            text-align: center;
+            position: relative;
+        }
+        .quote-option:hover { border-color: var(--color-charcoal); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .quote-option.selected { border-color: var(--color-onyx); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .quote-option.multi-selected { border-color: var(--color-onyx); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .quote-option-icon { font-size: 2rem; margin-bottom: 10px; }
+        .quote-option-title { font-size: 15px; font-weight: 600; color: var(--color-onyx); margin-bottom: 4px; }
+        .quote-option-sub { font-size: 13px; color: var(--color-text-secondary); }
+        .check-mark {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-onyx);
+            color: #fff;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .quote-option.multi-selected .check-mark { display: flex; }
+
+        .quote-options-stack {
+            display: flex !important;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .quote-options-stack .quote-option { text-align: left; padding: 18px 24px; }
+
+        .quote-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        .quote-input-group label { font-size: 13px; font-weight: 500; color: var(--color-charcoal); }
+        .quote-input-group input, .quote-input-group textarea {
+            padding: 13px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            width: 100%;
+        }
+        .quote-input-group input:focus, .quote-input-group textarea:focus {
+            border-color: var(--color-onyx);
+            box-shadow: 0 0 0 3px rgba(8,8,8,0.06);
+        }
+        .quote-input-group textarea { resize: vertical; min-height: 100px; }
+        .quote-sub-label {
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary) !important;
+            margin-bottom: -8px;
+        }
+
+        .quote-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .quote-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--color-surface-secondary);
+        }
+        .quote-progress-bar {
+            height: 100%;
+            background: var(--color-onyx);
+            transition: width 0.3s ease;
+        }
+
+        /* Quote tiles */
+        .quote-tiles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .quote-tile {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 14px 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color 0.15s;
+        }
+        .quote-tile:hover { border-color: var(--color-charcoal); }
+        .quote-tile.selected { border-color: var(--color-onyx); background: var(--color-surface-secondary); }
+        .quote-tile-icon { font-size: 1.2rem; margin-bottom: 4px; }
+
+        /* Calendar */
+        .quote-calendar {
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            background: var(--color-white);
+            padding: 20px;
+            max-width: 380px;
+            margin: 0 auto 24px;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .cal-header button {
+            background: none; border: none; cursor: pointer; padding: 4px;
+            color: var(--color-text-secondary); font-size: 18px;
+        }
+        .cal-header button:hover { color: var(--color-onyx); }
+        .cal-month { font-size: 15px; font-weight: 600; }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+        .cal-dow { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); padding: 4px 0; text-transform: uppercase; }
+        .cal-day {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: background 0.15s;
+        }
+        .cal-day:hover { background: var(--color-surface-secondary); }
+        .cal-day.selected { background: var(--color-onyx); color: #fff; font-weight: 600; }
+        .cal-day.disabled { color: #ccc; pointer-events: none; }
+        .cal-day.today { font-weight: 700; }
+
+        /* Address autocomplete */
+        .address-autocomplete { position: relative; }
+        .address-suggestions {
+            position: absolute; top: 100%; left: 0; right: 0; z-index: 300;
+            background: #fff; border: 1px solid var(--color-border); border-top: none;
+            border-radius: 0 0 10px 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            max-height: 260px; overflow-y: auto; display: none;
+        }
+        .address-suggestions.open { display: block; }
+        .address-suggestion {
+            padding: 10px 16px; font-size: 14px; cursor: pointer;
+            display: flex; align-items: flex-start; gap: 10px;
+            transition: background 0.1s; border-bottom: 1px solid var(--color-surface-secondary);
+        }
+        .address-suggestion:last-child { border-bottom: none; }
+        .address-suggestion:hover, .address-suggestion.active { background: var(--color-surface-secondary); }
+        .address-suggestion-icon { color: var(--color-text-secondary); flex-shrink: 0; margin-top: 1px; }
+        .address-suggestion-text { display: flex; flex-direction: column; gap: 1px; }
+        .address-suggestion-main { font-weight: 500; color: var(--color-onyx); }
+        .address-suggestion-sub { font-size: 12px; color: var(--color-text-secondary); }
+        .address-loading { padding: 12px 16px; font-size: 13px; color: var(--color-text-secondary); text-align: center; }
+
+        /* Quote loading */
+        .quote-loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+        .quote-loading.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .quote-loading-spinner {
+            position: relative; width: 56px; height: 56px; margin-bottom: 28px;
+        }
+        .quote-loading-spinner svg.spinner-ring { width: 56px; height: 56px; animation: spinRing 1.2s linear infinite; }
+        @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .quote-loading-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--color-onyx); margin-bottom: 8px; }
+        .quote-loading-sub { font-size: 14px; color: var(--color-text-secondary); }
+
+        /* Quote View (package selection) */
+        .qv-back {
+            background: none; border: none; cursor: pointer; font-family: inherit;
+            font-size: 14px; color: var(--color-text-secondary);
+            display: flex; align-items: center; gap: 6px; margin-bottom: 24px; padding: 0;
+        }
+        .qv-back:hover { color: var(--color-onyx); }
+        .qv-layout { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
+        .qv-section-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .qv-section-sub { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 24px; }
+        .qv-packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+        .qv-pkg {
+            border: 2px solid var(--color-border); border-radius: 14px; padding: 20px 16px;
+            cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; text-align: center;
+        }
+        .qv-pkg:hover { border-color: var(--color-charcoal); }
+        .qv-pkg.selected { border-color: var(--color-onyx); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .qv-pkg-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .qv-pkg-price { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .qv-pkg-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+        .qv-skip-staging { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 32px; }
+        .qv-skip-staging a { color: var(--color-onyx); cursor: pointer; text-decoration: underline; }
+        .qv-add-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+        .qv-add-sub { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 24px; }
+        .qv-category { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-secondary); margin-bottom: 12px; margin-top: 8px; }
+        .qv-services-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .qv-svc {
+            border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 18px;
+            cursor: pointer; display: flex; align-items: flex-start; gap: 12px; transition: border-color 0.15s;
+        }
+        .qv-svc:hover { border-color: var(--color-charcoal); }
+        .qv-svc.selected { border-color: var(--color-onyx); background: rgba(8,8,8,0.02); }
+        .qv-svc-check {
+            width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--color-border);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+        }
+        .qv-svc.selected .qv-svc-check { background: var(--color-onyx); border-color: var(--color-onyx); }
+        .qv-svc-name { font-size: 14px; font-weight: 500; color: var(--color-onyx); }
+        .qv-svc-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.4; margin-top: 2px; }
+        .qv-svc-price { font-size: 14px; font-weight: 600; color: var(--color-onyx); margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+
+        /* Quote sidebar */
+        .qv-sidebar {
+            background: var(--color-white); border: 1px solid var(--color-border); border-radius: 14px;
+            padding: 24px; position: sticky; top: 85px; height: fit-content;
+        }
+        .qv-sb-address { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--color-onyx); }
+        .qv-sb-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .qv-sb-date input {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px;
+            font-size: 14px; font-family: inherit; margin-bottom: 16px;
+        }
+        .qv-sb-services-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+        .qv-sb-line {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 8px 0; border-bottom: 1px solid var(--color-surface-secondary); font-size: 14px;
+        }
+        .qv-sb-line-label { font-weight: 500; }
+        .qv-sb-line-sub { font-size: 12px; color: var(--color-text-secondary); }
+        .qv-sb-line-price { font-weight: 500; white-space: nowrap; }
+        .qv-sb-total {
+            display: flex; justify-content: space-between; padding: 14px 0 16px;
+            font-size: 16px; font-weight: 700;
+        }
+        .qv-sb-affirm { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 16px; }
+        .qv-sb-affirm a { color: var(--color-onyx); }
+        .qv-checkout {
+            width: 100%; padding: 14px; border: none; border-radius: 10px;
+            background: var(--color-onyx); color: #fff; font-size: 15px; font-weight: 500;
+            font-family: inherit; cursor: pointer; transition: opacity 0.2s; margin-bottom: 8px;
+        }
+        .qv-checkout:hover { opacity: 0.85; }
+        .qv-checkout:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+            color: var(--color-text-secondary);
+        }
+        .empty-state svg { width: 48px; height: 48px; margin-bottom: 16px; color: var(--color-border); }
+        .empty-state h3 { font-size: 18px; font-weight: 600; color: var(--color-onyx); margin-bottom: 8px; }
+        .empty-state p { font-size: 14px; margin-bottom: 24px; }
+
+        /* Confirmation */
+        .confirmation {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+            padding: 48px 24px;
+        }
+        .confirmation.active { display: flex; }
+        .confirmation svg { width: 56px; height: 56px; color: #067647; margin-bottom: 20px; }
+        .confirmation h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .confirmation p { color: var(--color-text-secondary); font-size: 15px; margin-bottom: 24px; max-width: 420px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .content-area { margin-left: 0; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .qv-layout { grid-template-columns: 1fr; }
+            .listings-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="authGate">
+    <div class="auth-inner">
+        <div class="auth-logo">Guest House</div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Sign In</button>
+            <button class="auth-tab" data-tab="register">Create Account</button>
+        </div>
+
+        <!-- Login form -->
+        <form class="auth-form" id="loginForm">
+            <div class="auth-field">
+                <label>Email address</label>
+                <input type="email" id="loginEmail" placeholder="you@example.com" required>
+            </div>
+            <button type="submit" class="auth-submit" id="loginBtn">Send Magic Link</button>
+            <div class="auth-message" id="loginMsg"></div>
+        </form>
+
+        <!-- Register form -->
+        <form class="auth-form hidden" id="registerForm">
+            <div class="auth-row">
+                <div class="auth-field">
+                    <label>First name</label>
+                    <input type="text" id="regFirstName" placeholder="Jane" required>
+                </div>
+                <div class="auth-field">
+                    <label>Last name</label>
+                    <input type="text" id="regLastName" placeholder="Smith" required>
+                </div>
+            </div>
+            <div class="auth-field">
+                <label>Email address</label>
+                <input type="email" id="regEmail" placeholder="you@example.com" required>
+            </div>
+            <div class="auth-field">
+                <label>Phone</label>
+                <input type="tel" id="regPhone" placeholder="(555) 555-1234">
+            </div>
+            <div class="auth-field">
+                <label>Brokerage</label>
+                <input type="text" id="regBrokerage" placeholder="Compass, Keller Williams, etc.">
+            </div>
+            <div class="auth-field">
+                <label>Market</label>
+                <select id="regMarket">
+                    <option value="arizona">Arizona</option>
+                    <option value="denver">Denver</option>
+                    <option value="dallas">Dallas</option>
+                </select>
+            </div>
+            <button type="submit" class="auth-submit" id="regBtn">Create Account</button>
+            <div class="auth-message" id="regMsg"></div>
+        </form>
+
+        <!-- Success state -->
+        <div class="auth-sent" id="authSent">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3>Check your email</h3>
+            <p id="authSentText">We sent a magic link to your email. Click it to sign in.</p>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="main-content" id="dashboard">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <a href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 20" fill="currentColor">
+                    <text x="0" y="16" font-family="sans-serif" font-size="18" font-weight="700" letter-spacing="-0.5">GUEST HOUSE</text>
+                </svg>
+            </a>
+        </div>
+        <div class="sidebar-nav">
+            <button class="section-nav-btn active" data-section="listings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                My Listings
+            </button>
+            <button class="section-nav-btn" data-section="new-quote">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Quote
+            </button>
+        </div>
+        <div class="sidebar-footer">
+            <div class="sidebar-agent-name" id="sidebarAgentName"></div>
+            <div class="sidebar-agent-brokerage" id="sidebarAgentBrokerage"></div>
+            <button class="sidebar-signout" id="signOutBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sign Out
+            </button>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="content-area">
+        <div class="content-header">
+            <h1 id="contentTitle">My Listings</h1>
+        </div>
+        <div class="content-body">
+
+            <!-- Section: My Listings -->
+            <div class="section active" id="section-listings">
+                <div id="listingsContent"></div>
+            </div>
+
+            <!-- Section: Listing Detail -->
+            <div class="section" id="section-detail">
+                <div id="detailContent"></div>
+            </div>
+
+            <!-- Section: New Quote -->
+            <div class="section" id="section-new-quote">
+                <div class="quote-wizard" id="quoteWizard">
+
+                    <!-- Address -->
+                    <div class="quote-step active" data-step-id="address">
+                        <h2 class="quote-question">Let's get started. Where's the property?</h2>
+                        <div class="quote-input-group">
+                            <label for="wizAddress">Address</label>
+                            <div class="address-autocomplete">
+                                <input type="text" id="wizAddress" placeholder="Start typing an address..." autocomplete="off">
+                                <div class="address-suggestions" id="addressSuggestions"></div>
+                            </div>
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Property Size & Status -->
+                    <div class="quote-step" data-step-id="property-info">
+                        <h2 class="quote-question">Property size and status?</h2>
+                        <div class="quote-input-group">
+                            <label class="quote-sub-label">ROUGHLY HOW BIG?</label>
+                            <div class="quote-options" id="wizSizeOptions" style="grid-template-columns:repeat(3,1fr);">
+                                <div class="quote-option" data-value="<1500"><div class="quote-option-title">&lt;1,500 sq ft</div></div>
+                                <div class="quote-option" data-value="1500-3000"><div class="quote-option-title">1,500&ndash;3,000</div></div>
+                                <div class="quote-option" data-value=">3000"><div class="quote-option-title">&gt;3,000 sq ft</div></div>
+                            </div>
+                        </div>
+                        <div class="quote-input-group">
+                            <label class="quote-sub-label">CURRENT STATUS?</label>
+                            <div class="quote-options" id="wizStatusOptions" style="grid-template-columns:repeat(2,1fr);">
+                                <div class="quote-option" data-value="Occupied"><div class="quote-option-icon">🔑</div><div class="quote-option-title">Occupied</div></div>
+                                <div class="quote-option" data-value="Vacant"><div class="quote-option-icon">📦</div><div class="quote-option-title">Vacant</div></div>
+                            </div>
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Plan -->
+                    <div class="quote-step" data-step-id="plan">
+                        <h2 class="quote-question">What's the plan for this home?</h2>
+                        <div class="quote-options" id="wizPlanOptions">
+                            <div class="quote-option" data-value="Keeping items"><div class="quote-option-icon">📦</div><div class="quote-option-title">Keeping items</div><div class="quote-option-sub">Homeowner is staying put</div></div>
+                            <div class="quote-option" data-value="Taking everything out"><div class="quote-option-icon">🚚</div><div class="quote-option-title">Taking everything out</div><div class="quote-option-sub">Full cleanout needed</div></div>
+                            <div class="quote-option" data-value="Exploring options"><div class="quote-option-icon">🔍</div><div class="quote-option-title">Exploring options</div><div class="quote-option-sub">Not sure yet</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Hands-on -->
+                    <div class="quote-step" data-step-id="hands-on">
+                        <h2 class="quote-question">How hands-on do you want us to be?</h2>
+                        <div class="quote-options" id="wizHandsOnOptions" style="grid-template-columns:repeat(2,1fr);">
+                            <div class="quote-option" data-value="Just need advice"><div class="quote-option-icon">📞</div><div class="quote-option-title">Just need advice</div><div class="quote-option-sub">A quick consultation to point me in the right direction</div></div>
+                            <div class="quote-option" data-value="Help with everything"><div class="quote-option-icon">🛋️</div><div class="quote-option-title">Help with everything</div><div class="quote-option-sub">Full white-glove service from start to finish</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Target price -->
+                    <div class="quote-step" data-step-id="target-price">
+                        <h2 class="quote-question">Target list price?</h2>
+                        <p class="quote-question-sub">This helps us recommend the right package</p>
+                        <div class="quote-options quote-options-stack" id="wizPriceOptions">
+                            <div class="quote-option" data-value="Below $1M"><div class="quote-option-title">Below $1M</div></div>
+                            <div class="quote-option" data-value="$1M-$2M"><div class="quote-option-title">$1M&ndash;$2M</div></div>
+                            <div class="quote-option" data-value="Over $2M"><div class="quote-option-title">Over $2M</div></div>
+                            <div class="quote-option" data-value="Not sure yet"><div class="quote-option-title">Not sure yet</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="quote-step" data-step-id="services">
+                        <h2 class="quote-question">What services do you need?</h2>
+                        <div class="quote-options" id="wizServiceOptions" style="grid-template-columns:repeat(3,1fr);">
+                            <div class="quote-option" data-value="Staging"><span class="check-mark">&#10003;</span><div class="quote-option-icon">🏠</div><div class="quote-option-title">Staging</div><div class="quote-option-sub">Furniture &amp; decor</div></div>
+                            <div class="quote-option" data-value="Deep Clean"><span class="check-mark">&#10003;</span><div class="quote-option-icon">🧹</div><div class="quote-option-title">Deep Clean</div><div class="quote-option-sub">Top-to-bottom clean</div></div>
+                            <div class="quote-option" data-value="Moving"><span class="check-mark">&#10003;</span><div class="quote-option-icon">🚛</div><div class="quote-option-title">Moving</div><div class="quote-option-sub">Pack &amp; haul</div></div>
+                            <div class="quote-option" data-value="Photography"><span class="check-mark">&#10003;</span><div class="quote-option-icon">📸</div><div class="quote-option-title">Photography</div><div class="quote-option-sub">Listing photos</div></div>
+                            <div class="quote-option" data-value="Styling"><span class="check-mark">&#10003;</span><div class="quote-option-icon">✨</div><div class="quote-option-title">Styling</div><div class="quote-option-sub">Design consultation</div></div>
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Sqft -->
+                    <div class="quote-step" data-step-id="sqft">
+                        <h2 class="quote-question">How big is the home?</h2>
+                        <div class="quote-input-group">
+                            <label for="wizSqft">Square footage</label>
+                            <input type="text" id="wizSqft" placeholder="2,400">
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Rooms -->
+                    <div class="quote-step" data-step-id="rooms">
+                        <h2 class="quote-question">Which rooms need staging?</h2>
+                        <div class="quote-tiles" id="wizRoomTiles">
+                            <div class="quote-tile" data-value="Living Room"><div class="quote-tile-icon">🛋️</div>Living Room</div>
+                            <div class="quote-tile" data-value="Dining Room"><div class="quote-tile-icon">🍽️</div>Dining Room</div>
+                            <div class="quote-tile" data-value="Kitchen"><div class="quote-tile-icon">🍳</div>Kitchen</div>
+                            <div class="quote-tile" data-value="Primary Bedroom"><div class="quote-tile-icon">🛏️</div>Primary Bedroom</div>
+                            <div class="quote-tile" data-value="Office"><div class="quote-tile-icon">💼</div>Office</div>
+                            <div class="quote-tile" data-value="Bedroom 2"><div class="quote-tile-icon">🛏️</div>Bedroom 2</div>
+                            <div class="quote-tile" data-value="Bedroom 3"><div class="quote-tile-icon">🛏️</div>Bedroom 3</div>
+                            <div class="quote-tile" data-value="Bedroom 4"><div class="quote-tile-icon">🛏️</div>Bedroom 4</div>
+                            <div class="quote-tile" data-value="Bathroom"><div class="quote-tile-icon">🛁</div>Bathroom</div>
+                            <div class="quote-tile" data-value="Entryway"><div class="quote-tile-icon">🚪</div>Entryway</div>
+                            <div class="quote-tile" data-value="Patio"><div class="quote-tile-icon">🌿</div>Patio</div>
+                            <div class="quote-tile" data-value="Other"><div class="quote-tile-icon">➕</div>Other</div>
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="quote-step" data-step-id="timeline">
+                        <h2 class="quote-question">When do you need this done?</h2>
+                        <div class="quote-calendar" id="wizCalendar"></div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="quote-step" data-step-id="notes">
+                        <h2 class="quote-question">Anything else we should know?</h2>
+                        <div class="quote-input-group">
+                            <textarea id="wizNotes" placeholder="Special requests, access instructions, etc."></textarea>
+                        </div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary wiz-next">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Review -->
+                    <div class="quote-step" data-step-id="review">
+                        <h2 class="quote-question">Review your quote</h2>
+                        <div id="wizReviewContent" style="text-align:left;max-width:480px;margin:0 auto 24px;"></div>
+                        <div class="quote-nav">
+                            <button class="btn btn-secondary wiz-back">Back</button>
+                            <button class="btn btn-primary" id="wizSubmitBtn">Get Your Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="quote-progress" id="wizProgress"><div class="quote-progress-bar" id="wizProgressBar" style="width:0%"></div></div>
+                </div>
+
+                <!-- Loading -->
+                <div class="quote-loading" id="quoteLoading">
+                    <div class="quote-loading-spinner">
+                        <svg class="spinner-ring" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#ddd" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#080808" stroke-width="4" stroke-dasharray="40 110" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="quote-loading-title">Building your quote...</div>
+                    <div class="quote-loading-sub">Matching you with the best vendors in your area</div>
+                </div>
+
+                <!-- Quote View (package selection) -->
+                <div id="quoteViewContainer" style="display:none;"></div>
+
+                <!-- Confirmation -->
+                <div class="confirmation" id="quoteConfirmation">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h2>Quote submitted!</h2>
+                    <p>We've received your request and will be in touch shortly. You can track your listing progress from your dashboard.</p>
+                    <button class="btn btn-primary" id="confirmGoListings">View My Listings</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    // === HELPERS ===
+    function esc(s) {
+        if (!s) return '';
+        var d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
+    function formatPrice(n) {
+        return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    var API_BASE = '/api/agents';
+
+    // === STATE ===
+    var agentData = null;
+    var projectsData = [];
+
+    // === AUTH ===
+    function initAuth() {
+        var params = new URLSearchParams(window.location.search);
+        var urlToken = params.get('token');
+
+        if (urlToken) {
+            // Validate token from URL
+            validateToken(urlToken);
+            return;
+        }
+
+        var storedToken = sessionStorage.getItem('agent_token');
+        if (storedToken) {
+            loadDashboard(storedToken);
+            return;
+        }
+
+        // Show auth gate
+        showAuthGate();
+    }
+
+    function validateToken(token) {
+        fetch(API_BASE + '?action=auth&token=' + encodeURIComponent(token))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.agent) {
+                    sessionStorage.setItem('agent_token', token);
+                    // Clean URL
+                    window.history.replaceState({}, '', '/dashboard');
+                    loadDashboard(token);
+                } else {
+                    showAuthGate();
+                }
+            })
+            .catch(function() { showAuthGate(); });
+    }
+
+    function loadDashboard(token) {
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('dashboard').classList.add('visible');
+
+        fetch(API_BASE + '?action=dashboard&token=' + encodeURIComponent(token))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    sessionStorage.removeItem('agent_token');
+                    showAuthGate();
+                    return;
+                }
+                agentData = data.agent;
+                projectsData = data.projects || [];
+                renderSidebar();
+                renderListings();
+            })
+            .catch(function() {
+                sessionStorage.removeItem('agent_token');
+                showAuthGate();
+            });
+    }
+
+    function showAuthGate() {
+        document.getElementById('authGate').style.display = 'flex';
+        document.getElementById('dashboard').classList.remove('visible');
+    }
+
+    // Auth tabs
+    document.querySelectorAll('.auth-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var target = tab.dataset.tab;
+            document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === target); });
+            document.getElementById('loginForm').classList.toggle('hidden', target !== 'login');
+            document.getElementById('registerForm').classList.toggle('hidden', target !== 'register');
+            document.getElementById('authSent').classList.remove('visible');
+        });
+    });
+
+    // Login form
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('loginBtn');
+        var msg = document.getElementById('loginMsg');
+        var email = document.getElementById('loginEmail').value.trim();
+        if (!email) return;
+
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.style.display = 'none';
+
+        fetch(API_BASE + '?action=login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email }),
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            btn.disabled = false;
+            btn.textContent = 'Send Magic Link';
+            if (data.success) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('authSent').classList.add('visible');
+                document.getElementById('authSentText').textContent = 'We sent a magic link to ' + email + '. Click it to sign in.';
+            } else {
+                msg.textContent = data.error || 'Something went wrong';
+                msg.className = 'auth-message error';
+            }
+        })
+        .catch(function() {
+            btn.disabled = false;
+            btn.textContent = 'Send Magic Link';
+            msg.textContent = 'Network error. Please try again.';
+            msg.className = 'auth-message error';
+        });
+    });
+
+    // Register form
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('regBtn');
+        var msg = document.getElementById('regMsg');
+
+        var payload = {
+            firstName: document.getElementById('regFirstName').value.trim(),
+            lastName: document.getElementById('regLastName').value.trim(),
+            email: document.getElementById('regEmail').value.trim(),
+            phone: document.getElementById('regPhone').value.trim(),
+            brokerage: document.getElementById('regBrokerage').value.trim(),
+            market: document.getElementById('regMarket').value,
+        };
+
+        if (!payload.firstName || !payload.lastName || !payload.email) {
+            msg.textContent = 'Please fill in all required fields';
+            msg.className = 'auth-message error';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Creating account...';
+        msg.style.display = 'none';
+
+        fetch(API_BASE + '?action=register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            btn.disabled = false;
+            btn.textContent = 'Create Account';
+            if (data.success) {
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('authSent').classList.add('visible');
+                document.getElementById('authSentText').textContent = 'Account created! Check ' + payload.email + ' for your dashboard link.';
+            } else {
+                msg.textContent = data.error || 'Something went wrong';
+                msg.className = 'auth-message error';
+            }
+        })
+        .catch(function() {
+            btn.disabled = false;
+            btn.textContent = 'Create Account';
+            msg.textContent = 'Network error. Please try again.';
+            msg.className = 'auth-message error';
+        });
+    });
+
+    // === SIDEBAR ===
+    function renderSidebar() {
+        if (!agentData) return;
+        document.getElementById('sidebarAgentName').textContent = agentData.name || '';
+        document.getElementById('sidebarAgentBrokerage').textContent = agentData.brokerage || '';
+    }
+
+    // Sign out
+    document.getElementById('signOutBtn').addEventListener('click', function() {
+        sessionStorage.removeItem('agent_token');
+        agentData = null;
+        projectsData = [];
+        showAuthGate();
+    });
+
+    // Nav buttons
+    document.querySelectorAll('.section-nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var section = btn.dataset.section;
+            showSection(section);
+        });
+    });
+
+    function showSection(name) {
+        document.querySelectorAll('.section-nav-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.section === name); });
+        document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+        var el = document.getElementById('section-' + name);
+        if (el) el.classList.add('active');
+
+        var titles = { 'listings': 'My Listings', 'new-quote': 'New Quote', 'detail': 'Listing Detail' };
+        document.getElementById('contentTitle').textContent = titles[name] || 'Dashboard';
+
+        // Reset wizard when navigating to new-quote
+        if (name === 'new-quote') resetWizard();
+    }
+
+    // === LISTINGS ===
+    var STAGES = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var STAGE_LABELS = {
+        quote_received: 'Quote Received',
+        vendors_scheduled: 'Vendors Scheduled',
+        prep_in_progress: 'Prep In Progress',
+        photos_ready: 'Photos Ready',
+        market_ready: 'Market Ready',
+    };
+
+    function renderListings() {
+        var container = document.getElementById('listingsContent');
+
+        if (projectsData.length === 0) {
+            container.innerHTML = '<div class="empty-state">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' +
+                '<h3>No listings yet</h3>' +
+                '<p>Create your first quote to get started.</p>' +
+                '<button class="btn btn-primary" onclick="document.querySelector(\'[data-section=new-quote]\').click()">New Quote</button>' +
+            '</div>';
+            return;
+        }
+
+        var html = '<div class="listings-grid">';
+        projectsData.forEach(function(p) {
+            html += buildListingCard(p);
+        });
+        html += '</div>';
+        container.innerHTML = html;
+
+        // Bind card clicks
+        container.querySelectorAll('.listing-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                var pid = card.dataset.projectId;
+                openListingDetail(pid);
+            });
+        });
+    }
+
+    function buildListingCard(project) {
+        var services = [];
+        try { services = JSON.parse(project.services || '[]'); } catch (e) {}
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+        var h = '<div class="listing-card" data-project-id="' + esc(project.id) + '">';
+        h += '<div class="listing-card-address">' + esc(project.address || 'Untitled') + '</div>';
+        h += '<div class="listing-card-meta">';
+        if (created) h += '<span>' + created + '</span>';
+        if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
+        if (project.propertySize) h += '<span>' + esc(project.propertySize) + '</span>';
+        h += '</div>';
+
+        // Service badges
+        if (services.length > 0 || (project.stagingPackage && project.stagingPackage !== 'none')) {
+            h += '<div class="listing-card-services">';
+            if (project.stagingPackage && project.stagingPackage !== 'none') {
+                var pkgNames = { consult: 'Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
+                h += '<span class="service-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
+            }
+            services.forEach(function(s) {
+                h += '<span class="service-badge">' + esc(s.name || s) + '</span>';
+            });
+            h += '</div>';
+        }
+
+        // Stage tracker
+        h += buildStageTracker(project.stage || 'quote_received');
+        h += '</div>';
+        return h;
+    }
+
+    function buildStageTracker(currentStage) {
+        var currentIdx = STAGES.indexOf(currentStage);
+        if (currentIdx === -1) currentIdx = 0;
+
+        var h = '<div class="stage-tracker">';
+        STAGES.forEach(function(stage, idx) {
+            if (idx > 0) {
+                h += '<div class="stage-line' + (idx <= currentIdx ? ' completed' : '') + '"></div>';
+            }
+            var cls = '';
+            if (idx < currentIdx) cls = ' completed';
+            else if (idx === currentIdx) cls = ' current';
+
+            h += '<div class="stage-step' + cls + '">';
+            h += '<div class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+            h += '<div class="stage-label">' + STAGE_LABELS[stage].split(' ')[0] + '</div>';
+            h += '</div>';
+        });
+        h += '</div>';
+        return h;
+    }
+
+    // === LISTING DETAIL ===
+    function openListingDetail(projectId) {
+        var project = projectsData.find(function(p) { return p.id === projectId; });
+        if (!project) return;
+
+        showSection('detail');
+        document.getElementById('contentTitle').textContent = 'Listing Detail';
+        // Deselect all nav buttons for detail view
+        document.querySelectorAll('.section-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+
+        var container = document.getElementById('detailContent');
+        var services = [];
+        try { services = JSON.parse(project.services || '[]'); } catch (e) {}
+        var schedule = {};
+        try { schedule = JSON.parse(project.schedule || '{}'); } catch (e) {}
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+
+        var h = '<button class="detail-back" id="detailBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg> Back to listings</button>';
+
+        // Header
+        h += '<div class="detail-header">';
+        h += '<div class="detail-address">' + esc(project.address) + '</div>';
+        h += '<div class="detail-meta">';
+        if (created) h += '<span>Created ' + created + '</span>';
+        if (project.market) h += '<span>' + esc(project.market.charAt(0).toUpperCase() + project.market.slice(1)) + '</span>';
+        if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
+        h += '</div></div>';
+
+        // Stage tracker
+        h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received') + '</div>';
+
+        // Grid
+        h += '<div class="detail-grid">';
+
+        // Property details
+        h += '<div class="detail-card">';
+        h += '<div class="detail-card-title">Property Details</div>';
+        if (project.propertySize) h += '<div class="detail-row"><span class="detail-row-label">Size</span><span class="detail-row-value">' + esc(project.propertySize) + '</span></div>';
+        if (project.propertyStatus) h += '<div class="detail-row"><span class="detail-row-label">Status</span><span class="detail-row-value">' + esc(project.propertyStatus) + '</span></div>';
+        if (project.sqft) h += '<div class="detail-row"><span class="detail-row-label">Sq Ft</span><span class="detail-row-value">' + esc(project.sqft) + '</span></div>';
+        if (project.rooms) h += '<div class="detail-row"><span class="detail-row-label">Rooms</span><span class="detail-row-value">' + esc(project.rooms) + '</span></div>';
+        if (project.targetPrice) h += '<div class="detail-row"><span class="detail-row-label">Target Price</span><span class="detail-row-value">' + esc(project.targetPrice) + '</span></div>';
+        if (project.installDate) h += '<div class="detail-row"><span class="detail-row-label">Install Date</span><span class="detail-row-value">' + esc(project.installDate) + '</span></div>';
+        if (project.notes) h += '<div class="detail-row"><span class="detail-row-label">Notes</span><span class="detail-row-value">' + esc(project.notes) + '</span></div>';
+        h += '</div>';
+
+        // Schedule / Services
+        var schedKeys = Object.keys(schedule);
+        if (schedKeys.length > 0) {
+            h += '<div class="detail-card">';
+            h += '<div class="detail-card-title">Schedule</div>';
+            h += '<div class="schedule-timeline">';
+            // Sort by date
+            schedKeys.sort(function(a, b) { return (schedule[a].date || '') > (schedule[b].date || '') ? 1 : -1; });
+            schedKeys.forEach(function(key, idx) {
+                var item = schedule[key];
+                var statusCls = item.status === 'awarded' ? 'awarded' : (item.status === 'bidding' ? 'bidding' : 'pending');
+                h += '<div class="schedule-item">';
+                h += '<div class="schedule-dot-col"><div class="schedule-dot ' + (item.status === 'awarded' ? 'awarded' : 'active') + '"></div>';
+                if (idx < schedKeys.length - 1) h += '<div class="schedule-line-seg"></div>';
+                h += '</div>';
+                h += '<div class="schedule-info">';
+                h += '<div class="schedule-label">' + esc(item.label) + '</div>';
+                h += '<div class="schedule-date">' + esc(item.date) + '</div>';
+                h += '<span class="schedule-status ' + statusCls + '">' + esc(item.status) + '</span>';
+                h += '</div></div>';
+            });
+            h += '</div></div>';
+        } else {
+            // Services card instead
+            h += '<div class="detail-card">';
+            h += '<div class="detail-card-title">Services & Pricing</div>';
+            if (project.stagingPackage && project.stagingPackage !== 'none') {
+                var pkgNames = { consult: 'Virtual Design Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
+                h += '<div class="detail-row"><span class="detail-row-label">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span><span class="detail-row-value">' + formatPrice(project.stagingPrice || 0) + '</span></div>';
+            }
+            services.forEach(function(s) {
+                h += '<div class="detail-row"><span class="detail-row-label">' + esc(s.name) + '</span><span class="detail-row-value">' + formatPrice(s.price) + '</span></div>';
+            });
+            h += '<div class="detail-row detail-row-total"><span class="detail-row-label">Total</span><span class="detail-row-value">' + formatPrice(project.totalPrice || 0) + '</span></div>';
+            h += '</div>';
+        }
+
+        h += '</div>'; // .detail-grid
+
+        container.innerHTML = h;
+
+        document.getElementById('detailBack').addEventListener('click', function() {
+            showSection('listings');
+        });
+    }
+
+    // === QUOTE WIZARD ===
+    var quoteData = { plan: '', address: '', propertySize: '', propertyStatus: '', handsOn: '', targetPrice: '', services: [], sqft: '', rooms: [], timeline: '', notes: '' };
+    var currentStep = 0;
+    var stepOrder = [];
+    var calSelectedDate = null;
+
+    // Pricing
+    var stagingPrices = {
+        '<1500':     { consult: 250, inperson: 1250, full: 2400 },
+        '1500-3000': { consult: 250, inperson: 1450, full: 2800 },
+        '>3000':     { consult: 250, inperson: 1750, full: 3400 },
+    };
+
+    var serviceCatalog = {
+        'Photos & Video': [
+            { id: 'social-photos', name: 'Social Media Photos (25+ Images)', price: 750 },
+            { id: 'mls-25', name: 'MLS Photos (25 images)', price: 300, preselect: true },
+            { id: 'mls-floor', name: 'MLS Photos (25 Images) + Floor Plan', price: 450 },
+            { id: 'mls-3d', name: 'MLS Photos (25 Images) + Matterport 3D Tour', price: 650, preselect: true },
+            { id: 'mls-video', name: 'MLS Photos (25 Images) + Video Tour', price: 800 },
+            { id: 'mls-45', name: 'MLS Photos (45 images)', price: 450 },
+            { id: 'drone-photos', name: 'Drone Photos (10 Images)', price: 400 },
+            { id: 'drone-video', name: 'Drone Exterior Video', price: 500 },
+        ],
+        'Cleaning': [
+            { id: 'deep-clean', name: 'Market-ready deep clean', price: 350, preselect: true },
+        ],
+        'Moving': [
+            { id: 'move-3h', name: 'Homeowner Move-Out (3 Hours)', price: 750 },
+            { id: 'move-6h', name: 'Homeowner Move-Out (6 Hours)', price: 1500 },
+        ],
+    };
+
+    function buildStepOrder() {
+        stepOrder = ['address', 'property-info', 'plan', 'hands-on', 'target-price', 'services', 'sqft', 'rooms', 'timeline', 'notes', 'review'];
+    }
+    buildStepOrder();
+
+    function showStep(idx) {
+        currentStep = idx;
+        document.querySelectorAll('#quoteWizard .quote-step').forEach(function(s) { s.classList.remove('active'); });
+        var stepEl = document.querySelector('#quoteWizard .quote-step[data-step-id="' + stepOrder[idx] + '"]');
+        if (stepEl) stepEl.classList.add('active');
+
+        // Progress
+        var pct = Math.round(((idx + 1) / stepOrder.length) * 100);
+        document.getElementById('wizProgressBar').style.width = pct + '%';
+
+        // Build review if on last step
+        if (stepOrder[idx] === 'review') buildReview();
+    }
+
+    // Single-select option groups
+    ['wizPlanOptions', 'wizSizeOptions', 'wizStatusOptions', 'wizHandsOnOptions', 'wizPriceOptions'].forEach(function(groupId) {
+        var group = document.getElementById(groupId);
+        if (!group) return;
+        group.querySelectorAll('.quote-option').forEach(function(opt) {
+            opt.addEventListener('click', function() {
+                group.querySelectorAll('.quote-option').forEach(function(o) { o.classList.remove('selected'); });
+                opt.classList.add('selected');
+
+                var val = opt.dataset.value;
+                if (groupId === 'wizPlanOptions') quoteData.plan = val;
+                else if (groupId === 'wizSizeOptions') quoteData.propertySize = val;
+                else if (groupId === 'wizStatusOptions') quoteData.propertyStatus = val;
+                else if (groupId === 'wizHandsOnOptions') quoteData.handsOn = val;
+                else if (groupId === 'wizPriceOptions') quoteData.targetPrice = val;
+
+                // Auto-advance for single-select without nav buttons
+                if (['wizPlanOptions', 'wizHandsOnOptions', 'wizPriceOptions'].indexOf(groupId) !== -1) {
+                    setTimeout(function() {
+                        if (currentStep < stepOrder.length - 1) showStep(currentStep + 1);
+                    }, 250);
+                }
+            });
+        });
+    });
+
+    // Multi-select services
+    document.querySelectorAll('#wizServiceOptions .quote-option').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+            opt.classList.toggle('multi-selected');
+            quoteData.services = [];
+            document.querySelectorAll('#wizServiceOptions .quote-option.multi-selected').forEach(function(o) {
+                quoteData.services.push(o.dataset.value);
+            });
+        });
+    });
+
+    // Room tiles
+    document.querySelectorAll('#wizRoomTiles .quote-tile').forEach(function(tile) {
+        tile.addEventListener('click', function() {
+            tile.classList.toggle('selected');
+            quoteData.rooms = [];
+            document.querySelectorAll('#wizRoomTiles .quote-tile.selected').forEach(function(t) {
+                quoteData.rooms.push(t.dataset.value);
+            });
+        });
+    });
+
+    // Nav buttons
+    document.querySelectorAll('.wiz-next').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            // Collect current step data
+            var stepId = stepOrder[currentStep];
+            if (stepId === 'address') quoteData.address = document.getElementById('wizAddress').value.trim();
+            if (stepId === 'sqft') quoteData.sqft = document.getElementById('wizSqft').value.trim();
+            if (stepId === 'notes') quoteData.notes = document.getElementById('wizNotes').value.trim();
+
+            if (currentStep < stepOrder.length - 1) showStep(currentStep + 1);
+        });
+    });
+    document.querySelectorAll('.wiz-back').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (currentStep > 0) showStep(currentStep - 1);
+        });
+    });
+
+    // Calendar
+    var calMonth, calYear;
+    (function initCalendar() {
+        var now = new Date();
+        calMonth = now.getMonth();
+        calYear = now.getFullYear();
+        renderCalendar();
+    })();
+
+    function renderCalendar() {
+        var container = document.getElementById('wizCalendar');
+        var first = new Date(calYear, calMonth, 1);
+        var last = new Date(calYear, calMonth + 1, 0);
+        var today = new Date(); today.setHours(0,0,0,0);
+
+        var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var h = '<div class="cal-header">';
+        h += '<button type="button" id="calPrev">&larr;</button>';
+        h += '<span class="cal-month">' + monthNames[calMonth] + ' ' + calYear + '</span>';
+        h += '<button type="button" id="calNext">&rarr;</button>';
+        h += '</div>';
+        h += '<div class="cal-grid">';
+        ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(d) { h += '<div class="cal-dow">' + d + '</div>'; });
+
+        for (var i = 0; i < first.getDay(); i++) h += '<div></div>';
+
+        for (var d = 1; d <= last.getDate(); d++) {
+            var dt = new Date(calYear, calMonth, d);
+            var cls = 'cal-day';
+            if (dt < today) cls += ' disabled';
+            if (dt.getTime() === today.getTime()) cls += ' today';
+            if (calSelectedDate && dt.toDateString() === calSelectedDate.toDateString()) cls += ' selected';
+            h += '<div class="' + cls + '" data-date="' + dt.toISOString().split('T')[0] + '">' + d + '</div>';
+        }
+        h += '</div>';
+        container.innerHTML = h;
+
+        container.querySelectorAll('.cal-day:not(.disabled)').forEach(function(el) {
+            el.addEventListener('click', function() {
+                calSelectedDate = new Date(el.dataset.date + 'T12:00:00');
+                quoteData.timeline = el.dataset.date;
+                renderCalendar();
+            });
+        });
+        var prevBtn = container.querySelector('#calPrev');
+        var nextBtn = container.querySelector('#calNext');
+        if (prevBtn) prevBtn.addEventListener('click', function() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); });
+    }
+
+    // Address autocomplete
+    (function() {
+        var input = document.getElementById('wizAddress');
+        var box = document.getElementById('addressSuggestions');
+        if (!input || !box) return;
+        var debounceTimer = null;
+        var activeIdx = -1;
+
+        input.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            var q = input.value.trim();
+            if (q.length < 3) { box.classList.remove('open'); box.innerHTML = ''; return; }
+            box.innerHTML = '<div class="address-loading">Searching...</div>';
+            box.classList.add('open');
+            debounceTimer = setTimeout(function() { fetchSuggestions(q); }, 350);
+        });
+
+        function fetchSuggestions(q) {
+            fetch('https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&addressdetails=1&limit=5&q=' + encodeURIComponent(q))
+                .then(function(r) { return r.json(); })
+                .then(function(results) {
+                    activeIdx = -1;
+                    if (!results || results.length === 0) { box.innerHTML = '<div class="address-loading">No results found</div>'; return; }
+                    box.innerHTML = results.map(function(r, i) {
+                        var parts = r.display_name.split(', ');
+                        var main = parts.slice(0, 2).join(', ');
+                        var sub = parts.slice(2).join(', ');
+                        return '<div class="address-suggestion" data-idx="' + i + '" data-full="' + esc(r.display_name) + '">' +
+                            '<div class="address-suggestion-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>' +
+                            '<div class="address-suggestion-text"><span class="address-suggestion-main">' + esc(main) + '</span><span class="address-suggestion-sub">' + esc(sub) + '</span></div></div>';
+                    }).join('');
+                    box.querySelectorAll('.address-suggestion').forEach(function(el) {
+                        el.addEventListener('click', function() { selectSuggestion(el); });
+                    });
+                })
+                .catch(function() { box.innerHTML = '<div class="address-loading">Search unavailable</div>'; });
+        }
+
+        function selectSuggestion(el) {
+            input.value = el.dataset.full;
+            box.classList.remove('open');
+            box.innerHTML = '';
+        }
+
+        input.addEventListener('keydown', function(e) {
+            var items = box.querySelectorAll('.address-suggestion');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, items.length - 1); updateActive(items); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); updateActive(items); }
+            else if (e.key === 'Enter' && activeIdx >= 0) { e.preventDefault(); selectSuggestion(items[activeIdx]); }
+            else if (e.key === 'Escape') { box.classList.remove('open'); }
+        });
+
+        function updateActive(items) {
+            items.forEach(function(el, i) { el.classList.toggle('active', i === activeIdx); });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!input.contains(e.target) && !box.contains(e.target)) box.classList.remove('open');
+        });
+    })();
+
+    // Build review step
+    function buildReview() {
+        var container = document.getElementById('wizReviewContent');
+        var rows = [
+            { label: 'Address', value: quoteData.address },
+            { label: 'Property Size', value: quoteData.propertySize },
+            { label: 'Status', value: quoteData.propertyStatus },
+            { label: 'Plan', value: quoteData.plan },
+            { label: 'Hands-On', value: quoteData.handsOn },
+            { label: 'Target Price', value: quoteData.targetPrice },
+            { label: 'Services', value: quoteData.services.join(', ') },
+            { label: 'Sq Ft', value: quoteData.sqft },
+            { label: 'Rooms', value: quoteData.rooms.join(', ') },
+            { label: 'Timeline', value: quoteData.timeline },
+            { label: 'Notes', value: quoteData.notes },
+        ];
+
+        var h = '<div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;padding:20px 24px;">';
+        rows.forEach(function(r) {
+            if (!r.value) return;
+            h += '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--color-surface-secondary);font-size:14px;">';
+            h += '<span style="color:var(--color-text-secondary);">' + r.label + '</span>';
+            h += '<span style="font-weight:500;text-align:right;max-width:60%;">' + esc(r.value) + '</span>';
+            h += '</div>';
+        });
+        h += '</div>';
+        container.innerHTML = h;
+    }
+
+    // Submit
+    document.getElementById('wizSubmitBtn').addEventListener('click', function() {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+
+        // Hide wizard, show loading
+        document.getElementById('quoteWizard').style.display = 'none';
+        document.getElementById('wizProgress').style.display = 'none';
+        document.getElementById('quoteLoading').classList.add('active');
+
+        // Build project payload
+        var token = sessionStorage.getItem('agent_token');
+
+        // Calculate pricing for the quote view next
+        submitQuoteToAPI(token, function(success) {
+            setTimeout(function() {
+                document.getElementById('quoteLoading').classList.remove('active');
+                if (success) {
+                    showQuoteView();
+                } else {
+                    // Show confirmation anyway (data saved)
+                    showQuoteView();
+                }
+                btn.disabled = false;
+                btn.textContent = 'Get Your Quote';
+            }, 2000);
+        });
+    });
+
+    function submitQuoteToAPI(token, callback) {
+        // We don't create the project yet — we show the package selection first
+        // The project is created on "checkout"
+        callback(true);
+    }
+
+    // Quote View (package selection page) — adapted from provider-network.html
+    function showQuoteView() {
+        var container = document.getElementById('quoteViewContainer');
+        container.style.display = 'block';
+
+        var sizeKey = quoteData.propertySize || '1500-3000';
+        var sp = stagingPrices[sizeKey] || stagingPrices['1500-3000'];
+
+        var selectedPkg = quoteData.handsOn === 'Just need advice' ? 'consult' : 'inperson';
+        var selectedSvcs = {};
+
+        // Preselect services
+        Object.keys(serviceCatalog).forEach(function(cat) {
+            serviceCatalog[cat].forEach(function(s) {
+                if (s.preselect) selectedSvcs[s.id] = true;
+            });
+        });
+
+        var installDate = quoteData.timeline || '';
+
+        function render() {
+            var pkgNames = { consult: 'Virtual Design Consult', inperson: 'In-Person Styling', full: 'Full Staging', none: 'No Staging' };
+            var pkgPriceVal = { consult: sp.consult, inperson: sp.inperson, full: sp.full, none: 0 };
+            var pkgDescs = {
+                consult: 'Book a 1-hour video call with a professional designer who will give you clear recommendations.',
+                inperson: 'Our designers visit your listing and style up to five rooms using existing furnishings.',
+                full: 'We deliver, install and style premium furnishings curated for your listing.',
+            };
+
+            var stagingTotal = pkgPriceVal[selectedPkg] || 0;
+            var svcTotal = 0;
+            var svcLines = [];
+            var svcItems = [];
+            Object.keys(selectedSvcs).forEach(function(sid) {
+                if (!selectedSvcs[sid]) return;
+                Object.keys(serviceCatalog).forEach(function(cat) {
+                    serviceCatalog[cat].forEach(function(s) {
+                        if (s.id === sid) {
+                            svcTotal += s.price;
+                            svcLines.push(s.name);
+                            svcItems.push({ id: s.id, name: s.name, price: s.price, category: cat });
+                        }
+                    });
+                });
+            });
+            var grandTotal = stagingTotal + svcTotal;
+
+            var html = '';
+            html += '<button class="qv-back" id="qvBack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>';
+            html += '<div class="qv-layout">';
+
+            // Main area
+            html += '<div class="qv-main">';
+            html += '<div class="qv-section-title">Choose your staging package</div>';
+            html += '<div class="qv-section-sub">Pick the package that fits your listing needs.</div>';
+            html += '<div class="qv-packages">';
+            ['consult', 'inperson', 'full'].forEach(function(key) {
+                html += '<div class="qv-pkg' + (selectedPkg === key ? ' selected' : '') + '" data-pkg="' + key + '">';
+                html += '<div class="qv-pkg-name">' + pkgNames[key] + '</div>';
+                html += '<div class="qv-pkg-price">' + formatPrice(pkgPriceVal[key]) + '</div>';
+                html += '<div class="qv-pkg-desc">' + pkgDescs[key] + '</div>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<div class="qv-skip-staging">Don\'t need staging? <a id="qvSkipStaging">Click here to remove the staging package.</a></div>';
+
+            html += '<div class="qv-add-title">Add services</div>';
+            html += '<div class="qv-add-sub">Book all your services in one place. We\'ll schedule and coordinate everything.</div>';
+
+            Object.keys(serviceCatalog).forEach(function(cat) {
+                html += '<div class="qv-category">' + cat + '</div>';
+                html += '<div class="qv-services-grid">';
+                serviceCatalog[cat].forEach(function(svc) {
+                    var sel = selectedSvcs[svc.id] ? ' selected' : '';
+                    html += '<div class="qv-svc' + sel + '" data-svc="' + svc.id + '">';
+                    html += '<div class="qv-svc-check">' + (selectedSvcs[svc.id] ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div>';
+                    html += '<div style="flex:1;"><div class="qv-svc-name">' + svc.name + '</div></div>';
+                    html += '<div class="qv-svc-price">' + formatPrice(svc.price) + '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            });
+            html += '</div>'; // .qv-main
+
+            // Sidebar
+            html += '<div class="qv-sidebar">';
+            html += '<div class="qv-sb-address">' + esc(quoteData.address) + '</div>';
+            html += '<div class="qv-sb-label">Install date</div>';
+            html += '<div class="qv-sb-date"><input type="date" id="qvInstallDate" value="' + (installDate || '') + '"></div>';
+            html += '<div class="qv-sb-services-title">Staging & services</div>';
+            html += '<div class="qv-sb-line"><div><div class="qv-sb-line-label">Home staging</div><div class="qv-sb-line-sub">' + pkgNames[selectedPkg] + '</div></div><div class="qv-sb-line-price">' + formatPrice(stagingTotal) + '</div></div>';
+            if (svcLines.length > 0) {
+                html += '<div class="qv-sb-line"><div><div class="qv-sb-line-label">Market-ready services</div><div class="qv-sb-line-sub">' + svcLines.join(', ') + '</div></div><div class="qv-sb-line-price">' + formatPrice(svcTotal) + '</div></div>';
+            }
+            html += '<div class="qv-sb-total"><span>Total due</span><span>' + formatPrice(grandTotal) + '</span></div>';
+            html += '<button class="qv-checkout" id="qvCheckout">Submit Quote</button>';
+            html += '</div>';
+
+            html += '</div>'; // .qv-layout
+            container.innerHTML = html;
+
+            // Bind events
+            container.querySelector('#qvBack').addEventListener('click', function() { resetWizard(); });
+
+            container.querySelectorAll('.qv-pkg').forEach(function(el) {
+                el.addEventListener('click', function() { selectedPkg = el.dataset.pkg; render(); });
+            });
+
+            var skipEl = container.querySelector('#qvSkipStaging');
+            if (skipEl) skipEl.addEventListener('click', function() { selectedPkg = 'none'; render(); });
+
+            container.querySelectorAll('.qv-svc').forEach(function(el) {
+                el.addEventListener('click', function() { selectedSvcs[el.dataset.svc] = !selectedSvcs[el.dataset.svc]; render(); });
+            });
+
+            container.querySelector('#qvCheckout').addEventListener('click', function() {
+                var checkoutBtn = this;
+                checkoutBtn.disabled = true;
+                checkoutBtn.textContent = 'Submitting...';
+
+                var dateInput = container.querySelector('#qvInstallDate');
+                var finalInstallDate = dateInput ? dateInput.value : installDate;
+
+                var token = sessionStorage.getItem('agent_token');
+                var payload = {
+                    token: token,
+                    address: quoteData.address,
+                    market: agentData ? agentData.market : 'arizona',
+                    propertySize: quoteData.propertySize,
+                    propertyStatus: quoteData.propertyStatus,
+                    sqft: quoteData.sqft,
+                    rooms: quoteData.rooms.join(', '),
+                    targetPrice: quoteData.targetPrice,
+                    notes: quoteData.notes,
+                    stagingPackage: selectedPkg,
+                    stagingPrice: pkgPriceVal[selectedPkg] || 0,
+                    services: JSON.stringify(svcItems),
+                    totalPrice: grandTotal,
+                    installDate: finalInstallDate,
+                };
+
+                fetch(API_BASE + '?action=create-project&token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    container.style.display = 'none';
+                    if (data.success) {
+                        // Show confirmation
+                        document.getElementById('quoteConfirmation').classList.add('active');
+                        // Refresh projects
+                        loadDashboard(token);
+                    } else {
+                        document.getElementById('quoteConfirmation').classList.add('active');
+                    }
+                })
+                .catch(function() {
+                    container.style.display = 'none';
+                    document.getElementById('quoteConfirmation').classList.add('active');
+                });
+            });
+        }
+
+        render();
+    }
+
+    // Go to listings from confirmation
+    document.getElementById('confirmGoListings').addEventListener('click', function() {
+        document.getElementById('quoteConfirmation').classList.remove('active');
+        showSection('listings');
+    });
+
+    // Reset wizard
+    function resetWizard() {
+        quoteData = { plan: '', address: '', propertySize: '', propertyStatus: '', handsOn: '', targetPrice: '', services: [], sqft: '', rooms: [], timeline: '', notes: '' };
+        calSelectedDate = null;
+        var addr = document.getElementById('wizAddress');
+        if (addr) addr.value = '';
+        var sqft = document.getElementById('wizSqft');
+        if (sqft) sqft.value = '';
+        var notes = document.getElementById('wizNotes');
+        if (notes) notes.value = '';
+
+        document.querySelectorAll('#wizPlanOptions .quote-option, #wizSizeOptions .quote-option, #wizStatusOptions .quote-option, #wizHandsOnOptions .quote-option, #wizPriceOptions .quote-option').forEach(function(c) { c.classList.remove('selected'); });
+        document.querySelectorAll('#wizServiceOptions .quote-option').forEach(function(c) { c.classList.remove('multi-selected'); });
+        document.querySelectorAll('#wizRoomTiles .quote-tile').forEach(function(c) { c.classList.remove('selected'); });
+
+        document.getElementById('quoteWizard').style.display = '';
+        document.getElementById('wizProgress').style.display = '';
+        document.getElementById('quoteViewContainer').style.display = 'none';
+        document.getElementById('quoteLoading').classList.remove('active');
+        document.getElementById('quoteConfirmation').classList.remove('active');
+
+        buildStepOrder();
+        showStep(0);
+    }
+
+    // === INIT ===
+    initAuth();
+
+})();
+</script>
+</body>
+</html>

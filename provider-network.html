@@ -4189,6 +4189,11 @@
 
             var cardStatus = job.status || 'open';
             var h = '<div class="ov-quote-card" draggable="true" data-job-id="' + esc(job.id) + '" data-job-status="' + esc(cardStatus) + '">';
+            if (job.projectId) {
+                h += '<div style="display:flex;align-items:center;gap:6px;padding:6px 0 4px;font-size:11px;">';
+                h += '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;background:#EFF6FF;color:#1D4ED8;font-weight:500;">Agent Project</span>';
+                h += '</div>';
+            }
             h += '<div class="ov-quote-card-top">';
             h += '<div class="ov-quote-card-address">' + esc(job.address || 'Untitled Quote') + '</div>';
             h += '<div class="ov-quote-card-actions">';
@@ -5530,6 +5535,22 @@
                     '</div>';
                 }
 
+                // Project stage controls (if job is linked to a project)
+                if (job.projectId) {
+                    html += '<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">';
+                    html += '<span style="font-size:13px;font-weight:500;color:var(--color-charcoal);">Project Stage:</span>';
+                    html += '<select class="dash-project-stage-select" data-project-id="' + esc(job.projectId) + '" style="padding:7px 32px 7px 12px;border:1px solid var(--color-border);border-radius:8px;font-size:13px;font-family:inherit;appearance:none;-webkit-appearance:none;background:#fff;cursor:pointer;">';
+                    var dProjectStages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+                    var dProjectLabels = { quote_received: 'Quote Received', vendors_scheduled: 'Vendors Scheduled', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
+                    dProjectStages.forEach(function(s) {
+                        html += '<option value="' + s + '">' + dProjectLabels[s] + '</option>';
+                    });
+                    html += '</select>';
+                    html += '<button class="btn btn-primary btn-sm dash-update-stage-btn" data-project-id="' + esc(job.projectId) + '">Update Stage</button>';
+                    html += '<span class="dash-stage-msg" data-project-id="' + esc(job.projectId) + '" style="font-size:12px;"></span>';
+                    html += '</div>';
+                }
+
                 panel.innerHTML = html;
 
                 panel.querySelectorAll('.dash-award-btn').forEach(function(btn) {
@@ -5551,6 +5572,40 @@
                     autoBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         dashAwardJob(autoBtn.dataset.jobId, null, autoBtn);
+                    });
+                }
+
+                // Bind dashboard project stage update
+                var dashStageBtn = panel.querySelector('.dash-update-stage-btn');
+                if (dashStageBtn) {
+                    dashStageBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var projectId = dashStageBtn.dataset.projectId;
+                        var select = panel.querySelector('.dash-project-stage-select[data-project-id="' + projectId + '"]');
+                        var msgEl = panel.querySelector('.dash-stage-msg[data-project-id="' + projectId + '"]');
+                        if (!select) return;
+                        dashStageBtn.disabled = true;
+                        dashStageBtn.textContent = 'Updating...';
+                        msgEl.textContent = '';
+                        var cronSecret = localStorage.getItem('cronSecret') || '';
+                        fetch('/api/agents?action=update-project-stage&secret=' + encodeURIComponent(cronSecret), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ projectId: projectId, stage: select.value }),
+                        })
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) {
+                            dashStageBtn.disabled = false;
+                            dashStageBtn.textContent = 'Update Stage';
+                            if (data.success) { msgEl.textContent = 'Updated!'; msgEl.style.color = '#067647'; }
+                            else { msgEl.textContent = data.error || 'Failed'; msgEl.style.color = 'var(--color-error)'; }
+                        })
+                        .catch(function() {
+                            dashStageBtn.disabled = false;
+                            dashStageBtn.textContent = 'Update Stage';
+                            msgEl.textContent = 'Network error';
+                            msgEl.style.color = 'var(--color-error)';
+                        });
                     });
                 }
 
@@ -5642,12 +5697,19 @@
         function renderJobCards(jobList) {
             if (jobList.length === 0) return '<div class="empty-state"><p>No jobs found.</p></div>';
             return '<div class="jobs-grid">' + jobList.map(function(job) {
-                return '<div class="job-card" data-job-id="' + esc(job.id) + '">' +
+                var agentBadge = '';
+                if (job.projectId) {
+                    agentBadge = '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:#EFF6FF;color:#1D4ED8;font-size:11px;font-weight:500;">' +
+                        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                        'Agent Project</span>';
+                }
+                return '<div class="job-card" data-job-id="' + esc(job.id) + '" data-project-id="' + esc(job.projectId || '') + '">' +
                     '<div class="job-card-header" data-toggle="' + esc(job.id) + '">' +
                         '<div class="job-card-info">' +
                             '<h3>' + esc(job.address) + '</h3>' +
                             '<div class="job-card-meta">' +
                                 '<span class="status-badge status-' + esc(job.status) + '">' + esc(job.status) + '</span>' +
+                                agentBadge +
                                 (job.sqft ? '<span>' + esc(job.sqft) + ' sq ft</span>' : '') +
                                 (job.rooms ? '<span>' + esc(job.rooms) + '</span>' : '') +
                                 '<span>' + capitalize(job.market) + '</span>' +
@@ -5799,6 +5861,22 @@
                     '</div>';
                 }
 
+                // Project stage controls (if job is linked to a project)
+                if (job.projectId) {
+                    html += '<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">';
+                    html += '<span style="font-size:13px;font-weight:500;color:var(--color-charcoal);">Project Stage:</span>';
+                    html += '<select class="project-stage-select" data-project-id="' + esc(job.projectId) + '" style="padding:7px 32px 7px 12px;border:1px solid var(--color-border);border-radius:8px;font-size:13px;font-family:inherit;appearance:none;-webkit-appearance:none;background:#fff url(\'data:image/svg+xml,%253Csvg xmlns=%2527http://www.w3.org/2000/svg%2527 width=%252712%2527 height=%252712%2527 viewBox=%25270 0 24 24%2527 fill=%2527none%2527 stroke=%2527%2523666%2527 stroke-width=%25272%2527%253E%253Cpolyline points=%25276 9 12 15 18 9%2527/%253E%253C/svg%253E\') no-repeat right 10px center;cursor:pointer;">';
+                    var projectStages = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+                    var projectStageLabels = { quote_received: 'Quote Received', vendors_scheduled: 'Vendors Scheduled', prep_in_progress: 'Prep In Progress', photos_ready: 'Photos Ready', market_ready: 'Market Ready' };
+                    projectStages.forEach(function(s) {
+                        html += '<option value="' + s + '">' + projectStageLabels[s] + '</option>';
+                    });
+                    html += '</select>';
+                    html += '<button class="btn btn-primary btn-sm update-project-stage-btn" data-project-id="' + esc(job.projectId) + '">Update Stage</button>';
+                    html += '<span class="project-stage-msg" data-project-id="' + esc(job.projectId) + '" style="font-size:12px;color:var(--color-text-secondary);"></span>';
+                    html += '</div>';
+                }
+
                 panel.innerHTML = html;
 
                 // Bind award buttons
@@ -5821,6 +5899,45 @@
                     autoBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         awardJob(autoBtn.dataset.jobId, null, autoBtn);
+                    });
+                }
+
+                // Bind project stage update
+                var stageBtn = panel.querySelector('.update-project-stage-btn');
+                if (stageBtn) {
+                    stageBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var projectId = stageBtn.dataset.projectId;
+                        var select = panel.querySelector('.project-stage-select[data-project-id="' + projectId + '"]');
+                        var msgEl = panel.querySelector('.project-stage-msg[data-project-id="' + projectId + '"]');
+                        if (!select) return;
+                        stageBtn.disabled = true;
+                        stageBtn.textContent = 'Updating...';
+                        msgEl.textContent = '';
+                        var cronSecret = localStorage.getItem('cronSecret') || '';
+                        fetch('/api/agents?action=update-project-stage&secret=' + encodeURIComponent(cronSecret), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ projectId: projectId, stage: select.value }),
+                        })
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) {
+                            stageBtn.disabled = false;
+                            stageBtn.textContent = 'Update Stage';
+                            if (data.success) {
+                                msgEl.textContent = 'Updated!';
+                                msgEl.style.color = '#067647';
+                            } else {
+                                msgEl.textContent = data.error || 'Failed';
+                                msgEl.style.color = 'var(--color-error)';
+                            }
+                        })
+                        .catch(function() {
+                            stageBtn.disabled = false;
+                            stageBtn.textContent = 'Update Stage';
+                            msgEl.textContent = 'Network error';
+                            msgEl.style.color = 'var(--color-error)';
+                        });
                     });
                 }
 
