@@ -1408,14 +1408,20 @@
     }
 
     // === LISTINGS ===
-    var STAGES = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var STAGES_FULL = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var STAGES_CONSULT = ['quote_received', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready'];
     var STAGE_LABELS = {
         quote_received: 'Quote',
         vendors_scheduled: 'Booked',
+        schedule_call: 'Consult',
         prep_in_progress: 'Prepping',
         photos_ready: 'Live',
         market_ready: 'Deinstall',
     };
+
+    function getStagesForPackage(pkg) {
+        return pkg === 'consult' ? STAGES_CONSULT : STAGES_FULL;
+    }
 
     function renderListings() {
         var container = document.getElementById('listingsContent');
@@ -1472,20 +1478,21 @@
             h += '</div>';
         }
 
-        // Stage tracker (only for full-service staging)
-        if (project.stagingPackage === 'full') {
-            h += buildStageTracker(project.stage || 'quote_received');
+        // Stage tracker (only for full or consult staging)
+        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult') {
+            h += buildStageTracker(project.stage || 'quote_received', project.stagingPackage);
         }
         h += '</div>';
         return h;
     }
 
-    function buildStageTracker(currentStage) {
-        var currentIdx = STAGES.indexOf(currentStage);
+    function buildStageTracker(currentStage, stagingPackage) {
+        var stages = getStagesForPackage(stagingPackage);
+        var currentIdx = stages.indexOf(currentStage);
         if (currentIdx === -1) currentIdx = 0;
 
         var h = '<div class="stage-tracker">';
-        STAGES.forEach(function(stage, idx) {
+        stages.forEach(function(stage, idx) {
             if (idx > 0) {
                 h += '<div class="stage-line' + (idx <= currentIdx ? ' completed' : '') + '"></div>';
             }
@@ -1530,9 +1537,9 @@
         if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
         h += '</div></div>';
 
-        // Stage tracker (only for full-service staging)
-        if (project.stagingPackage === 'full') {
-            h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received') + '</div>';
+        // Stage tracker (only for full or consult staging)
+        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult') {
+            h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received', project.stagingPackage) + '</div>';
         }
 
         // Grid

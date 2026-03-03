@@ -450,7 +450,7 @@ async function handleUpdateProjectStage(req, res) {
     var body = req.body;
     if (!body.projectId || !body.stage) return res.status(400).json({ error: 'Missing projectId or stage' });
 
-    var validStages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var validStages = ['quote_received', 'bidding', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready', 'market_ready'];
     if (validStages.indexOf(body.stage) === -1) {
       return res.status(400).json({ error: 'Invalid stage: ' + body.stage });
     }
@@ -623,6 +623,7 @@ async function sendStageEmail(project, stage, updates, accessToken) {
     quote_received: 'Quote Received',
     bidding: 'Bidding',
     vendors_scheduled: 'Booked',
+    schedule_call: 'Schedule Call',
     prep_in_progress: 'Listing Prep Underway',
     photos_ready: 'Photos Are Ready',
     market_ready: 'Market Ready!',
@@ -631,6 +632,7 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   var subjects = {
     bidding: 'Bidding Open — ' + address,
     vendors_scheduled: 'Vendors Booked — ' + address,
+    schedule_call: 'Schedule Your Consult — ' + address,
     prep_in_progress: 'Listing Prep Underway — ' + address,
     photos_ready: 'Photos Are Ready — ' + address,
     market_ready: 'Market Ready! — ' + address,
@@ -642,6 +644,7 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   var stageMessages = {
     bidding: 'Your project has been approved and we\'re now collecting bids from vendors. We\'ll have your team lined up soon.',
     vendors_scheduled: 'Great news! Your vendors have been booked and everything is on track. Here\'s your timeline:',
+    schedule_call: 'It\'s time to schedule your virtual design consult. We\'ll walk through your space and create a personalized plan.',
     prep_in_progress: 'Your listing prep is underway. Our vendors are hard at work getting your property market-ready.',
     photos_ready: 'Your listing photos are ready! Your property is looking great and almost ready to hit the market.',
     market_ready: 'Congratulations! Your listing is fully prepped and market-ready. Time to go live!',
@@ -677,7 +680,7 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   content += '</div>';
 
   // Stage progress indicator
-  var stages = ['quote_received', 'bidding', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+  var stages = ['quote_received', 'bidding', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready', 'market_ready'];
   var currentIdx = stages.indexOf(stage);
   content += '<div style="margin-bottom:24px;">';
   stages.forEach(function(s, idx) {
