@@ -585,7 +585,7 @@
         .case-studies-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
             gap: 20px;
         }
 
@@ -611,9 +611,9 @@
             transform: scale(1.03);
         }
 
-        /* Large card (first) — spans both rows, overlay text */
+        /* Large card (first) — spans all rows, overlay text */
         .case-study-card-large {
-            grid-row: 1 / 3;
+            grid-row: 1 / 4;
         }
 
         .case-study-card-large img {
@@ -1545,6 +1545,16 @@
                 <div class="case-study-card-content">
                     <div class="case-study-card-headline">How Dorothy Pacheco sold this home the day photos went live</div>
                     <div class="case-study-card-meta">500 Manhattan Dr, Boulder</div>
+                </div>
+            </a>
+
+            <a href="case-study-2101-winged-foot.html" class="case-study-card case-study-card-small">
+                <div class="case-study-card-image">
+                    <img src="images/2101-winged-foot.jpg" alt="2101 Winged Foot Glen staged living room">
+                </div>
+                <div class="case-study-card-content">
+                    <div class="case-study-card-headline">Cindy Naval sells Escondido home for $51K over asking in 24 days</div>
+                    <div class="case-study-card-meta">2101 Winged Foot Glen, Escondido</div>
                 </div>
             </a>
             <a href="#see-more-homes" class="btn btn-secondary see-more-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>See more homes</a>
