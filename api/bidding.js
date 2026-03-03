@@ -804,21 +804,32 @@ async function handleCreateHubspotDeal(req, res) {
       }
     }
 
-    // Build deal properties
+    // Build deal properties (use standard fields only)
     var properties = {
       dealname: body.dealname,
       pipeline: 'default',
       dealstage: stageId,
     };
     if (body.amount) properties.amount = String(body.amount);
-    if (body.address) properties.property_address = body.address;
-    if (body.propertySize) properties.property_size = body.propertySize;
-    if (body.propertyStatus) properties.property_status = body.propertyStatus;
-    if (body.targetPrice) properties.target_list_price = body.targetPrice;
-    if (body.handsOn) properties.hands_on_preference = body.handsOn;
-    if (body.installDate) properties.install_date = body.installDate;
-    if (body.plan) properties.plan = body.plan;
-    if (body.market) properties.market = body.market;
+
+    // Pack details into description since custom properties may not exist
+    var descParts = [];
+    if (body.address) descParts.push('Address: ' + body.address);
+    if (body.propertySize) descParts.push('Property Size: ' + body.propertySize);
+    if (body.propertyStatus) descParts.push('Property Status: ' + body.propertyStatus);
+    if (body.targetPrice) descParts.push('Target Price: $' + body.targetPrice);
+    if (body.handsOn) descParts.push('Hands-On: ' + body.handsOn);
+    if (body.installDate) descParts.push('Install Date: ' + body.installDate);
+    if (body.plan) descParts.push('Plan: ' + body.plan);
+    if (body.market) descParts.push('Market: ' + body.market);
+    if (body.lineItems && body.lineItems.length > 0) {
+      descParts.push('');
+      descParts.push('Line Items:');
+      body.lineItems.forEach(function(li) {
+        descParts.push('  - ' + li.name + ': $' + li.price);
+      });
+    }
+    if (descParts.length > 0) properties.description = descParts.join('\n');
 
     // Create the deal
     var dealResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals', {
