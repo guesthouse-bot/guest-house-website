@@ -1409,6 +1409,7 @@
 
     // === LISTINGS ===
     var STAGES_FULL = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var STAGES_INPERSON = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready'];
     var STAGES_CONSULT = ['quote_received', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready'];
     var STAGE_LABELS = {
         quote_received: 'Quote',
@@ -1420,7 +1421,9 @@
     };
 
     function getStagesForPackage(pkg) {
-        return pkg === 'consult' ? STAGES_CONSULT : STAGES_FULL;
+        if (pkg === 'consult') return STAGES_CONSULT;
+        if (pkg === 'inperson') return STAGES_INPERSON;
+        return STAGES_FULL;
     }
 
     function renderListings() {
@@ -1479,7 +1482,7 @@
         }
 
         // Stage tracker (only for full or consult staging)
-        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult') {
+        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult' || project.stagingPackage === 'inperson') {
             h += buildStageTracker(project.stage || 'quote_received', project.stagingPackage);
         }
         h += '</div>';
@@ -1538,7 +1541,7 @@
         h += '</div></div>';
 
         // Stage tracker (only for full or consult staging)
-        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult') {
+        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult' || project.stagingPackage === 'inperson') {
             h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received', project.stagingPackage) + '</div>';
         }
 
