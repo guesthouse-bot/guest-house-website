@@ -585,7 +585,7 @@
         .case-studies-grid {
             display: flex;
             gap: 20px;
-            height: 640px;
+            align-items: flex-start;
         }
 
         .case-study-card {
@@ -610,26 +610,22 @@
             transform: scale(1.03);
         }
 
-        /* Large card (left) — fixed height, static */
+        /* Large card (left) — sticky while right column scrolls */
         .case-study-card-large {
             flex: 1;
             min-width: 0;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 140px);
         }
 
-        /* Scrollable right column */
+        /* Right column — scrolls naturally with the page */
         .case-studies-scroll {
             flex: 1;
             min-width: 0;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .case-studies-scroll::-webkit-scrollbar {
-            display: none;
         }
 
         .case-study-card-large img {
@@ -1204,15 +1200,13 @@
 
             .case-studies-grid {
                 flex-direction: column;
-                height: auto;
                 gap: 16px;
             }
 
-            .case-studies-scroll {
-                overflow-y: visible;
-            }
-
             .case-study-card-large {
+                position: relative;
+                top: auto;
+                height: auto;
                 aspect-ratio: 3/4;
             }
 
