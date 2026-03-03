@@ -1490,10 +1490,17 @@
         if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
         h += '</div>';
 
-        // Staging package badge (green)
+        // Staging package badge (green) + service badges
+        var services = [];
+        try { services = JSON.parse(project.services || '[]'); } catch (e) {}
+        h += '<div class="listing-card-services">';
         if (project.stagingPackage && project.stagingPackage !== 'none') {
             h += '<span class="staging-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
         }
+        services.forEach(function(s) {
+            h += '<span class="service-badge">' + esc(s.name || s) + '</span>';
+        });
+        h += '</div>';
 
         // Current stage status
         var stages = getStagesForPackage(project.stagingPackage);
