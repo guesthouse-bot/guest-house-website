@@ -585,7 +585,7 @@
         .case-studies-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
             gap: 20px;
         }
 
@@ -614,6 +614,7 @@
         /* Large card (first) — spans all rows, overlay text */
         .case-study-card-large {
             grid-row: 1 / 4;
+            min-height: 600px;
         }
 
         .case-study-card-large img {
@@ -697,10 +698,9 @@
         }
 
         .case-study-card-small .case-study-card-image {
-            flex: 1;
             overflow: hidden;
-            min-height: 0;
             position: relative;
+            aspect-ratio: 16 / 9;
         }
 
         .case-study-card-small .case-study-card-image img {
