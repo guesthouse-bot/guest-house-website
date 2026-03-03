@@ -583,10 +583,9 @@
 
         /* Bento Grid for Featured Case Studies */
         .case-studies-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto auto;
+            display: flex;
             gap: 20px;
+            height: 640px;
         }
 
         .case-study-card {
@@ -611,10 +610,26 @@
             transform: scale(1.03);
         }
 
-        /* Large card (first) — spans all rows, overlay text */
+        /* Large card (left) — fixed height, static */
         .case-study-card-large {
-            grid-row: 1 / 4;
-            min-height: 600px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Scrollable right column */
+        .case-studies-scroll {
+            flex: 1;
+            min-width: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .case-studies-scroll::-webkit-scrollbar {
+            display: none;
         }
 
         .case-study-card-large img {
@@ -695,6 +710,7 @@
         /* Small cards (right column) — image + text below */
         .case-study-card-small {
             background: var(--color-surface-secondary);
+            flex-shrink: 0;
         }
 
         .case-study-card-small .case-study-card-image {
@@ -1187,17 +1203,16 @@
             }
 
             .case-studies-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
+                flex-direction: column;
+                height: auto;
                 gap: 16px;
             }
 
-            .see-more-btn {
-                grid-column: 1;
+            .case-studies-scroll {
+                overflow-y: visible;
             }
 
             .case-study-card-large {
-                grid-row: auto;
                 aspect-ratio: 3/4;
             }
 
@@ -1522,42 +1537,44 @@
                 </div>
             </a>
 
-            <a href="case-study-3640-lipan.html" class="case-study-card case-study-card-small">
-                <div class="case-study-card-image">
-                    <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
-                    <div class="case-study-card-badge">
-                        <img src="images/agency-logo.png" alt="The Agency" class="badge-no-filter badge-lg">
+            <div class="case-studies-scroll">
+                <a href="case-study-3640-lipan.html" class="case-study-card case-study-card-small">
+                    <div class="case-study-card-image">
+                        <img src="images/3640-lipan.jpg" alt="3640 Lipan St staged breakfast area">
+                        <div class="case-study-card-badge">
+                            <img src="images/agency-logo.png" alt="The Agency" class="badge-no-filter badge-lg">
+                        </div>
                     </div>
-                </div>
-                <div class="case-study-card-content">
-                    <div class="case-study-card-headline">Connor Cole sells listing for $1M in just 3 days</div>
-                    <div class="case-study-card-meta">3640 Lipan St, Denver</div>
-                </div>
-            </a>
-
-            <a href="case-study-500-manhattan.html" class="case-study-card case-study-card-small">
-                <div class="case-study-card-image">
-                    <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area">
-                    <div class="case-study-card-badge">
-                        <img src="images/compass-logo.webp" alt="Compass" class="badge-sm">
+                    <div class="case-study-card-content">
+                        <div class="case-study-card-headline">Connor Cole sells listing for $1M in just 3 days</div>
+                        <div class="case-study-card-meta">3640 Lipan St, Denver</div>
                     </div>
-                </div>
-                <div class="case-study-card-content">
-                    <div class="case-study-card-headline">How Dorothy Pacheco sold this home the day photos went live</div>
-                    <div class="case-study-card-meta">500 Manhattan Dr, Boulder</div>
-                </div>
-            </a>
+                </a>
 
-            <a href="case-study-2101-winged-foot.html" class="case-study-card case-study-card-small">
-                <div class="case-study-card-image">
-                    <img src="images/2101-winged-foot.jpg" alt="2101 Winged Foot Glen staged living room">
-                </div>
-                <div class="case-study-card-content">
-                    <div class="case-study-card-headline">Cindy Naval sells Escondido home for $51K over asking in 24 days</div>
-                    <div class="case-study-card-meta">2101 Winged Foot Glen, Escondido</div>
-                </div>
-            </a>
-            <a href="#see-more-homes" class="btn btn-secondary see-more-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>See more homes</a>
+                <a href="case-study-500-manhattan.html" class="case-study-card case-study-card-small">
+                    <div class="case-study-card-image">
+                        <img src="images/500-manhattan-boulder.jpg" alt="500 Manhattan Drive staged dining area">
+                        <div class="case-study-card-badge">
+                            <img src="images/compass-logo.webp" alt="Compass" class="badge-sm">
+                        </div>
+                    </div>
+                    <div class="case-study-card-content">
+                        <div class="case-study-card-headline">How Dorothy Pacheco sold this home the day photos went live</div>
+                        <div class="case-study-card-meta">500 Manhattan Dr, Boulder</div>
+                    </div>
+                </a>
+
+                <a href="case-study-2101-winged-foot.html" class="case-study-card case-study-card-small">
+                    <div class="case-study-card-image">
+                        <img src="images/2101-winged-foot.jpg" alt="2101 Winged Foot Glen staged living room">
+                    </div>
+                    <div class="case-study-card-content">
+                        <div class="case-study-card-headline">Cindy Naval sells Escondido home for $51K over asking in 24 days</div>
+                        <div class="case-study-card-meta">2101 Winged Foot Glen, Escondido</div>
+                    </div>
+                </a>
+                <a href="#see-more-homes" class="btn btn-secondary see-more-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>See more homes</a>
+            </div>
         </div>
     </section>
 
