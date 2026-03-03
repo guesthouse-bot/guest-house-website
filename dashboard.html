@@ -340,6 +340,31 @@
             color: var(--color-text-secondary);
             border: 1px solid var(--color-border);
         }
+        .staging-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #ECFDF3;
+            color: #067647;
+            border: 1px solid #A6F4C5;
+        }
+        .listing-card-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-top: 14px;
+        }
+        .listing-card-status .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22C55E;
+            flex-shrink: 0;
+        }
 
         /* 5-stage progress tracker */
         .stage-tracker {
@@ -1455,35 +1480,29 @@
     }
 
     function buildListingCard(project) {
-        var services = [];
-        try { services = JSON.parse(project.services || '[]'); } catch (e) {}
         var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        var pkgNames = { consult: 'Virtual Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
 
         var h = '<div class="listing-card" data-project-id="' + esc(project.id) + '">';
         h += '<div class="listing-card-address">' + esc(project.address || 'Untitled') + '</div>';
         h += '<div class="listing-card-meta">';
         if (created) h += '<span>' + created + '</span>';
         if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
-        if (project.propertySize) h += '<span>' + esc(project.propertySize) + '</span>';
         h += '</div>';
 
-        // Service badges
-        if (services.length > 0 || (project.stagingPackage && project.stagingPackage !== 'none')) {
-            h += '<div class="listing-card-services">';
-            if (project.stagingPackage && project.stagingPackage !== 'none') {
-                var pkgNames = { consult: 'Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
-                h += '<span class="service-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
-            }
-            services.forEach(function(s) {
-                h += '<span class="service-badge">' + esc(s.name || s) + '</span>';
-            });
-            h += '</div>';
+        // Staging package badge (green)
+        if (project.stagingPackage && project.stagingPackage !== 'none') {
+            h += '<span class="staging-badge">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span>';
         }
 
-        // Stage tracker (only for full or consult staging)
-        if (project.stagingPackage === 'full' || project.stagingPackage === 'consult' || project.stagingPackage === 'inperson') {
-            h += buildStageTracker(project.stage || 'quote_received', project.stagingPackage);
-        }
+        // Current stage status
+        var stages = getStagesForPackage(project.stagingPackage);
+        var currentStage = project.stage || 'quote_received';
+        // Map hidden backend stages to nearest visible stage
+        var stageLabel = STAGE_LABELS[currentStage] || 'Quote';
+        if (stages.indexOf(currentStage) === -1) stageLabel = STAGE_LABELS[stages[0]];
+        h += '<div class="listing-card-status"><span class="status-dot"></span> ' + esc(stageLabel) + '</div>';
+
         h += '</div>';
         return h;
     }
