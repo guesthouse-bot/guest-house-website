@@ -170,6 +170,7 @@ module.exports = async function handler(req, res) {
     // Cross-reference with HubSpot contacts to only count Agent accounts
     var HUBSPOT_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
     var agentEmails = new Set();
+    var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
 
     if (HUBSPOT_TOKEN && filtered.length > 0) {
       // Extract emails from Firebase users
@@ -180,8 +181,6 @@ module.exports = async function handler(req, res) {
           emails.push(fields.email.stringValue.toLowerCase());
         }
       });
-
-      var agentKeywords = ['agent', 'assistant', 'operations', 'coordinator', 'broker', 'office manager', 'builder', 'flipper', 'developer'];
 
       // Batch lookup emails in HubSpot (100 at a time)
       for (var i = 0; i < emails.length; i += 100) {
