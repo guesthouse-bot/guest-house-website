@@ -2551,7 +2551,6 @@
                     setKPI('kpi-total-revenue', formatCurrency(data.revenue));
                     setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
                     setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
-                    setKPI('kpi-renewals', formatNumber(data.renewal_count || 0));
                     latestRevenue = data.revenue;
                     latestUniqueAccounts = data.unique_accounts;
                     updateCrossSourceKPIs();
@@ -2809,6 +2808,7 @@
                     currentData.ops = data;
                     setKPI('kpi-installs', formatNumber(data.installs));
                     setKPI('kpi-deinstalls', formatNumber(data.deinstalls));
+                    setKPI('kpi-renewals', formatNumber(data.renewals));
                     setKPI('kpi-markets', formatNumber(data.markets));
                     if (data.cost_per_home !== null) {
                         setKPI('kpi-cost-home', formatCurrency(data.cost_per_home));
@@ -2817,10 +2817,6 @@
                     }
                     // Margin/Home = AOV - Cost/Home (use HubSpot AOV when available)
                     updateMarginHome();
-                    // Renewals: use Stripe renewal count if available
-                    if (currentData.stripe && currentData.stripe.renewal_count !== undefined) {
-                        setKPI('kpi-renewals', formatNumber(currentData.stripe.renewal_count));
-                    }
                 }
                 return data;
             } catch (err) {
@@ -2952,7 +2948,6 @@
                 setComparison('kpi-total-revenue', ds.revenue, cs.revenue, formatCurrency, false);
                 setComparison('kpi-bookings-rev', ds.bookings_revenue, cs.bookings_revenue, formatCurrency, false);
                 setComparison('kpi-renewal-rev', ds.renewal_revenue, cs.renewal_revenue, formatCurrency, false);
-                setComparison('kpi-renewals', ds.renewal_count || 0, cs.renewal_count || 0, formatNumber, false);
             }
             // HubSpot comparisons
             if (dh && ch) {
@@ -2996,6 +2991,7 @@
             if (dops && cops) {
                 setComparison('kpi-installs', dops.installs, cops.installs, formatNumber, false);
                 setComparison('kpi-deinstalls', dops.deinstalls, cops.deinstalls, formatNumber, true);
+                setComparison('kpi-renewals', dops.renewals, cops.renewals, formatNumber, false);
                 setComparison('kpi-markets', dops.markets, cops.markets, formatNumber, false);
             }
             // Typeform comparisons
@@ -3046,7 +3042,6 @@
                 renderSparkline('kpi-total-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
                 renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue', 'currency');
                 renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue', 'currency');
-                renderSparkline('kpi-renewals-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_count', 'count');
             }
 
             // HubSpot sparklines

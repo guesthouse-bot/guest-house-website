@@ -188,9 +188,17 @@ module.exports = async function handler(req, res) {
 
     var installs = 0;
     var deinstalls = 0;
+    var renewals = 0;
     var installDaily = {};
     var deinstallDaily = {};
     var homeStates = {};
+
+    // For installs/deinstalls/renewals, use the full month boundaries
+    // (include future-scheduled dates within the period month)
+    var periodMonthStart = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    var periodMonthEnd = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0, 23, 59, 59, 999);
+    var periodMonthStartMs = periodMonthStart.getTime();
+    var periodMonthEndMs = periodMonthEnd.getTime();
 
     homes.forEach(function(item) {
       var fields = item.document.fields || {};
@@ -202,34 +210,38 @@ module.exports = async function handler(req, res) {
 
       if (!passesMarketFilter(state)) return;
 
-      // Install date
+      // Parse dates
       var installDateStr = fields.install_date ? (fields.install_date.timestampValue || fields.install_date.stringValue || '') : '';
-      if (installDateStr) {
-        var installDate = new Date(installDateStr);
-        if (!isNaN(installDate.getTime())) {
-          var installMs = installDate.getTime();
-          if (installMs >= startMs && installMs <= endMs) {
-            installs++;
-            var day = installDate.toISOString().slice(0, 10);
-            if (!installDaily[day]) installDaily[day] = { installs: 0 };
-            installDaily[day].installs++;
-          }
-        }
+      var deinstallDateStr = fields.deinstall_date ? (fields.deinstall_date.timestampValue || fields.deinstall_date.stringValue || '') : '';
+
+      var installDate = installDateStr ? new Date(installDateStr) : null;
+      var deinstallDate = deinstallDateStr ? new Date(deinstallDateStr) : null;
+
+      if (installDate && isNaN(installDate.getTime())) installDate = null;
+      if (deinstallDate && isNaN(deinstallDate.getTime())) deinstallDate = null;
+
+      var installInPeriod = installDate && installDate.getTime() >= periodMonthStartMs && installDate.getTime() <= periodMonthEndMs;
+      var deinstallInPeriod = deinstallDate && deinstallDate.getTime() >= periodMonthStartMs && deinstallDate.getTime() <= periodMonthEndMs;
+
+      // Installs: install_date in current month AND no deinstall_date in current month
+      if (installInPeriod && !deinstallInPeriod) {
+        installs++;
+        var day = installDate.toISOString().slice(0, 10);
+        if (!installDaily[day]) installDaily[day] = { installs: 0 };
+        installDaily[day].installs++;
       }
 
-      // Deinstall date
-      var deinstallDateStr = fields.deinstall_date ? (fields.deinstall_date.timestampValue || fields.deinstall_date.stringValue || '') : '';
-      if (deinstallDateStr) {
-        var deinstallDate = new Date(deinstallDateStr);
-        if (!isNaN(deinstallDate.getTime())) {
-          var deinstallMs = deinstallDate.getTime();
-          if (deinstallMs >= startMs && deinstallMs <= endMs) {
-            deinstalls++;
-            var dday = deinstallDate.toISOString().slice(0, 10);
-            if (!deinstallDaily[dday]) deinstallDaily[dday] = { deinstalls: 0 };
-            deinstallDaily[dday].deinstalls++;
-          }
-        }
+      // Deinstalls: deinstall_date scheduled in current month
+      if (deinstallInPeriod) {
+        deinstalls++;
+        var dday = deinstallDate.toISOString().slice(0, 10);
+        if (!deinstallDaily[dday]) deinstallDaily[dday] = { deinstalls: 0 };
+        deinstallDaily[dday].deinstalls++;
+      }
+
+      // Renewals: install_date from a previous month AND no deinstall_date scheduled
+      if (installDate && installDate.getTime() < periodMonthStartMs && !deinstallDate) {
+        renewals++;
       }
     });
 
@@ -277,6 +289,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       installs: installs,
       deinstalls: deinstalls,
+      renewals: renewals,
       markets: marketsCount,
       cost_per_home: costHome,
       cost_per_home_by_market: costPerHome,
