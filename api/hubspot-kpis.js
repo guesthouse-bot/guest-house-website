@@ -8,7 +8,70 @@ module.exports = async function handler(req, res) {
   const TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
   if (!TOKEN) return res.status(500).json({ error: 'HubSpot access token not configured' });
 
-  const { market, period, dateFrom, dateTo } = req.query;
+  const { market, period, dateFrom, dateTo, metric } = req.query;
+
+  // --- Forecast sub-handler ---
+  if (metric === 'forecast') {
+    const headers = { 'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json' };
+
+    async function fetchRetry(url, options, retries) {
+      retries = retries || 3;
+      var lastResp;
+      for (var attempt = 0; attempt <= retries; attempt++) {
+        lastResp = await fetch(url, options);
+        if (lastResp.ok) return lastResp;
+        if ((lastResp.status === 429 || lastResp.status >= 500) && attempt < retries) {
+          await new Promise(function(r) { setTimeout(r, Math.pow(2, attempt) * 1000); });
+          continue;
+        }
+        return lastResp;
+      }
+      return lastResp;
+    }
+
+    const TARGET_LABELS = ['Quote Finalized', 'Upside', 'Seller Approved (Commit)'];
+    try {
+      const stagesResp = await fetchRetry('https://api.hubapi.com/crm/v3/pipelines/deals/default/stages', { method: 'GET', headers: headers });
+      if (!stagesResp.ok) { const err = await stagesResp.json(); return res.status(stagesResp.status).json({ error: err.message || 'Failed to fetch pipeline stages' }); }
+      const stagesData = await stagesResp.json();
+      const stages = stagesData.results || stagesData;
+      const targetStageIds = []; const matchedLabels = []; const stageProbabilities = {};
+      stages.forEach(function(stage) {
+        var label = (stage.label || '').trim();
+        TARGET_LABELS.forEach(function(target) {
+          if (label.toLowerCase() === target.toLowerCase()) { targetStageIds.push(stage.id); matchedLabels.push(label); stageProbabilities[stage.id] = parseFloat((stage.metadata || {}).probability || 0); }
+        });
+      });
+      if (targetStageIds.length === 0) return res.status(200).json({ forecast_revenue: 0, matched_stages: [], deal_count: 0 });
+      const now2 = new Date();
+      const monthStart = new Date(now2.getFullYear(), now2.getMonth(), 1).getTime();
+      const monthEnd = new Date(now2.getFullYear(), now2.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
+      const filterGroups = targetStageIds.map(function(stageId) {
+        return { filters: [
+          { propertyName: 'expected_close_date', operator: 'GTE', value: String(monthStart) },
+          { propertyName: 'expected_close_date', operator: 'LTE', value: String(monthEnd) },
+          { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+          { propertyName: 'dealstage', operator: 'EQ', value: stageId },
+        ]};
+      });
+      let fDeals = []; let fAfter = 0; let fMore = true;
+      while (fMore) {
+        const body = { filterGroups: filterGroups, properties: ['dealname', 'dealstage', 'expected_close_date', 'amount'], limit: 100, after: fAfter };
+        const response = await fetchRetry('https://api.hubapi.com/crm/v3/objects/deals/search', { method: 'POST', headers: headers, body: JSON.stringify(body) });
+        if (!response.ok) { const err = await response.json(); return res.status(response.status).json({ error: err.message || 'HubSpot deal search error' }); }
+        const data = await response.json();
+        fDeals = fDeals.concat(data.results || []);
+        if (data.paging && data.paging.next && data.paging.next.after) { fAfter = data.paging.next.after; } else { fMore = false; }
+      }
+      var totalForecast = 0;
+      fDeals.forEach(function(deal) { var props = deal.properties || {}; var amt = parseFloat(props.amount || 0); var prob = stageProbabilities[props.dealstage] || 0; if (!isNaN(amt)) totalForecast += amt * prob; });
+      var fResult = { forecast_revenue: totalForecast, matched_stages: matchedLabels, deal_count: fDeals.length };
+      if (req.query.debug === 'true') {
+        fResult.debug = { target_stage_ids: targetStageIds, all_pipeline_stages: stages.map(function(s) { return { id: s.id, label: s.label }; }), month_range: { start: new Date(monthStart).toISOString(), end: new Date(monthEnd).toISOString() }, sample_deals: fDeals.slice(0, 5).map(function(d) { return { id: d.id, name: d.properties.dealname, stage: d.properties.dealstage, amount: d.properties.amount }; }) };
+      }
+      return res.status(200).json(fResult);
+    } catch (err) { return res.status(500).json({ error: err.message }); }
+  }
 
   // Calculate date range (milliseconds for HubSpot)
   const now = new Date();

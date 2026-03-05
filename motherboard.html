@@ -2680,7 +2680,7 @@
             var ids = ['kpi-bookings-forecast'];
             setLoading(ids);
             try {
-                var response = await fetch('/api/hubspot-forecast');
+                var response = await fetch('/api/hubspot-kpis?metric=forecast');
                 if (!response.ok) throw new Error('API error');
                 var data = await response.json();
                 latestBookingsForecast = data.forecast_revenue || 0;
