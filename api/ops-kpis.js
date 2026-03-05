@@ -129,7 +129,13 @@ module.exports = async function handler(req, res) {
 
     var firestoreBase = fb.BASE_URL;
 
-    var [sheetsRes, homesRes, providersRes] = await Promise.all([
+    // Also fetch Renewal Tracker for renewal count
+    var RENEWAL_SHEET_ID = process.env.RENEWAL_SHEET_ID;
+    var renewalUrl = RENEWAL_SHEET_ID
+      ? 'https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + encodeURIComponent("'Renewal Tracker'!A1:J500") + '?valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING'
+      : null;
+
+    var [sheetsRes, homesRes, providersRes, renewalRes] = await Promise.all([
       SHEET_ID ? fetch(sheetsUrl, { headers: { 'Authorization': 'Bearer ' + sheetsToken } }) : Promise.resolve(null),
       fetch(firestoreBase + ':runQuery', {
         method: 'POST',
@@ -141,6 +147,7 @@ module.exports = async function handler(req, res) {
         headers: { 'Authorization': 'Bearer ' + firestoreToken, 'Content-Type': 'application/json' },
         body: JSON.stringify(providersQuery),
       }),
+      renewalUrl ? fetch(renewalUrl, { headers: { 'Authorization': 'Bearer ' + sheetsToken } }) : Promise.resolve(null),
     ]);
 
     // Parse cost/home from sheets
@@ -188,7 +195,6 @@ module.exports = async function handler(req, res) {
 
     var installs = 0;
     var deinstalls = 0;
-    var renewals = 0;
     var installDaily = {};
     var deinstallDaily = {};
     var homeStates = {};
@@ -239,10 +245,6 @@ module.exports = async function handler(req, res) {
         deinstallDaily[dday].deinstalls++;
       }
 
-      // Renewals: install_date from a previous month AND no deinstall_date scheduled
-      if (installDate && installDate.getTime() < periodMonthStartMs && !deinstallDate) {
-        renewals++;
-      }
     });
 
     // Parse providers for market/state count
@@ -269,6 +271,45 @@ module.exports = async function handler(req, res) {
     Object.keys(homeStates).forEach(function(s) { allStates[s] = true; });
     Object.keys(providerStates).forEach(function(s) { allStates[s] = true; });
     var marketsCount = Object.keys(allStates).length;
+
+    // Parse Renewal Tracker: count rows with Paid Thru date in current month
+    var renewals = 0;
+    var currentMonth = now.getMonth(); // 0-indexed
+    var currentYear = now.getFullYear();
+
+    if (renewalRes && renewalRes.ok) {
+      var renewalData = await renewalRes.json();
+      if (renewalData && renewalData.values) {
+        var rRows = renewalData.values;
+        var rHeader = rRows[0] || [];
+        var paidThruIdx = rHeader.indexOf('Paid Thru');
+
+        if (paidThruIdx !== -1) {
+          for (var ri = 1; ri < rRows.length; ri++) {
+            var rRow = rRows[ri];
+            if (!rRow || !rRow[0] || String(rRow[0]).trim() === '') break;
+
+            var paidThruRaw = rRow[paidThruIdx];
+            if (!paidThruRaw) continue;
+
+            var paidThruStr = String(paidThruRaw).trim();
+            var parts = paidThruStr.split('/');
+            if (parts.length < 2) continue;
+
+            var ptMonth = parseInt(parts[0], 10) - 1; // 0-indexed
+            var ptYear = currentYear;
+            if (parts.length >= 3) {
+              var yr = parseInt(parts[2], 10);
+              ptYear = yr < 100 ? 2000 + yr : yr;
+            }
+
+            if (ptMonth === currentMonth && ptYear === currentYear) {
+              renewals++;
+            }
+          }
+        }
+      }
+    }
 
     // Compute blended cost/home based on market filter
     var costHome = null;
