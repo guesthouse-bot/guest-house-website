@@ -247,15 +247,17 @@ module.exports = async function handler(req, res) {
 
     });
 
-    // Parse providers for market/state count
+    // Parse providers for market/state count and active vendor count
     var providersData = await providersRes.json();
     var providers = (providersData || []).filter(function(item) { return item.document; });
     var providerStates = {};
+    var activeVendors = 0;
 
     providers.forEach(function(item) {
       var fields = item.document.fields || {};
       var pState = fields.state ? (fields.state.stringValue || '') : '';
       var pMarket = fields.market ? (fields.market.stringValue || '') : '';
+      var pStatus = fields.status ? (fields.status.stringValue || '') : '';
       if (pState) providerStates[pState.toUpperCase()] = true;
       // Also extract state from market name
       if (pMarket) {
@@ -263,6 +265,10 @@ module.exports = async function handler(req, res) {
         if (marketUpper === 'colorado') providerStates['CO'] = true;
         else if (marketUpper === 'california') providerStates['CA'] = true;
         else if (marketUpper === 'arizona') providerStates['AZ'] = true;
+      }
+      // Count active vendors (active or accepted status)
+      if (pStatus === 'active' || pStatus === 'accepted') {
+        activeVendors++;
       }
     });
 
@@ -332,6 +338,7 @@ module.exports = async function handler(req, res) {
       deinstalls: deinstalls,
       renewals: renewals,
       markets: marketsCount,
+      active_vendors: activeVendors,
       cost_per_home: costHome,
       cost_per_home_by_market: costPerHome,
       daily_installs: installDaily,

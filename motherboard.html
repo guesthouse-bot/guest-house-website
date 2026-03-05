@@ -1806,6 +1806,14 @@
                     <div class="kpi-sparkline" id="kpi-vendor-signups-sparkline"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Total Active Vendors</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-vendors">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-vendors-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-vendors-prev"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Markets</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-markets">&mdash;</span>
@@ -2803,7 +2811,7 @@
         }
 
         async function fetchOpsKpis(filters, isCompare) {
-            var ids = ['kpi-installs', 'kpi-deinstalls', 'kpi-markets', 'kpi-cost-home', 'kpi-margin-home', 'kpi-renewals'];
+            var ids = ['kpi-installs', 'kpi-deinstalls', 'kpi-markets', 'kpi-active-vendors', 'kpi-cost-home', 'kpi-margin-home', 'kpi-renewals'];
             if (!isCompare) setLoading(ids);
             try {
                 var params = buildParams(filters);
@@ -2819,6 +2827,7 @@
                     setKPI('kpi-deinstalls', formatNumber(data.deinstalls));
                     setKPI('kpi-renewals', formatNumber(data.renewals));
                     setKPI('kpi-markets', formatNumber(data.markets));
+                    setKPI('kpi-active-vendors', formatNumber(data.active_vendors));
                     if (data.cost_per_home !== null) {
                         setKPI('kpi-cost-home', formatCurrency(data.cost_per_home));
                     } else {
@@ -3003,6 +3012,7 @@
                 setComparison('kpi-deinstalls', dops.deinstalls, cops.deinstalls, formatNumber, true);
                 setComparison('kpi-renewals', dops.renewals, cops.renewals, formatNumber, false);
                 setComparison('kpi-markets', dops.markets, cops.markets, formatNumber, false);
+                setComparison('kpi-active-vendors', dops.active_vendors, cops.active_vendors, formatNumber, false);
             }
             // Typeform comparisons
             var dt = currentData.typeform;
@@ -3378,6 +3388,7 @@
                 sectionBlock('Ops KPIs', [
                     kpiRow('Vendor Applications', 'kpi-vendor-apps'),
                     kpiRow('Vendor Signups', 'kpi-vendor-signups'),
+                    kpiRow('Total Active Vendors', 'kpi-active-vendors'),
                     kpiRow('Markets', 'kpi-markets'),
                     kpiRow('Installs', 'kpi-installs'),
                     kpiRow('Renewals', 'kpi-renewals'),
