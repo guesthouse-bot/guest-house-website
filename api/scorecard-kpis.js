@@ -65,6 +65,9 @@ module.exports = async function handler(req, res) {
   var SHEET_ID = process.env.FINANCIAL_MODEL_SHEET_ID;
   if (!SHEET_ID) return res.status(500).json({ error: 'Financial model sheet ID not configured' });
 
+  var RENEWAL_SHEET_ID = process.env.RENEWAL_SHEET_ID;
+  if (!RENEWAL_SHEET_ID) return res.status(500).json({ error: 'Renewal sheet ID not configured' });
+
   var serviceAccount = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
 
   try {
@@ -85,28 +88,41 @@ module.exports = async function handler(req, res) {
     var trail1Cell = getNetIncomeCell(trail1Year, trail1Month);
     var trail2Cell = getNetIncomeCell(trail2Year, trail2Month);
 
-    // Batch read: expenses, cash on hand, renewal forecaster, trailing net income
+    // Cash on hand: use most recent completed month's column in Actuals (2026) row 179
+    // Column mapping: Z=Jan, AA=Feb, ... AK=Dec (column = 25 + month)
+    var cashCol = colToLetter(25 + trail1Month);
+    var cashOnHandRange = "'Actuals (2026)'!" + cashCol + "179";
+
+    // Batch read from financial model: expenses, cash on hand, trailing net income
     var ranges = [
       "'Financial Model (2026)'!AL62",
-      "'Actuals (2026)'!Z179",
-      "'Renewal Forecaster'!A1:F200",
+      cashOnHandRange,
     ];
     if (trail1Cell) ranges.push(trail1Cell);
     if (trail2Cell) ranges.push(trail2Cell);
     var encodedRanges = ranges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
     var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedRanges + '&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
 
-    var response = await fetch(url, {
-      headers: { 'Authorization': 'Bearer ' + accessToken },
-    });
+    // Fetch renewal data from separate spreadsheet
+    var renewalUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + encodeURIComponent("'Renewal Tracker'!A1:J500") + '?valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
+
+    var [response, renewalResponse] = await Promise.all([
+      fetch(url, { headers: { 'Authorization': 'Bearer ' + accessToken } }),
+      fetch(renewalUrl, { headers: { 'Authorization': 'Bearer ' + accessToken } }),
+    ]);
 
     if (!response.ok) {
       var err = await response.json();
       return res.status(response.status).json({ error: err.error ? err.error.message : 'Google Sheets API error' });
     }
+    if (!renewalResponse.ok) {
+      var renewalErr = await renewalResponse.json();
+      return res.status(renewalResponse.status).json({ error: renewalErr.error ? renewalErr.error.message : 'Renewal Sheets API error' });
+    }
 
     var data = await response.json();
     var valueRanges = data.valueRanges || [];
+    var renewalData = await renewalResponse.json();
 
     // Parse expenses (Financial Model (2026)!AL62)
     var expenses = 0;
@@ -115,16 +131,16 @@ module.exports = async function handler(req, res) {
       expenses = typeof raw === 'number' ? raw : parseFloat(String(raw).replace(/[$,]/g, '')) || 0;
     }
 
-    // Parse cash on hand (Actuals (2026)!Z179)
+    // Parse cash on hand (Actuals (2026) row 179, most recent month)
     var cashOnHand = 0;
     if (valueRanges[1] && valueRanges[1].values && valueRanges[1].values[0]) {
       var raw2 = valueRanges[1].values[0][0];
       cashOnHand = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
     }
 
-    // Parse trailing net income from actuals (indexes 3 and 4 in valueRanges)
+    // Parse trailing net income from actuals (indexes 2 and 3 in valueRanges)
     var trailingNetIncome = [];
-    for (var ti = 3; ti <= 4; ti++) {
+    for (var ti = 2; ti <= 3; ti++) {
       if (valueRanges[ti] && valueRanges[ti].values && valueRanges[ti].values[0]) {
         var rawNI = valueRanges[ti].values[0][0];
         var ni = typeof rawNI === 'number' ? rawNI : parseFloat(String(rawNI).replace(/[$,]/g, '')) || 0;
@@ -132,27 +148,34 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Parse Renewal Forecaster and compute current month forecast
+    // Parse Renewal Tracker and compute current month forecast
+    // Only count the active block at the top (stop at first row with no Address)
     var renewalForecast = 0;
     var currentMonth = now.getMonth(); // 0-indexed
     var currentYear = now.getFullYear();
 
-    if (valueRanges[2] && valueRanges[2].values) {
-      var rows = valueRanges[2].values;
+    if (renewalData && renewalData.values) {
+      var rows = renewalData.values;
       // Find column indices from header row
       var header = rows[0] || [];
       var feeIdx = header.indexOf('Fee');
       var paidThruIdx = header.indexOf('Paid Thru');
+      var cadenceIdx = header.indexOf('Cadence');
 
       if (feeIdx !== -1 && paidThruIdx !== -1) {
         for (var i = 1; i < rows.length; i++) {
           var row = rows[i];
+          // Stop at first empty row (no address in column A)
+          if (!row || !row[0] || String(row[0]).trim() === '') break;
+
           var feeRaw = row[feeIdx];
           var paidThruRaw = row[paidThruIdx];
           if (!feeRaw || !paidThruRaw) continue;
 
           var fee = typeof feeRaw === 'number' ? feeRaw : parseFloat(String(feeRaw).replace(/[$,]/g, '')) || 0;
           if (fee === 0) continue;
+
+          var cadence = cadenceIdx !== -1 && row[cadenceIdx] ? String(row[cadenceIdx]).trim().toLowerCase() : '';
 
           // Parse paid thru date - handles "3/28", "3/28/26", "2/28/26" formats
           var paidThruStr = String(paidThruRaw).trim();
@@ -169,12 +192,9 @@ module.exports = async function handler(req, res) {
 
           // Check if paid thru date is in the current month
           if (ptMonth === currentMonth && ptYear === currentYear) {
-            // If before the 15th, count fee twice
-            if (ptDay < 15) {
-              renewalForecast += fee * 2;
-            } else {
-              renewalForecast += fee;
-            }
+            // Bi-weekly charges before the 15th will repeat, so count twice
+            var multiplier = (cadence === 'bi-weekly' && ptDay < 15) ? 2 : 1;
+            renewalForecast += fee * multiplier;
           }
         }
       }
