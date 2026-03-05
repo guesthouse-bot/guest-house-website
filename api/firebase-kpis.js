@@ -238,17 +238,31 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Total Active Agents: distinct agent contacts associated with closedwon deals
+    // Total Active Agents: distinct contacts associated with closedwon deals
     // in trailing 12 months (company-wide, ignores market filter)
     var activeAgents = 0;
     if (HUBSPOT_TOKEN) {
+      // Retry helper for HubSpot rate limiting
+      async function hsRetry(url, opts, retries) {
+        retries = retries || 3;
+        for (var attempt = 0; attempt <= retries; attempt++) {
+          var resp = await fetch(url, opts);
+          if (resp.ok) return resp;
+          if (resp.status === 429 && attempt < retries) {
+            await new Promise(function(r) { setTimeout(r, Math.pow(2, attempt) * 1000); });
+            continue;
+          }
+          return resp;
+        }
+      }
+
       var t12Start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()).getTime();
       var t12End = now.getTime();
       var activeContactIds = new Set();
 
       // Step 1: Collect ALL closedwon deal IDs in trailing 12 months (no market filter)
       var allDealIds = [];
-      var aaAfter = 0;
+      var aaAfter = null;
       var aaMore = true;
 
       while (aaMore) {
@@ -264,10 +278,10 @@ module.exports = async function handler(req, res) {
           ],
           properties: ['dealname'],
           limit: 100,
-          after: aaAfter,
         };
+        if (aaAfter) aaBody.after = aaAfter;
 
-        var aaRes = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+        var aaRes = await hsRetry('https://api.hubapi.com/crm/v3/objects/deals/search', {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
@@ -295,7 +309,7 @@ module.exports = async function handler(req, res) {
       for (var bi = 0; bi < allDealIds.length; bi += 100) {
         var batchIds = allDealIds.slice(bi, bi + 100);
         var batchBody = { inputs: batchIds.map(function(id) { return { id: id }; }) };
-        var assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/deals/contacts/batch/read', {
+        var assocRes = await hsRetry('https://api.hubapi.com/crm/v4/associations/deals/contacts/batch/read', {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
@@ -313,8 +327,6 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      // All contacts associated with closedwon deals are active agents
-      // (the deal association itself is proof of activity)
       activeAgents = activeContactIds.size;
     }
 

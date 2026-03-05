@@ -3163,12 +3163,11 @@
             clearAllComparisons();
 
             // Stagger fetches to prevent concurrent HubSpot rate limiting
-            // Wave 1: Stripe + Firebase + GA4 (no HubSpot)
-            // Wave 2: Current HubSpot + Customer
-            // Wave 3: Compare HubSpot + Customer (only if compare on)
+            // Wave 1: Stripe + GA4 + non-HubSpot sources
+            // Wave 2: HubSpot + Customer (sequential to avoid rate limits)
+            // Wave 3: Firebase (agent signups + active agents, heavy HubSpot usage)
             var wave1 = [
                 fetchStripeKPIs(filters, false),
-                fetchFirebaseKPIs(filters, false),
                 fetchTypeformNPS(filters, false),
                 fetchVendorApplications(filters, false),
                 fetchVendorSignups(filters, false),
@@ -3192,7 +3191,6 @@
                     dateTo: cmpDates.dateTo,
                 };
                 wave1.push(fetchStripeKPIs(cmpFilters, true));
-                wave1.push(fetchFirebaseKPIs(cmpFilters, true));
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
                 wave1.push(fetchVendorApplications(cmpFilters, true));
                 wave1.push(fetchVendorSignups(cmpFilters, true));
@@ -3205,6 +3203,14 @@
             await Promise.all(wave1);
             await Promise.all(wave2);
             if (wave3.length > 0) await Promise.all(wave3);
+
+            // Wave 4: Firebase (heavy HubSpot usage for active agents — run after all other HubSpot calls)
+            var wave4 = [fetchFirebaseKPIs(filters, false)];
+            if (compareToggle.checked) {
+                var cmpDates2 = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
+                wave4.push(fetchFirebaseKPIs({ market: filters.market, period: 'custom', dateFrom: cmpDates2.dateFrom, dateTo: cmpDates2.dateTo }, true));
+            }
+            await Promise.all(wave4);
 
             // Render sparklines (always, they show daily trends)
             renderAllSparklines();
