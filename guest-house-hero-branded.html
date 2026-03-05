@@ -1067,6 +1067,36 @@
             color: var(--color-text-primary);
         }
 
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .social-link {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .social-link:hover {
+            background: var(--color-text-tertiary);
+            color: var(--color-text-primary);
+        }
+
+        .social-link svg {
+            width: 20px !important;
+            height: 20px !important;
+            flex-shrink: 0;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -1419,7 +1449,7 @@
                 <h4>Prep a Home</h4>
                 <ul>
                     <li><a href="design-advice.html">Expert Design Advice</a></li>
-                    <li><a href="style-for-you.html">In-Person Styling</a></li>
+                    <li><a href="styling.html">In-Person Styling</a></li>
                     <li><a href="full-service-staging.html">Full-Service Staging</a></li>
                 </ul>
             </div>
@@ -1437,10 +1467,9 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-
-                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
                     <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
                 </ul>

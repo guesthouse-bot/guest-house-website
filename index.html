@@ -3407,6 +3407,7 @@
             background: var(--color-border);
             color: var(--color-text-secondary);
             transition: all 0.2s;
+            overflow: hidden;
         }
 
         .social-link:hover {
@@ -3415,8 +3416,9 @@
         }
 
         .social-link svg {
-            width: 20px;
-            height: 20px;
+            width: 20px !important;
+            height: 20px !important;
+            flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
@@ -4392,7 +4394,7 @@
                                     <span class="dropdown-desc">Get expert guidance on-demand</span>
                                 </div>
                             </a>
-                            <a href="style-for-you.html" class="dropdown-item">
+                            <a href="styling.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
@@ -4591,7 +4593,7 @@
                                 <span class="dropdown-desc">Get expert guidance on-demand</span>
                             </div>
                         </a>
-                        <a href="style-for-you.html" class="dropdown-item">
+                        <a href="styling.html" class="dropdown-item">
                             <div class="dropdown-icon">
                                 <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
@@ -4852,7 +4854,7 @@
                     <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
-                <a href="style-for-you.html" class="tile-sub-cta">See how In-Person Styling works</a>
+                <a href="styling.html" class="tile-sub-cta">See how In-Person Styling works</a>
             </div>
             <div class="service-tile">
                 <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" fetchpriority="high" width="384" height="440">
@@ -5175,7 +5177,7 @@
                 <h4>Prep a Home</h4>
                 <ul>
                     <li><a href="design-advice.html">Expert Design Advice</a></li>
-                    <li><a href="style-for-you.html">In-Person Styling</a></li>
+                    <li><a href="styling.html">In-Person Styling</a></li>
                     <li><a href="full-service-staging.html">Full-Service Staging</a></li>
                 </ul>
             </div>
@@ -5193,10 +5195,9 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-
-                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
                     <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
                 </ul>
