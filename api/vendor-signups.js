@@ -107,7 +107,7 @@ async function handleSignups(req, res) {
     var accessToken = await getAccessToken(serviceAccount, 'https://www.googleapis.com/auth/spreadsheets.readonly');
 
     // Read all rows from the sheet
-    var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/Sheet1!A:Z';
+    var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/signups!A:Z';
     var response = await fetch(url, {
       headers: { 'Authorization': 'Bearer ' + accessToken },
     });

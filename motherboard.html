@@ -2707,15 +2707,46 @@
             var ids = ['kpi-vendor-apps'];
             if (!isCompare) setLoading(ids);
             try {
-                var params = buildParams(filters);
-                var vendorType = document.getElementById('filterVendorType');
-                if (vendorType && vendorType.value !== 'all') {
-                    params.append('vendorType', vendorType.value);
-                }
-                var response = await fetch('/api/vendor-signups?' + params.toString());
+                var response = await fetch('/api/providers');
                 if (!response.ok) throw new Error('API error');
-                var data = await response.json();
+                var json = await response.json();
+                var providers = json.providers || [];
 
+                // Calculate date range from filters
+                var now = new Date();
+                var startDate, endDate = now;
+                switch (filters.period) {
+                    case 'mtd': startDate = new Date(now.getFullYear(), now.getMonth(), 1); break;
+                    case 'last30': startDate = new Date(now.getTime() - 30*24*60*60*1000); break;
+                    case 'qtd': startDate = new Date(now.getFullYear(), Math.floor(now.getMonth()/3)*3, 1); break;
+                    case 'ytd': startDate = new Date(now.getFullYear(), 0, 1); break;
+                    case 'last_month': startDate = new Date(now.getFullYear(), now.getMonth()-1, 1); endDate = new Date(now.getFullYear(), now.getMonth(), 1); break;
+                    case 'last_quarter': var cq = Math.floor(now.getMonth()/3)*3; startDate = new Date(now.getFullYear(), cq-3, 1); endDate = new Date(now.getFullYear(), cq, 1); break;
+                    case 'custom': if (filters.dateFrom) startDate = new Date(filters.dateFrom); if (filters.dateTo) endDate = new Date(filters.dateTo + 'T23:59:59'); break;
+                    default: startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                }
+
+                var filtered = providers.filter(function(p) {
+                    var created = new Date(p.created);
+                    if (isNaN(created.getTime())) return false;
+                    if (created < startDate || created > endDate) return false;
+                    if (filters.market && filters.market !== 'all') {
+                        var pm = (p.market || '').toLowerCase();
+                        if (filters.market === 'nationwide') { if (pm === 'colorado' || pm === 'california') return false; }
+                        else if (pm !== filters.market.toLowerCase()) return false;
+                    }
+                    return true;
+                });
+
+                // Daily bucketing
+                var daily = {};
+                filtered.forEach(function(p) {
+                    var day = new Date(p.created).toISOString().slice(0, 10);
+                    if (!daily[day]) daily[day] = { vendor_applications: 0 };
+                    daily[day].vendor_applications++;
+                });
+
+                var data = { vendor_applications: filtered.length, daily: daily };
                 if (isCompare) {
                     compareData.vendor = data;
                 } else {
@@ -2726,6 +2757,31 @@
             } catch (err) {
                 console.error('Vendor applications fetch error:', err);
                 if (!isCompare) setKPI('kpi-vendor-apps', 'Error');
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
+            }
+        }
+
+        async function fetchVendorSignups(filters, isCompare) {
+            var ids = ['kpi-vendor-signups'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
+                var response = await fetch('/api/vendor-signups?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                if (isCompare) {
+                    compareData.vendorSignups = data;
+                } else {
+                    currentData.vendorSignups = data;
+                    setKPI('kpi-vendor-signups', formatNumber(data.vendor_applications));
+                }
+                return data;
+            } catch (err) {
+                console.error('Vendor signups fetch error:', err);
+                if (!isCompare) setKPI('kpi-vendor-signups', 'Error');
                 return null;
             } finally {
                 if (!isCompare) clearLoading(ids);
@@ -2875,6 +2931,11 @@
             if (dv && cv) {
                 setComparison('kpi-vendor-apps', dv.vendor_applications, cv.vendor_applications, formatNumber, false);
             }
+            var dvs = currentData.vendorSignups;
+            var cvs2 = compareData.vendorSignups;
+            if (dvs && cvs2) {
+                setComparison('kpi-vendor-signups', dvs.vendor_applications, cvs2.vendor_applications, formatNumber, false);
+            }
             // Typeform comparisons
             var dt = currentData.typeform;
             var ct = compareData.typeform;
@@ -2969,6 +3030,13 @@
                 renderSparkline('kpi-vendor-apps-sparkline', dv.daily, cmpOn && cvs ? cvs.daily : null, 'vendor_applications', 'count');
             }
 
+            // Vendor signups sparkline
+            var dvs = currentData.vendorSignups;
+            var cvs3 = compareData.vendorSignups;
+            if (dvs && dvs.daily) {
+                renderSparkline('kpi-vendor-signups-sparkline', dvs.daily, cmpOn && cvs3 ? cvs3.daily : null, 'vendor_applications', 'count');
+            }
+
             // Typeform NPS sparkline
             var dtf = currentData.typeform;
             var ctf = compareData.typeform;
@@ -3025,6 +3093,7 @@
                 fetchFirebaseKPIs(filters, false),
                 fetchTypeformNPS(filters, false),
                 fetchVendorApplications(filters, false),
+                fetchVendorSignups(filters, false),
                 fetchScorecardKPIs(),
                 fetchBookingsForecast(),
                 fetchGA4KPIs(filters, false),
@@ -3047,6 +3116,7 @@
                 wave1.push(fetchFirebaseKPIs(cmpFilters, true));
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
                 wave1.push(fetchVendorApplications(cmpFilters, true));
+                wave1.push(fetchVendorSignups(cmpFilters, true));
                 wave1.push(fetchGA4KPIs(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
