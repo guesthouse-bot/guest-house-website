@@ -450,7 +450,7 @@ async function handleUpdateProjectStage(req, res) {
     var body = req.body;
     if (!body.projectId || !body.stage) return res.status(400).json({ error: 'Missing projectId or stage' });
 
-    var validStages = ['quote_received', 'bidding', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready', 'market_ready'];
+    var validStages = ['quote_received', 'bidding', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready', 'market_ready', 'closed'];
     if (validStages.indexOf(body.stage) === -1) {
       return res.status(400).json({ error: 'Invalid stage: ' + body.stage });
     }

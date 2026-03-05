@@ -1618,7 +1618,8 @@
         .list-table-badge.stage-booked { background: #EFF6FF; color: #1D4ED8; }
         .list-table-badge.stage-prepping { background: #EDE9FE; color: #5B21B6; }
         .list-table-badge.stage-live { background: #ECFDF3; color: #067647; }
-        .list-table-badge.stage-deinstall { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
+        .list-table-badge.stage-deinstall { background: #FFF7ED; color: #9A3412; }
+        .list-table-badge.stage-closed { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
         .list-table-wrap { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; }
         .nav-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--color-error); color: #fff; font-size: 11px; font-weight: 600; margin-left: auto; }
 
@@ -2397,16 +2398,17 @@
     // === LISTINGS ===
     var lastSection = 'overview'; // track where user came from before detail view
 
-    var STAGES_FULL = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
-    var STAGES_INPERSON = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready'];
-    var STAGES_CONSULT = ['quote_received', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready'];
+    var STAGES_FULL = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready', 'closed'];
+    var STAGES_INPERSON = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'closed'];
+    var STAGES_CONSULT = ['quote_received', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready', 'closed'];
     var STAGE_LABELS = {
         quote_received: 'Quote',
         vendors_scheduled: 'Booked',
         schedule_call: 'Consult',
         prep_in_progress: 'Prepping',
         photos_ready: 'Live',
-        market_ready: 'Deinstall',
+        market_ready: 'Deinstall Scheduled',
+        closed: 'Closed',
     };
 
     function getStagesForPackage(pkg) {
@@ -2474,7 +2476,7 @@
 
     function buildListingTable(items) {
         var pkgNames = { consult: 'Virtual Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
-        var stageBadgeClass = { quote_received: 'stage-quote', vendors_scheduled: 'stage-booked', schedule_call: 'stage-prepping', prep_in_progress: 'stage-prepping', photos_ready: 'stage-live', market_ready: 'stage-deinstall' };
+        var stageBadgeClass = { quote_received: 'stage-quote', vendors_scheduled: 'stage-booked', schedule_call: 'stage-prepping', prep_in_progress: 'stage-prepping', photos_ready: 'stage-live', market_ready: 'stage-deinstall', closed: 'stage-closed' };
 
         var h = '<div class="list-table-wrap"><table class="list-table">';
         h += '<thead><tr><th>Address</th><th>Package</th><th>Stage</th><th>Price</th><th>Install Date</th><th>Created</th></tr></thead>';
@@ -2546,8 +2548,8 @@
         return stage;
     }
 
-    // Overview groups: map all underlying stages into 3 agent-facing buckets
-    var OVERVIEW_BUCKETS = ['quotes', 'prepping', 'live'];
+    // Overview groups: map all underlying stages into 5 agent-facing buckets
+    var OVERVIEW_BUCKETS = ['quotes', 'prepping', 'live', 'deinstall', 'closed'];
     var OVERVIEW_BUCKET_INFO = {
         quotes: {
             label: 'Quotes',
@@ -2564,12 +2566,24 @@
             subtitle: 'Ready to list — add more services anytime',
             icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
         },
+        deinstall: {
+            label: 'Deinstall Scheduled',
+            subtitle: 'Staging removal is scheduled',
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+        },
+        closed: {
+            label: 'Closed',
+            subtitle: 'Completed listings',
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+        },
     };
 
     // Map underlying stage keys → overview bucket
     function getOverviewBucket(visibleStage) {
         if (visibleStage === 'quote_received' || visibleStage === 'bidding') return 'quotes';
-        if (visibleStage === 'photos_ready' || visibleStage === 'market_ready') return 'live';
+        if (visibleStage === 'photos_ready') return 'live';
+        if (visibleStage === 'market_ready') return 'deinstall';
+        if (visibleStage === 'closed') return 'closed';
         // vendors_scheduled, schedule_call, prep_in_progress all = prepping
         return 'prepping';
     }
@@ -2738,6 +2752,7 @@
         var statusDotCls = 'active';
         if (stage === 'photos_ready') { listingStatus = 'Active'; statusDotCls = 'active'; }
         else if (stage === 'market_ready') { listingStatus = 'Deinstall Scheduled'; statusDotCls = 'inactive'; }
+        else if (stage === 'closed') { listingStatus = 'Closed'; statusDotCls = 'inactive'; }
         else if (bucket === 'quotes') { listingStatus = 'Prepping'; statusDotCls = 'inactive'; }
         var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' }) : '';
 
@@ -2747,7 +2762,8 @@
         var cityState = parts.length > 2 ? (parts[1] || '').trim() + ', ' + (parts[2] || '').trim().split(' ')[0] : (parts[1] || '').trim();
 
         // Map badge label
-        var badgeLabel = bucket === 'quotes' ? 'Quote' : (bucket === 'prepping' ? 'Prepping' : 'Live');
+        var bucketLabels = { quotes: 'Quote', prepping: 'Prepping', live: 'Live', deinstall: 'Deinstall', closed: 'Closed' };
+        var badgeLabel = bucketLabels[bucket] || 'Quote';
 
         var h = '<div class="ov-map-card" data-project-id="' + esc(project.id) + '">';
         h += '<div class="ov-map-thumb">';
@@ -2800,7 +2816,7 @@
         }
 
         // Bucket counts
-        var counts = { all: projectsData.length, quotes: 0, prepping: 0, live: 0 };
+        var counts = { all: projectsData.length, quotes: 0, prepping: 0, live: 0, deinstall: 0, closed: 0 };
         projectsData.forEach(function(p) {
             var bucket = getOverviewBucket(getVisibleStage(p));
             counts[bucket] = (counts[bucket] || 0) + 1;
@@ -2811,6 +2827,8 @@
         html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.quotes + '</span><span class="ov-stat-label">Quotes pending</span></div>';
         html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.prepping + '</span><span class="ov-stat-label">Prepping</span></div>';
         html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.live + '</span><span class="ov-stat-label">Live</span></div>';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.deinstall + '</span><span class="ov-stat-label">Deinstall</span></div>';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.closed + '</span><span class="ov-stat-label">Closed</span></div>';
         html += '</div>';
 
         // --- Section 2: Needs Attention ---
@@ -2846,7 +2864,7 @@
         }
 
         // --- Section 3b: Your Listings (Table with Bucket Tabs) ---
-        var bucketLists = { all: projectsData, quotes: [], prepping: [], live: [] };
+        var bucketLists = { all: projectsData, quotes: [], prepping: [], live: [], deinstall: [], closed: [] };
         projectsData.forEach(function(p) {
             var bucket = getOverviewBucket(getVisibleStage(p));
             if (bucketLists[bucket]) bucketLists[bucket].push(p);
@@ -2859,8 +2877,10 @@
         html += '<button class="page-tab" data-ov-tab="quotes">Quotes <span class="tab-count">' + counts.quotes + '</span></button>';
         html += '<button class="page-tab" data-ov-tab="prepping">Prepping <span class="tab-count">' + counts.prepping + '</span></button>';
         html += '<button class="page-tab" data-ov-tab="live">Live <span class="tab-count">' + counts.live + '</span></button>';
+        html += '<button class="page-tab" data-ov-tab="deinstall">Deinstall <span class="tab-count">' + counts.deinstall + '</span></button>';
+        html += '<button class="page-tab" data-ov-tab="closed">Closed <span class="tab-count">' + counts.closed + '</span></button>';
         html += '</div>';
-        ['all', 'quotes', 'prepping', 'live'].forEach(function(key) {
+        ['all', 'quotes', 'prepping', 'live', 'deinstall', 'closed'].forEach(function(key) {
             var isActive = key === 'all' ? ' active' : '';
             html += '<div class="tab-panel' + isActive + '" id="ov-tab-' + key + '">';
             if (bucketLists[key].length > 0) {
@@ -4045,7 +4065,7 @@
 
     // === INIT ===
     // >>> MOCK DATA BYPASS (remove for production) <<<
-    if (window.location.protocol === 'file:') {
+    if (window.location.protocol === 'file:' || new URLSearchParams(window.location.search).get('demo') === 'true') {
         agentData = { name: 'Alex Ryden', email: 'alex@example.com', firstName: 'Alex', market: 'arizona' };
         var now = new Date();
         var yesterday = new Date(now - 24*60*60*1000);
@@ -4055,7 +4075,9 @@
             { id: 'm3', address: '221B Baker St, Mesa, AZ', stage: 'vendors_scheduled', stagingPackage: 'full', totalPrice: 5100, created: new Date(now - 14*24*60*60*1000).toISOString(), installDate: '', services: '[{"id":"staging"},{"id":"deep-clean"},{"id":"mls-25"}]', updatedAt: yesterday.toISOString(), rooms: '' },
             { id: 'm4', address: '350 Fifth Ave, Tempe, AZ', stage: 'prep_in_progress', stagingPackage: 'full', totalPrice: 6200, created: new Date(now - 21*24*60*60*1000).toISOString(), installDate: new Date(now.getTime() + 10*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"deep-clean"},{"id":"mls-25"},{"id":"move-3h"}]', updatedAt: '', rooms: 'Living Room, Bedroom' },
             { id: 'm5', address: '10 Downing St, Chandler, AZ', stage: 'photos_ready', stagingPackage: 'full', totalPrice: 5500, created: new Date(now - 30*24*60*60*1000).toISOString(), installDate: new Date(now - 2*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"mls-25"}]', updatedAt: yesterday.toISOString(), rooms: 'Living Room, Kitchen' },
-            { id: 'm6', address: '4 Privet Drive, Gilbert, AZ', stage: 'photos_ready', stagingPackage: 'consult', totalPrice: 800, created: new Date(now - 45*24*60*60*1000).toISOString(), installDate: new Date(now - 10*24*60*60*1000).toISOString().split('T')[0], services: '[]', updatedAt: '' },
+            { id: 'm6', address: '4 Privet Drive, Gilbert, AZ', stage: 'market_ready', stagingPackage: 'full', totalPrice: 4800, created: new Date(now - 60*24*60*60*1000).toISOString(), installDate: new Date(now - 30*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"mls-25"},{"id":"deep-clean"}]', updatedAt: '' },
+            { id: 'm7', address: '12 Grimmauld Place, Surprise, AZ', stage: 'closed', stagingPackage: 'full', totalPrice: 5200, created: new Date(now - 90*24*60*60*1000).toISOString(), installDate: new Date(now - 60*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"mls-25"},{"id":"deep-clean"},{"id":"move-3h"}]', updatedAt: '' },
+            { id: 'm8', address: '1 Infinite Loop, Peoria, AZ', stage: 'closed', stagingPackage: 'consult', totalPrice: 800, created: new Date(now - 120*24*60*60*1000).toISOString(), installDate: new Date(now - 100*24*60*60*1000).toISOString().split('T')[0], services: '[]', updatedAt: '' },
         ];
         document.getElementById('authGate').style.display = 'none';
         document.getElementById('dashboard').classList.add('visible');
