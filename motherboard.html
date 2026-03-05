@@ -1797,40 +1797,53 @@
                     <div class="kpi-sparkline" id="kpi-vendor-signups-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Homes Completed</div>
+                    <div class="kpi-label">Markets</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-jobs-completed">&mdash;</span>
-                        <span class="kpi-change" id="kpi-jobs-completed-change"></span>
+                        <span class="kpi-value" id="kpi-markets">&mdash;</span>
+                        <span class="kpi-change" id="kpi-markets-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-jobs-completed-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-jobs-completed-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-markets-prev"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue / Home</div>
+                    <div class="kpi-label">Installs</div>
                     <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-rev-home">&mdash;</span>
-                        <span class="kpi-change" id="kpi-rev-home-change"></span>
+                        <span class="kpi-value" id="kpi-installs">&mdash;</span>
+                        <span class="kpi-change" id="kpi-installs-change"></span>
                     </div>
-                    <div class="kpi-prev" id="kpi-rev-home-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-rev-home-sparkline"></div>
+                    <div class="kpi-prev" id="kpi-installs-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-installs-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Renewals</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-renewals">&mdash;</span>
+                        <span class="kpi-change" id="kpi-renewals-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-renewals-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-renewals-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Deinstalls</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-deinstalls">&mdash;</span>
+                        <span class="kpi-change" id="kpi-deinstalls-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-deinstalls-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-deinstalls-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Cost / Home</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-cost-home">&mdash;</span>
-                        <span class="kpi-change" id="kpi-cost-home-change"></span>
                     </div>
                     <div class="kpi-prev" id="kpi-cost-home-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-cost-home-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Margin / Home</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-margin-home">&mdash;</span>
-                        <span class="kpi-change" id="kpi-margin-home-change"></span>
                     </div>
                     <div class="kpi-prev" id="kpi-margin-home-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-margin-home-sparkline"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">NPS</div>
@@ -1840,15 +1853,6 @@
                     </div>
                     <div class="kpi-prev" id="kpi-nps-prev"></div>
                     <div class="kpi-sparkline" id="kpi-nps-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Quote-to-Install (days)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quote-to-install">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quote-to-install-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-quote-to-install-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quote-to-install-sparkline"></div>
                 </div>
             </div>
         </div>
@@ -2547,6 +2551,7 @@
                     setKPI('kpi-total-revenue', formatCurrency(data.revenue));
                     setKPI('kpi-bookings-rev', formatCurrency(data.bookings_revenue));
                     setKPI('kpi-renewal-rev', formatCurrency(data.renewal_revenue));
+                    setKPI('kpi-renewals', formatNumber(data.renewal_count || 0));
                     latestRevenue = data.revenue;
                     latestUniqueAccounts = data.unique_accounts;
                     updateCrossSourceKPIs();
@@ -2596,6 +2601,7 @@
                     // Mirror Quotes Requested into Marketing section
                     setKPI('kpi-ga-quotes-requested', formatNumber(data.quotes_requested));
                     updateCrossSourceKPIs();
+                    updateMarginHome();
                 }
                 return data;
             } catch (err) {
@@ -2788,6 +2794,53 @@
             }
         }
 
+        async function fetchOpsKpis(filters, isCompare) {
+            var ids = ['kpi-installs', 'kpi-deinstalls', 'kpi-markets', 'kpi-cost-home', 'kpi-margin-home', 'kpi-renewals'];
+            if (!isCompare) setLoading(ids);
+            try {
+                var params = buildParams(filters);
+                var response = await fetch('/api/ops-kpis?' + params.toString());
+                if (!response.ok) throw new Error('API error');
+                var data = await response.json();
+
+                if (isCompare) {
+                    compareData.ops = data;
+                } else {
+                    currentData.ops = data;
+                    setKPI('kpi-installs', formatNumber(data.installs));
+                    setKPI('kpi-deinstalls', formatNumber(data.deinstalls));
+                    setKPI('kpi-markets', formatNumber(data.markets));
+                    if (data.cost_per_home !== null) {
+                        setKPI('kpi-cost-home', formatCurrency(data.cost_per_home));
+                    } else {
+                        setKPI('kpi-cost-home', '\u2014');
+                    }
+                    // Margin/Home = AOV - Cost/Home (use HubSpot AOV when available)
+                    updateMarginHome();
+                    // Renewals: use Stripe renewal count if available
+                    if (currentData.stripe && currentData.stripe.renewal_count !== undefined) {
+                        setKPI('kpi-renewals', formatNumber(currentData.stripe.renewal_count));
+                    }
+                }
+                return data;
+            } catch (err) {
+                console.error('Ops KPIs fetch error:', err);
+                if (!isCompare) ids.forEach(function(id) { setKPI(id, 'Error'); });
+                return null;
+            } finally {
+                if (!isCompare) clearLoading(ids);
+            }
+        }
+
+        function updateMarginHome() {
+            var ops = currentData.ops;
+            var hubspot = currentData.hubspot;
+            if (ops && ops.cost_per_home !== null && hubspot && hubspot.aov_at_close) {
+                var margin = hubspot.aov_at_close - ops.cost_per_home;
+                setKPI('kpi-margin-home', formatCurrency(margin));
+            }
+        }
+
         async function fetchTypeformNPS(filters, isCompare) {
             var ids = ['kpi-nps'];
             if (!isCompare) setLoading(ids);
@@ -2899,6 +2952,7 @@
                 setComparison('kpi-total-revenue', ds.revenue, cs.revenue, formatCurrency, false);
                 setComparison('kpi-bookings-rev', ds.bookings_revenue, cs.bookings_revenue, formatCurrency, false);
                 setComparison('kpi-renewal-rev', ds.renewal_revenue, cs.renewal_revenue, formatCurrency, false);
+                setComparison('kpi-renewals', ds.renewal_count || 0, cs.renewal_count || 0, formatNumber, false);
             }
             // HubSpot comparisons
             if (dh && ch) {
@@ -2935,6 +2989,14 @@
             var cvs2 = compareData.vendorSignups;
             if (dvs && cvs2) {
                 setComparison('kpi-vendor-signups', dvs.vendor_applications, cvs2.vendor_applications, formatNumber, false);
+            }
+            // Ops KPIs comparisons
+            var dops = currentData.ops;
+            var cops = compareData.ops;
+            if (dops && cops) {
+                setComparison('kpi-installs', dops.installs, cops.installs, formatNumber, false);
+                setComparison('kpi-deinstalls', dops.deinstalls, cops.deinstalls, formatNumber, true);
+                setComparison('kpi-markets', dops.markets, cops.markets, formatNumber, false);
             }
             // Typeform comparisons
             var dt = currentData.typeform;
@@ -2984,6 +3046,7 @@
                 renderSparkline('kpi-total-revenue-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'revenue', 'currency');
                 renderSparkline('kpi-bookings-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'bookings_revenue', 'currency');
                 renderSparkline('kpi-renewal-rev-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_revenue', 'currency');
+                renderSparkline('kpi-renewals-sparkline', ds.daily, cmpOn && cs ? cs.daily : null, 'renewal_count', 'count');
             }
 
             // HubSpot sparklines
@@ -3037,6 +3100,16 @@
                 renderSparkline('kpi-vendor-signups-sparkline', dvs.daily, cmpOn && cvs3 ? cvs3.daily : null, 'vendor_applications', 'count');
             }
 
+            // Ops KPIs sparklines
+            var dops2 = currentData.ops;
+            var cops2 = compareData.ops;
+            if (dops2 && dops2.daily_installs) {
+                renderSparkline('kpi-installs-sparkline', dops2.daily_installs, cmpOn && cops2 ? cops2.daily_installs : null, 'installs', 'count');
+            }
+            if (dops2 && dops2.daily_deinstalls) {
+                renderSparkline('kpi-deinstalls-sparkline', dops2.daily_deinstalls, cmpOn && cops2 ? cops2.daily_deinstalls : null, 'deinstalls', 'count');
+            }
+
             // Typeform NPS sparkline
             var dtf = currentData.typeform;
             var ctf = compareData.typeform;
@@ -3079,8 +3152,8 @@
             compareRevenue = null;
             compareBookings = null;
             compareQuotes = null;
-            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, scorecard: null, ga4: null };
-            compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, ga4: null };
+            currentData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, scorecard: null, ga4: null, ops: null };
+            compareData = { stripe: null, hubspot: null, firebase: null, customer: null, typeform: null, ga4: null, ops: null };
 
             clearAllComparisons();
 
@@ -3094,6 +3167,7 @@
                 fetchTypeformNPS(filters, false),
                 fetchVendorApplications(filters, false),
                 fetchVendorSignups(filters, false),
+                fetchOpsKpis(filters, false),
                 fetchScorecardKPIs(),
                 fetchBookingsForecast(),
                 fetchGA4KPIs(filters, false),
@@ -3117,6 +3191,7 @@
                 wave1.push(fetchTypeformNPS(cmpFilters, true));
                 wave1.push(fetchVendorApplications(cmpFilters, true));
                 wave1.push(fetchVendorSignups(cmpFilters, true));
+                wave1.push(fetchOpsKpis(cmpFilters, true));
                 wave1.push(fetchGA4KPIs(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
@@ -3291,12 +3366,13 @@
                 sectionBlock('Ops KPIs', [
                     kpiRow('Vendor Applications', 'kpi-vendor-apps'),
                     kpiRow('Vendor Signups', 'kpi-vendor-signups'),
-                    kpiRow('Homes Completed', 'kpi-jobs-completed'),
-                    kpiRow('Revenue / Home', 'kpi-rev-home'),
+                    kpiRow('Markets', 'kpi-markets'),
+                    kpiRow('Installs', 'kpi-installs'),
+                    kpiRow('Renewals', 'kpi-renewals'),
+                    kpiRow('Deinstalls', 'kpi-deinstalls'),
                     kpiRow('Cost / Home', 'kpi-cost-home'),
                     kpiRow('Margin / Home', 'kpi-margin-home'),
                     kpiRow('NPS', 'kpi-nps'),
-                    kpiRow('Quote-to-Install (days)', 'kpi-quote-to-install'),
                 ]) +
 
                 // Footer

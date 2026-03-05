@@ -206,9 +206,11 @@ module.exports = async function handler(req, res) {
     });
 
     var renewalRevenue = 0;
+    var renewalCount = 0;
     filtered.forEach(function(c) {
       if (renewalChargeIds.has(c.id)) {
         renewalRevenue += (c.amount_captured || 0) / 100;
+        renewalCount++;
       }
     });
     const bookingsRevenue = totalRevenue - renewalRevenue;
@@ -229,11 +231,12 @@ module.exports = async function handler(req, res) {
     if (req.query.daily === 'true') {
       filtered.forEach(function(c) {
         var day = new Date(c.created * 1000).toISOString().slice(0, 10);
-        if (!daily[day]) daily[day] = { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
+        if (!daily[day]) daily[day] = { revenue: 0, bookings_revenue: 0, renewal_revenue: 0, renewal_count: 0 };
         var amt = (c.amount_captured || 0) / 100;
         daily[day].revenue += amt;
         if (isRenewalCharge(c)) {
           daily[day].renewal_revenue += amt;
+          daily[day].renewal_count++;
         } else {
           daily[day].bookings_revenue += amt;
         }
@@ -244,6 +247,7 @@ module.exports = async function handler(req, res) {
       revenue: totalRevenue,
       bookings_revenue: bookingsRevenue,
       renewal_revenue: renewalRevenue,
+      renewal_count: renewalCount,
       arpu: arpu,
       unique_accounts: uniqueAccounts,
       period: { start: startDate, end: endDate },
