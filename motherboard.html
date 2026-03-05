@@ -2643,7 +2643,7 @@
                 if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); }
                 return null;
             } finally {
-                if (!isCompare) clearLoading(['kpi-accounts']);
+                if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents']);
             }
         }
 
