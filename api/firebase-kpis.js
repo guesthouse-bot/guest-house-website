@@ -313,40 +313,9 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      // Step 3: Filter to only agent contacts by checking job titles
-      if (activeContactIds.size > 0) {
-        var contactIdArr = Array.from(activeContactIds);
-        var verifiedAgentCount = 0;
-
-        for (var ci = 0; ci < contactIdArr.length; ci += 100) {
-          var contactBatch = contactIdArr.slice(ci, ci + 100);
-          var cBatchBody = {
-            properties: ['email', 'jobtitle', 'role'],
-            inputs: contactBatch.map(function(id) { return { id: id }; }),
-          };
-
-          var cRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(cBatchBody),
-          });
-
-          if (cRes.ok) {
-            var cData = await cRes.json();
-            (cData.results || []).forEach(function(contact) {
-              var props = contact.properties || {};
-              var roleStr = ((props.jobtitle || '') + ' ' + (props.role || '')).toLowerCase();
-              var isAgent = agentKeywords.some(function(kw) { return roleStr.indexOf(kw) !== -1; });
-              if (isAgent) verifiedAgentCount++;
-            });
-          }
-        }
-
-        activeAgents = verifiedAgentCount;
-      }
+      // All contacts associated with closedwon deals are active agents
+      // (the deal association itself is proof of activity)
+      activeAgents = activeContactIds.size;
     }
 
     var result = {
