@@ -1619,13 +1619,21 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">Accounts created</div>
+                    <div class="kpi-label">Agent Signups</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-accounts">&mdash;</span>
                         <span class="kpi-change" id="kpi-accounts-change"></span>
                     </div>
                     <div class="kpi-prev" id="kpi-accounts-prev"></div>
                     <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Active Agents</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-agents-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
@@ -2615,7 +2623,7 @@
         }
 
         async function fetchFirebaseKPIs(filters, isCompare) {
-            if (!isCompare) setLoading(['kpi-accounts']);
+            if (!isCompare) setLoading(['kpi-accounts', 'kpi-active-agents']);
             try {
                 var params = buildParams(filters);
                 var response = await fetch('/api/firebase-kpis?' + params.toString());
@@ -2627,11 +2635,12 @@
                 } else {
                     currentData.firebase = data;
                     setKPI('kpi-accounts', formatNumber(data.accounts_created));
+                    setKPI('kpi-active-agents', formatNumber(data.active_agents));
                 }
                 return data;
             } catch (err) {
                 console.error('Firebase KPI fetch error:', err);
-                if (!isCompare) setKPI('kpi-accounts', 'Error');
+                if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); }
                 return null;
             } finally {
                 if (!isCompare) clearLoading(['kpi-accounts']);
@@ -2963,6 +2972,7 @@
             // Firebase comparisons
             if (dfb && cf) {
                 setComparison('kpi-accounts', dfb.accounts_created, cf.accounts_created, formatNumber, false);
+                setComparison('kpi-active-agents', dfb.active_agents, cf.active_agents, formatNumber, false);
             }
             // Customer comparisons
             if (dc && cc) {
@@ -3345,7 +3355,8 @@
 
                 // Sales KPIs
                 sectionBlock('Sales KPIs', [
-                    kpiRow('Accounts Created', 'kpi-accounts'),
+                    kpiRow('Agent Signups', 'kpi-accounts'),
+                    kpiRow('Total Active Agents', 'kpi-active-agents'),
                     kpiRow('Quotes Requested', 'kpi-quotes'),
                     kpiRow('Total Bookings', 'kpi-total-bookings'),
                     kpiRow('Conversion Rate', 'kpi-conversion'),

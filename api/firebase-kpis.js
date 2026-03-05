@@ -239,8 +239,111 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Total Active Agents: distinct contacts associated with closedwon deals in trailing 12 months
+    var activeAgents = 0;
+    if (HUBSPOT_TOKEN) {
+      var t12Start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()).getTime();
+      var t12End = now.getTime();
+      var activeContactIds = new Set();
+
+      // Step 1: Collect all closedwon deal IDs in trailing 12 months
+      var allDealIds = [];
+      var aaAfter = 0;
+      var aaMore = true;
+
+      while (aaMore) {
+        var aaFilters = [
+          { propertyName: 'closedate', operator: 'GTE', value: String(t12Start) },
+          { propertyName: 'closedate', operator: 'LTE', value: String(t12End) },
+          { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+        ];
+        var aaBody = {
+          filterGroups: [
+            { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' }]) },
+            { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: '13174420' }]) },
+          ],
+          properties: ['dealname', 'market'],
+          limit: 100,
+          after: aaAfter,
+        };
+
+        var aaRes = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(aaBody),
+        });
+
+        if (aaRes.ok) {
+          var aaData = await aaRes.json();
+          (aaData.results || []).forEach(function(deal) {
+            // Market filter
+            if (market === 'nationwide') {
+              var props = deal.properties || {};
+              var dm = (props.market || '').toLowerCase();
+              var dn = props.dealname || '';
+              var coCA = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'];
+              if (coCA.some(function(m) { return dm.indexOf(m) !== -1; })) return;
+              var sm = dn.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+              if (sm && ['CO', 'CA'].indexOf(sm[1]) !== -1) return;
+            } else if (market && market !== 'all') {
+              var props2 = deal.properties || {};
+              var dm2 = (props2.market || '').toLowerCase();
+              var dn2 = props2.dealname || '';
+              var mMap = { colorado: ['denver', 'boulder', 'colorado'], california: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] };
+              var sMap = { colorado: ['CO'], california: ['CA'] };
+              var mKeys = mMap[market.toLowerCase()] || [];
+              var sKeys = sMap[market.toLowerCase()] || [];
+              var matched = mKeys.some(function(m) { return dm2.indexOf(m) !== -1; });
+              if (!matched) {
+                var sm2 = dn2.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+                matched = sm2 && sKeys.indexOf(sm2[1]) !== -1;
+              }
+              if (!matched) return;
+            }
+            allDealIds.push(deal.id);
+          });
+
+          if (aaData.paging && aaData.paging.next && aaData.paging.next.after) {
+            aaAfter = aaData.paging.next.after;
+          } else {
+            aaMore = false;
+          }
+        } else {
+          aaMore = false;
+        }
+      }
+
+      // Step 2: Batch-fetch contact associations for all deals (v4 batch API)
+      for (var bi = 0; bi < allDealIds.length; bi += 100) {
+        var batchIds = allDealIds.slice(bi, bi + 100);
+        var batchBody = { inputs: batchIds.map(function(id) { return { id: id }; }) };
+        var assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/deals/contacts/batch/read', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(batchBody),
+        });
+        if (assocRes.ok) {
+          var assocData = await assocRes.json();
+          (assocData.results || []).forEach(function(item) {
+            (item.to || []).forEach(function(to) {
+              activeContactIds.add(to.toObjectId);
+            });
+          });
+        }
+      }
+
+      activeAgents = activeContactIds.size;
+    }
+
     var result = {
       accounts_created: accountsCreated,
+      active_agents: activeAgents,
       period: { start: startDate, end: endDate },
       market: market || 'all',
     };
