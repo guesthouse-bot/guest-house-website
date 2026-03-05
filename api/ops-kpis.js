@@ -223,8 +223,8 @@ module.exports = async function handler(req, res) {
       var installInPeriod = installDate && installDate.getTime() >= periodMonthStartMs && installDate.getTime() <= periodMonthEndMs;
       var deinstallInPeriod = deinstallDate && deinstallDate.getTime() >= periodMonthStartMs && deinstallDate.getTime() <= periodMonthEndMs;
 
-      // Installs: install_date in current month AND no deinstall_date in current month
-      if (installInPeriod && !deinstallInPeriod) {
+      // Installs: install_date in current month
+      if (installInPeriod) {
         installs++;
         var day = installDate.toISOString().slice(0, 10);
         if (!installDaily[day]) installDaily[day] = { installs: 0 };
