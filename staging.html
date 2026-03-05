@@ -1059,6 +1059,153 @@
 
         }
 
+        .staging-results-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 80px;
+        }
+
+        .staging-slider-wrap {
+            margin-bottom: 40px;
+        }
+
+        .before-after-slider {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .before-after-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .before-after-slider .before-image {
+            z-index: 1;
+        }
+
+        .before-after-slider .after-image {
+            z-index: 2;
+            clip-path: inset(0 0 0 50%);
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: white;
+            z-index: 10;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .slider-handle::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: var(--color-onyx);
+            z-index: 1;
+        }
+
+        .slider-label {
+            position: absolute;
+            bottom: 16px;
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 100px;
+            z-index: 5;
+        }
+
+        .slider-label.before {
+            left: 16px;
+        }
+
+        .slider-label.after {
+            right: 16px;
+        }
+
+        .before-after-slider.dragging {
+            cursor: ew-resize;
+        }
+
+        .before-after-slider.dragging .slider-handle {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .slider-caption {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: 12px;
+        }
+
+        .staging-checklist {
+            background: var(--color-mist);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .staging-checklist-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            margin-bottom: 20px;
+        }
+
+        .staging-checklist-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .staging-checklist-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+
+        .staging-checklist-list li svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: #22c55e;
+            margin-top: 2px;
+        }
+
         @media (max-width: 600px) {
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
@@ -1126,7 +1273,7 @@
                                     <span class="dropdown-desc">Pro styling with your furnishings</span>
                                 </div>
                             </a>
-                            <a href="full-service-staging.html" class="dropdown-item">
+                            <a href="staging.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -1303,7 +1450,7 @@
                     <div class="dropdown-grid">
                         <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
                         <a href="styling.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
-                        <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
+                        <a href="staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
                     </div>
                 </div>
             </li>
@@ -1414,67 +1561,36 @@
         <h2>From empty rooms to buyer-ready spaces—see what full-service staging includes</h2>
     </div>
 
-    <section class="deliverable-section">
-        <div class="deliverable-card">
-            <div class="deliverable-header">
-                <div class="deliverable-meta">
-                    <div class="deliverable-avatar">GH</div>
-                    <div class="deliverable-info">
-                        <h4>Your Staging Package</h4>
-                        <p>836 Carlsbad St, San Diego CA</p>
-                    </div>
-                </div>
-                <div class="deliverable-status">Installed</div>
+    <div class="staging-results-section">
+        <div class="staging-slider-wrap">
+            <div class="before-after-slider" id="beforeAfterSlider">
+                <img src="staging-before.jpg" alt="Before staging" class="before-image">
+                <img src="staging-after.jpg" alt="After staging" class="after-image">
+                <div class="slider-handle" id="sliderHandle"></div>
+                <span class="slider-label before">Before</span>
+                <span class="slider-label after">After</span>
             </div>
-            <div class="tip-cards">
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Living room</h5>
-                        <p>Sectional sofa, accent chairs, coffee table, area rug, floor lamp, artwork, throw pillows, and styled bookshelf. Creates an inviting space buyers can envision living in.</p>
-                        <span class="tip-badge">Furnished</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Primary suite</h5>
-                        <p>King bed with upholstered headboard, luxury bedding, nightstands, lamps, bench at foot, artwork above bed. Transforms the most important room in the house.</p>
-                        <span class="tip-badge">Furnished</span>
-                    </div>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">
-                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="tip-content">
-                        <h5>Dining room</h5>
-                        <p>Dining table with seating for 6-8, statement chandelier or pendant, buffet or bar cart, table setting with dishes and linens, centerpiece.</p>
-                    </div>
-                </div>
-            </div>
+            <p class="slider-caption">836 Carlsbad St, San Diego CA</p>
         </div>
-    </section>
+
+        <div class="staging-checklist">
+            <h4 class="staging-checklist-title">Staging checklist</h4>
+            <ul class="staging-checklist-list">
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    <span><strong>Furnished the dining room</strong> — Placed a modern dining table with seating for six, layered with an area rug, centerpiece bowl, and wall art to anchor the space</span>
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    <span><strong>Added a sideboard with styling</strong> — Installed a walnut credenza dressed with a table lamp, round mirror, faux greenery, and curated accent objects for warmth</span>
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    <span><strong>Defined the space with texture</strong> — Grounded the furniture grouping with a neutral hand-woven rug that adds depth and contrast against the dark flooring</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <section class="how-it-works" id="how-it-works">
         <div class="how-it-works-inner">
@@ -1538,7 +1654,7 @@
                 <ul>
                     <li><a href="design-advice.html">Expert Design Advice</a></li>
                     <li><a href="styling.html">In-Person Styling</a></li>
-                    <li><a href="full-service-staging.html">Full-Service Staging</a></li>
+                    <li><a href="staging.html">Full-Service Staging</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -1595,6 +1711,51 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Before/After Slider
+        const slider = document.getElementById('beforeAfterSlider');
+        const handle = document.getElementById('sliderHandle');
+        if (slider && handle) {
+            const afterImage = slider.querySelector('.after-image');
+            let isDragging = false;
+
+            function updateSliderPosition(x) {
+                const rect = slider.getBoundingClientRect();
+                let position = (x - rect.left) / rect.width;
+                position = Math.max(0, Math.min(1, position));
+                const percentage = position * 100;
+                afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
+            }
+
+            function handleStart(e) {
+                isDragging = true;
+                slider.classList.add('dragging');
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                updateSliderPosition(x);
+            }
+
+            function handleEnd() {
+                isDragging = false;
+                slider.classList.remove('dragging');
+            }
+
+            slider.addEventListener('mousedown', handleStart);
+            slider.addEventListener('touchstart', handleStart, { passive: true });
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', handleMove, { passive: false });
+            window.addEventListener('mouseup', handleEnd);
+            window.addEventListener('touchend', handleEnd);
+        }
+    </script>
 
     <script>
         // Mobile menu modal
