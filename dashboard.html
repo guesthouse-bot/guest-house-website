@@ -219,38 +219,168 @@
         .section-nav-btn.active { background: var(--color-surface-secondary); color: var(--color-onyx); font-weight: 500; }
         .section-nav-btn svg { width: 18px; height: 18px; flex-shrink: 0; stroke-width: 1.75; }
 
-        .sidebar-footer {
-            padding: 16px 12px;
-            border-top: 1px solid var(--color-border);
-        }
-        .sidebar-agent-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--color-onyx);
-            padding: 4px 12px 2px;
-        }
-        .sidebar-agent-brokerage {
-            font-size: 12px;
-            color: var(--color-text-secondary);
-            padding: 0 12px 8px;
-        }
-        .sidebar-signout {
+        /* Ask Guest House button */
+        .sidebar-ask {
+            margin: auto 12px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: none;
-            border: none;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
             font-family: inherit;
             font-size: 13px;
-            color: var(--color-text-secondary);
+            font-weight: 500;
+            color: var(--color-onyx);
             cursor: pointer;
             transition: all 0.15s;
-            width: 100%;
+            width: calc(100% - 24px);
         }
-        .sidebar-signout:hover { background: var(--color-surface-secondary); color: var(--color-onyx); }
-        .sidebar-signout svg { width: 16px; height: 16px; }
+        .sidebar-ask:hover { background: var(--color-bone); border-color: #ccc; }
+        .sidebar-ask svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--color-golden); }
+
+        /* Chat panel */
+        .chat-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 400px;
+            background: var(--color-white);
+            border-left: 1px solid var(--color-border);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+        }
+        .chat-overlay.open { transform: translateX(0); }
+        .chat-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.15);
+            z-index: 499;
+            display: none;
+        }
+        .chat-backdrop.open { display: block; }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .chat-header-title { font-size: 15px; font-weight: 600; color: var(--color-onyx); }
+        .chat-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+            transition: background 0.15s;
+        }
+        .chat-close:hover { background: var(--color-surface-secondary); }
+        .chat-close svg { width: 18px; height: 18px; }
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-welcome {
+            text-align: center;
+            padding: 20px 0 16px;
+        }
+        .chat-welcome-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-golden);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+        .chat-welcome-icon svg { width: 24px; height: 24px; color: var(--color-onyx); }
+        .chat-welcome-title { font-size: 16px; font-weight: 600; color: var(--color-onyx); margin-bottom: 4px; }
+        .chat-welcome-sub { font-size: 13px; color: var(--color-text-secondary); }
+        .chat-faq-label { font-size: 12px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 8px; }
+        .chat-faq-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-white);
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--color-onyx);
+            cursor: pointer;
+            font-family: inherit;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .chat-faq-btn:hover { border-color: var(--color-onyx); background: var(--color-surface-secondary); }
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .chat-msg.user {
+            align-self: flex-end;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border-bottom-right-radius: 4px;
+        }
+        .chat-msg.bot {
+            align-self: flex-start;
+            background: var(--color-surface-secondary);
+            color: var(--color-onyx);
+            border-bottom-left-radius: 4px;
+        }
+        .chat-msg.bot a { color: var(--color-onyx); font-weight: 500; }
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+            padding: 16px 20px;
+            border-top: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+        .chat-input:focus { border-color: var(--color-onyx); }
+        .chat-send {
+            padding: 10px 16px;
+            background: var(--color-onyx);
+            color: var(--color-white);
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .chat-send:hover { opacity: 0.85; }
 
         /* Content area */
         .content-area {
@@ -293,6 +423,58 @@
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-primary { background: var(--color-onyx); color: var(--color-white); }
         .btn-secondary { background: var(--color-surface-secondary); color: var(--color-onyx); border: 1px solid var(--color-border); }
+        .btn-cta { background: var(--color-golden); color: var(--color-onyx); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+        /* Header right controls */
+        .header-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+        .profile-menu { position: relative; }
+        .profile-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.15s;
+        }
+        .profile-btn:hover { border-color: var(--color-onyx); }
+        .profile-btn svg { width: 20px; height: 20px; color: var(--color-text-secondary); }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            min-width: 180px;
+            padding: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            z-index: 200;
+        }
+        .profile-dropdown.open { display: block; }
+        .profile-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--color-onyx);
+            background: none;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .profile-dropdown-item:hover { background: var(--color-surface-secondary); }
+        .profile-dropdown-item svg { width: 16px; height: 16px; color: var(--color-text-secondary); flex-shrink: 0; }
+        .profile-dropdown-divider { height: 1px; background: var(--color-border); margin: 4px 0; }
 
         /* ======= LISTINGS GRID ======= */
         .listings-grid {
@@ -463,82 +645,470 @@
         .stage-line.completed { background: var(--color-onyx); }
 
         /* ======= LISTING DETAIL ======= */
-        .detail-back {
+        .detail-close {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             font-size: 14px;
-            color: var(--color-text-secondary);
+            font-weight: 500;
+            color: var(--color-onyx);
             background: none;
             border: none;
             cursor: pointer;
             font-family: inherit;
-            margin-bottom: 24px;
             padding: 0;
         }
-        .detail-back:hover { color: var(--color-onyx); }
-        .detail-back svg { width: 16px; height: 16px; }
+        .detail-close:hover { color: var(--color-text-secondary); }
+        .detail-close svg { width: 18px; height: 18px; }
 
-        .detail-header {
-            margin-bottom: 32px;
+        /* Detail full-page takeover */
+        .detail-open .sidebar { display: none; }
+        .detail-open .content-area { margin-left: 0; }
+
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 180px 1fr 300px;
+            gap: 0;
+            margin: -32px -40px -60px;
+            min-height: calc(100vh - 61px);
         }
-        .detail-address {
+
+        /* Detail sub-nav */
+        .detail-subnav {
+            padding: 24px 0 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: sticky;
+            top: 85px;
+            align-self: start;
+        }
+        .detail-subnav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 450;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            width: 100%;
+        }
+        .detail-subnav-btn:hover { background: var(--color-surface-secondary); color: var(--color-onyx); }
+        .detail-subnav-btn.active { background: var(--color-surface-secondary); color: var(--color-onyx); font-weight: 500; }
+        .detail-subnav-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        /* Detail main content */
+        .detail-main {
+            padding: 0 32px 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Map header */
+        .detail-map-header {
+            width: 100%;
+            height: 200px;
+            background: #e8f0e8;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 28px;
+            flex-shrink: 0;
+        }
+        .detail-map-header img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.55));
+        }
+        .detail-map-address {
             font-size: 1.5rem;
             font-weight: 700;
+            color: #fff;
             letter-spacing: -0.02em;
-            margin-bottom: 8px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
         }
-        .detail-meta {
+        .detail-map-city {
             font-size: 14px;
-            color: var(--color-text-secondary);
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
+            color: rgba(255,255,255,0.85);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
         }
+
+        /* Overview title */
+        .detail-ov-title { font-size: 1.5rem; font-weight: 700; color: var(--color-onyx); letter-spacing: -0.02em; margin-bottom: 20px; }
+
+        /* Property summary card */
+        .detail-prop-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .detail-prop-thumb {
+            width: 72px;
+            height: 52px;
+            border-radius: 8px;
+            background: #e8f0e8;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .detail-prop-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-prop-info { flex: 1; min-width: 0; }
+        .detail-prop-addr { font-size: 15px; font-weight: 600; color: var(--color-onyx); }
+        .detail-prop-city { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .detail-prop-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+        .detail-prop-badge {
+            padding: 4px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 450;
+            color: var(--color-onyx);
+            background: var(--color-white);
+        }
+        .detail-prop-meta { text-align: right; flex-shrink: 0; }
+        .detail-prop-meta-label { font-size: 12px; color: var(--color-text-secondary); }
+        .detail-prop-meta-value { font-size: 14px; font-weight: 600; color: var(--color-onyx); }
+
+        /* Horizontal timeline slider */
+        .detail-slider { margin-bottom: 24px; }
+        .detail-slider-bar { position: relative; height: 6px; background: var(--color-border); border-radius: 3px; margin: 20px 0 10px; }
+        .detail-slider-fill { height: 100%; background: var(--color-onyx); border-radius: 3px; position: absolute; left: 0; top: 0; }
+        .detail-slider-dot {
+            width: 14px; height: 14px; border-radius: 50%; background: var(--color-onyx);
+            border: 3px solid var(--color-white);
+            box-shadow: 0 0 0 1px var(--color-onyx);
+            position: absolute; top: 50%; transform: translate(-50%, -50%);
+        }
+        .detail-slider-tooltip {
+            position: absolute; top: -28px; transform: translateX(-50%);
+            background: var(--color-onyx); color: #fff; font-size: 11px; font-weight: 500;
+            padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+        }
+        .detail-slider-labels { display: flex; justify-content: space-between; }
+        .detail-slider-label { font-size: 10px; color: var(--color-text-secondary); text-align: center; flex: 1; }
+        .detail-slider-label.past { color: var(--color-onyx); font-weight: 500; }
+
+        /* Action buttons row */
+        .detail-actions { display: flex; gap: 10px; margin-bottom: 32px; }
+        .detail-action-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 500;
+            font-family: inherit; cursor: pointer; transition: opacity 0.15s;
+        }
+        .detail-action-btn svg { width: 16px; height: 16px; }
+        .detail-action-btn.primary { background: var(--color-onyx); color: #fff; border: none; }
+        .detail-action-btn.secondary { background: var(--color-white); color: var(--color-onyx); border: 1px solid var(--color-border); }
+        .detail-action-btn:hover { opacity: 0.85; }
+
+        /* Two-column: timeline + activity */
+        .detail-ov-cols { display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
+
+        /* Timeline & Todos */
+        .detail-timeline-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-onyx);
+            letter-spacing: -0.01em;
+        }
+        .detail-tl-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .detail-tl-link { font-size: 13px; font-weight: 500; color: var(--color-onyx); cursor: pointer; display: flex; align-items: center; gap: 4px; background: none; border: none; font-family: inherit; }
+        .detail-tl-link svg { width: 14px; height: 14px; }
+        .detail-tl-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+        .detail-tl-tab {
+            padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 450;
+            border: 1px solid var(--color-border); background: var(--color-white);
+            color: var(--color-onyx); cursor: pointer; font-family: inherit; transition: all 0.15s;
+        }
+        .detail-tl-tab.active { background: var(--color-onyx); color: #fff; border-color: var(--color-onyx); }
+        .detail-tl-tab:hover:not(.active) { border-color: var(--color-onyx); }
+
+        .detail-tl-section { margin-bottom: 24px; }
+        .detail-tl-section-label { font-size: 15px; font-weight: 600; color: var(--color-onyx); margin-bottom: 10px; }
+        .detail-tl-empty { font-size: 13px; color: var(--color-text-secondary); padding: 4px 0; }
+
+        .detail-tl-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; background: var(--color-white); border: 1px solid var(--color-border);
+            border-radius: 12px; margin-bottom: 8px; font-size: 13px;
+        }
+        .detail-tl-item.attention {
+            background: #FEF9EE; border-color: #F5D990;
+        }
+        .detail-tl-item.completed { opacity: 0.6; }
+        .detail-tl-icon { width: 24px; height: 24px; flex-shrink: 0; color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; }
+        .detail-tl-icon svg { width: 20px; height: 20px; }
+        .detail-tl-icon.attention-icon { color: #D69B43; }
+        .detail-tl-info { flex: 1; min-width: 0; }
+        .detail-tl-label { font-weight: 500; color: var(--color-onyx); }
+        .detail-tl-label.attention-text { color: #B45309; }
+        .detail-tl-date { font-size: 12px; color: var(--color-text-secondary); }
+        .detail-tl-view {
+            display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 500;
+            color: var(--color-onyx); background: none; border: none; cursor: pointer; font-family: inherit; flex-shrink: 0;
+        }
+        .detail-tl-view svg { width: 14px; height: 14px; }
+
+        /* Recent Activity sidebar */
+        .detail-activity { }
+        .detail-activity-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .detail-activity-title { font-size: 1.1rem; font-weight: 700; color: var(--color-onyx); }
+        .detail-activity-search { width: 32px; height: 32px; border-radius: 8px; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; }
+        .detail-activity-search:hover { background: var(--color-surface-secondary); }
+        .detail-activity-search svg { width: 18px; height: 18px; }
+        .detail-activity-day { font-size: 13px; font-weight: 600; color: var(--color-onyx); margin-bottom: 12px; margin-top: 16px; }
+        .detail-activity-day:first-child { margin-top: 0; }
+        .detail-activity-item { display: flex; gap: 12px; margin-bottom: 16px; position: relative; }
+        .detail-activity-dot-col { display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0; }
+        .detail-activity-check { width: 20px; height: 20px; border-radius: 50%; background: var(--color-onyx); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .detail-activity-check svg { width: 12px; height: 12px; color: #fff; }
+        .detail-activity-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0; }
+        .detail-activity-dots span { width: 3px; height: 3px; border-radius: 50%; background: var(--color-border); }
+        .detail-activity-time { font-size: 12px; color: var(--color-text-secondary); min-width: 90px; flex-shrink: 0; padding-top: 2px; }
+        .detail-activity-content { flex: 1; }
+        .detail-activity-type { font-size: 12px; color: var(--color-text-secondary); }
+        .detail-activity-desc { font-size: 13px; font-weight: 500; color: var(--color-onyx); }
+
+        /* In-app messaging */
+        .msg-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+        .msg-thread { flex: 1; overflow-y: auto; padding: 0 0 20px; display: flex; flex-direction: column; gap: 4px; }
+        .msg-bubble-wrap { display: flex; align-items: flex-end; gap: 10px; max-width: 70%; }
+        .msg-bubble-wrap.other { align-self: flex-start; }
+        .msg-bubble-wrap.self { align-self: flex-end; flex-direction: row-reverse; }
+        .msg-sender { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; padding-left: 46px; }
+        .msg-sender.self-sender { text-align: right; padding-left: 0; padding-right: 46px; }
+        .msg-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--color-surface-secondary); border: 1px solid var(--color-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 600; color: var(--color-text-secondary); flex-shrink: 0;
+            overflow: hidden;
+        }
+        .msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .msg-bubble {
+            padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.55;
+            color: var(--color-onyx); word-break: break-word;
+        }
+        .msg-bubble-wrap.other .msg-bubble { background: var(--color-surface-secondary); border-bottom-left-radius: 4px; }
+        .msg-bubble-wrap.self .msg-bubble { background: #4A5568; color: #fff; border-bottom-right-radius: 4px; }
+        .msg-system {
+            display: flex; align-items: flex-start; gap: 12px; padding: 16px 20px;
+            background: var(--color-surface-secondary); border-radius: 14px; margin: 8px 0;
+        }
+        .msg-system-icon {
+            width: 32px; height: 32px; border-radius: 8px; background: var(--color-onyx);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .msg-system-icon svg { width: 16px; height: 16px; color: #fff; }
+        .msg-system-text { font-size: 14px; color: var(--color-onyx); line-height: 1.5; }
+        .msg-system-action {
+            display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600;
+            color: var(--color-onyx); background: none; border: none; cursor: pointer; font-family: inherit;
+            padding: 0; margin-top: 4px;
+        }
+        .msg-system-action svg { width: 14px; height: 14px; }
+        .msg-input-row {
+            display: flex; align-items: center; gap: 10px; padding: 16px 0;
+            border-top: 1px solid var(--color-border); flex-shrink: 0;
+        }
+        .msg-attach {
+            width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--color-border);
+            background: var(--color-white); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0; color: var(--color-text-secondary); transition: border-color 0.15s;
+        }
+        .msg-attach:hover { border-color: var(--color-onyx); }
+        .msg-attach svg { width: 18px; height: 18px; }
+        .msg-input {
+            flex: 1; padding: 10px 16px; border: 1px solid var(--color-border); border-radius: 24px;
+            font-size: 14px; font-family: inherit; outline: none; background: var(--color-white);
+        }
+        .msg-input:focus { border-color: var(--color-onyx); }
+        .msg-input::placeholder { color: var(--color-text-secondary); }
+        .msg-send-btn {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: var(--color-onyx); color: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0; transition: opacity 0.15s;
+        }
+        .msg-send-btn:hover { opacity: 0.85; }
+        .msg-send-btn svg { width: 16px; height: 16px; }
+        .msg-unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-error); flex-shrink: 0; }
+
+        .detail-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; }
+        .detail-rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 8px; }
+        .detail-room-card { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--color-surface-secondary); border-radius: 12px; border: 1px solid var(--color-border); }
+        .detail-room-icon { color: var(--color-text-secondary); flex-shrink: 0; }
+        .detail-room-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+
+        .detail-tl-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            flex-shrink: 0;
+        }
+        .detail-tl-info { flex: 1; }
+        .detail-tl-label { font-weight: 500; color: var(--color-onyx); }
+        .detail-tl-date { font-size: 12px; color: var(--color-text-secondary); }
+
+        /* People sidebar */
+        .detail-people {
+            padding: 24px 24px 24px 0;
+            position: sticky;
+            top: 85px;
+            align-self: start;
+        }
+        .detail-person {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .detail-person-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            flex-shrink: 0;
+        }
+        .detail-person-info { flex: 1; min-width: 0; }
+        .detail-person-role { font-size: 11px; color: var(--color-text-secondary); }
+        .detail-person-name { font-size: 14px; font-weight: 600; color: var(--color-onyx); }
+        .detail-person-company { font-size: 12px; color: var(--color-text-secondary); }
+        .detail-person-contact {
+            padding: 6px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-white);
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--color-onyx);
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+        .detail-person-contact:hover { background: var(--color-surface-secondary); }
+        .detail-add-person {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--color-onyx);
+            border-radius: 10px;
+            background: var(--color-white);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--color-onyx);
+            transition: background 0.15s;
+            margin-top: 8px;
+        }
+        .detail-add-person:hover { background: var(--color-surface-secondary); }
+
+        /* Add person modal */
+        .detail-add-modal {
+            display: none;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 12px;
+        }
+        .detail-add-modal.open { display: block; }
+        .detail-add-modal input, .detail-add-modal select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        .detail-add-modal input:focus { border-color: var(--color-onyx); }
+
+        /* Detail tab panels */
+        .detail-tab-panel { display: none; }
+        .detail-tab-panel.active { display: block; }
+        #detail-panel-messages.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        #detail-panel-messages .msg-panel { flex: 1; min-height: 0; }
+        #detail-panel-messages .detail-ov-title { flex-shrink: 0; }
+
+        /* Add task button */
+        .detail-add-task {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 18px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-white);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--color-onyx);
+            transition: background 0.15s;
+            margin-top: 8px;
+        }
+        .detail-add-task:hover { background: var(--color-surface-secondary); }
+
+        /* Home info rows */
+        .detail-info-grid { display: flex; flex-direction: column; gap: 0; }
+        .detail-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--color-surface-secondary);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .detail-info-label { color: var(--color-text-secondary); font-weight: 450; }
+        .detail-info-value { font-weight: 500; color: var(--color-onyx); }
 
         .detail-tracker {
             background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 14px;
             padding: 28px 32px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            flex-shrink: 0;
         }
         .detail-tracker .stage-tracker { max-width: 600px; margin: 0 auto; }
         .detail-tracker .stage-dot { width: 28px; height: 28px; }
         .detail-tracker .stage-dot svg { width: 14px; height: 14px; }
         .detail-tracker .stage-step.current .stage-dot::after { width: 10px; height: 10px; }
         .detail-tracker .stage-label { font-size: 11px; margin-top: 6px; }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .detail-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-border);
-            border-radius: 14px;
-            padding: 24px;
-        }
-        .detail-card-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--color-onyx);
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--color-surface-secondary);
-            font-size: 14px;
-        }
-        .detail-row:last-child { border-bottom: none; }
-        .detail-row-label { color: var(--color-text-secondary); }
-        .detail-row-value { font-weight: 500; color: var(--color-onyx); }
-        .detail-row-total { font-size: 16px; }
-        .detail-row-total .detail-row-value { font-size: 18px; font-weight: 700; }
 
         /* Schedule timeline */
         .schedule-timeline {
@@ -919,13 +1489,157 @@
         .confirmation h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
         .confirmation p { color: var(--color-text-secondary); font-size: 15px; margin-bottom: 24px; max-width: 420px; }
 
+        /* ======= OVERVIEW ======= */
+        .needs-attention { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px; max-height: 420px; overflow-y: auto; }
+        .needs-attention-title { font-size: 1.25rem; font-weight: 700; color: var(--color-onyx); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .attention-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 13px; }
+        .attention-item:last-child { border-bottom: none; }
+        .attention-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+        .attention-dot.urgent { background: var(--color-error); }
+        .attention-dot.warning { background: #D69B43; }
+        .attention-dot.info { background: #3B82F6; }
+        .attention-text { flex: 1; color: var(--color-charcoal); }
+        .attention-action { font-size: 12px; color: #080808; text-decoration: underline; cursor: pointer; white-space: nowrap; background: none; border: none; font-family: inherit; }
+
+        .quotes-section-banner { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-radius: 10px; margin: 24px 0 12px; font-size: 15px; font-weight: 600; flex-wrap: wrap; }
+        .quotes-section-banner:first-of-type { margin-top: 0; }
+        .banner-quotes { background: #FEF3C7; color: #92400E; }
+        .banner-prepping { background: #EFF6FF; color: #1D4ED8; }
+        .banner-live { background: #ECFDF3; color: #067647; }
+        .stage-count { margin-left: auto; font-weight: 500; font-size: 13px; opacity: 0.7; }
+        .banner-subtitle { width: 100%; font-size: 12px; font-weight: 450; opacity: 0.85; margin-top: -2px; }
+
+        /* Overview greeting */
+        .ov-welcome { margin-bottom: 40px; }
+        .ov-greeting { font-size: 1.75rem; font-weight: 700; color: var(--color-onyx); letter-spacing: -0.02em; margin-bottom: 4px; }
+        .ov-subtitle { font-size: 14px; color: var(--color-text-secondary); }
+
+        /* Overview section headers */
+        .ov-section { margin-bottom: 40px; }
+        .ov-section-title { font-size: 1.25rem; font-weight: 700; color: var(--color-onyx); letter-spacing: -0.01em; margin-bottom: 2px; }
+        .ov-section-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; }
+
+        /* Recent quote cards */
+        .ov-quotes-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .ov-quote-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; }
+        .ov-quote-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #ccc; }
+        .ov-quote-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .ov-quote-card-address { font-size: 15px; font-weight: 600; color: var(--color-onyx); line-height: 1.3; flex: 1; margin-right: 10px; }
+        .ov-quote-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .ov-quote-card-actions button { width: 28px; height: 28px; border: none; background: none; cursor: pointer; color: #999; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+        .ov-quote-card-actions button:hover { color: var(--color-onyx); background: var(--color-surface-secondary); }
+        .ov-quote-card-actions button svg { width: 16px; height: 16px; }
+        .ov-quote-card-dates { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 14px; }
+        .ov-quote-card-services { display: flex; gap: 8px; margin-bottom: 14px; }
+        .ov-svc-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--color-surface-secondary); border: 1px solid var(--color-border); color: #bbb; }
+        .ov-svc-icon svg { width: 14px; height: 14px; }
+        .ov-svc-icon.active { background: #F0F7FF; border-color: #93C5FD; color: #2563EB; }
+        .ov-quote-card-progress { font-size: 12px; color: var(--color-text-secondary); }
+
+        /* Listing map cards */
+        .ov-listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .ov-map-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; }
+        .ov-map-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #ccc; }
+        .ov-map-thumb { width: 100%; height: 130px; background: #E8F0E8; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .ov-map-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .ov-map-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #e8f4e8 0%, #d4e8d4 40%, #c8dcc8 100%); display: flex; align-items: center; justify-content: center; }
+        .ov-map-placeholder svg { width: 24px; height: 24px; color: #9ab89a; }
+        .ov-map-badge { position: absolute; top: 8px; right: 8px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); }
+        .ov-map-info { padding: 12px 14px; }
+        .ov-map-address { font-size: 13px; font-weight: 600; color: var(--color-onyx); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ov-map-city { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .ov-map-pkg { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; background: #ECFDF3; color: #067647; border: 1px solid #A6F4C5; margin-bottom: 6px; }
+        .ov-map-date { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+        .ov-map-status { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--color-text-secondary); }
+        .ov-map-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .ov-map-status-dot.active { background: #22C55E; }
+        .ov-map-status-dot.inactive { background: #9CA3AF; }
+
+        /* Overview stats bar */
+        .ov-stats-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+        .ov-stat-pill { display: flex; align-items: center; gap: 8px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: 40px; padding: 8px 16px; }
+        .ov-stat-number { font-size: 16px; font-weight: 700; color: var(--color-onyx); }
+        .ov-stat-label { font-size: 13px; color: var(--color-text-secondary); }
+
+        /* Overview feed see-all */
+        .ov-feed-see-all { display: flex; justify-content: center; margin-top: 16px; }
+        .ov-feed-see-all button { background: none; border: 1px solid var(--color-border); border-radius: 8px; padding: 10px 24px; font-size: 13px; font-weight: 500; color: var(--color-onyx); cursor: pointer; font-family: inherit; transition: background 0.15s; }
+        .ov-feed-see-all button:hover { background: var(--color-surface-secondary); }
+
+        /* Overview complete-your-listings checklist */
+        .ov-checklist-wrap { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+        .ov-checklist-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--color-border); }
+        .ov-checklist-item:last-child { border-bottom: none; }
+        .ov-checklist-addr { flex: 1; font-size: 14px; font-weight: 500; color: var(--color-onyx); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ov-checklist-tags { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+        .ov-checklist-tag.missing { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; background: #FEF3C7; color: #92400E; }
+        .ov-checklist-action { font-size: 13px; font-weight: 500; color: var(--color-onyx); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+
+        /* Overview boost-your-listings */
+        .ov-boost-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .ov-boost-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; }
+        .ov-boost-card-addr { font-size: 14px; font-weight: 600; color: var(--color-onyx); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ov-boost-bar { height: 6px; background: var(--color-surface-secondary); border-radius: 3px; margin-bottom: 8px; overflow: hidden; }
+        .ov-boost-bar-fill { height: 100%; background: #3B82F6; border-radius: 3px; transition: width 0.3s; }
+        .ov-boost-pct { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px; }
+        .ov-boost-icons { display: flex; gap: 8px; margin-bottom: 14px; }
+        .ov-boost-action { width: 100%; padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--color-onyx); background: none; border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+        .ov-boost-action:hover { background: var(--color-surface-secondary); }
+
+        /* Page tabs */
+        .page-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--color-border); margin-bottom: 24px; }
+        .page-tab { padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .page-tab:hover { color: var(--color-onyx); }
+        .page-tab.active { color: var(--color-onyx); border-bottom-color: var(--color-onyx); }
+        .tab-count { display: inline-block; background: var(--color-surface-secondary); color: var(--color-text-secondary); font-size: 11px; padding: 1px 6px; border-radius: 10px; margin-left: 6px; font-weight: 600; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .ov-quote-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+        /* List table */
+        .list-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .list-table th {
+            text-align: left; font-size: 12px; font-weight: 500; color: var(--color-text-secondary);
+            padding: 10px 16px; border-bottom: 1px solid var(--color-border); white-space: nowrap;
+        }
+        .list-table td {
+            padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 14px;
+            color: var(--color-text-primary); vertical-align: middle;
+        }
+        .list-table tbody tr { cursor: pointer; transition: background 0.12s; }
+        .list-table tbody tr:hover { background: var(--color-surface-secondary); }
+        .list-table-address { font-weight: 500; color: var(--color-onyx); }
+        .list-table-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+        .list-table-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+            background: var(--color-surface-secondary); color: var(--color-text-secondary);
+        }
+        .list-table-badge.stage-quote { background: #FEF3C7; color: #92400E; }
+        .list-table-badge.stage-booked { background: #EFF6FF; color: #1D4ED8; }
+        .list-table-badge.stage-prepping { background: #EDE9FE; color: #5B21B6; }
+        .list-table-badge.stage-live { background: #ECFDF3; color: #067647; }
+        .list-table-badge.stage-deinstall { background: var(--color-surface-secondary); color: var(--color-text-secondary); }
+        .list-table-wrap { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; }
+        .nav-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--color-error); color: #fff; font-size: 11px; font-weight: 600; margin-left: auto; }
+
         /* Responsive */
         @media (max-width: 900px) {
             .sidebar { display: none; }
             .content-area { margin-left: 0; }
             .detail-grid { grid-template-columns: 1fr; }
+            .detail-layout { grid-template-columns: 1fr; margin: -32px -40px -60px; }
+            .detail-subnav { flex-direction: row; overflow-x: auto; padding: 12px 16px; gap: 4px; position: static; }
+            .detail-people { padding: 24px 16px; position: static; }
+            .detail-main { padding: 0 16px 40px; }
             .qv-layout { grid-template-columns: 1fr; }
             .listings-grid { grid-template-columns: 1fr; }
+            .ov-quote-grid { grid-template-columns: 1fr; }
+            .ov-quotes-row { grid-template-columns: 1fr; }
+            .ov-listings-grid { grid-template-columns: repeat(2, 1fr); }
+            .ov-boost-grid { grid-template-columns: 1fr; }
+            .ov-stats-bar { gap: 8px; }
+            .ov-stat-pill { padding: 6px 12px; }
+            .chat-overlay { width: 100%; }
         }
     </style>
 </head>
@@ -1006,36 +1720,114 @@
                 <span>Guest House</span>
             </a>
         </div>
-        <div class="sidebar-nav">
-            <button class="section-nav-btn active" data-section="listings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                My Listings
+        <div class="sidebar-nav" id="sidebarNav">
+            <button class="section-nav-btn active" data-section="overview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Overview
             </button>
             <button class="section-nav-btn" data-section="new-quote">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 New Quote
             </button>
-        </div>
-        <div class="sidebar-footer">
-            <div class="sidebar-agent-name" id="sidebarAgentName"></div>
-            <div class="sidebar-agent-brokerage" id="sidebarAgentBrokerage"></div>
-            <button class="sidebar-signout" id="signOutBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Sign Out
+            <button class="section-nav-btn" data-section="quotes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Quotes
+            </button>
+            <button class="section-nav-btn" data-section="prepping">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Listings
+            </button>
+            <button class="section-nav-btn" data-section="messages">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Messages
+            </button>
+            <button class="section-nav-btn" data-section="resources">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Resources
             </button>
         </div>
+        <button class="sidebar-ask" id="askGHBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Ask Guest House
+        </button>
     </nav>
+
+    <!-- Chat panel -->
+    <div class="chat-backdrop" id="chatBackdrop"></div>
+    <div class="chat-overlay" id="chatPanel">
+        <div class="chat-header">
+            <div class="chat-header-title">Ask Guest House</div>
+            <button class="chat-close" id="chatCloseBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-input-row">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask a question...">
+            <button class="chat-send" id="chatSendBtn">Send</button>
+        </div>
+    </div>
 
     <!-- Content -->
     <div class="content-area">
         <div class="content-header">
-            <h1 id="contentTitle">My Listings</h1>
+            <h1 id="contentTitle">Overview</h1>
+            <div class="header-right">
+                <button class="btn btn-cta" id="headerNewQuoteBtn">+ New Quote</button>
+                <div class="profile-menu" id="profileMenu">
+                    <button class="profile-btn" id="profileBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </button>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-dropdown-item" style="pointer-events:none;font-weight:600;" id="profileDropdownName">Agent</div>
+                        <div class="profile-dropdown-divider"></div>
+                        <button class="profile-dropdown-item" id="profileHelpBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Get Help
+                        </button>
+                        <button class="profile-dropdown-item" id="profileSignOutBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="content-body">
 
-            <!-- Section: My Listings -->
-            <div class="section active" id="section-listings">
-                <div id="listingsContent"></div>
+            <!-- Section: Overview -->
+            <div class="section active" id="section-overview">
+                <div id="overviewContent"></div>
+            </div>
+
+            <!-- Section: Quotes -->
+            <div class="section" id="section-quotes">
+                <div id="quotesContent"></div>
+            </div>
+
+            <!-- Section: Listings -->
+            <div class="section" id="section-prepping">
+                <div id="preppingContent"></div>
+            </div>
+
+            <!-- Section: Messages -->
+            <div class="section" id="section-messages">
+                <div id="messagesContent">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <h3>No messages yet</h3>
+                        <p>Messages from your Guest House team will appear here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Resources -->
+            <div class="section" id="section-resources">
+                <div id="resourcesContent">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <h3>Resources</h3>
+                        <p>Guides, tips, and tools to help you get the most out of Guest House.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Section: Listing Detail -->
@@ -1304,7 +2096,9 @@
                 agentData = data.agent;
                 projectsData = data.projects || [];
                 renderSidebar();
-                renderListings();
+                renderOverview();
+                renderQuotes();
+                renderPrepping();
             })
             .catch(function() {
                 sessionStorage.removeItem('agent_token');
@@ -1429,19 +2223,151 @@
         });
     });
 
-    // === SIDEBAR ===
+    // === HEADER & PROFILE ===
     function renderSidebar() {
         if (!agentData) return;
-        document.getElementById('sidebarAgentName').textContent = agentData.name || '';
-        document.getElementById('sidebarAgentBrokerage').textContent = agentData.brokerage || '';
+        var nameEl = document.getElementById('profileDropdownName');
+        if (nameEl) nameEl.textContent = agentData.name || agentData.email || 'Agent';
     }
 
-    // Sign out
-    document.getElementById('signOutBtn').addEventListener('click', function() {
+    // Header: + New Quote button
+    document.getElementById('headerNewQuoteBtn').addEventListener('click', function() {
+        showSection('new-quote');
+    });
+
+    // Profile dropdown toggle
+    document.getElementById('profileBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('profileDropdown').classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+        document.getElementById('profileDropdown').classList.remove('open');
+    });
+
+    // Profile sign out
+    document.getElementById('profileSignOutBtn').addEventListener('click', function() {
         sessionStorage.removeItem('agent_token');
         agentData = null;
         projectsData = [];
         showAuthGate();
+    });
+
+    // === ASK GUEST HOUSE CHAT ===
+    var GH_FAQS = [
+        { q: 'Why should I stage?', a: 'Quality staging highlights your home\'s best features and increases its perceived value, leading to higher sales prices and faster sales. Guest House uses quality, on-trend furnishings to create emotional connections during first impressions.' },
+        { q: 'What areas do you serve?', a: 'We serve Colorado (Denver, Boulder, surrounding areas), Southern California (San Diego, Orange County, Temecula), and Arizona (Phoenix, Scottsdale). Extended packages are available outside listed cities with additional fees.' },
+        { q: 'What\'s your lead-time?', a: 'Our typical lead time is 7\u201310 business days. Shorter timelines can be accommodated based on availability.' },
+        { q: 'Do you offer other services?', a: 'Yes! We offer cleaning, photos, video tours, drone footage, 3D tours, and more \u2014 all bookable in one place alongside staging.' },
+        { q: 'What type of homes do you stage?', a: 'We stage all types of homes: single family homes, condos, townhomes, and apartments.' },
+        { q: 'Do you stage occupied listings?', a: 'Yes, with additional fees and restrictions outlined in the Staging Agreement.' },
+        { q: 'How do I book a staging?', a: 'Fill out our instant quote form with your contact and listing details. Our team reviews and adjusts as needed, then follow checkout to purchase and reserve your dates.' },
+        { q: 'Can I add more rooms after booking?', a: 'Yes! Rooms can be added up to 3 business days before install by messaging your Designer or contacting your market team.' },
+        { q: 'How should I prepare for install?', a: 'Confirm access information is valid, clear the home of non-staging items, ensure cleanliness, and complete all interior construction before install day.' },
+        { q: 'Should I be present during install?', a: 'You do not need to be present. In fact, we ask that the home is vacant during install so our design team can efficiently stage the home. Installs typically take 4\u20136 hours.' },
+        { q: 'When do I receive photography?', a: 'All assets are typically ready within 2 business days after the shoot. Photos will be available to download from the staging platform, and you\'ll receive email and text notifications.' },
+        { q: 'What\'s your rescheduling policy?', a: 'Requests must be made at least 3 business days in advance. A $750 restocking fee applies with less than 3 days notice. Weather cancellations can be made 24 hours in advance without fees.' },
+        { q: 'What\'s your cancellation policy?', a: 'Cancellation requests require 5 days notice to receive a full refund.' },
+        { q: 'When and how am I charged?', a: 'Guest House requires payment at the time of booking. We accept credit card, debit card, ACH, or Affirm financing.' },
+        { q: 'How long is my staging renewal?', a: 'After the initial 30 days, the card on file is charged twice monthly until your staging de-install is scheduled (must be scheduled 5 business days in advance).' },
+        { q: 'What if a staging item is damaged?', a: 'All items are assessed upon entry and exit. If damages occur while inventory is staged, you will be charged the full retail price of the item.' },
+    ];
+
+    var SUGGESTED_FAQS = [0, 2, 6, 7, 10]; // indices into GH_FAQS for initial suggestions
+
+    function openChat() {
+        document.getElementById('chatPanel').classList.add('open');
+        document.getElementById('chatBackdrop').classList.add('open');
+        var body = document.getElementById('chatBody');
+        if (body.children.length === 0) renderChatWelcome();
+        document.getElementById('chatInput').focus();
+    }
+
+    function closeChat() {
+        document.getElementById('chatPanel').classList.remove('open');
+        document.getElementById('chatBackdrop').classList.remove('open');
+    }
+
+    function renderChatWelcome() {
+        var body = document.getElementById('chatBody');
+        var h = '<div class="chat-welcome">';
+        h += '<div class="chat-welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>';
+        h += '<div class="chat-welcome-title">How can we help?</div>';
+        h += '<div class="chat-welcome-sub">Ask us anything about Guest House staging, services, or your listings.</div>';
+        h += '</div>';
+        h += '<div class="chat-faq-label">Common questions</div>';
+        SUGGESTED_FAQS.forEach(function(idx) {
+            var faq = GH_FAQS[idx];
+            h += '<button class="chat-faq-btn" data-faq-idx="' + idx + '">' + esc(faq.q) + '</button>';
+        });
+        body.innerHTML = h;
+
+        body.querySelectorAll('.chat-faq-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var idx = parseInt(btn.dataset.faqIdx, 10);
+                handleFaqClick(idx);
+            });
+        });
+    }
+
+    function handleFaqClick(idx) {
+        var faq = GH_FAQS[idx];
+        appendChatMsg(faq.q, 'user');
+        setTimeout(function() { appendChatMsg(faq.a, 'bot'); }, 300);
+    }
+
+    function appendChatMsg(text, role) {
+        var body = document.getElementById('chatBody');
+        // Remove welcome + FAQ buttons on first message
+        var welcome = body.querySelector('.chat-welcome');
+        if (welcome) {
+            body.querySelectorAll('.chat-welcome, .chat-faq-label, .chat-faq-btn').forEach(function(el) { el.remove(); });
+        }
+        var div = document.createElement('div');
+        div.className = 'chat-msg ' + role;
+        div.textContent = text;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function findFaqAnswer(query) {
+        var q = query.toLowerCase();
+        var best = null;
+        var bestScore = 0;
+        GH_FAQS.forEach(function(faq) {
+            var words = faq.q.toLowerCase().split(/\s+/);
+            var score = 0;
+            words.forEach(function(w) {
+                if (w.length > 3 && q.indexOf(w) !== -1) score++;
+            });
+            // Also check answer keywords
+            var aWords = faq.a.toLowerCase().split(/\s+/);
+            aWords.forEach(function(w) {
+                if (w.length > 4 && q.indexOf(w) !== -1) score += 0.5;
+            });
+            if (score > bestScore) { bestScore = score; best = faq; }
+        });
+        if (bestScore >= 1) return best.a;
+        return 'I\'m not sure about that one. You can reach our team directly at orders@guesthouseshop.com or visit guesthouseprep.com/support for more help.';
+    }
+
+    function handleChatSend() {
+        var input = document.getElementById('chatInput');
+        var text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        appendChatMsg(text, 'user');
+        setTimeout(function() {
+            var answer = findFaqAnswer(text);
+            appendChatMsg(answer, 'bot');
+        }, 400);
+    }
+
+    document.getElementById('askGHBtn').addEventListener('click', openChat);
+    document.getElementById('chatCloseBtn').addEventListener('click', closeChat);
+    document.getElementById('chatBackdrop').addEventListener('click', closeChat);
+    document.getElementById('chatSendBtn').addEventListener('click', handleChatSend);
+    document.getElementById('chatInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleChatSend();
     });
 
     // Nav buttons
@@ -1458,14 +2384,19 @@
         var el = document.getElementById('section-' + name);
         if (el) el.classList.add('active');
 
-        var titles = { 'listings': 'My Listings', 'new-quote': 'New Quote', 'detail': 'Listing Detail' };
-        document.getElementById('contentTitle').textContent = titles[name] || 'Dashboard';
+        var titles = { 'overview': 'Overview', 'new-quote': 'New Quote', 'quotes': 'Quotes', 'prepping': 'Listings', 'messages': 'Messages', 'resources': 'Resources' };
+        // Detail view sets its own title (close button), skip for detail
+        if (name !== 'detail') {
+            document.getElementById('contentTitle').textContent = titles[name] || 'Dashboard';
+        }
 
         // Reset wizard when navigating to new-quote
         if (name === 'new-quote') resetWizard();
     }
 
     // === LISTINGS ===
+    var lastSection = 'overview'; // track where user came from before detail view
+
     var STAGES_FULL = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready', 'market_ready'];
     var STAGES_INPERSON = ['quote_received', 'vendors_scheduled', 'prep_in_progress', 'photos_ready'];
     var STAGES_CONSULT = ['quote_received', 'vendors_scheduled', 'schedule_call', 'prep_in_progress', 'photos_ready'];
@@ -1482,55 +2413,6 @@
         if (pkg === 'consult') return STAGES_CONSULT;
         if (pkg === 'inperson') return STAGES_INPERSON;
         return STAGES_FULL;
-    }
-
-    function renderListings() {
-        var container = document.getElementById('listingsContent');
-
-        if (projectsData.length === 0) {
-            container.innerHTML = '<div class="empty-state">' +
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' +
-                '<h3>No listings yet</h3>' +
-                '<p>Create your first quote to get started.</p>' +
-                '<button class="btn btn-primary" onclick="document.querySelector(\'[data-section=new-quote]\').click()">New Quote</button>' +
-            '</div>';
-            return;
-        }
-
-        var html = '<div class="listings-grid">';
-        projectsData.forEach(function(p) {
-            html += buildListingCard(p);
-        });
-        html += '</div>';
-        container.innerHTML = html;
-
-        // Bind card clicks
-        container.querySelectorAll('.listing-card').forEach(function(card) {
-            card.addEventListener('click', function(e) {
-                if (e.target.closest('[data-action]')) return;
-                var pid = card.dataset.projectId;
-                openListingDetail(pid);
-            });
-        });
-        // Open buttons
-        container.querySelectorAll('[data-action="open"]').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                openListingDetail(btn.dataset.projectId);
-            });
-        });
-        // Share buttons (email)
-        container.querySelectorAll('[data-action="share"]').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var pid = btn.dataset.projectId;
-                var project = projectsData.find(function(p) { return p.id === pid; });
-                if (!project) return;
-                var subject = encodeURIComponent('Guest House Quote — ' + project.address);
-                var body = encodeURIComponent('Here is your Guest House listing prep quote for ' + project.address + '.\n\nView details: ' + window.location.origin + '/dashboard');
-                window.open('mailto:?subject=' + subject + '&body=' + body);
-            });
-        });
     }
 
     function buildListingCard(project) {
@@ -1590,6 +2472,48 @@
         return h;
     }
 
+    function buildListingTable(items) {
+        var pkgNames = { consult: 'Virtual Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
+        var stageBadgeClass = { quote_received: 'stage-quote', vendors_scheduled: 'stage-booked', schedule_call: 'stage-prepping', prep_in_progress: 'stage-prepping', photos_ready: 'stage-live', market_ready: 'stage-deinstall' };
+
+        var h = '<div class="list-table-wrap"><table class="list-table">';
+        h += '<thead><tr><th>Address</th><th>Package</th><th>Stage</th><th>Price</th><th>Install Date</th><th>Created</th></tr></thead>';
+        h += '<tbody>';
+        items.forEach(function(p) {
+            var stage = getVisibleStage(p);
+            var stageLabel = STAGE_LABELS[stage] || 'Quote';
+            var badgeCls = stageBadgeClass[stage] || '';
+            var pkg = pkgNames[p.stagingPackage] || p.stagingPackage || '—';
+            var created = p.created ? new Date(p.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+            var install = p.installDate ? new Date(p.installDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+            var parts = (p.address || '').split(',');
+            var street = (parts[0] || '').trim();
+            var cityState = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
+
+            h += '<tr class="list-table-row" data-project-id="' + esc(p.id) + '">';
+            h += '<td><div class="list-table-address">' + esc(street || 'Untitled') + '</div>';
+            if (cityState) h += '<div class="list-table-sub">' + esc(cityState) + '</div>';
+            h += '</td>';
+            h += '<td>' + esc(pkg) + '</td>';
+            h += '<td><span class="list-table-badge ' + badgeCls + '">' + esc(stageLabel) + '</span></td>';
+            h += '<td>' + (p.totalPrice ? formatPrice(p.totalPrice) : '—') + '</td>';
+            h += '<td>' + esc(install) + '</td>';
+            h += '<td>' + esc(created) + '</td>';
+            h += '</tr>';
+        });
+        h += '</tbody></table></div>';
+        return h;
+    }
+
+    function bindTableRowClicks(container) {
+        container.querySelectorAll('.list-table-row').forEach(function(row) {
+            row.addEventListener('click', function() {
+                var pid = row.dataset.projectId;
+                if (pid) openListingDetail(pid);
+            });
+        });
+    }
+
     function buildStageTracker(currentStage, stagingPackage) {
         var stages = getStagesForPackage(stagingPackage);
         var currentIdx = stages.indexOf(currentStage);
@@ -1613,98 +2537,1012 @@
         return h;
     }
 
+    // === OVERVIEW ===
+    function getVisibleStage(project) {
+        var stage = project.stage || 'quote_received';
+        if (stage === 'bidding') stage = 'quote_received';
+        var stages = getStagesForPackage(project.stagingPackage);
+        if (stages.indexOf(stage) === -1) stage = stages[0];
+        return stage;
+    }
+
+    // Overview groups: map all underlying stages into 3 agent-facing buckets
+    var OVERVIEW_BUCKETS = ['quotes', 'prepping', 'live'];
+    var OVERVIEW_BUCKET_INFO = {
+        quotes: {
+            label: 'Quotes',
+            subtitle: 'Pay to lock in your install date and kick off prep',
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+        },
+        prepping: {
+            label: 'Prepping',
+            subtitle: 'In progress — we\'ll alert you when approvals are needed',
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+        },
+        live: {
+            label: 'Live',
+            subtitle: 'Ready to list — add more services anytime',
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+        },
+    };
+
+    // Map underlying stage keys → overview bucket
+    function getOverviewBucket(visibleStage) {
+        if (visibleStage === 'quote_received' || visibleStage === 'bidding') return 'quotes';
+        if (visibleStage === 'photos_ready' || visibleStage === 'market_ready') return 'live';
+        // vendors_scheduled, schedule_call, prep_in_progress all = prepping
+        return 'prepping';
+    }
+
+    function buildAttentionItems() {
+        var items = [];
+        var now = new Date();
+        projectsData.forEach(function(p) {
+            var stage = getVisibleStage(p);
+            var bucket = getOverviewBucket(stage);
+            var addr = p.address || 'Untitled';
+            if (addr.length > 30) addr = addr.substring(0, 30) + '...';
+
+            // Urgent: quotes awaiting payment
+            if (bucket === 'quotes') {
+                items.push({ type: 'urgent', text: addr + ' — quote unpaid', action: 'Review & pay', pid: p.id });
+            }
+
+            // Warning: install date within 7 days and still in quotes
+            if (bucket === 'quotes' && p.installDate) {
+                var install = new Date(p.installDate + 'T12:00:00');
+                var daysUntil = (install - now) / (1000 * 60 * 60 * 24);
+                if (daysUntil <= 7 && daysUntil >= 0) {
+                    items.push({ type: 'warning', text: addr + ' install in ' + Math.ceil(daysUntil) + ' days', action: 'Pay now', pid: p.id });
+                }
+            }
+
+            // Warning: prepping project missing install date
+            if (bucket === 'prepping' && !p.installDate) {
+                items.push({ type: 'warning', text: addr + ' — missing install date', action: 'Set date', pid: p.id });
+            }
+
+            // Info: stage changed within last 24 hours
+            if (p.updatedAt) {
+                var updated = new Date(p.updatedAt);
+                var hoursDiff = (now - updated) / (1000 * 60 * 60);
+                if (hoursDiff <= 24 && bucket !== 'quotes') {
+                    var bucketLabel = OVERVIEW_BUCKET_INFO[bucket].label;
+                    items.push({ type: 'info', text: addr + ' moved to ' + bucketLabel, action: 'View', pid: p.id });
+                }
+            }
+        });
+        return items.slice(0, 10);
+    }
+
+    function getGreeting() {
+        var h = new Date().getHours();
+        if (h < 12) return 'Good morning';
+        if (h < 17) return 'Good afternoon';
+        return 'Good evening';
+    }
+
+    function getFirstName() {
+        if (!agentData) return '';
+        return agentData.firstName || (agentData.name || '').split(' ')[0] || '';
+    }
+
+    // Count active services as % of recommended (staging + photos + clean + moving = 4 core)
+    function getServiceProgress(project) {
+        var services = [];
+        try { services = JSON.parse(project.services || '[]'); } catch(e) {}
+        var ids = {};
+        services.forEach(function(s) { ids[s.id] = true; });
+        if (project.stagingPackage && project.stagingPackage !== 'none') ids['staging'] = true;
+        var total = 4;
+        var active = 0;
+        if (ids['staging']) active++;
+        // Count any photo service
+        var photoIds = ['social-photos','mls-25','mls-floor','mls-3d','mls-video','mls-45','drone-photos','drone-video'];
+        if (photoIds.some(function(id) { return ids[id]; })) active++;
+        if (ids['deep-clean']) active++;
+        if (ids['move-3h'] || ids['move-6h']) active++;
+        var pct = Math.round((active / total) * 100);
+        return pct;
+    }
+
+    function buildOverviewQuoteCard(project) {
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
+        var installStr = project.installDate ? new Date(project.installDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : 'not set';
+
+        var h = '<div class="ov-quote-card" data-project-id="' + esc(project.id) + '">';
+        h += '<div class="ov-quote-card-top">';
+        h += '<div class="ov-quote-card-address">' + esc(project.address || 'Untitled') + '</div>';
+        h += '<div class="ov-quote-card-actions">';
+        h += '<button data-action="open" data-project-id="' + esc(project.id) + '" title="Review & Pay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>';
+        h += '<button data-action="share" data-project-id="' + esc(project.id) + '" title="Share via email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>';
+        h += '</div></div>';
+        h += '<div class="ov-quote-card-dates">';
+        h += 'Created ' + (created || 'N/A') + '<br>';
+        h += 'Target install ' + installStr;
+        h += '</div>';
+
+        // Service icons
+        var services = [];
+        try { services = JSON.parse(project.services || '[]'); } catch(e) {}
+        var selectedIds = {};
+        services.forEach(function(s) { selectedIds[s.id] = true; });
+        if (project.stagingPackage && project.stagingPackage !== 'none') selectedIds['staging'] = true;
+        var photoIds = ['social-photos','mls-25','mls-floor','mls-3d','mls-video','mls-45','drone-photos','drone-video'];
+        var hasPhoto = photoIds.some(function(id) { return selectedIds[id]; });
+
+        var svcList = [
+            { active: !!selectedIds['staging'], icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"/><path d="M2 11h20"/></svg>' },
+            { active: !!selectedIds['move-3h'] || !!selectedIds['move-6h'], icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' },
+            { active: hasPhoto, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>' },
+            { active: !!selectedIds['deep-clean'], icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h4l1-6h8l1 6h4"/><path d="M5 15V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10"/></svg>' },
+        ];
+        h += '<div class="ov-quote-card-services">';
+        svcList.forEach(function(s) {
+            h += '<div class="ov-svc-icon' + (s.active ? ' active' : '') + '">' + s.icon + '</div>';
+        });
+        h += '</div>';
+
+        var pct = getServiceProgress(project);
+        h += '<div class="ov-quote-card-progress">' + pct + '% of recommended services. Add more to sell faster.</div>';
+        h += '</div>';
+        return h;
+    }
+
+    // Geocode cache to avoid duplicate requests
+    var geocodeCache = {};
+
+    function geocodeAndLoadMap(address, imgEl) {
+        if (geocodeCache[address]) {
+            applyMapTile(geocodeCache[address], imgEl);
+            return;
+        }
+        fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address))
+            .then(function(r) { return r.json(); })
+            .then(function(results) {
+                if (results && results.length > 0) {
+                    var coords = { lat: parseFloat(results[0].lat), lon: parseFloat(results[0].lon) };
+                    geocodeCache[address] = coords;
+                    applyMapTile(coords, imgEl);
+                }
+            })
+            .catch(function() {});
+    }
+
+    function applyMapTile(coords, imgEl) {
+        // Use OSM static tile at zoom 15
+        var zoom = 15;
+        var lat = coords.lat;
+        var lon = coords.lon;
+        // Convert lat/lon to tile coordinates
+        var n = Math.pow(2, zoom);
+        var x = Math.floor((lon + 180) / 360 * n);
+        var latRad = lat * Math.PI / 180;
+        var y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+        var tileUrl = 'https://tile.openstreetmap.org/' + zoom + '/' + x + '/' + y + '.png';
+        imgEl.src = tileUrl;
+        imgEl.style.display = 'block';
+        // Hide the placeholder
+        var placeholder = imgEl.previousElementSibling;
+        if (placeholder && placeholder.classList.contains('ov-map-placeholder')) {
+            placeholder.style.display = 'none';
+        }
+    }
+
+    function buildListingMapCard(project) {
+        var pkgNames = { consult: 'Virtual Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
+        var stage = getVisibleStage(project);
+        var bucket = getOverviewBucket(stage);
+        // Map to agent-facing listing statuses
+        var listingStatus = 'Prepping';
+        var statusDotCls = 'active';
+        if (stage === 'photos_ready') { listingStatus = 'Active'; statusDotCls = 'active'; }
+        else if (stage === 'market_ready') { listingStatus = 'Deinstall Scheduled'; statusDotCls = 'inactive'; }
+        else if (bucket === 'quotes') { listingStatus = 'Prepping'; statusDotCls = 'inactive'; }
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' }) : '';
+
+        // Parse city/state from address
+        var parts = (project.address || '').split(',');
+        var street = (parts[0] || '').trim();
+        var cityState = parts.length > 2 ? (parts[1] || '').trim() + ', ' + (parts[2] || '').trim().split(' ')[0] : (parts[1] || '').trim();
+
+        // Map badge label
+        var badgeLabel = bucket === 'quotes' ? 'Quote' : (bucket === 'prepping' ? 'Prepping' : 'Live');
+
+        var h = '<div class="ov-map-card" data-project-id="' + esc(project.id) + '">';
+        h += '<div class="ov-map-thumb">';
+        h += '<div class="ov-map-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>';
+        h += '<img class="ov-map-img" data-address="' + esc(project.address || '') + '" style="display:none;" alt="Map">';
+        h += '<div class="ov-map-badge">' + badgeLabel + '</div>';
+        h += '</div>';
+        h += '<div class="ov-map-info">';
+        h += '<div class="ov-map-address">' + esc(street) + '</div>';
+        if (cityState) h += '<div class="ov-map-city">' + esc(cityState) + '</div>';
+        if (project.stagingPackage && project.stagingPackage !== 'none') {
+            h += '<div class="ov-map-pkg">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</div>';
+        }
+        if (created) h += '<div class="ov-map-date">' + created + ' -</div>';
+        h += '<div class="ov-map-status"><span class="ov-map-status-dot ' + statusDotCls + '"></span> ' + esc(listingStatus) + '</div>';
+        h += '</div></div>';
+        return h;
+    }
+
+    function loadMapThumbnails(container) {
+        container.querySelectorAll('.ov-map-img').forEach(function(img) {
+            var addr = img.dataset.address;
+            if (addr) geocodeAndLoadMap(addr, img);
+        });
+    }
+
+    function renderOverview() {
+        var container = document.getElementById('overviewContent');
+        if (!container) return;
+
+        var html = '';
+
+        // --- Section 1: Greeting + Stats Bar ---
+        var name = getFirstName();
+        html += '<div class="ov-welcome">';
+        html += '<div class="ov-greeting">' + getGreeting() + (name ? ', ' + esc(name) : '') + '</div>';
+        html += '<div class="ov-subtitle">Here\'s what\'s happening with your listings today \uD83C\uDFE1</div>';
+        html += '</div>';
+
+        if (projectsData.length === 0) {
+            html += '<div class="empty-state">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' +
+                '<h3>No listings yet</h3>' +
+                '<p>Create your first quote to get started.</p>' +
+                '<button class="btn btn-primary" onclick="document.querySelector(\'[data-section=new-quote]\').click()">New Quote</button>' +
+            '</div>';
+            container.innerHTML = html;
+            updateNavBadge(0);
+            return;
+        }
+
+        // Bucket counts
+        var counts = { all: projectsData.length, quotes: 0, prepping: 0, live: 0 };
+        projectsData.forEach(function(p) {
+            var bucket = getOverviewBucket(getVisibleStage(p));
+            counts[bucket] = (counts[bucket] || 0) + 1;
+        });
+
+        html += '<div class="ov-stats-bar">';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.all + '</span><span class="ov-stat-label">Active listings</span></div>';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.quotes + '</span><span class="ov-stat-label">Quotes pending</span></div>';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.prepping + '</span><span class="ov-stat-label">Prepping</span></div>';
+        html += '<div class="ov-stat-pill"><span class="ov-stat-number">' + counts.live + '</span><span class="ov-stat-label">Live</span></div>';
+        html += '</div>';
+
+        // --- Section 2: Needs Attention ---
+        var attentionItems = buildAttentionItems();
+        html += '<div class="ov-section">';
+        html += '<div class="needs-attention-title">Needs attention</div>';
+        html += '<div class="needs-attention">';
+        if (attentionItems.length === 0) {
+            html += '<div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0;">Nothing needs attention right now.</div>';
+        } else {
+            attentionItems.forEach(function(item) {
+                html += '<div class="attention-item">';
+                html += '<span class="attention-dot ' + item.type + '"></span>';
+                html += '<span class="attention-text">' + esc(item.text) + '</span>';
+                html += '<button class="attention-action" data-pid="' + esc(item.pid) + '">' + esc(item.action) + '</button>';
+                html += '</div>';
+            });
+        }
+        html += '</div>';
+        html += '</div>';
+
+        // --- Section 3a: Your Quotes ---
+        var quoteProjects = projectsData.filter(function(p) {
+            return getOverviewBucket(getVisibleStage(p)) === 'quotes';
+        });
+
+        if (quoteProjects.length > 0) {
+            html += '<div class="ov-section">';
+            html += '<div class="ov-section-title">Your Quotes</div>';
+            html += buildListingTable(quoteProjects);
+            html += '<div class="ov-feed-see-all"><button class="ov-see-all-btn" data-nav="quotes">View all quotes</button></div>';
+            html += '</div>';
+        }
+
+        // --- Section 3b: Your Listings (Table with Bucket Tabs) ---
+        var bucketLists = { all: projectsData, quotes: [], prepping: [], live: [] };
+        projectsData.forEach(function(p) {
+            var bucket = getOverviewBucket(getVisibleStage(p));
+            if (bucketLists[bucket]) bucketLists[bucket].push(p);
+        });
+
+        html += '<div class="ov-section">';
+        html += '<div class="ov-section-title">Your Listings</div>';
+        html += '<div class="page-tabs" id="ovListingTabs">';
+        html += '<button class="page-tab active" data-ov-tab="all">All <span class="tab-count">' + counts.all + '</span></button>';
+        html += '<button class="page-tab" data-ov-tab="quotes">Quotes <span class="tab-count">' + counts.quotes + '</span></button>';
+        html += '<button class="page-tab" data-ov-tab="prepping">Prepping <span class="tab-count">' + counts.prepping + '</span></button>';
+        html += '<button class="page-tab" data-ov-tab="live">Live <span class="tab-count">' + counts.live + '</span></button>';
+        html += '</div>';
+        ['all', 'quotes', 'prepping', 'live'].forEach(function(key) {
+            var isActive = key === 'all' ? ' active' : '';
+            html += '<div class="tab-panel' + isActive + '" id="ov-tab-' + key + '">';
+            if (bucketLists[key].length > 0) {
+                html += buildListingTable(bucketLists[key]);
+            } else {
+                html += '<div style="padding:24px;text-align:center;font-size:13px;color:var(--color-text-secondary);">No listings in this category.</div>';
+            }
+            html += '</div>';
+        });
+        html += '<div class="ov-feed-see-all"><button id="ovSeeAllBtn">View all in Listings</button></div>';
+        html += '</div>';
+
+        // --- Section 5: Boost Your Listings (conditional — < 100% services) ---
+        var boostItems = [];
+        projectsData.forEach(function(p) {
+            var pct = getServiceProgress(p);
+            if (pct < 100) {
+                boostItems.push({ pid: p.id, address: p.address || 'Untitled', pct: pct, project: p });
+            }
+        });
+        boostItems = boostItems.slice(0, 4);
+
+        if (boostItems.length > 0) {
+            // Service icon SVGs (reuse from quote cards)
+            var svcIconSvgs = [
+                { key: 'staging', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"/><path d="M2 11h20"/></svg>' },
+                { key: 'photos', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>' },
+                { key: 'clean', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h4l1-6h8l1 6h4"/><path d="M5 15V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10"/></svg>' },
+                { key: 'moving', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' },
+            ];
+            var photoIds = ['social-photos','mls-25','mls-floor','mls-3d','mls-video','mls-45','drone-photos','drone-video'];
+
+            html += '<div class="ov-section">';
+            html += '<div class="ov-section-title">Boost Your Listings</div>';
+            html += '<div class="ov-section-sub">Add recommended services to sell faster.</div>';
+            html += '<div class="ov-boost-grid">';
+            boostItems.forEach(function(item) {
+                var p = item.project;
+                var services = [];
+                try { services = JSON.parse(p.services || '[]'); } catch(e) {}
+                var selectedIds = {};
+                services.forEach(function(s) { selectedIds[s.id] = true; });
+                if (p.stagingPackage && p.stagingPackage !== 'none') selectedIds['staging'] = true;
+                var hasPhoto = photoIds.some(function(id) { return selectedIds[id]; });
+                var hasClean = !!selectedIds['deep-clean'];
+                var hasMoving = !!selectedIds['move-3h'] || !!selectedIds['move-6h'];
+
+                var activeMap = { staging: !!selectedIds['staging'], photos: hasPhoto, clean: hasClean, moving: hasMoving };
+
+                html += '<div class="ov-boost-card" data-pid="' + esc(item.pid) + '">';
+                html += '<div class="ov-boost-card-addr">' + esc(item.address) + '</div>';
+                html += '<div class="ov-boost-bar"><div class="ov-boost-bar-fill" style="width:' + item.pct + '%"></div></div>';
+                html += '<div class="ov-boost-pct">' + item.pct + '% of recommended services</div>';
+                html += '<div class="ov-boost-icons">';
+                svcIconSvgs.forEach(function(svc) {
+                    var isActive = activeMap[svc.key] ? ' active' : '';
+                    html += '<div class="ov-svc-icon' + isActive + '">' + svc.icon + '</div>';
+                });
+                html += '</div>';
+                html += '<button class="ov-boost-action" data-pid="' + esc(item.pid) + '">Add services</button>';
+                html += '</div>';
+            });
+            html += '</div></div>';
+        }
+
+        container.innerHTML = html;
+
+        // --- Bind events ---
+
+        // Attention action buttons
+        container.querySelectorAll('.attention-action[data-pid]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                openListingDetail(btn.dataset.pid);
+            });
+        });
+
+        // Listing table tab switching
+        container.querySelectorAll('#ovListingTabs .page-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                container.querySelectorAll('#ovListingTabs .page-tab').forEach(function(t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+                var key = tab.dataset.ovTab;
+                container.querySelectorAll('.tab-panel[id^="ov-tab-"]').forEach(function(p) { p.classList.remove('active'); });
+                var panel = container.querySelector('#ov-tab-' + key);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        // Table row clicks
+        bindTableRowClicks(container);
+
+        // "View all" buttons
+        var seeAllBtn = container.querySelector('#ovSeeAllBtn');
+        if (seeAllBtn) {
+            seeAllBtn.addEventListener('click', function() {
+                showSection('prepping');
+            });
+        }
+        container.querySelectorAll('.ov-see-all-btn[data-nav]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                showSection(btn.dataset.nav);
+            });
+        });
+
+        // Boost "Add services" actions → open detail + auto-click Services tab
+        container.querySelectorAll('.ov-boost-action[data-pid]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var pid = btn.dataset.pid;
+                openListingDetail(pid);
+                // Auto-click Services tab after detail renders
+                setTimeout(function() {
+                    var svcTab = document.querySelector('.detail-subnav-btn[data-detail-tab="services"]');
+                    if (svcTab) svcTab.click();
+                }, 100);
+            });
+        });
+
+        updateNavBadge(attentionItems.length);
+    }
+
+    function updateNavBadge(count) {
+        var overviewBtn = document.querySelector('[data-section="overview"]');
+        if (!overviewBtn) return;
+        var badge = overviewBtn.querySelector('.nav-badge');
+        if (count > 0) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'nav-badge';
+                overviewBtn.appendChild(badge);
+            }
+            badge.textContent = count;
+        } else if (badge) {
+            badge.remove();
+        }
+    }
+
+    // === SHARED CARD CLICK BINDING ===
+    function bindCardClicks(container) {
+        container.querySelectorAll('.listing-card').forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('[data-action]')) return;
+                openListingDetail(card.dataset.projectId);
+            });
+        });
+        container.querySelectorAll('[data-action="open"]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openListingDetail(btn.dataset.projectId);
+            });
+        });
+        container.querySelectorAll('[data-action="share"]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var pid = btn.dataset.projectId;
+                var project = projectsData.find(function(p) { return p.id === pid; });
+                if (!project) return;
+                var subject = encodeURIComponent('Guest House Quote — ' + project.address);
+                var body = encodeURIComponent('Here is your Guest House listing prep quote for ' + project.address + '.\n\nView details: ' + window.location.origin + '/dashboard');
+                window.open('mailto:?subject=' + subject + '&body=' + body);
+            });
+        });
+    }
+
+    // === QUOTES SECTION (tabbed) ===
+    function renderQuotes() {
+        var container = document.getElementById('quotesContent');
+        if (!container) return;
+
+        var unpaid = [];
+        var paid = [];
+        projectsData.forEach(function(p) {
+            var bucket = getOverviewBucket(getVisibleStage(p));
+            if (bucket === 'quotes') unpaid.push(p);
+            else paid.push(p);
+        });
+
+        var tabs = [
+            { key: 'all', label: 'All', items: projectsData },
+            { key: 'unpaid', label: 'Unpaid', items: unpaid },
+            { key: 'paid', label: 'Paid', items: paid },
+        ];
+
+        var html = '<div class="page-tabs" id="quotesTabs">';
+        tabs.forEach(function(tab, idx) {
+            html += '<button class="page-tab' + (idx === 0 ? ' active' : '') + '" data-tab="' + tab.key + '">' + tab.label + '<span class="tab-count">' + tab.items.length + '</span></button>';
+        });
+        html += '</div>';
+
+        tabs.forEach(function(tab, idx) {
+            html += '<div class="tab-panel' + (idx === 0 ? ' active' : '') + '" id="quotes-panel-' + tab.key + '">';
+            if (tab.items.length === 0) {
+                html += '<div class="empty-state"><p>No quotes in this category.</p></div>';
+            } else {
+                html += buildListingTable(tab.items);
+            }
+            html += '</div>';
+        });
+
+        container.innerHTML = html;
+
+        container.querySelectorAll('#quotesTabs .page-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                container.querySelectorAll('#quotesTabs .page-tab').forEach(function(t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+                container.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                var panel = container.querySelector('#quotes-panel-' + tab.dataset.tab);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        bindTableRowClicks(container);
+    }
+
+    // === LISTINGS SECTION (tabbed by stage) ===
+    function renderPrepping() {
+        var container = document.getElementById('preppingContent');
+        if (!container) return;
+
+        // Group all projects by visible stage
+        var buckets = { quote_received: [], vendors_scheduled: [], schedule_call: [], prep_in_progress: [], photos_ready: [], market_ready: [] };
+        projectsData.forEach(function(p) {
+            var stage = getVisibleStage(p);
+            if (buckets[stage]) buckets[stage].push(p);
+            else buckets.quote_received.push(p);
+        });
+
+        var tabs = [
+            { key: 'all', label: 'All', items: projectsData },
+            { key: 'prep_in_progress', label: 'Prepping', items: buckets.prep_in_progress.concat(buckets.schedule_call) },
+            { key: 'photos_ready', label: 'Live', items: buckets.photos_ready },
+            { key: 'market_ready', label: 'Deinstall', items: buckets.market_ready },
+        ];
+
+        var html = '<div class="page-tabs" id="preppingTabs">';
+        tabs.forEach(function(tab, idx) {
+            html += '<button class="page-tab' + (idx === 0 ? ' active' : '') + '" data-tab="' + tab.key + '">' + tab.label + '<span class="tab-count">' + tab.items.length + '</span></button>';
+        });
+        html += '</div>';
+
+        tabs.forEach(function(tab, idx) {
+            html += '<div class="tab-panel' + (idx === 0 ? ' active' : '') + '" id="prepping-panel-' + tab.key + '">';
+            if (tab.items.length === 0) {
+                html += '<div class="empty-state"><p>No listings in this stage.</p></div>';
+            } else {
+                html += buildListingTable(tab.items);
+            }
+            html += '</div>';
+        });
+
+        container.innerHTML = html;
+
+        container.querySelectorAll('#preppingTabs .page-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                container.querySelectorAll('#preppingTabs .page-tab').forEach(function(t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+                container.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                var panel = container.querySelector('#prepping-panel-' + tab.dataset.tab);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        bindTableRowClicks(container);
+    }
+
     // === LISTING DETAIL ===
     function openListingDetail(projectId) {
         var project = projectsData.find(function(p) { return p.id === projectId; });
         if (!project) return;
 
+        // Track which section we came from
+        var activeNav = document.querySelector('.section-nav-btn.active');
+        if (activeNav) lastSection = activeNav.dataset.section;
+        else lastSection = 'overview';
+
         showSection('detail');
-        document.getElementById('contentTitle').textContent = 'Listing Detail';
-        // Deselect all nav buttons for detail view
-        document.querySelectorAll('.section-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+        // Full-page takeover: hide sidebar
+        document.getElementById('dashboard').classList.add('detail-open');
+        // Replace title with close button
+        var titleEl = document.getElementById('contentTitle');
+        titleEl.innerHTML = '<button class="detail-close" id="detailCloseBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</button>';
 
         var container = document.getElementById('detailContent');
         var services = [];
         try { services = JSON.parse(project.services || '[]'); } catch (e) {}
         var schedule = {};
         try { schedule = JSON.parse(project.schedule || '{}'); } catch (e) {}
-        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
 
-        var h = '<button class="detail-back" id="detailBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg> Back to listings</button>';
+        var stage = getVisibleStage(project);
+        var stages = getStagesForPackage(project.stagingPackage);
+        var currentIdx = stages.indexOf(stage);
+        if (currentIdx === -1) currentIdx = 0;
 
-        // Header
-        h += '<div class="detail-header">';
-        h += '<div class="detail-address">' + esc(project.address) + '</div>';
-        h += '<div class="detail-meta">';
-        if (created) h += '<span>Created ' + created + '</span>';
-        if (project.market) h += '<span>' + esc(project.market.charAt(0).toUpperCase() + project.market.slice(1)) + '</span>';
-        if (project.totalPrice) h += '<span>' + formatPrice(project.totalPrice) + '</span>';
+        // Parse address into parts
+        var addrParts = (project.address || '').split(',');
+        var streetAddr = addrParts[0] ? addrParts[0].trim() : project.address || '';
+        var cityState = addrParts.length >= 2 ? addrParts.slice(1).join(',').trim() : '';
+
+        // Build sub-nav items (matches app.guesthouseshop.com listing nav)
+        var subNavItems = [
+            { key: 'overview', label: 'Overview', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
+            { key: 'messages', label: 'Messages', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' },
+            { key: 'photos', label: 'Photos', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="3" x2="8" y2="21"/></svg>' },
+            { key: 'services', label: 'Add Services', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>' },
+            { key: 'payment-history', label: 'Payments', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>' },
+        ];
+
+        // === LEFT: Sub-nav ===
+        var h = '<div class="detail-layout">';
+        h += '<div class="detail-subnav">';
+        subNavItems.forEach(function(item, idx) {
+            h += '<button class="detail-subnav-btn' + (idx === 0 ? ' active' : '') + '" data-detail-tab="' + item.key + '">' + item.icon + ' ' + esc(item.label) + '</button>';
+        });
+        h += '</div>';
+
+        // === CENTER: Main content ===
+        h += '<div class="detail-main">';
+
+        // Map header
+        h += '<div class="detail-map-header">';
+        h += '<img class="detail-map-img" src="" alt="Map" data-address="' + esc(project.address) + '">';
+        h += '<div class="detail-map-overlay">';
+        h += '<div class="detail-map-address">' + esc(streetAddr) + '</div>';
+        if (cityState) h += '<div class="detail-map-city">' + esc(cityState) + '</div>';
         h += '</div></div>';
 
-        // Stage tracker (only for full or consult staging)
+        // Stage tracker
         if (project.stagingPackage === 'full' || project.stagingPackage === 'consult' || project.stagingPackage === 'inperson') {
             h += '<div class="detail-tracker">' + buildStageTracker(project.stage || 'quote_received', project.stagingPackage) + '</div>';
         }
 
-        // Grid
-        h += '<div class="detail-grid">';
+        // === Detail tab panels ===
 
-        // Property details
-        h += '<div class="detail-card">';
-        h += '<div class="detail-card-title">Property Details</div>';
-        if (project.propertySize) h += '<div class="detail-row"><span class="detail-row-label">Size</span><span class="detail-row-value">' + esc(project.propertySize) + '</span></div>';
-        if (project.propertyStatus) h += '<div class="detail-row"><span class="detail-row-label">Status</span><span class="detail-row-value">' + esc(project.propertyStatus) + '</span></div>';
-        if (project.sqft) h += '<div class="detail-row"><span class="detail-row-label">Sq Ft</span><span class="detail-row-value">' + esc(project.sqft) + '</span></div>';
-        if (project.rooms) h += '<div class="detail-row"><span class="detail-row-label">Rooms</span><span class="detail-row-value">' + esc(project.rooms) + '</span></div>';
-        if (project.targetPrice) h += '<div class="detail-row"><span class="detail-row-label">Target Price</span><span class="detail-row-value">' + formatPrice(project.targetPrice) + '</span></div>';
-        if (project.installDate) h += '<div class="detail-row"><span class="detail-row-label">Install Date</span><span class="detail-row-value">' + esc(project.installDate) + '</span></div>';
-        if (project.notes) h += '<div class="detail-row"><span class="detail-row-label">Notes</span><span class="detail-row-value">' + esc(project.notes) + '</span></div>';
-        h += '</div>';
+        // -- Overview panel (default) --
+        h += '<div class="detail-tab-panel active" id="detail-panel-overview">';
+        h += '<div class="detail-timeline-title">Timeline</div>';
 
-        // Schedule / Services
-        var schedKeys = Object.keys(schedule);
-        if (schedKeys.length > 0) {
-            h += '<div class="detail-card">';
-            h += '<div class="detail-card-title">Schedule</div>';
-            h += '<div class="schedule-timeline">';
-            // Sort by date
-            schedKeys.sort(function(a, b) { return (schedule[a].date || '') > (schedule[b].date || '') ? 1 : -1; });
-            schedKeys.forEach(function(key, idx) {
-                var item = schedule[key];
-                var agentStatus = item.status === 'awarded' ? 'scheduled' : 'pending';
-                var statusCls = item.status === 'awarded' ? 'awarded' : 'pending';
-                h += '<div class="schedule-item">';
-                h += '<div class="schedule-dot-col"><div class="schedule-dot ' + (item.status === 'awarded' ? 'awarded' : 'active') + '"></div>';
-                if (idx < schedKeys.length - 1) h += '<div class="schedule-line-seg"></div>';
-                h += '</div>';
-                h += '<div class="schedule-info">';
-                h += '<div class="schedule-label">' + esc(item.label) + '</div>';
-                h += '<div class="schedule-date">' + esc(item.date) + '</div>';
-                h += '<span class="schedule-status ' + statusCls + '">' + esc(agentStatus) + '</span>';
+        // Build timeline items from stages
+        var upcoming = [];
+        var completed = [];
+        stages.forEach(function(s, idx) {
+            var item = { stage: s, label: STAGE_LABELS[s] || s };
+            if (idx < currentIdx) completed.push(item);
+            else upcoming.push(item);
+        });
+
+        // Upcoming section
+        h += '<div class="detail-tl-section">';
+        h += '<div class="detail-tl-section-label">Upcoming</div>';
+        if (upcoming.length === 0) {
+            h += '<div class="detail-tl-empty">All stages completed</div>';
+        } else {
+            upcoming.forEach(function(item, idx) {
+                var isCurrent = idx === 0;
+                h += '<div class="detail-tl-item' + (isCurrent ? '' : '') + '">';
+                if (isCurrent) {
+                    h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D69B43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>';
+                } else {
+                    h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div>';
+                }
+                h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(item.label) + '</div>';
+                if (isCurrent) h += '<div class="detail-tl-date">In progress</div>';
                 h += '</div></div>';
             });
-            h += '</div></div>';
+        }
+        h += '</div>';
+
+        // Completed section
+        h += '<div class="detail-tl-section">';
+        h += '<div class="detail-tl-section-label">Completed</div>';
+        if (completed.length === 0) {
+            h += '<div class="detail-tl-empty">No completed stages yet</div>';
         } else {
-            // Services card instead
-            h += '<div class="detail-card">';
-            h += '<div class="detail-card-title">Services & Pricing</div>';
-            if (project.stagingPackage && project.stagingPackage !== 'none') {
-                var pkgNames = { consult: 'Virtual Design Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
-                h += '<div class="detail-row"><span class="detail-row-label">' + (pkgNames[project.stagingPackage] || project.stagingPackage) + '</span><span class="detail-row-value">' + formatPrice(project.stagingPrice || 0) + '</span></div>';
-            }
-            services.forEach(function(s) {
-                h += '<div class="detail-row"><span class="detail-row-label">' + esc(s.name) + '</span><span class="detail-row-value">' + formatPrice(s.price) + '</span></div>';
+            completed.forEach(function(item) {
+                h += '<div class="detail-tl-item completed">';
+                h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#067647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
+                h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(item.label) + '</div></div>';
+                h += '</div>';
             });
-            h += '<div class="detail-row detail-row-total"><span class="detail-row-label">Total</span><span class="detail-row-value">' + formatPrice(project.totalPrice || 0) + '</span></div>';
+        }
+        h += '</div>';
+
+        // Add task button
+        h += '<button class="detail-add-task" id="addTaskBtn">+ Add task</button>';
+
+        h += '</div>'; // end overview panel
+
+        // -- Messages panel (in-app chat) --
+        h += '<div class="detail-tab-panel" id="detail-panel-messages">';
+        h += '<div class="detail-ov-title">Messages</div>';
+        h += '<div class="msg-panel">';
+        h += '<div class="msg-thread" id="msgThread">';
+
+        // System welcome message
+        h += '<div class="msg-system">';
+        h += '<div class="msg-system-icon"><svg viewBox="0 0 24 28" fill="#fff"><path d="M19.3 10.4C21.9 9.8 23.6 7.1 23 4.5 22.3 1.8 19.7.2 17 .8 14.4 1.4 12.8 4.1 13.4 6.7 14 9.4 16.7 11 19.3 10.4z"/><path d="M0 8.5V19.1C0 23.3 4.3 26.8 9.7 26.9V.7C4.3.8 0 4.3 0 8.5z"/><path d="M13.4 26.9C18.7 26.8 23.1 23.3 23.1 19.1V14.4H13.4V26.9z"/></svg></div>';
+        h += '<div><div class="msg-system-text">Welcome to your listing for ' + esc(streetAddr) + '. Your Guest House team will message you here with updates.</div></div>';
+        h += '</div>';
+
+        // If install date exists, show a system reminder
+        if (project.installDate) {
+            h += '<div class="msg-system">';
+            h += '<div class="msg-system-icon"><svg viewBox="0 0 24 28" fill="#fff"><path d="M19.3 10.4C21.9 9.8 23.6 7.1 23 4.5 22.3 1.8 19.7.2 17 .8 14.4 1.4 12.8 4.1 13.4 6.7 14 9.4 16.7 11 19.3 10.4z"/><path d="M0 8.5V19.1C0 23.3 4.3 26.8 9.7 26.9V.7C4.3.8 0 4.3 0 8.5z"/><path d="M13.4 26.9C18.7 26.8 23.1 23.3 23.1 19.1V14.4H13.4V26.9z"/></svg></div>';
+            h += '<div><div class="msg-system-text">Reminder: Your install for ' + esc(streetAddr) + ' is scheduled for ' + esc(project.installDate) + '</div>';
+            h += '<button class="msg-system-action">Complete now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button></div>';
             h += '</div>';
         }
 
-        h += '</div>'; // .detail-grid
+        h += '</div>'; // end .msg-thread
+
+        // Message input
+        h += '<div class="msg-input-row">';
+        h += '<button class="msg-attach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>';
+        h += '<input type="text" class="msg-input" id="msgInput" placeholder="type a message here">';
+        h += '<button class="msg-send-btn" id="msgSendBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>';
+        h += '</div>';
+
+        h += '</div>'; // end .msg-panel
+        h += '</div>';
+
+        // -- Order History panel --
+        h += '<div class="detail-tab-panel" id="detail-panel-payment-history">';
+        h += '<div class="detail-timeline-title">Payments</div>';
+        var created = project.created ? new Date(project.created).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+        var pkgNames = { consult: 'Virtual Design Consult', inperson: 'In-Person Styling', full: 'Full Staging' };
+        h += '<div class="detail-tl-item">';
+        h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>';
+        h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(pkgNames[project.stagingPackage] || project.stagingPackage || 'Quote') + '</div>';
+        if (created) h += '<div class="detail-tl-date">' + created + '</div>';
+        h += '</div>';
+        if (project.totalPrice) h += '<div style="font-weight:600;font-size:14px;">' + formatPrice(project.totalPrice) + '</div>';
+        h += '</div>';
+        services.forEach(function(s) {
+            h += '<div class="detail-tl-item">';
+            h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/></svg></div>';
+            h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(s.name) + '</div>';
+            h += '<div class="detail-tl-date">' + formatPrice(s.price) + '</div></div>';
+            h += '</div>';
+        });
+        h += '</div>';
+
+        // -- Services panel --
+        h += '<div class="detail-tab-panel" id="detail-panel-services">';
+        h += '<div class="detail-timeline-title">Services & Pricing</div>';
+        if (project.stagingPackage && project.stagingPackage !== 'none') {
+            h += '<div class="detail-tl-item">';
+            h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>';
+            h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(pkgNames[project.stagingPackage] || project.stagingPackage) + '</div>';
+            h += '<div class="detail-tl-date">' + formatPrice(project.stagingPrice || 0) + '</div></div>';
+            h += '</div>';
+        }
+        services.forEach(function(s) {
+            h += '<div class="detail-tl-item">';
+            h += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/></svg></div>';
+            h += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(s.name) + '</div>';
+            h += '<div class="detail-tl-date">' + formatPrice(s.price) + '</div></div>';
+            h += '</div>';
+        });
+        h += '<div class="detail-tl-item" style="font-weight:600;">';
+        h += '<div class="detail-tl-icon"></div>';
+        h += '<div class="detail-tl-info"><div class="detail-tl-label">Total</div></div>';
+        h += '<div style="font-weight:700;font-size:14px;">' + formatPrice(project.totalPrice || 0) + '</div>';
+        h += '</div>';
+        h += '</div>';
+
+        // -- Photos panel --
+        h += '<div class="detail-tab-panel" id="detail-panel-photos">';
+        h += '<div class="detail-ov-title">Photos</div>';
+        h += '<div class="detail-empty-state"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+        h += '<p style="margin-top:12px;color:var(--color-text-secondary);font-size:14px;">Photos will appear here once your listing is photographed.</p></div>';
+        h += '</div>';
+
+        h += '</div>'; // end .detail-main
+
+        // === RIGHT: People sidebar ===
+        h += '<div class="detail-people">';
+
+        // Auto-add agent
+        var agentName = agentData ? (agentData.name || agentData.email || 'Agent') : 'Agent';
+        var agentInitials = agentName.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().substring(0, 2);
+        var agentCompany = agentData ? (agentData.brokerage || '') : '';
+        h += '<div class="detail-person">';
+        h += '<div class="detail-person-avatar">' + esc(agentInitials) + '</div>';
+        h += '<div class="detail-person-info">';
+        h += '<div class="detail-person-role">Agent</div>';
+        h += '<div class="detail-person-name">' + esc(agentName) + '</div>';
+        if (agentCompany) h += '<div class="detail-person-company">' + esc(agentCompany) + '</div>';
+        h += '</div>';
+        h += '<button class="detail-person-contact" data-email="' + esc(agentData ? agentData.email : '') + '">Contact</button>';
+        h += '</div>';
+
+        // Placeholder for additional people (stored in project.people JSON)
+        var people = [];
+        try { people = JSON.parse(project.people || '[]'); } catch (e) {}
+        people.forEach(function(person) {
+            var initials = (person.name || '?').split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().substring(0, 2);
+            h += '<div class="detail-person">';
+            h += '<div class="detail-person-avatar">' + esc(initials) + '</div>';
+            h += '<div class="detail-person-info">';
+            h += '<div class="detail-person-role">' + esc(person.role || 'Team') + '</div>';
+            h += '<div class="detail-person-name">' + esc(person.name || '') + '</div>';
+            if (person.company) h += '<div class="detail-person-company">' + esc(person.company) + '</div>';
+            h += '</div>';
+            h += '<button class="detail-person-contact" data-email="' + esc(person.email || '') + '">Contact</button>';
+            h += '</div>';
+        });
+
+        // Add person button + modal
+        h += '<button class="detail-add-person" id="addPersonBtn">+ Add person</button>';
+        h += '<div class="detail-add-modal" id="addPersonModal">';
+        h += '<input type="text" id="addPersonName" placeholder="Full name">';
+        h += '<input type="email" id="addPersonEmail" placeholder="Email">';
+        h += '<input type="text" id="addPersonCompany" placeholder="Company (optional)">';
+        h += '<select id="addPersonRole"><option value="Homeowner">Homeowner</option><option value="Agent">Agent</option><option value="Contractor">Contractor</option><option value="Designer">Designer</option><option value="Other">Other</option></select>';
+        h += '<div style="display:flex;gap:8px;margin-top:4px;">';
+        h += '<button class="detail-add-person" id="addPersonSave" style="flex:1;background:var(--color-onyx);color:#fff;border-color:var(--color-onyx);">Add</button>';
+        h += '<button class="detail-add-person" id="addPersonCancel" style="flex:1;">Cancel</button>';
+        h += '</div></div>';
+
+        h += '</div>'; // end .detail-people
+        h += '</div>'; // end .detail-layout
 
         container.innerHTML = h;
 
-        document.getElementById('detailBack').addEventListener('click', function() {
-            showSection('listings');
+        // Load map in header
+        var mapImg = container.querySelector('.detail-map-img');
+        if (mapImg && project.address) {
+            geocodeAndLoadMap(project.address, mapImg);
+        }
+
+        // Close button — restore sidebar + navigate back
+        document.getElementById('detailCloseBtn').addEventListener('click', function() {
+            document.getElementById('dashboard').classList.remove('detail-open');
+            var goTo = lastSection || 'overview';
+            showSection(goTo);
+            if (goTo === 'overview') renderOverview();
+            else if (goTo === 'quotes') renderQuotes();
+            else if (goTo === 'prepping') renderPrepping();
+        });
+
+        // Sub-nav tab switching
+        container.querySelectorAll('.detail-subnav-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                container.querySelectorAll('.detail-subnav-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                container.querySelectorAll('.detail-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                var panel = container.querySelector('#detail-panel-' + btn.dataset.detailTab);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        // Contact buttons
+        container.querySelectorAll('.detail-person-contact').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var email = btn.dataset.email;
+                if (email) window.open('mailto:' + email);
+            });
+        });
+
+        // Add person toggle
+        document.getElementById('addPersonBtn').addEventListener('click', function() {
+            document.getElementById('addPersonModal').classList.toggle('open');
+        });
+        document.getElementById('addPersonCancel').addEventListener('click', function() {
+            document.getElementById('addPersonModal').classList.remove('open');
+        });
+        document.getElementById('addPersonSave').addEventListener('click', function() {
+            var name = document.getElementById('addPersonName').value.trim();
+            var email = document.getElementById('addPersonEmail').value.trim();
+            var company = document.getElementById('addPersonCompany').value.trim();
+            var role = document.getElementById('addPersonRole').value;
+            if (!name) return;
+
+            // Add to people sidebar (in-memory for now)
+            var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().substring(0, 2);
+            var personHtml = '<div class="detail-person">';
+            personHtml += '<div class="detail-person-avatar">' + esc(initials) + '</div>';
+            personHtml += '<div class="detail-person-info">';
+            personHtml += '<div class="detail-person-role">' + esc(role) + '</div>';
+            personHtml += '<div class="detail-person-name">' + esc(name) + '</div>';
+            if (company) personHtml += '<div class="detail-person-company">' + esc(company) + '</div>';
+            personHtml += '</div>';
+            personHtml += '<button class="detail-person-contact" data-email="' + esc(email) + '">Contact</button>';
+            personHtml += '</div>';
+
+            var addBtn = document.getElementById('addPersonBtn');
+            addBtn.insertAdjacentHTML('beforebegin', personHtml);
+
+            // Bind new contact button
+            var newPerson = addBtn.previousElementSibling;
+            newPerson.querySelector('.detail-person-contact').addEventListener('click', function() {
+                if (email) window.open('mailto:' + email);
+            });
+
+            // Clear form and close modal
+            document.getElementById('addPersonName').value = '';
+            document.getElementById('addPersonEmail').value = '';
+            document.getElementById('addPersonCompany').value = '';
+            document.getElementById('addPersonModal').classList.remove('open');
+        });
+
+        // Add task button (placeholder)
+        document.getElementById('addTaskBtn').addEventListener('click', function() {
+            var taskName = prompt('Task name:');
+            if (!taskName) return;
+            var taskHtml = '<div class="detail-tl-item">';
+            taskHtml += '<div class="detail-tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg></div>';
+            taskHtml += '<div class="detail-tl-info"><div class="detail-tl-label">' + esc(taskName) + '</div><div class="detail-tl-date">Added just now</div></div>';
+            taskHtml += '</div>';
+            document.getElementById('addTaskBtn').insertAdjacentHTML('beforebegin', taskHtml);
+        });
+
+        // Messaging: send message handler
+        var msgInput = document.getElementById('msgInput');
+        var msgSendBtn = document.getElementById('msgSendBtn');
+        var msgThread = document.getElementById('msgThread');
+        var currentAgentEmail = agentData ? agentData.email : '';
+
+        function renderMsgBubble(msg) {
+            var isSelf = msg.senderEmail === currentAgentEmail;
+            var name = msg.senderName || 'Unknown';
+            var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().substring(0, 2);
+            var d = new Date(msg.createdAt);
+            var timeStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+            var html = '<div class="msg-bubble-wrap ' + (isSelf ? 'self' : 'other') + '">';
+            html += '<div class="msg-avatar">' + esc(initials) + '</div>';
+            html += '<div><div class="msg-bubble">' + esc(msg.text) + '</div>';
+            html += '<div class="msg-meta">' + esc(name) + ' &middot; ' + timeStr + '</div></div>';
+            html += '</div>';
+            return html;
+        }
+
+        // Load existing messages from API
+        (function loadMessages() {
+            var token = sessionStorage.getItem('agent_token');
+            if (!token) return;
+            fetch('/api/messages?action=list&token=' + encodeURIComponent(token) + '&projectId=' + encodeURIComponent(projectId))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(function(msg) {
+                            msgThread.insertAdjacentHTML('beforeend', renderMsgBubble(msg));
+                        });
+                        msgThread.scrollTop = msgThread.scrollHeight;
+                    }
+                })
+                .catch(function(err) { console.error('Failed to load messages:', err); });
+        })();
+
+        function sendMessage() {
+            var text = msgInput.value.trim();
+            if (!text) return;
+            msgSendBtn.disabled = true;
+
+            // Optimistically show the bubble
+            var senderName = agentData ? (agentData.name || 'You') : 'You';
+            var optimistic = { senderEmail: currentAgentEmail, senderName: senderName, text: text, createdAt: new Date().toISOString() };
+            msgThread.insertAdjacentHTML('beforeend', renderMsgBubble(optimistic));
+            msgInput.value = '';
+            msgThread.scrollTop = msgThread.scrollHeight;
+
+            // Send to API
+            var token = sessionStorage.getItem('agent_token');
+            fetch('/api/messages?action=send&token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ projectId: projectId, text: text }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) console.error('Message send error:', data.error);
+            })
+            .catch(function(err) { console.error('Message send failed:', err); })
+            .finally(function() { msgSendBtn.disabled = false; });
+        }
+
+        msgSendBtn.addEventListener('click', sendMessage);
+        msgInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
         });
     }
 
@@ -2174,7 +4012,10 @@
     // Go to listings from confirmation
     document.getElementById('confirmGoListings').addEventListener('click', function() {
         document.getElementById('quoteConfirmation').classList.remove('active');
-        showSection('listings');
+        showSection('overview');
+        renderOverview();
+        renderQuotes();
+        renderPrepping();
     });
 
     // Reset wizard
@@ -2203,7 +4044,28 @@
     }
 
     // === INIT ===
-    initAuth();
+    // >>> MOCK DATA BYPASS (remove for production) <<<
+    if (window.location.protocol === 'file:') {
+        agentData = { name: 'Alex Ryden', email: 'alex@example.com', firstName: 'Alex', market: 'arizona' };
+        var now = new Date();
+        var yesterday = new Date(now - 24*60*60*1000);
+        projectsData = [
+            { id: 'm1', address: '742 Evergreen Terrace, Scottsdale, AZ', stage: 'quote_received', stagingPackage: 'full', totalPrice: 4200, created: new Date(now - 3*24*60*60*1000).toISOString(), installDate: '', services: '[{"id":"staging"}]', updatedAt: '' },
+            { id: 'm2', address: '1600 Pennsylvania Ave, Phoenix, AZ', stage: 'quote_received', stagingPackage: 'inperson', totalPrice: 1800, created: new Date(now - 5*24*60*60*1000).toISOString(), installDate: new Date(now.getTime() + 5*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"mls-25"}]', updatedAt: '' },
+            { id: 'm3', address: '221B Baker St, Mesa, AZ', stage: 'vendors_scheduled', stagingPackage: 'full', totalPrice: 5100, created: new Date(now - 14*24*60*60*1000).toISOString(), installDate: '', services: '[{"id":"staging"},{"id":"deep-clean"},{"id":"mls-25"}]', updatedAt: yesterday.toISOString(), rooms: '' },
+            { id: 'm4', address: '350 Fifth Ave, Tempe, AZ', stage: 'prep_in_progress', stagingPackage: 'full', totalPrice: 6200, created: new Date(now - 21*24*60*60*1000).toISOString(), installDate: new Date(now.getTime() + 10*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"deep-clean"},{"id":"mls-25"},{"id":"move-3h"}]', updatedAt: '', rooms: 'Living Room, Bedroom' },
+            { id: 'm5', address: '10 Downing St, Chandler, AZ', stage: 'photos_ready', stagingPackage: 'full', totalPrice: 5500, created: new Date(now - 30*24*60*60*1000).toISOString(), installDate: new Date(now - 2*24*60*60*1000).toISOString().split('T')[0], services: '[{"id":"staging"},{"id":"mls-25"}]', updatedAt: yesterday.toISOString(), rooms: 'Living Room, Kitchen' },
+            { id: 'm6', address: '4 Privet Drive, Gilbert, AZ', stage: 'photos_ready', stagingPackage: 'consult', totalPrice: 800, created: new Date(now - 45*24*60*60*1000).toISOString(), installDate: new Date(now - 10*24*60*60*1000).toISOString().split('T')[0], services: '[]', updatedAt: '' },
+        ];
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('dashboard').classList.add('visible');
+        renderSidebar();
+        renderOverview();
+        renderQuotes();
+        renderPrepping();
+    } else {
+        initAuth();
+    }
 
 })();
 </script>
