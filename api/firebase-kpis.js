@@ -239,14 +239,15 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Total Active Agents: distinct contacts associated with closedwon deals in trailing 12 months
+    // Total Active Agents: distinct agent contacts associated with closedwon deals
+    // in trailing 12 months (company-wide, ignores market filter)
     var activeAgents = 0;
     if (HUBSPOT_TOKEN) {
       var t12Start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()).getTime();
       var t12End = now.getTime();
       var activeContactIds = new Set();
 
-      // Step 1: Collect all closedwon deal IDs in trailing 12 months
+      // Step 1: Collect ALL closedwon deal IDs in trailing 12 months (no market filter)
       var allDealIds = [];
       var aaAfter = 0;
       var aaMore = true;
@@ -262,7 +263,7 @@ module.exports = async function handler(req, res) {
             { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' }]) },
             { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: '13174420' }]) },
           ],
-          properties: ['dealname', 'market'],
+          properties: ['dealname'],
           limit: 100,
           after: aaAfter,
         };
@@ -279,33 +280,8 @@ module.exports = async function handler(req, res) {
         if (aaRes.ok) {
           var aaData = await aaRes.json();
           (aaData.results || []).forEach(function(deal) {
-            // Market filter
-            if (market === 'nationwide') {
-              var props = deal.properties || {};
-              var dm = (props.market || '').toLowerCase();
-              var dn = props.dealname || '';
-              var coCA = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'];
-              if (coCA.some(function(m) { return dm.indexOf(m) !== -1; })) return;
-              var sm = dn.match(/,\s*([A-Z]{2})\s*(\(|$)/);
-              if (sm && ['CO', 'CA'].indexOf(sm[1]) !== -1) return;
-            } else if (market && market !== 'all') {
-              var props2 = deal.properties || {};
-              var dm2 = (props2.market || '').toLowerCase();
-              var dn2 = props2.dealname || '';
-              var mMap = { colorado: ['denver', 'boulder', 'colorado'], california: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] };
-              var sMap = { colorado: ['CO'], california: ['CA'] };
-              var mKeys = mMap[market.toLowerCase()] || [];
-              var sKeys = sMap[market.toLowerCase()] || [];
-              var matched = mKeys.some(function(m) { return dm2.indexOf(m) !== -1; });
-              if (!matched) {
-                var sm2 = dn2.match(/,\s*([A-Z]{2})\s*(\(|$)/);
-                matched = sm2 && sKeys.indexOf(sm2[1]) !== -1;
-              }
-              if (!matched) return;
-            }
             allDealIds.push(deal.id);
           });
-
           if (aaData.paging && aaData.paging.next && aaData.paging.next.after) {
             aaAfter = aaData.paging.next.after;
           } else {
@@ -332,13 +308,46 @@ module.exports = async function handler(req, res) {
           var assocData = await assocRes.json();
           (assocData.results || []).forEach(function(item) {
             (item.to || []).forEach(function(to) {
-              activeContactIds.add(to.toObjectId);
+              activeContactIds.add(String(to.toObjectId));
             });
           });
         }
       }
 
-      activeAgents = activeContactIds.size;
+      // Step 3: Filter to only agent contacts by checking job titles
+      if (activeContactIds.size > 0) {
+        var contactIdArr = Array.from(activeContactIds);
+        var verifiedAgentCount = 0;
+
+        for (var ci = 0; ci < contactIdArr.length; ci += 100) {
+          var contactBatch = contactIdArr.slice(ci, ci + 100);
+          var cBatchBody = {
+            properties: ['email', 'jobtitle', 'role'],
+            inputs: contactBatch.map(function(id) { return { id: id }; }),
+          };
+
+          var cRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cBatchBody),
+          });
+
+          if (cRes.ok) {
+            var cData = await cRes.json();
+            (cData.results || []).forEach(function(contact) {
+              var props = contact.properties || {};
+              var roleStr = ((props.jobtitle || '') + ' ' + (props.role || '')).toLowerCase();
+              var isAgent = agentKeywords.some(function(kw) { return roleStr.indexOf(kw) !== -1; });
+              if (isAgent) verifiedAgentCount++;
+            });
+          }
+        }
+
+        activeAgents = verifiedAgentCount;
+      }
     }
 
     var result = {
