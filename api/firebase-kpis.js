@@ -327,7 +327,38 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      activeAgents = activeContactIds.size;
+      // Step 3: Exclude homeowners by checking HubSpot role field
+      if (activeContactIds.size > 0) {
+        var contactIdArr = Array.from(activeContactIds);
+        var homeownerIds = new Set();
+
+        for (var ci = 0; ci < contactIdArr.length; ci += 100) {
+          var contactBatch = contactIdArr.slice(ci, ci + 100);
+          var cRes = await hsRetry('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + HUBSPOT_TOKEN,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              properties: ['role'],
+              inputs: contactBatch.map(function(id) { return { id: id }; }),
+            }),
+          });
+
+          if (cRes.ok) {
+            var cData = await cRes.json();
+            (cData.results || []).forEach(function(contact) {
+              var role = ((contact.properties || {}).role || '').toLowerCase();
+              if (role === 'homeowner') {
+                homeownerIds.add(String(contact.id));
+              }
+            });
+          }
+        }
+
+        activeAgents = activeContactIds.size - homeownerIds.size;
+      }
     }
 
     var result = {
