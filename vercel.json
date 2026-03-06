@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "git": {
+    "deploymentEnabled": false
+  },
   "crons": [
     {
       "path": "/api/bidding?action=check-deadlines&secret=${CRON_SECRET}",
