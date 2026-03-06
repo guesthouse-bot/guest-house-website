@@ -239,7 +239,7 @@ module.exports = async function handler(req, res) {
     }
 
     // Total Active Agents: distinct contacts associated with closedwon deals
-    // in trailing 12 months (company-wide, ignores market filter)
+    // in trailing 12 months, filtered by market
     var activeAgents = 0;
     if (HUBSPOT_TOKEN) {
       // Retry helper for HubSpot rate limiting
@@ -256,12 +256,43 @@ module.exports = async function handler(req, res) {
         }
       }
 
+      // Market filtering for deals (same logic as hubspot-kpis.js)
+      var dealMarketToValues = {
+        colorado: { states: ['CO'], markets: ['denver', 'boulder', 'colorado'] },
+        california: { states: ['CA'], markets: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] },
+        arizona: { states: ['AZ'], markets: ['phoenix', 'scottsdale', 'arizona', 'az'] },
+      };
+      var allKnownMarketKeywords = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc', 'phoenix', 'scottsdale', 'arizona', 'az'];
+      var allKnownStates = ['CO', 'CA', 'AZ'];
+
+      function isDealInKnownMarket(deal) {
+        var props = deal.properties || {};
+        var dealMkt = (props.market || '').toLowerCase();
+        if (allKnownMarketKeywords.some(function(m) { return dealMkt.indexOf(m) !== -1; })) return true;
+        var name = props.dealname || '';
+        var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+        if (stateMatch && allKnownStates.indexOf(stateMatch[1]) !== -1) return true;
+        return false;
+      }
+
+      function isDealInMarket(deal, mkt) {
+        var mapping = dealMarketToValues[mkt.toLowerCase()];
+        if (!mapping) return false;
+        var props = deal.properties || {};
+        var dealMkt = (props.market || '').toLowerCase();
+        if (mapping.markets.some(function(m) { return dealMkt.indexOf(m) !== -1; })) return true;
+        var name = props.dealname || '';
+        var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
+        if (stateMatch && mapping.states.indexOf(stateMatch[1]) !== -1) return true;
+        return false;
+      }
+
       var t12Start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()).getTime();
       var t12End = now.getTime();
       var activeContactIds = new Set();
 
-      // Step 1: Collect ALL closedwon deal IDs in trailing 12 months (no market filter)
-      var allDealIds = [];
+      // Step 1: Collect closedwon deals in trailing 12 months
+      var allDeals = [];
       var aaAfter = null;
       var aaMore = true;
 
@@ -276,7 +307,7 @@ module.exports = async function handler(req, res) {
             { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: 'closedwon' }]) },
             { filters: aaFilters.concat([{ propertyName: 'dealstage', operator: 'EQ', value: '13174420' }]) },
           ],
-          properties: ['dealname'],
+          properties: ['dealname', 'market'],
           limit: 100,
         };
         if (aaAfter) aaBody.after = aaAfter;
@@ -293,7 +324,7 @@ module.exports = async function handler(req, res) {
         if (aaRes.ok) {
           var aaData = await aaRes.json();
           (aaData.results || []).forEach(function(deal) {
-            allDealIds.push(deal.id);
+            allDeals.push(deal);
           });
           if (aaData.paging && aaData.paging.next && aaData.paging.next.after) {
             aaAfter = aaData.paging.next.after;
@@ -304,6 +335,15 @@ module.exports = async function handler(req, res) {
           aaMore = false;
         }
       }
+
+      // Filter deals by market
+      var filteredDeals = allDeals;
+      if (market === 'nationwide') {
+        filteredDeals = allDeals.filter(function(deal) { return !isDealInKnownMarket(deal); });
+      } else if (market && market !== 'all') {
+        filteredDeals = allDeals.filter(function(deal) { return isDealInMarket(deal, market); });
+      }
+      var allDealIds = filteredDeals.map(function(deal) { return deal.id; });
 
       // Step 2: Batch-fetch contact associations for all deals (v4 batch API)
       for (var bi = 0; bi < allDealIds.length; bi += 100) {
