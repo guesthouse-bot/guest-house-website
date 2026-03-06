@@ -90,14 +90,14 @@ module.exports = async function handler(req, res) {
     var wToken = tokData.access_token;
 
     // Step 1: Create the sheet tab
-    var addRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + ':batchUpdate', {
+    var addRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + ':batchUpdate', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + wToken, 'Content-Type': 'application/json' },
       body: JSON.stringify({ requests: [{ addSheet: { properties: { title: 'Notable Payments' } } }] }),
     });
     var addData = await addRes.json();
     if (!addRes.ok && !(addData.error && addData.error.message && addData.error.message.indexOf('already exists') !== -1)) {
-      return res.status(addRes.status).json({ error: 'addSheet: ' + (addData.error ? addData.error.message : JSON.stringify(addData)), sheet_id: RENEWAL_SHEET_ID });
+      return res.status(addRes.status).json({ error: 'addSheet: ' + (addData.error ? addData.error.message : JSON.stringify(addData)), sheet_id: SHEET_ID });
     }
 
     // Step 2: Write header + data
@@ -113,7 +113,7 @@ module.exports = async function handler(req, res) {
       ['November 25, 2025', 'James Choi', '4310 East Gemini Place, Chandler, AZ 85249', 4800.60, 'Cleared'],
       ['November 4, 2025', 'Andrew Norman', '836 Carlsbad Street, San Diego, CA 92114', 2950, 'Cleared'],
     ];
-    var writeRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + encodeURIComponent("'Notable Payments'!A1:E11") + '?valueInputOption=USER_ENTERED', {
+    var writeRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + encodeURIComponent("'Notable Payments'!A1:E11") + '?valueInputOption=USER_ENTERED', {
       method: 'PUT',
       headers: { 'Authorization': 'Bearer ' + wToken, 'Content-Type': 'application/json' },
       body: JSON.stringify({ range: "'Notable Payments'!A1:E11", majorDimension: 'ROWS', values: rows }),
@@ -196,7 +196,7 @@ module.exports = async function handler(req, res) {
     var serviceAccount3 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
     var token3 = await getAccessToken(serviceAccount3);
     var nRange = encodeURIComponent("'Notable Payments'!A1:E500");
-    var nUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + nRange + '?valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
+    var nUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + nRange + '?valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
     try {
       var nRes = await fetch(nUrl, { headers: { 'Authorization': 'Bearer ' + token3 } });
       if (!nRes.ok) {
