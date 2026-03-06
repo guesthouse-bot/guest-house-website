@@ -770,6 +770,38 @@
         .kpi-card-full {
             grid-column: 1 / -1;
         }
+        .kpi-market-trend {
+            margin-top: 8px;
+        }
+        .kpi-market-trend svg {
+            width: 100%;
+            display: block;
+        }
+        .market-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 8px;
+        }
+        .market-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+        }
+        .market-legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .market-legend-val {
+            font-weight: 600;
+        }
+        .market-legend-yoy {
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
         .traffic-sources-chart {
             margin-top: 12px;
         }
@@ -1419,6 +1451,7 @@
         <nav class="section-nav">
             <a href="#section-company" class="section-nav-link active">Company</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
+            <a href="#section-customer" class="section-nav-link">Customer</a>
             <a href="#section-operations" class="section-nav-link">Operations</a>
         </nav>
     </section>
@@ -1622,23 +1655,6 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">New Agent Signups</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
-                        <span class="kpi-change" id="kpi-accounts-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Total Active Agents (Trailing 12-Months)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
-                        <span class="kpi-change" id="kpi-active-agents-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
-                </div>
-                <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-quotes">&mdash;</span>
@@ -1693,6 +1709,51 @@
                     <div class="kpi-sparkline" id="kpi-renewal-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Sales cycle</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
+                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer KPIs -->
+    <section id="section-customer" class="kpi-section-grey">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Customer KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">New Agent Signups</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
+                        <span class="kpi-change" id="kpi-accounts-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Active Agents (Trailing 12-Months)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-agents-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings / Agent (12-Month)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-per-agent">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-per-agent-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-per-agent-prev"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">AOV (at close)</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
@@ -1711,69 +1772,12 @@
                     <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Sales cycle</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
-                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Customer KPIs -->
-    <section id="section-customers">
-        <div class="kpi-section">
-            <div class="kpi-section-header">
-                <h2>Customer KPIs</h2>
-            </div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">Active Users</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-active-users">&mdash;</span>
-                        <span class="kpi-change" id="kpi-active-users-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-active-users-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-active-users-sparkline"></div>
+                    <div class="kpi-label">Bookings by Market (12-Mo Cumulative)</div>
+                    <div id="kpi-bookings-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Quotes / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-quotes-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-quotes-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-quotes-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-quotes-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bookings / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-bookings-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-bookings-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-bookings-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-bookings-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Revenue / User</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-rev-user">&mdash;</span>
-                        <span class="kpi-change" id="kpi-rev-user-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-rev-user-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-rev-user-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">ARPU</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-arpu">&mdash;</span>
-                        <span class="kpi-change" id="kpi-arpu-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-arpu-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-arpu-sparkline"></div>
+                    <div class="kpi-label">Revenue by Market (12-Mo Cumulative)</div>
+                    <div id="kpi-revenue-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
             </div>
         </div>
@@ -2685,7 +2689,7 @@
         }
 
         async function fetchFirebaseKPIs(filters, isCompare) {
-            if (!isCompare) setLoading(['kpi-accounts', 'kpi-active-agents']);
+            if (!isCompare) setLoading(['kpi-accounts', 'kpi-active-agents', 'kpi-bookings-per-agent']);
             try {
                 var params = buildParams(filters);
                 var response = await fetch('/api/firebase-kpis?' + params.toString());
@@ -2698,14 +2702,15 @@
                     currentData.firebase = data;
                     setKPI('kpi-accounts', formatNumber(data.accounts_created));
                     setKPI('kpi-active-agents', formatNumber(data.active_agents));
+                    setKPI('kpi-bookings-per-agent', data.bookings_per_agent !== null ? data.bookings_per_agent.toFixed(2) : '\u2014');
                 }
                 return data;
             } catch (err) {
                 console.error('Firebase KPI fetch error:', err);
-                if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); }
+                if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); setKPI('kpi-bookings-per-agent', 'Error'); }
                 return null;
             } finally {
-                if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents']);
+                if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents', 'kpi-bookings-per-agent']);
             }
         }
 
@@ -3000,6 +3005,134 @@
                 return null;
             } finally {
                 if (!isCompare) clearLoading(ids);
+            }
+        }
+
+        // ---- Market trend charts ----
+        var marketColors = { colorado: '#2563eb', california: '#f59e0b', arizona: '#10b981', nationwide: '#8b5cf6' };
+        var marketLabels = { colorado: 'CO', california: 'CA', arizona: 'AZ', nationwide: 'Other' };
+        var marketKeys = ['colorado', 'california', 'arizona', 'nationwide'];
+
+        function buildMonthDates(numMonths) {
+            var now = new Date();
+            var dates = [];
+            for (var i = numMonths - 1; i >= 0; i--) {
+                var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                var end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+                dates.push({ from: d.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) });
+            }
+            return dates;
+        }
+
+        function monthDatesToLabels(dates) {
+            return dates.map(function(d) {
+                var dt = new Date(d.from);
+                var m = dt.toLocaleString('default', { month: 'short' });
+                var y = String(dt.getFullYear()).slice(2);
+                return m + ' ' + y;
+            });
+        }
+
+        function toCumulative(arr) {
+            var cum = [], total = 0;
+            for (var i = 0; i < arr.length; i++) { total += arr[i]; cum.push(total); }
+            return cum;
+        }
+
+        function renderMarketSVG(containerId, seriesMap, labels, formatter) {
+            var el = document.getElementById(containerId);
+            if (!el) return;
+            var w = 280, h = 120, pad = { top: 10, right: 10, bottom: 20, left: 5 };
+            var allVals = [];
+            marketKeys.forEach(function(mk) { if (seriesMap[mk]) seriesMap[mk].forEach(function(v) { allVals.push(v); }); });
+            if (allVals.length === 0) { el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">No data</span>'; return; }
+            var maxVal = Math.max.apply(null, allVals) || 1;
+            var n = labels.length;
+            var xStep = (w - pad.left - pad.right) / Math.max(n - 1, 1);
+
+            var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg">';
+            // X-axis labels
+            for (var li = 0; li < n; li += Math.max(1, Math.floor(n / 6))) {
+                var lx = pad.left + li * xStep;
+                svg += '<text x="' + lx + '" y="' + (h - 2) + '" font-size="7" fill="#999" text-anchor="middle">' + labels[li] + '</text>';
+            }
+            // Lines
+            marketKeys.forEach(function(mk) {
+                var data = seriesMap[mk];
+                if (!data || data.length === 0) return;
+                var points = [];
+                for (var di = 0; di < data.length; di++) {
+                    var x = pad.left + di * xStep;
+                    var y = pad.top + (h - pad.top - pad.bottom) * (1 - data[di] / maxVal);
+                    points.push(x.toFixed(1) + ',' + y.toFixed(1));
+                }
+                svg += '<polyline points="' + points.join(' ') + '" fill="none" stroke="' + marketColors[mk] + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+            });
+            svg += '</svg>';
+
+            // Legend
+            var legend = '<div class="market-legend">';
+            marketKeys.forEach(function(mk) {
+                var data = seriesMap[mk];
+                if (!data || data.length === 0) return;
+                var lastVal = data[data.length - 1];
+                legend += '<div class="market-legend-item"><span class="market-legend-dot" style="background:' + marketColors[mk] + '"></span>';
+                legend += '<span>' + marketLabels[mk] + '</span>';
+                legend += '<span class="market-legend-val">' + formatter(lastVal) + '</span></div>';
+            });
+            legend += '</div>';
+            el.innerHTML = svg + legend;
+        }
+
+        async function fetchBookingsByMarket() {
+            var el = document.getElementById('kpi-bookings-by-market');
+            if (!el) return;
+            el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+            var dates = buildMonthDates(12);
+            var labels = monthDatesToLabels(dates);
+            var seriesMap = {};
+            try {
+                var promises = marketKeys.map(function(mk) {
+                    var params = new URLSearchParams({ market: mk, period: 'custom', dateFrom: dates[0].from, dateTo: dates[dates.length - 1].to, monthly: 'true' });
+                    return fetch('/api/hubspot-kpis?' + params.toString()).then(function(r) { return r.json(); }).then(function(data) {
+                        var monthly = data.monthly || {};
+                        var vals = dates.map(function(d) { var key = d.from.slice(0, 7); return monthly[key] ? (monthly[key].bookings || 0) : 0; });
+                        seriesMap[mk] = toCumulative(vals);
+                    });
+                });
+                await Promise.all(promises);
+                renderMarketSVG('kpi-bookings-by-market', seriesMap, labels, formatNumber);
+            } catch (err) {
+                console.error('Bookings by market error:', err);
+                el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Error loading</span>';
+            }
+        }
+
+        async function fetchRevenueByMarket() {
+            var el = document.getElementById('kpi-revenue-by-market');
+            if (!el) return;
+            el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+            var dates = buildMonthDates(12);
+            var labels = monthDatesToLabels(dates);
+            var seriesMap = {};
+            marketKeys.forEach(function(mk) { seriesMap[mk] = new Array(dates.length).fill(0); });
+            try {
+                // Fetch each market sequentially to avoid overloading Vercel
+                for (var mi = 0; mi < marketKeys.length; mi++) {
+                    var mk = marketKeys[mi];
+                    var monthPromises = dates.map(function(d, idx) {
+                        var params = new URLSearchParams({ market: mk, period: 'custom', dateFrom: d.from, dateTo: d.to });
+                        return fetch('/api/stripe-kpis?' + params.toString()).then(function(r) { return r.json(); }).then(function(data) {
+                            seriesMap[mk][idx] = data.revenue || 0;
+                        });
+                    });
+                    await Promise.all(monthPromises);
+                    seriesMap[mk] = toCumulative(seriesMap[mk]);
+                    renderMarketSVG('kpi-revenue-by-market', seriesMap, labels, function(v) { return formatCurrency(v); });
+                }
+            } catch (err) {
+                console.error('Revenue by market error:', err);
+                el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Error loading</span>';
             }
         }
 
@@ -3320,6 +3453,10 @@
             if (compareToggle.checked) {
                 renderAllComparisons();
             }
+
+            // Deferred: market trend charts (after main KPIs to avoid overloading Vercel)
+            fetchBookingsByMarket();
+            fetchRevenueByMarket();
         }
 
         document.getElementById('applyFilters').addEventListener('click', function() {
@@ -3462,17 +3599,22 @@
 
                 // Sales KPIs
                 sectionBlock('Sales KPIs', [
-                    kpiRow('New Agent Signups', 'kpi-accounts'),
-                    kpiRow('Total Active Agents (Trailing 12-Months)', 'kpi-active-agents'),
                     kpiRow('Quotes Requested', 'kpi-quotes'),
                     kpiRow('Total Bookings', 'kpi-total-bookings'),
                     kpiRow('Conversion Rate', 'kpi-conversion'),
                     kpiRow('Total Revenue', 'kpi-total-revenue'),
                     kpiRow('Bookings Revenue', 'kpi-bookings-rev'),
                     kpiRow('Renewal Revenue', 'kpi-renewal-rev'),
+                    kpiRow('Sales Cycle', 'kpi-sales-cycle'),
+                ]) +
+
+                // Customer KPIs
+                sectionBlock('Customer KPIs', [
+                    kpiRow('New Agent Signups', 'kpi-accounts'),
+                    kpiRow('Total Active Agents (Trailing 12-Months)', 'kpi-active-agents'),
+                    kpiRow('Bookings / Agent (12-Month)', 'kpi-bookings-per-agent'),
                     kpiRow('AOV (at close)', 'kpi-aov-close'),
                     kpiRow('AOV (total)', 'kpi-aov-total'),
-                    kpiRow('Sales Cycle', 'kpi-sales-cycle'),
                 ]) +
 
                 // Ops KPIs
