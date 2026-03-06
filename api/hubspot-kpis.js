@@ -333,6 +333,19 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Monthly bucketing (lightweight for trend charts)
+    var monthly = {};
+    if (req.query.monthly === 'true') {
+      filteredCW.forEach(function(deal) {
+        var props = deal.properties || {};
+        if (props.closedate) {
+          var mo = new Date(props.closedate).toISOString().slice(0, 7);
+          if (!monthly[mo]) monthly[mo] = { bookings: 0 };
+          monthly[mo].bookings++;
+        }
+      });
+    }
+
     var result = {
       quotes_requested: quotesRequested,
       bookings: bookings,
@@ -343,6 +356,7 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
+    if (req.query.monthly === 'true') result.monthly = monthly;
     if (req.query.debug === 'true') {
       // Show deal stage distribution and sample deals
       var stageCounts = {};

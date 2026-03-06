@@ -3073,31 +3073,46 @@
             container.innerHTML = svg + legend;
         }
 
-        // Bookings by Market — lightweight HubSpot calls, renders fast
+        // Helper: build month key array like ['2025-04', '2025-05', ...]
+        function buildMonthKeys(startDate, count) {
+            var keys = [];
+            for (var i = 0; i < count; i++) {
+                var d = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
+                keys.push(d.toISOString().slice(0, 7));
+            }
+            return keys;
+        }
+        function monthKeyToLabel(key) {
+            var parts = key.split('-');
+            return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1).toLocaleString('default', { month: 'short' });
+        }
+        function toCumulative(arr) {
+            var cum = [], total = 0;
+            for (var i = 0; i < arr.length; i++) { total += arr[i]; cum.push(total); }
+            return cum;
+        }
+        // Extract monthly values from API monthly response keyed by YYYY-MM
+        function monthlyToArray(monthlyData, monthKeys, field) {
+            return monthKeys.map(function(k) { return monthlyData && monthlyData[k] ? (monthlyData[k][field] || 0) : 0; });
+        }
+
+        // Bookings by Market (6-mo cumulative) — uses monthly=true for speed
         async function fetchBookingsByMarket() {
             var el = document.getElementById('kpi-bookings-by-market');
             if (!el) return;
             el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
             try {
                 var now = new Date();
-                var bkMonths = [];
-                for (var mi = 5; mi >= 0; mi--) {
-                    var d = new Date(now.getFullYear(), now.getMonth() - mi, 1);
-                    bkMonths.push({ label: d.toLocaleString('default', { month: 'short' }), from: d.toISOString().slice(0, 10), to: new Date(d.getFullYear(), d.getMonth() + 1, 0).toISOString().slice(0, 10) });
-                }
-                var bkPrevMonths = [];
-                for (var mi2 = 5; mi2 >= 0; mi2--) {
-                    var d2 = new Date(now.getFullYear() - 1, now.getMonth() - mi2, 1);
-                    bkPrevMonths.push({ from: d2.toISOString().slice(0, 10), to: new Date(d2.getFullYear(), d2.getMonth() + 1, 0).toISOString().slice(0, 10) });
-                }
                 var sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
                 var prevSixMonthsAgo = new Date(now.getFullYear() - 1, now.getMonth() - 5, 1);
                 var prevBkEnd = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+                var curKeys = buildMonthKeys(sixMonthsAgo, 6);
+                var prevKeys = buildMonthKeys(prevSixMonthsAgo, 6);
 
                 var fetches = [];
                 marketKeys.forEach(function(m) {
-                    var curP = new URLSearchParams({ market: m, period: 'custom', dateFrom: sixMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), daily: 'true' });
-                    var prevP = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevSixMonthsAgo.toISOString().slice(0,10), dateTo: prevBkEnd.toISOString().slice(0,10), daily: 'true' });
+                    var curP = new URLSearchParams({ market: m, period: 'custom', dateFrom: sixMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), monthly: 'true' });
+                    var prevP = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevSixMonthsAgo.toISOString().slice(0,10), dateTo: prevBkEnd.toISOString().slice(0,10), monthly: 'true' });
                     fetches.push(
                         fetch('/api/hubspot-kpis?' + curP).then(function(r) { return r.ok ? r.json() : null; }),
                         fetch('/api/hubspot-kpis?' + prevP).then(function(r) { return r.ok ? r.json() : null; })
@@ -3105,91 +3120,57 @@
                 });
                 var results = await Promise.all(fetches);
 
-                function bucketBookings(daily, ranges) {
-                    var b = ranges.map(function() { return 0; });
-                    if (!daily) return b;
-                    Object.keys(daily).forEach(function(day) {
-                        for (var i = 0; i < ranges.length; i++) {
-                            if (day >= ranges[i].from && day <= ranges[i].to) { b[i] += daily[day].bookings || 0; break; }
-                        }
-                    });
-                    return b;
-                }
-
                 var lines = {}, yoy = {};
                 for (var i = 0; i < marketKeys.length; i++) {
                     var k = marketKeys[i];
                     var cur = results[i * 2], prev = results[i * 2 + 1];
-                    lines[k] = bucketBookings(cur ? cur.daily : null, bkMonths);
-                    var prevB = bucketBookings(prev ? prev.daily : null, bkPrevMonths);
-                    var curT = lines[k].reduce(function(a,b){return a+b;},0);
-                    var prevT = prevB.reduce(function(a,b){return a+b;},0);
+                    var curArr = monthlyToArray(cur ? cur.monthly : null, curKeys, 'bookings');
+                    lines[k] = toCumulative(curArr);
+                    var prevArr = monthlyToArray(prev ? prev.monthly : null, prevKeys, 'bookings');
+                    var prevCum = toCumulative(prevArr);
+                    var curT = lines[k][lines[k].length - 1] || 0;
+                    var prevT = prevCum[prevCum.length - 1] || 0;
                     yoy[k] = prevT > 0 ? Math.round((curT - prevT) / prevT * 100) : null;
                 }
-                renderTrendChart(el, lines, yoy, bkMonths.map(function(m){return m.label;}), formatNumber);
+                renderTrendChart(el, lines, yoy, curKeys.map(monthKeyToLabel), formatNumber);
             } catch (err) {
                 console.error('Bookings by market error:', err);
                 el.textContent = 'Error';
             }
         }
 
-        // Revenue by Market (12-mo trailing cumulative) — fires immediately, renders progressively
+        // Revenue by Market (12-mo trailing cumulative) — uses monthly=true, renders progressively
         async function fetchRevenueByMarket() {
             var el = document.getElementById('kpi-revenue-by-market');
             if (!el) return;
             el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
             try {
                 var now = new Date();
-                var revMonths = [];
-                for (var rmi = 11; rmi >= 0; rmi--) {
-                    var rd = new Date(now.getFullYear(), now.getMonth() - rmi, 1);
-                    revMonths.push({ label: rd.toLocaleString('default', { month: 'short' }), from: rd.toISOString().slice(0, 10), to: new Date(rd.getFullYear(), rd.getMonth() + 1, 0).toISOString().slice(0, 10) });
-                }
-                var revPrevMonths = [];
-                for (var rmi2 = 11; rmi2 >= 0; rmi2--) {
-                    var rd2 = new Date(now.getFullYear() - 1, now.getMonth() - rmi2, 1);
-                    revPrevMonths.push({ from: rd2.toISOString().slice(0, 10), to: new Date(rd2.getFullYear(), rd2.getMonth() + 1, 0).toISOString().slice(0, 10) });
-                }
                 var twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
                 var prevTwelveMonthsAgo = new Date(now.getFullYear() - 1, now.getMonth() - 11, 1);
                 var prevRevEnd = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-
-                function bucketRev(daily, ranges) {
-                    var b = ranges.map(function() { return 0; });
-                    if (!daily) return b;
-                    Object.keys(daily).forEach(function(day) {
-                        for (var i = 0; i < ranges.length; i++) {
-                            if (day >= ranges[i].from && day <= ranges[i].to) { b[i] += daily[day].revenue || 0; break; }
-                        }
-                    });
-                    return b;
-                }
-                function toCumulative(arr) {
-                    var cum = [], total = 0;
-                    for (var i = 0; i < arr.length; i++) { total += arr[i]; cum.push(total); }
-                    return cum;
-                }
+                var curKeys = buildMonthKeys(twelveMonthsAgo, 12);
+                var prevKeys = buildMonthKeys(prevTwelveMonthsAgo, 12);
+                var revLbls = curKeys.map(monthKeyToLabel);
 
                 var lines = {}, yoy = {};
-                var revLbls = revMonths.map(function(m){return m.label;});
 
                 // Fetch each market independently and re-render as each completes
                 var promises = marketKeys.map(function(m) {
-                    var curP = new URLSearchParams({ market: m, period: 'custom', dateFrom: twelveMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), daily: 'true' });
-                    var prevP = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevTwelveMonthsAgo.toISOString().slice(0,10), dateTo: prevRevEnd.toISOString().slice(0,10), daily: 'true' });
+                    var curP = new URLSearchParams({ market: m, period: 'custom', dateFrom: twelveMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), monthly: 'true' });
+                    var prevP = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevTwelveMonthsAgo.toISOString().slice(0,10), dateTo: prevRevEnd.toISOString().slice(0,10), monthly: 'true' });
                     return Promise.all([
                         fetch('/api/stripe-kpis?' + curP).then(function(r) { return r.ok ? r.json() : null; }),
                         fetch('/api/stripe-kpis?' + prevP).then(function(r) { return r.ok ? r.json() : null; }),
                     ]).then(function(res) {
                         var stCur = res[0], stPrev = res[1];
-                        var monthly = bucketRev(stCur ? stCur.daily : null, revMonths);
-                        lines[m] = toCumulative(monthly);
-                        var prevMonthly = bucketRev(stPrev ? stPrev.daily : null, revPrevMonths);
-                        var prevCum = toCumulative(prevMonthly);
+                        var curArr = monthlyToArray(stCur ? stCur.monthly : null, curKeys, 'revenue');
+                        lines[m] = toCumulative(curArr);
+                        var prevArr = monthlyToArray(stPrev ? stPrev.monthly : null, prevKeys, 'revenue');
+                        var prevCum = toCumulative(prevArr);
                         var curTotal = lines[m][lines[m].length - 1] || 0;
                         var prevTotal = prevCum[prevCum.length - 1] || 0;
                         yoy[m] = prevTotal > 0 ? Math.round((curTotal - prevTotal) / prevTotal * 100) : null;
-                        // Re-render with whatever markets have loaded so far
                         renderTrendChart(el, lines, yoy, revLbls, function(v) { return '$' + Math.round(v / 1000) + 'k'; });
                     });
                 });

@@ -244,6 +244,16 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Monthly bucketing (lightweight alternative to daily for trend charts)
+    var monthly = {};
+    if (req.query.monthly === 'true') {
+      filtered.forEach(function(c) {
+        var mo = new Date(c.created * 1000).toISOString().slice(0, 7);
+        if (!monthly[mo]) monthly[mo] = { revenue: 0 };
+        monthly[mo].revenue += (c.amount_captured || 0) / 100;
+      });
+    }
+
     var result = {
       revenue: totalRevenue,
       bookings_revenue: bookingsRevenue,
@@ -255,6 +265,7 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
+    if (req.query.monthly === 'true') result.monthly = monthly;
     if (req.query.debug === 'true') {
       result.charges = filtered.map(function(c) {
         return {
