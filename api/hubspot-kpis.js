@@ -113,18 +113,17 @@ module.exports = async function handler(req, res) {
   const marketToValues = {
     colorado: { states: ['CO'], markets: ['denver', 'boulder', 'colorado'] },
     california: { states: ['CA'], markets: ['san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'] },
-    arizona: { states: ['AZ'], markets: ['phoenix', 'scottsdale', 'arizona', 'az'] },
   };
 
-  // Helper: check if a deal belongs to a known market (CO, CA, AZ)
-  function isDealInKnownMarket(deal) {
+  // Helper: check if a deal belongs to CO or CA
+  function isDealInCOorCA(deal) {
     var props = deal.properties || {};
     var dealMarket = (props.market || '').toLowerCase();
-    var allMarketKeywords = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc', 'phoenix', 'scottsdale', 'arizona', 'az'];
+    var allMarketKeywords = ['denver', 'boulder', 'colorado', 'san diego', 'orange county', 'los angeles', 'california', 'la', 'oc'];
     if (allMarketKeywords.some(function(m) { return dealMarket.indexOf(m) !== -1; })) return true;
     var name = props.dealname || '';
     var stateMatch = name.match(/,\s*([A-Z]{2})\s*(\(|$)/);
-    if (stateMatch && ['CO', 'CA', 'AZ'].indexOf(stateMatch[1]) !== -1) return true;
+    if (stateMatch && ['CO', 'CA'].indexOf(stateMatch[1]) !== -1) return true;
     return false;
   }
 
@@ -190,10 +189,10 @@ module.exports = async function handler(req, res) {
     }
 
     // Filter by market
-    // "all" = everything, "nationwide" = only states outside CO, CA, AZ
+    // "all" = everything, "nationwide" = only states outside CO and CA
     let filtered = allDeals;
     if (market === 'nationwide') {
-      filtered = allDeals.filter(function(deal) { return !isDealInKnownMarket(deal); });
+      filtered = allDeals.filter(function(deal) { return !isDealInCOorCA(deal); });
     } else if (market && market !== 'all') {
       const mapping = marketToValues[market.toLowerCase()];
       if (mapping) {
@@ -258,7 +257,7 @@ module.exports = async function handler(req, res) {
     // Filter closed won deals by market
     let filteredCW = closedWonDeals;
     if (market === 'nationwide') {
-      filteredCW = closedWonDeals.filter(function(deal) { return !isDealInKnownMarket(deal); });
+      filteredCW = closedWonDeals.filter(function(deal) { return !isDealInCOorCA(deal); });
     } else if (market && market !== 'all') {
       const mapping = marketToValues[market.toLowerCase()];
       if (mapping) {
@@ -333,19 +332,6 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Monthly bucketing (lightweight for trend charts)
-    var monthly = {};
-    if (req.query.monthly === 'true') {
-      filteredCW.forEach(function(deal) {
-        var props = deal.properties || {};
-        if (props.closedate) {
-          var mo = new Date(props.closedate).toISOString().slice(0, 7);
-          if (!monthly[mo]) monthly[mo] = { bookings: 0 };
-          monthly[mo].bookings++;
-        }
-      });
-    }
-
     var result = {
       quotes_requested: quotesRequested,
       bookings: bookings,
@@ -356,7 +342,6 @@ module.exports = async function handler(req, res) {
       market: market || 'all',
     };
     if (req.query.daily === 'true') result.daily = daily;
-    if (req.query.monthly === 'true') result.monthly = monthly;
     if (req.query.debug === 'true') {
       // Show deal stage distribution and sample deals
       var stageCounts = {};

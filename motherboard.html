@@ -2615,7 +2615,7 @@
                 // Fetch Stripe and Notable in parallel
                 var [stripeRes, notableRes] = await Promise.all([
                     fetch('/api/stripe-kpis?' + params.toString()),
-                    fetch('/api/notable-kpis?' + params.toString()),
+                    fetch('/api/scorecard-kpis?metric=notable&' + params.toString()),
                 ]);
                 if (!stripeRes.ok) throw new Error('API error');
                 var data = await stripeRes.json();

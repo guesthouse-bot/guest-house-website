@@ -136,6 +136,77 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  // Notable Payments: read from "Notable Payments" tab in Renewal Tracker sheet
+  if (req.query.metric === 'notable') {
+    var serviceAccount3 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
+    var token3 = await getAccessToken(serviceAccount3);
+    var nRange = encodeURIComponent("'Notable Payments'!A1:E500");
+    var nUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + nRange + '?valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
+    try {
+      var nRes = await fetch(nUrl, { headers: { 'Authorization': 'Bearer ' + token3 } });
+      if (!nRes.ok) {
+        var nErr = await nRes.json();
+        return res.status(nRes.status).json({ error: nErr.error ? nErr.error.message : 'Sheets API error' });
+      }
+      var nData = await nRes.json();
+      var nRows = nData.values || [];
+      if (nRows.length < 2) return res.status(200).json({ payments: [], total: 0, count: 0 });
+
+      var nHeader = nRows[0].map(function(h) { return String(h).trim().toLowerCase(); });
+      var nDateIdx = nHeader.indexOf('date');
+      var nAddrIdx = nHeader.indexOf('listing address');
+      var nAmtIdx = nHeader.indexOf('amount');
+
+      if (nDateIdx === -1 || nAmtIdx === -1) return res.status(200).json({ payments: [], total: 0, count: 0 });
+
+      var payments = [];
+      for (var ni = 1; ni < nRows.length; ni++) {
+        var nRow = nRows[ni];
+        if (!nRow || !nRow[nDateIdx]) continue;
+        var nAmtRaw = nRow[nAmtIdx];
+        var nAmt = typeof nAmtRaw === 'number' ? nAmtRaw : parseFloat(String(nAmtRaw).replace(/[$,]/g, '')) || 0;
+        if (nAmt === 0) continue;
+        var nDateRaw = nRow[nDateIdx];
+        var nParsed = typeof nDateRaw === 'number' ? new Date((nDateRaw - 25569) * 86400000) : new Date(String(nDateRaw));
+        if (!nParsed || isNaN(nParsed.getTime())) continue;
+        var nAddr = nAddrIdx !== -1 && nRow[nAddrIdx] ? String(nRow[nAddrIdx]).trim() : '';
+        var nState = '';
+        var nSm = nAddr.match(/,\s*([A-Z]{2})\s*\d{5}/);
+        if (nSm) nState = nSm[1];
+        payments.push({ date: nParsed.toISOString().slice(0, 10), state: nState, amount: nAmt });
+      }
+
+      // Market filter
+      var nMarket = req.query.market;
+      var nMarketToStates = { colorado: ['CO'], california: ['CA'], arizona: ['AZ'] };
+      if (nMarket === 'nationwide') {
+        payments = payments.filter(function(p) { return !p.state || ['CO', 'CA', 'AZ'].indexOf(p.state) === -1; });
+      } else if (nMarket && nMarket !== 'all') {
+        var nStates = nMarketToStates[nMarket.toLowerCase()] || [];
+        payments = payments.filter(function(p) { return nStates.indexOf(p.state) !== -1; });
+      }
+
+      // Period filter
+      var nNow = new Date();
+      var nStart, nEnd;
+      switch (req.query.period) {
+        case 'mtd': nStart = new Date(nNow.getFullYear(), nNow.getMonth(), 1).toISOString().slice(0, 10); nEnd = nNow.toISOString().slice(0, 10); break;
+        case 'last30': nStart = new Date(nNow.getTime() - 30 * 86400000).toISOString().slice(0, 10); nEnd = nNow.toISOString().slice(0, 10); break;
+        case 'qtd': nStart = new Date(nNow.getFullYear(), Math.floor(nNow.getMonth() / 3) * 3, 1).toISOString().slice(0, 10); nEnd = nNow.toISOString().slice(0, 10); break;
+        case 'ytd': nStart = new Date(nNow.getFullYear(), 0, 1).toISOString().slice(0, 10); nEnd = nNow.toISOString().slice(0, 10); break;
+        case 'last_month': nStart = new Date(nNow.getFullYear(), nNow.getMonth() - 1, 1).toISOString().slice(0, 10); nEnd = new Date(nNow.getFullYear(), nNow.getMonth(), 0).toISOString().slice(0, 10); break;
+        case 'last_quarter': var ncq = Math.floor(nNow.getMonth() / 3) * 3; nStart = new Date(nNow.getFullYear(), ncq - 3, 1).toISOString().slice(0, 10); nEnd = new Date(nNow.getFullYear(), ncq, 0).toISOString().slice(0, 10); break;
+        case 'custom': nStart = req.query.dateFrom || '2000-01-01'; nEnd = req.query.dateTo || '2099-12-31'; break;
+        default: nStart = new Date(nNow.getFullYear(), nNow.getMonth(), 1).toISOString().slice(0, 10); nEnd = nNow.toISOString().slice(0, 10);
+      }
+      payments = payments.filter(function(p) { return p.date >= nStart && p.date <= nEnd; });
+      var nTotal = payments.reduce(function(s, p) { return s + p.amount; }, 0);
+      return res.status(200).json({ total: nTotal, count: payments.length, period: { start: nStart, end: nEnd }, market: nMarket || 'all' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
   var serviceAccount = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
 
   try {
