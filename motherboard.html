@@ -3199,7 +3199,7 @@
             }
         }
 
-        // Bookings by Market (12-mo cumulative) — individual month calls
+        // Bookings by Market (12-mo cumulative) — 4 calls with monthly=true
         async function fetchBookingsByMarket() {
             var el = document.getElementById('kpi-bookings-by-market');
             if (!el) return;
@@ -3207,15 +3207,13 @@
             try {
                 var monthDates = buildMonthDates(12);
                 var labels = monthDatesToLabels(monthDates);
+                var monthKeys = monthDates.map(function(md) { return md.from.slice(0, 7); });
                 var lines = {}, yoy = {};
 
                 var promises = marketKeys.map(function(m) {
-                    var monthFetches = monthDates.map(function(md) {
-                        var p = new URLSearchParams({ market: m, period: 'custom', dateFrom: md.from, dateTo: md.to });
-                        return fetch('/api/hubspot-kpis?' + p).then(function(r) { return r.ok ? r.json() : null; });
-                    });
-                    return Promise.all(monthFetches).then(function(results) {
-                        var monthly = results.map(function(r) { return r ? r.bookings : 0; });
+                    var p = new URLSearchParams({ market: m, period: 'custom', dateFrom: monthDates[0].from, dateTo: monthDates[monthDates.length - 1].to, monthly: 'true' });
+                    return fetch('/api/hubspot-kpis?' + p).then(function(r) { return r.ok ? r.json() : null; }).then(function(data) {
+                        var monthly = monthKeys.map(function(k) { return data && data.monthly && data.monthly[k] ? data.monthly[k].bookings || 0 : 0; });
                         lines[m] = toCumulative(monthly);
                         renderTrendChart(el, lines, yoy, labels, formatNumber);
                     });
