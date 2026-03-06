@@ -3344,11 +3344,61 @@
         }
 
         // ---- Main fetch orchestrator ----
-        async function fetchPlanKPIs() {
+        async function fetchPlanKPIs(filters) {
             try {
-                var r = await fetch('/api/scorecard-kpis?metric=plan');
-                if (!r.ok) throw new Error('Plan API error');
-                var plan = await r.json();
+                // Determine which months to fetch based on the selected period
+                var now = new Date();
+                var months = [];
+                var period = filters.period || 'mtd';
+                if (period === 'mtd' || period === 'last30') {
+                    months = [now.getMonth() + 1];
+                } else if (period === 'qtd') {
+                    var qStart = Math.floor(now.getMonth() / 3) * 3;
+                    for (var m = qStart; m <= now.getMonth(); m++) months.push(m + 1);
+                } else if (period === 'ytd') {
+                    for (var m2 = 0; m2 <= now.getMonth(); m2++) months.push(m2 + 1);
+                } else if (period === 'last_month') {
+                    var lm = now.getMonth(); // 0-indexed, so this is previous month (1-indexed)
+                    months = [lm === 0 ? 12 : lm];
+                } else if (period === 'last_quarter') {
+                    var cq = Math.floor(now.getMonth() / 3) * 3;
+                    for (var m3 = cq - 3; m3 < cq; m3++) {
+                        var mo = m3 < 0 ? m3 + 12 : m3;
+                        months.push(mo + 1);
+                    }
+                } else if (period === 'custom' && filters.dateFrom && filters.dateTo) {
+                    var startD = new Date(filters.dateFrom);
+                    var endD = new Date(filters.dateTo);
+                    var cur = new Date(startD.getFullYear(), startD.getMonth(), 1);
+                    while (cur <= endD) {
+                        months.push(cur.getMonth() + 1);
+                        cur.setMonth(cur.getMonth() + 1);
+                    }
+                } else {
+                    months = [now.getMonth() + 1];
+                }
+
+                // Fetch plan for each month and sum
+                var fetches = months.map(function(mo) {
+                    return fetch('/api/scorecard-kpis?metric=plan&month=' + mo).then(function(r) {
+                        return r.ok ? r.json() : null;
+                    });
+                });
+                var results = await Promise.all(fetches);
+
+                // Sum all plan months
+                var sumKeys = ['quotes_requested', 'bookings', 'staging_revenue', 'total_revenue',
+                    'co_installs', 'co_deinstalls', 'ca_installs', 'ca_deinstalls'];
+                var plan = {};
+                sumKeys.forEach(function(k) { plan[k] = 0; });
+                var aovCount = 0, aovSum = 0;
+                results.forEach(function(r) {
+                    if (!r) return;
+                    sumKeys.forEach(function(k) { plan[k] += (r[k] || 0); });
+                    if (r.aov_at_close) { aovSum += r.aov_at_close; aovCount++; }
+                });
+                plan.aov_at_close = aovCount > 0 ? aovSum / aovCount : null;
+
                 compareData.hubspot = {
                     quotes_requested: plan.quotes_requested,
                     bookings: plan.bookings,
@@ -3431,7 +3481,7 @@
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
             if (isPlan) {
-                wave1.push(fetchPlanKPIs());
+                wave1.push(fetchPlanKPIs(filters));
             }
 
             await Promise.all(wave1);
