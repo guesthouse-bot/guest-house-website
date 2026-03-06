@@ -72,7 +72,7 @@ module.exports = async function handler(req, res) {
   if (req.query.debug === 'sheet_layout') {
     var serviceAccount2 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
     var token2 = await getAccessToken(serviceAccount2);
-    var debugRange = req.query.range || "'Financial Model (2026)'!A1:B80";
+    var debugRange = "'Financial Model (2026)'!" + (req.query.cells || "A1:B80");
     var debugUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + encodeURIComponent(debugRange) + '?valueRenderOption=UNFORMATTED_VALUE';
     var debugRes = await fetch(debugUrl, { headers: { 'Authorization': 'Bearer ' + token2 } });
     var debugData = await debugRes.json();
