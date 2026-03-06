@@ -68,6 +68,61 @@ module.exports = async function handler(req, res) {
   var RENEWAL_SHEET_ID = process.env.RENEWAL_SHEET_ID;
   if (!RENEWAL_SHEET_ID) return res.status(500).json({ error: 'Renewal sheet ID not configured' });
 
+  // TEMPORARY: Create Notable Payments tab and populate data
+  if (req.query.metric === 'setup_notable') {
+    var sa = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
+    // Get write-scoped token
+    var nowT = Math.floor(Date.now() / 1000);
+    var hdr = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+    var pld = Buffer.from(JSON.stringify({
+      iss: sa.client_email, sub: sa.client_email,
+      aud: 'https://oauth2.googleapis.com/token',
+      scope: 'https://www.googleapis.com/auth/spreadsheets',
+      iat: nowT, exp: nowT + 3600,
+    })).toString('base64url');
+    var sgn = crypto.createSign('RSA-SHA256'); sgn.update(hdr + '.' + pld);
+    var sig = sgn.sign(sa.private_key, 'base64url');
+    var tokRes = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + hdr + '.' + pld + '.' + sig,
+    });
+    var tokData = await tokRes.json();
+    var wToken = tokData.access_token;
+
+    // Step 1: Create the sheet tab
+    var addRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + ':batchUpdate', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + wToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests: [{ addSheet: { properties: { title: 'Notable Payments' } } }] }),
+    });
+    var addData = await addRes.json();
+    if (!addRes.ok && addData.error && addData.error.message.indexOf('already exists') === -1) {
+      return res.status(addRes.status).json({ error: addData.error.message });
+    }
+
+    // Step 2: Write header + data
+    var rows = [
+      ['Date', 'Client', 'Listing address', 'Amount', 'Status'],
+      ['March 6, 2026', 'Manish Kumar', '3529 La Mirada Drive, San Marcos, CA 92078', 3050, 'Processing'],
+      ['February 27, 2026', 'Martina Lewis', '1705 Valdes Drive, San Diego, CA 92037', 6608, 'Cleared'],
+      ['February 3, 2026', 'Sarah Gilbert', '13070 Roundup Avenue, San Diego, CA 92129', 3450, 'Cleared'],
+      ['January 26, 2026', 'Matthew Dart', '5330 Sweetwater Trails, San Diego, CA 92130', 6930, 'Cleared'],
+      ['December 31, 2025', 'Jessica Erickson', '3804 Florentine Circle, Longmont, CO 80503', 2500, 'Cleared'],
+      ['December 15, 2025', 'Jasmine Chen', '1601 San Remo Place Unit 10, Encinitas, CA 92024', 3780, 'Cleared'],
+      ['December 10, 2025', 'Andrew Norman', '836 Carlsbad Street, San Diego, CA 92114', 1476, 'Cleared'],
+      ['November 25, 2025', 'James Choi', '4310 East Gemini Place, Chandler, AZ 85249', 4800.60, 'Cleared'],
+      ['November 4, 2025', 'Andrew Norman', '836 Carlsbad Street, San Diego, CA 92114', 2950, 'Cleared'],
+    ];
+    var writeRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + RENEWAL_SHEET_ID + '/values/' + encodeURIComponent("'Notable Payments'!A1:E11") + '?valueInputOption=USER_ENTERED', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + wToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ range: "'Notable Payments'!A1:E11", majorDimension: 'ROWS', values: rows }),
+    });
+    var writeData = await writeRes.json();
+    if (!writeRes.ok) return res.status(writeRes.status).json({ error: writeData.error ? writeData.error.message : 'Write error' });
+    return res.status(200).json({ success: true, updated: writeData.updatedCells });
+  }
+
   // Plan KPIs: read monthly plan values from Financial Model (2026) tab
   if (req.query.metric === 'plan') {
     var serviceAccount2 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
