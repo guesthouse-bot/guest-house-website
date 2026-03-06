@@ -96,8 +96,8 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({ requests: [{ addSheet: { properties: { title: 'Notable Payments' } } }] }),
     });
     var addData = await addRes.json();
-    if (!addRes.ok && addData.error && addData.error.message.indexOf('already exists') === -1) {
-      return res.status(addRes.status).json({ error: addData.error.message });
+    if (!addRes.ok && !(addData.error && addData.error.message && addData.error.message.indexOf('already exists') !== -1)) {
+      return res.status(addRes.status).json({ error: 'addSheet: ' + (addData.error ? addData.error.message : JSON.stringify(addData)), sheet_id: RENEWAL_SHEET_ID });
     }
 
     // Step 2: Write header + data
