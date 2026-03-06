@@ -1746,6 +1746,10 @@
                     <div class="kpi-prev" id="kpi-active-agents-prev"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Active Agents by Market</div>
+                    <div id="kpi-active-agents-by-market" class="kpi-market-trend">&mdash;</div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Bookings / Agent (12-Month)</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-bookings-per-agent">&mdash;</span>
@@ -3114,7 +3118,46 @@
             });
         }
 
-        // Bookings by Market (24-mo cumulative) — individual month calls
+        // Active Agents by Market — horizontal bar breakdown
+        async function fetchActiveAgentsByMarket() {
+            var el = document.getElementById('kpi-active-agents-by-market');
+            if (!el) return;
+            el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+            try {
+                var fetches = marketKeys.map(function(m) {
+                    var p = new URLSearchParams({ market: m, period: 'ytd' });
+                    return fetch('/api/firebase-kpis?' + p).then(function(r) { return r.ok ? r.json() : null; });
+                });
+                var results = await Promise.all(fetches);
+                var data = {};
+                var maxVal = 1;
+                marketKeys.forEach(function(k, i) {
+                    data[k] = results[i] ? (results[i].active_agents || 0) : 0;
+                    if (data[k] > maxVal) maxVal = data[k];
+                });
+                var total = marketKeys.reduce(function(s, k) { return s + data[k]; }, 0);
+                var html = '<div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">';
+                marketKeys.forEach(function(k) {
+                    var val = data[k];
+                    var pct = Math.round((val / maxVal) * 100);
+                    html += '<div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;">' +
+                        '<span style="width:36px;color:#6b7280;">' + marketLabels[k] + '</span>' +
+                        '<div style="flex:1;height:14px;background:#f3f4f6;border-radius:3px;overflow:hidden;">' +
+                        '<div style="width:' + pct + '%;height:100%;background:' + marketColors[k] + ';border-radius:3px;"></div>' +
+                        '</div>' +
+                        '<span style="width:28px;text-align:right;font-weight:500;">' + val + '</span>' +
+                        '</div>';
+                });
+                html += '<div style="font-size:0.7rem;color:#9ca3af;margin-top:2px;">Total: ' + total + '</div>';
+                html += '</div>';
+                el.innerHTML = html;
+            } catch (err) {
+                console.error('Active agents by market error:', err);
+                el.textContent = 'Error';
+            }
+        }
+
+        // Bookings by Market (12-mo cumulative) — individual month calls
         async function fetchBookingsByMarket() {
             var el = document.getElementById('kpi-bookings-by-market');
             if (!el) return;
@@ -3396,6 +3439,7 @@
             // Fire market trend charts immediately (they're independent)
             fetchBookingsByMarket();
             fetchRevenueByMarket();
+            fetchActiveAgentsByMarket();
 
             // Stagger fetches to prevent concurrent HubSpot rate limiting
             // Wave 1: Stripe + GA4 + non-HubSpot sources
