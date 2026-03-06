@@ -68,75 +68,6 @@ module.exports = async function handler(req, res) {
   var RENEWAL_SHEET_ID = process.env.RENEWAL_SHEET_ID;
   if (!RENEWAL_SHEET_ID) return res.status(500).json({ error: 'Renewal sheet ID not configured' });
 
-  // Plan KPIs: read monthly plan values from Financial Model (2026) tab
-  if (req.query.metric === 'plan') {
-    var serviceAccount2 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
-    var token2 = await getAccessToken(serviceAccount2);
-    // Column mapping: Z=Jan(1), AA=Feb(2), AB=Mar(3), ... AK=Dec(12)
-    var month = req.query.month ? parseInt(req.query.month, 10) : (new Date().getMonth() + 1);
-    var col = colToLetter(25 + month); // Z=26=col(25+1)
-    // Batch read all plan KPI rows for the given month
-    var planRanges = [
-      "'Financial Model (2026)'!" + col + "13",  // Quotes Created (total)
-      "'Financial Model (2026)'!" + col + "14",  // Homes Booked (total)
-      "'Financial Model (2026)'!" + col + "15",  // Staging Revenue (total)
-      "'Financial Model (2026)'!" + col + "16",  // Total Revenue
-      "'Financial Model (2026)'!" + col + "21",  // AOV Per Home
-      "'Financial Model (2026)'!" + col + "27",  // CO Homes Booked
-      "'Financial Model (2026)'!" + col + "28",  // CO Installs
-      "'Financial Model (2026)'!" + col + "29",  // CO Deinstalls
-      "'Financial Model (2026)'!" + col + "31",  // CO Bookings Revenue
-      "'Financial Model (2026)'!" + col + "33",  // CO Total Staging Revenue
-      "'Financial Model (2026)'!" + col + "80",  // CA Homes Booked
-      "'Financial Model (2026)'!" + col + "81",  // CA Installs
-      "'Financial Model (2026)'!" + col + "82",  // CA Deinstalls
-      "'Financial Model (2026)'!" + col + "84",  // CA Bookings Revenue
-      "'Financial Model (2026)'!" + col + "85",  // CA Total Staging Revenue
-      "'Financial Model (2026)'!" + col + "172", // Total Corporate Expenses
-      "'Financial Model (2026)'!" + col + "173", // Net Income
-    ];
-    var encodedPlan = planRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
-    var planUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedPlan + '&valueRenderOption=UNFORMATTED_VALUE';
-    try {
-      var planRes = await fetch(planUrl, { headers: { 'Authorization': 'Bearer ' + token2 } });
-      if (!planRes.ok) {
-        var planErr = await planRes.json();
-        return res.status(planRes.status).json({ error: planErr.error ? planErr.error.message : 'Sheets API error' });
-      }
-      var planData = await planRes.json();
-      var vr = planData.valueRanges || [];
-      function pv(idx) {
-        if (vr[idx] && vr[idx].values && vr[idx].values[0]) {
-          var raw = vr[idx].values[0][0];
-          return typeof raw === 'number' ? raw : parseFloat(String(raw).replace(/[$,]/g, '')) || null;
-        }
-        return null;
-      }
-      return res.status(200).json({
-        month: month,
-        quotes_requested: pv(0),
-        bookings: pv(1),
-        staging_revenue: pv(2),
-        total_revenue: pv(3),
-        aov_at_close: pv(4),
-        co_bookings: pv(5),
-        co_installs: pv(6),
-        co_deinstalls: pv(7),
-        co_bookings_revenue: pv(8),
-        co_total_revenue: pv(9),
-        ca_bookings: pv(10),
-        ca_installs: pv(11),
-        ca_deinstalls: pv(12),
-        ca_bookings_revenue: pv(13),
-        ca_total_revenue: pv(14),
-        corporate_expenses: pv(15),
-        net_income: pv(16),
-      });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
   var serviceAccount = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
 
   try {
@@ -154,8 +85,13 @@ module.exports = async function handler(req, res) {
     var trail2Year = now.getFullYear();
     if (trail2Month < 1) { trail2Month += 12; trail2Year--; }
 
+    var trail3Month = curMonth1 - 3;
+    var trail3Year = now.getFullYear();
+    if (trail3Month < 1) { trail3Month += 12; trail3Year--; }
+
     var trail1Cell = getNetIncomeCell(trail1Year, trail1Month);
     var trail2Cell = getNetIncomeCell(trail2Year, trail2Month);
+    var trail3Cell = getNetIncomeCell(trail3Year, trail3Month);
 
     // Cash on hand: use most recent completed month's column in Actuals (2026) row 179
     // Column mapping: Z=Jan, AA=Feb, ... AK=Dec (column = 25 + month)
@@ -169,6 +105,7 @@ module.exports = async function handler(req, res) {
     ];
     if (trail1Cell) ranges.push(trail1Cell);
     if (trail2Cell) ranges.push(trail2Cell);
+    if (trail3Cell) ranges.push(trail3Cell);
     var encodedRanges = ranges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
     var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedRanges + '&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING';
 
@@ -207,9 +144,9 @@ module.exports = async function handler(req, res) {
       cashOnHand = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
     }
 
-    // Parse trailing net income from actuals (indexes 2 and 3 in valueRanges)
+    // Parse trailing net income from actuals (indexes 2, 3, 4 in valueRanges)
     var trailingNetIncome = [];
-    for (var ti = 2; ti <= 3; ti++) {
+    for (var ti = 2; ti <= 4; ti++) {
       if (valueRanges[ti] && valueRanges[ti].values && valueRanges[ti].values[0]) {
         var rawNI = valueRanges[ti].values[0][0];
         var ni = typeof rawNI === 'number' ? rawNI : parseFloat(String(rawNI).replace(/[$,]/g, '')) || 0;
