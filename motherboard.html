@@ -770,6 +770,40 @@
         .kpi-card-full {
             grid-column: 1 / -1;
         }
+        .kpi-market-trend {
+            margin-top: 8px;
+        }
+        .kpi-market-trend svg {
+            width: 100%;
+            display: block;
+        }
+        .market-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 8px;
+        }
+        .market-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+        }
+        .market-legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .market-legend-val {
+            font-weight: 600;
+        }
+        .market-legend-yoy {
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
+        .market-legend-yoy.up { color: #16a34a; }
+        .market-legend-yoy.down { color: #dc2626; }
         .traffic-sources-chart {
             margin-top: 12px;
         }
@@ -1419,6 +1453,7 @@
         <nav class="section-nav">
             <a href="#section-company" class="section-nav-link active">Company</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
+            <a href="#section-customer" class="section-nav-link">Customer</a>
             <a href="#section-operations" class="section-nav-link">Operations</a>
         </nav>
     </section>
@@ -1620,23 +1655,6 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">Agent Signups</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
-                        <span class="kpi-change" id="kpi-accounts-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Total Active Agents</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
-                        <span class="kpi-change" id="kpi-active-agents-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
-                </div>
-                <div class="kpi-card">
                     <div class="kpi-label">Quotes requested</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-quotes">&mdash;</span>
@@ -1646,7 +1664,7 @@
                     <div class="kpi-sparkline" id="kpi-quotes-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Total Bookings</div>
+                    <div class="kpi-label">Bookings</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-total-bookings">&mdash;</span>
                         <span class="kpi-change" id="kpi-total-bookings-change"></span>
@@ -1691,6 +1709,51 @@
                     <div class="kpi-sparkline" id="kpi-renewal-rev-sparkline"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Sales cycle</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
+                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer KPIs -->
+    <section id="section-customer" class="kpi-section-grey">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Customer KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Accounts Created</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
+                        <span class="kpi-change" id="kpi-accounts-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Active Agents</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-agents-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings / Agent (12-Month)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-per-agent">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-per-agent-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-per-agent-prev"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">AOV (at close)</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
@@ -1709,18 +1772,16 @@
                     <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Sales cycle</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-sales-cycle">&mdash;</span>
-                        <span class="kpi-change" id="kpi-sales-cycle-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
+                    <div class="kpi-label">Bookings by Market</div>
+                    <div id="kpi-bookings-by-market" class="kpi-market-trend">&mdash;</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Revenue by Market</div>
+                    <div id="kpi-revenue-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!-- Ops KPIs -->
     <section id="section-operations">
@@ -2631,7 +2692,7 @@
         }
 
         async function fetchFirebaseKPIs(filters, isCompare) {
-            if (!isCompare) setLoading(['kpi-accounts', 'kpi-active-agents']);
+            if (!isCompare) setLoading(['kpi-accounts', 'kpi-active-agents', 'kpi-bookings-per-agent']);
             try {
                 var params = buildParams(filters);
                 var response = await fetch('/api/firebase-kpis?' + params.toString());
@@ -2644,14 +2705,15 @@
                     currentData.firebase = data;
                     setKPI('kpi-accounts', formatNumber(data.accounts_created));
                     setKPI('kpi-active-agents', formatNumber(data.active_agents));
+                    setKPI('kpi-bookings-per-agent', data.bookings_per_agent !== null ? data.bookings_per_agent.toFixed(2) : '\u2014');
                 }
                 return data;
             } catch (err) {
                 console.error('Firebase KPI fetch error:', err);
-                if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); }
+                if (!isCompare) { setKPI('kpi-accounts', 'Error'); setKPI('kpi-active-agents', 'Error'); setKPI('kpi-bookings-per-agent', 'Error'); }
                 return null;
             } finally {
-                if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents']);
+                if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents', 'kpi-bookings-per-agent']);
             }
         }
 
@@ -2950,6 +3012,202 @@
         }
 
         // ---- Render comparisons and sparklines ----
+        // Market trend charts: 6-month multi-line SVG with YoY
+        var marketColors = { colorado: '#2563eb', california: '#f59e0b', arizona: '#10b981', nationwide: '#8b5cf6' };
+        var marketLabels = { colorado: 'CO', california: 'CA', arizona: 'AZ', nationwide: 'Other' };
+        var marketKeys = ['colorado', 'california', 'arizona', 'nationwide'];
+
+        async function fetchMarketBreakdowns(filters) {
+            var el1 = document.getElementById('kpi-bookings-by-market');
+            var el2 = document.getElementById('kpi-revenue-by-market');
+            if (el1) el1.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+            if (el2) el2.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+
+            try {
+                // Build 6 month ranges (current month + 5 prior)
+                var now = new Date();
+                var months = [];
+                for (var mi = 5; mi >= 0; mi--) {
+                    var d = new Date(now.getFullYear(), now.getMonth() - mi, 1);
+                    months.push({
+                        label: d.toLocaleString('default', { month: 'short' }),
+                        from: d.toISOString().slice(0, 10),
+                        to: new Date(d.getFullYear(), d.getMonth() + 1, 0).toISOString().slice(0, 10),
+                    });
+                }
+                // Also build same 6 months from previous year for YoY
+                var prevMonths = [];
+                for (var mi2 = 5; mi2 >= 0; mi2--) {
+                    var d2 = new Date(now.getFullYear() - 1, now.getMonth() - mi2, 1);
+                    prevMonths.push({
+                        from: d2.toISOString().slice(0, 10),
+                        to: new Date(d2.getFullYear(), d2.getMonth() + 1, 0).toISOString().slice(0, 10),
+                    });
+                }
+
+                // Fetch current + prev year for each market × month
+                // To minimize calls: fetch each market with 6 months MTD custom ranges
+                // Actually batch: 4 markets × (current YTD-6mo + prev YTD-6mo) = 8 calls with daily=true
+                var sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+                var prevSixMonthsAgo = new Date(now.getFullYear() - 1, now.getMonth() - 5, 1);
+                var prevEnd = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+
+                var fetches = [];
+                marketKeys.forEach(function(m) {
+                    var curParams = new URLSearchParams({ market: m, period: 'custom', dateFrom: sixMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), daily: 'true' });
+                    var prevParams = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevSixMonthsAgo.toISOString().slice(0,10), dateTo: prevEnd.toISOString().slice(0,10), daily: 'true' });
+                    fetches.push(
+                        fetch('/api/hubspot-kpis?' + curParams).then(function(r) { return r.ok ? r.json() : null; }),
+                        fetch('/api/stripe-kpis?' + prevParams).then(function(r) { return r.ok ? r.json() : null; }),
+                        fetch('/api/hubspot-kpis?' + prevParams).then(function(r) { return r.ok ? r.json() : null; }),
+                        fetch('/api/stripe-kpis?' + curParams).then(function(r) { return r.ok ? r.json() : null; }),
+                    );
+                });
+
+                var results = await Promise.all(fetches);
+
+                // Parse results: each market has 4 results [hsCur, stPrev, hsPrev, stCur]
+                function bucketByMonth(daily, monthRanges) {
+                    var buckets = monthRanges.map(function() { return 0; });
+                    if (!daily) return buckets;
+                    Object.keys(daily).forEach(function(day) {
+                        for (var i = 0; i < monthRanges.length; i++) {
+                            if (day >= monthRanges[i].from && day <= monthRanges[i].to) {
+                                buckets[i] += 1; // count for bookings, will be overridden for revenue
+                                break;
+                            }
+                        }
+                    });
+                    return buckets;
+                }
+
+                function bucketRevByMonth(daily, monthRanges) {
+                    var buckets = monthRanges.map(function() { return 0; });
+                    if (!daily) return buckets;
+                    Object.keys(daily).forEach(function(day) {
+                        for (var i = 0; i < monthRanges.length; i++) {
+                            if (day >= monthRanges[i].from && day <= monthRanges[i].to) {
+                                buckets[i] += daily[day].revenue || 0;
+                                break;
+                            }
+                        }
+                    });
+                    return buckets;
+                }
+
+                function bucketBookingsByMonth(daily, monthRanges) {
+                    var buckets = monthRanges.map(function() { return 0; });
+                    if (!daily) return buckets;
+                    Object.keys(daily).forEach(function(day) {
+                        for (var i = 0; i < monthRanges.length; i++) {
+                            if (day >= monthRanges[i].from && day <= monthRanges[i].to) {
+                                buckets[i] += daily[day].bookings || 0;
+                                break;
+                            }
+                        }
+                    });
+                    return buckets;
+                }
+
+                var bookingsLines = {};
+                var revenueLines = {};
+                var bookingsYoY = {};
+                var revenueYoY = {};
+
+                for (var mi3 = 0; mi3 < marketKeys.length; mi3++) {
+                    var mkey = marketKeys[mi3];
+                    var idx = mi3 * 4;
+                    var hsCur = results[idx];
+                    var stPrev = results[idx + 1];
+                    var hsPrev = results[idx + 2];
+                    var stCur = results[idx + 3];
+
+                    // Bookings from HubSpot daily
+                    bookingsLines[mkey] = bucketBookingsByMonth(hsCur ? hsCur.daily : null, months);
+                    var prevBookings = bucketBookingsByMonth(hsPrev ? hsPrev.daily : null, prevMonths);
+                    var curBTotal = bookingsLines[mkey].reduce(function(a,b){return a+b;},0);
+                    var prevBTotal = prevBookings.reduce(function(a,b){return a+b;},0);
+                    bookingsYoY[mkey] = prevBTotal > 0 ? Math.round((curBTotal - prevBTotal) / prevBTotal * 100) : null;
+
+                    // Revenue from Stripe daily
+                    revenueLines[mkey] = bucketRevByMonth(stCur ? stCur.daily : null, months);
+                    var prevRevenue = bucketRevByMonth(stPrev ? stPrev.daily : null, prevMonths);
+                    var curRTotal = revenueLines[mkey].reduce(function(a,b){return a+b;},0);
+                    var prevRTotal = prevRevenue.reduce(function(a,b){return a+b;},0);
+                    revenueYoY[mkey] = prevRTotal > 0 ? Math.round((curRTotal - prevRTotal) / prevRTotal * 100) : null;
+                }
+
+                // Render SVG line charts
+                function renderTrendChart(container, lines, yoyData, monthLabels, formatter) {
+                    var W = 200, H = 80, padL = 4, padR = 4, padT = 6, padB = 16;
+                    var chartW = W - padL - padR;
+                    var chartH = H - padT - padB;
+                    var n = monthLabels.length;
+                    var allVals = [];
+                    marketKeys.forEach(function(k) { (lines[k] || []).forEach(function(v) { allVals.push(v); }); });
+                    var maxVal = Math.max.apply(null, allVals) || 1;
+
+                    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">';
+                    // Grid lines
+                    for (var gi = 0; gi <= 3; gi++) {
+                        var gy = padT + chartH - (gi / 3) * chartH;
+                        svg += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W-padR) + '" y2="' + gy + '" stroke="#e5e7eb" stroke-width="0.5"/>';
+                    }
+                    // Month labels
+                    for (var li = 0; li < n; li++) {
+                        var lx = padL + (li / (n - 1)) * chartW;
+                        svg += '<text x="' + lx + '" y="' + (H - 2) + '" text-anchor="middle" font-size="6" fill="#9ca3af">' + monthLabels[li] + '</text>';
+                    }
+                    // Lines
+                    marketKeys.forEach(function(k) {
+                        var vals = lines[k] || [];
+                        if (vals.length < 2) return;
+                        var points = [];
+                        for (var pi = 0; pi < vals.length; pi++) {
+                            var px = padL + (pi / (n - 1)) * chartW;
+                            var py = padT + chartH - (vals[pi] / maxVal) * chartH;
+                            points.push(px.toFixed(1) + ',' + py.toFixed(1));
+                        }
+                        svg += '<polyline points="' + points.join(' ') + '" fill="none" stroke="' + marketColors[k] + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
+                        // Dot on last point
+                        var last = points[points.length - 1].split(',');
+                        svg += '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + marketColors[k] + '"/>';
+                    });
+                    svg += '</svg>';
+
+                    // Legend with current month value + YoY
+                    var legend = '<div class="market-legend">';
+                    marketKeys.forEach(function(k) {
+                        var vals = lines[k] || [];
+                        var curVal = vals.length > 0 ? vals[vals.length - 1] : 0;
+                        var yoy = yoyData[k];
+                        var yoyStr = '';
+                        if (yoy !== null) {
+                            var cls = yoy >= 0 ? 'up' : 'down';
+                            yoyStr = '<span class="market-legend-yoy ' + cls + '">' + (yoy >= 0 ? '+' : '') + yoy + '% YoY</span>';
+                        }
+                        legend += '<span class="market-legend-item">' +
+                            '<span class="market-legend-dot" style="background:' + marketColors[k] + '"></span>' +
+                            '<span>' + marketLabels[k] + '</span>' +
+                            '<span class="market-legend-val">' + formatter(curVal) + '</span>' +
+                            yoyStr + '</span>';
+                    });
+                    legend += '</div>';
+
+                    container.innerHTML = svg + legend;
+                }
+
+                var monthLbls = months.map(function(m) { return m.label; });
+                if (el1) renderTrendChart(el1, bookingsLines, bookingsYoY, monthLbls, formatNumber);
+                if (el2) renderTrendChart(el2, revenueLines, revenueYoY, monthLbls, function(v) { return '$' + Math.round(v / 1000) + 'k'; });
+
+            } catch (err) {
+                console.error('Market breakdown error:', err);
+                if (el1) el1.textContent = 'Error';
+                if (el2) el2.textContent = 'Error';
+            }
+        }
+
         function renderAllComparisons() {
             var cs = compareData.stripe;
             var ch = compareData.hubspot;
@@ -2982,6 +3240,7 @@
             if (dfb && cf) {
                 setComparison('kpi-accounts', dfb.accounts_created, cf.accounts_created, formatNumber, false);
                 setComparison('kpi-active-agents', dfb.active_agents, cf.active_agents, formatNumber, false);
+                setComparison('kpi-bookings-per-agent', dfb.bookings_per_agent, cf.bookings_per_agent, function(v) { return v !== null ? v.toFixed(2) : '\u2014'; }, false);
             }
             // Customer comparisons
             if (dc && cc) {
@@ -3222,6 +3481,9 @@
             }
             await Promise.all(wave4);
 
+            // Wave 5: Market trend charts (fire and forget)
+            fetchMarketBreakdowns(filters);
+
             // Render sparklines (always, they show daily trends)
             renderAllSparklines();
 
@@ -3255,7 +3517,8 @@
             var sections = [
                 { id: 'section-company', link: navLinks[0] },
                 { id: 'section-sales', link: navLinks[1] },
-                { id: 'section-operations', link: navLinks[2] },
+                { id: 'section-customer', link: navLinks[2] },
+                { id: 'section-operations', link: navLinks[3] },
             ];
 
             navLinks.forEach(function(link) {
@@ -3371,17 +3634,22 @@
 
                 // Sales KPIs
                 sectionBlock('Sales KPIs', [
-                    kpiRow('Agent Signups', 'kpi-accounts'),
-                    kpiRow('Total Active Agents', 'kpi-active-agents'),
                     kpiRow('Quotes Requested', 'kpi-quotes'),
-                    kpiRow('Total Bookings', 'kpi-total-bookings'),
+                    kpiRow('Bookings', 'kpi-total-bookings'),
                     kpiRow('Conversion Rate', 'kpi-conversion'),
                     kpiRow('Total Revenue', 'kpi-total-revenue'),
                     kpiRow('Bookings Revenue', 'kpi-bookings-rev'),
                     kpiRow('Renewal Revenue', 'kpi-renewal-rev'),
+                    kpiRow('Sales Cycle', 'kpi-sales-cycle'),
+                ]) +
+
+                // Customer KPIs
+                sectionBlock('Customer KPIs', [
+                    kpiRow('Accounts Created', 'kpi-accounts'),
+                    kpiRow('Total Active Agents', 'kpi-active-agents'),
+                    kpiRow('Bookings / Agent (12-Month)', 'kpi-bookings-per-agent'),
                     kpiRow('AOV (at close)', 'kpi-aov-close'),
                     kpiRow('AOV (total)', 'kpi-aov-total'),
-                    kpiRow('Sales Cycle', 'kpi-sales-cycle'),
                 ]) +
 
                 // Ops KPIs
