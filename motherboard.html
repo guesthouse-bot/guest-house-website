@@ -1466,6 +1466,7 @@
                     <option value="previous_period">Previous period</option>
                     <option value="previous_month">Previous month</option>
                     <option value="previous_year" selected>Previous year</option>
+                    <option value="plan_2026">2026 Plan</option>
                     <option value="custom">Custom</option>
                 </select>
                 <div class="filter-group" id="compareCustomRange" style="display: none;">
@@ -1612,6 +1613,7 @@
                             <option value="previous_period">Previous period</option>
                             <option value="previous_month">Previous month</option>
                             <option value="previous_year" selected>Previous year</option>
+                            <option value="plan_2026">2026 Plan</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
@@ -1721,6 +1723,61 @@
         </div>
     </section>
 
+    <!-- Customer KPIs -->
+    <section id="section-customers">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Customer KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Active Users</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-active-users">&mdash;</span>
+                        <span class="kpi-change" id="kpi-active-users-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-active-users-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-active-users-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Quotes / User</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-quotes-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-quotes-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-quotes-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-quotes-user-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings / User</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-bookings-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-bookings-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-bookings-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-bookings-user-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Revenue / User</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-rev-user">&mdash;</span>
+                        <span class="kpi-change" id="kpi-rev-user-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-rev-user-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-rev-user-sparkline"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">ARPU</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-arpu">&mdash;</span>
+                        <span class="kpi-change" id="kpi-arpu-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-arpu-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-arpu-sparkline"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Ops KPIs -->
     <section id="section-operations">
@@ -1780,6 +1837,7 @@
                             <option value="previous_period">Previous period</option>
                             <option value="previous_month">Previous month</option>
                             <option value="previous_year" selected>Previous year</option>
+                            <option value="plan_2026">2026 Plan</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
@@ -2380,7 +2438,7 @@
             var prevEl = document.getElementById(baseId + '-prev');
             if (!changeEl || !prevEl) return;
 
-            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', custom: 'comparison' };
+            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', plan_2026: '2026 plan', custom: 'comparison' };
             var modeLabel = modeLabels[compareMode.value] || 'previous period';
 
             // Handle null/undefined: show "N/A" instead of hiding comparison
@@ -3153,6 +3211,39 @@
         }
 
         // ---- Main fetch orchestrator ----
+        async function fetchPlanKPIs() {
+            try {
+                var r = await fetch('/api/scorecard-kpis?metric=plan');
+                if (!r.ok) throw new Error('Plan API error');
+                var plan = await r.json();
+                compareData.hubspot = {
+                    quotes_requested: plan.quotes_requested,
+                    bookings: plan.bookings,
+                    booking_revenue: plan.staging_revenue,
+                    aov_at_close: plan.aov_at_close,
+                    sales_cycle_days: null,
+                };
+                compareData.stripe = {
+                    revenue: plan.total_revenue,
+                    bookings_revenue: plan.staging_revenue,
+                    renewal_revenue: null,
+                };
+                compareData.ops = {
+                    installs: (plan.co_installs || 0) + (plan.ca_installs || 0),
+                    deinstalls: (plan.co_deinstalls || 0) + (plan.ca_deinstalls || 0),
+                    renewals: null, markets: null, active_vendors: null,
+                };
+                compareData.firebase = null;
+                compareData.customer = null;
+                compareData.typeform = null;
+                compareData.ga4 = null;
+                compareData.vendor = null;
+                compareData.vendorSignups = null;
+            } catch (err) {
+                console.error('Plan KPI fetch error:', err);
+            }
+        }
+
         async function fetchAllKPIs(filters) {
             lastFilters = filters;
             latestRevenue = null;
@@ -3188,7 +3279,8 @@
             ];
             var wave3 = [];
 
-            if (compareToggle.checked) {
+            var isPlan = compareToggle.checked && compareMode.value === 'plan_2026';
+            if (compareToggle.checked && !isPlan) {
                 var cmpDates = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
                 var cmpFilters = {
                     market: filters.market,
@@ -3205,6 +3297,9 @@
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
+            if (isPlan) {
+                wave1.push(fetchPlanKPIs());
+            }
 
             await Promise.all(wave1);
             await Promise.all(wave2);
@@ -3212,7 +3307,7 @@
 
             // Wave 4: Firebase (heavy HubSpot usage for active agents — run after all other HubSpot calls)
             var wave4 = [fetchFirebaseKPIs(filters, false)];
-            if (compareToggle.checked) {
+            if (compareToggle.checked && !isPlan) {
                 var cmpDates2 = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
                 wave4.push(fetchFirebaseKPIs({ market: filters.market, period: 'custom', dateFrom: cmpDates2.dateFrom, dateTo: cmpDates2.dateTo }, true));
             }
