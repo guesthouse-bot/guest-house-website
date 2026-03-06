@@ -68,6 +68,17 @@ module.exports = async function handler(req, res) {
   var RENEWAL_SHEET_ID = process.env.RENEWAL_SHEET_ID;
   if (!RENEWAL_SHEET_ID) return res.status(500).json({ error: 'Renewal sheet ID not configured' });
 
+  // Temporary debug: read sheet structure
+  if (req.query.debug === 'sheet_layout') {
+    var serviceAccount2 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
+    var token2 = await getAccessToken(serviceAccount2);
+    var debugRange = req.query.range || "'Financial Model (2026)'!A1:B80";
+    var debugUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + encodeURIComponent(debugRange) + '?valueRenderOption=UNFORMATTED_VALUE';
+    var debugRes = await fetch(debugUrl, { headers: { 'Authorization': 'Bearer ' + token2 } });
+    var debugData = await debugRes.json();
+    return res.status(200).json(debugData);
+  }
+
   var serviceAccount = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
 
   try {
