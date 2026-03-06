@@ -3139,42 +3139,64 @@
             }
         }
 
-        // Revenue by Market (12-mo trailing cumulative) — uses monthly=true, renders progressively
+        // Revenue by Market (12-mo trailing cumulative)
+        // Uses individual 1-month Stripe calls (each is fast) instead of one 12-month call (times out)
         async function fetchRevenueByMarket() {
             var el = document.getElementById('kpi-revenue-by-market');
             if (!el) return;
             el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
             try {
                 var now = new Date();
-                var twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
-                var prevTwelveMonthsAgo = new Date(now.getFullYear() - 1, now.getMonth() - 11, 1);
-                var prevRevEnd = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-                var curKeys = buildMonthKeys(twelveMonthsAgo, 12);
-                var prevKeys = buildMonthKeys(prevTwelveMonthsAgo, 12);
-                var revLbls = curKeys.map(monthKeyToLabel);
+                var monthDates = [];
+                for (var i = 11; i >= 0; i--) {
+                    var mStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    var mEnd = new Date(mStart.getFullYear(), mStart.getMonth() + 1, 0);
+                    monthDates.push({ from: mStart.toISOString().slice(0,10), to: mEnd.toISOString().slice(0,10) });
+                }
+                var monthLabels = monthDates.map(function(md) {
+                    var parts = md.from.split('-');
+                    return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1).toLocaleString('default', { month: 'short' });
+                });
 
                 var lines = {}, yoy = {};
 
-                // Fetch each market independently and re-render as each completes
+                // For each market, fire 12 individual month calls in parallel — each is fast
                 var promises = marketKeys.map(function(m) {
-                    var curP = new URLSearchParams({ market: m, period: 'custom', dateFrom: twelveMonthsAgo.toISOString().slice(0,10), dateTo: now.toISOString().slice(0,10), monthly: 'true' });
-                    var prevP = new URLSearchParams({ market: m, period: 'custom', dateFrom: prevTwelveMonthsAgo.toISOString().slice(0,10), dateTo: prevRevEnd.toISOString().slice(0,10), monthly: 'true' });
-                    return Promise.all([
-                        fetch('/api/stripe-kpis?' + curP).then(function(r) { return r.ok ? r.json() : null; }),
-                        fetch('/api/stripe-kpis?' + prevP).then(function(r) { return r.ok ? r.json() : null; }),
-                    ]).then(function(res) {
-                        var stCur = res[0], stPrev = res[1];
-                        var curArr = monthlyToArray(stCur ? stCur.monthly : null, curKeys, 'revenue');
-                        lines[m] = toCumulative(curArr);
-                        var prevArr = monthlyToArray(stPrev ? stPrev.monthly : null, prevKeys, 'revenue');
-                        var prevCum = toCumulative(prevArr);
-                        var curTotal = lines[m][lines[m].length - 1] || 0;
-                        var prevTotal = prevCum[prevCum.length - 1] || 0;
-                        yoy[m] = prevTotal > 0 ? Math.round((curTotal - prevTotal) / prevTotal * 100) : null;
-                        renderTrendChart(el, lines, yoy, revLbls, function(v) { return '$' + Math.round(v / 1000) + 'k'; });
+                    var monthFetches = monthDates.map(function(md) {
+                        var p = new URLSearchParams({ market: m, period: 'custom', dateFrom: md.from, dateTo: md.to });
+                        return fetch('/api/stripe-kpis?' + p).then(function(r) { return r.ok ? r.json() : null; });
+                    });
+                    return Promise.all(monthFetches).then(function(monthResults) {
+                        var monthlyRevs = monthResults.map(function(r) { return r ? r.revenue : 0; });
+                        lines[m] = toCumulative(monthlyRevs);
+                        // Re-render progressively as each market completes
+                        renderTrendChart(el, lines, yoy, monthLabels, function(v) { return '$' + Math.round(v / 1000) + 'k'; });
                     });
                 });
                 await Promise.all(promises);
+
+                // Now fetch YoY: same pattern for previous year
+                var prevMonthDates = [];
+                for (var j = 11; j >= 0; j--) {
+                    var pmStart = new Date(now.getFullYear() - 1, now.getMonth() - j, 1);
+                    var pmEnd = new Date(pmStart.getFullYear(), pmStart.getMonth() + 1, 0);
+                    prevMonthDates.push({ from: pmStart.toISOString().slice(0,10), to: pmEnd.toISOString().slice(0,10) });
+                }
+                var yoyPromises = marketKeys.map(function(m) {
+                    var pFetches = prevMonthDates.map(function(md) {
+                        var p = new URLSearchParams({ market: m, period: 'custom', dateFrom: md.from, dateTo: md.to });
+                        return fetch('/api/stripe-kpis?' + p).then(function(r) { return r.ok ? r.json() : null; });
+                    });
+                    return Promise.all(pFetches).then(function(pResults) {
+                        var prevRevs = pResults.map(function(r) { return r ? r.revenue : 0; });
+                        var prevCum = toCumulative(prevRevs);
+                        var curTotal = lines[m] ? lines[m][lines[m].length - 1] || 0 : 0;
+                        var prevTotal = prevCum[prevCum.length - 1] || 0;
+                        yoy[m] = prevTotal > 0 ? Math.round((curTotal - prevTotal) / prevTotal * 100) : null;
+                    });
+                });
+                await Promise.all(yoyPromises);
+                renderTrendChart(el, lines, yoy, monthLabels, function(v) { return '$' + Math.round(v / 1000) + 'k'; });
             } catch (err) {
                 console.error('Revenue by market error:', err);
                 el.textContent = 'Error';
