@@ -1772,11 +1772,11 @@
                     <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Bookings by Market (24-Mo Cumulative)</div>
+                    <div class="kpi-label">Bookings by Market (12-Mo Cumulative)</div>
                     <div id="kpi-bookings-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue by Market (24-Mo Cumulative)</div>
+                    <div class="kpi-label">Revenue by Market (12-Mo Cumulative)</div>
                     <div id="kpi-revenue-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
             </div>
@@ -3032,7 +3032,7 @@
                 var gy = padT + chartH - (gi / 3) * chartH;
                 svg += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W-padR) + '" y2="' + gy + '" stroke="#e5e7eb" stroke-width="0.5"/>';
             }
-            var labelStep = n > 16 ? 4 : n > 8 ? 2 : 1;
+            var labelStep = n > 8 ? 2 : 1;
             for (var li = 0; li < n; li++) {
                 if (li % labelStep !== 0 && li !== n - 1) continue;
                 var lx = padL + (li / (n - 1)) * chartW;
@@ -3120,7 +3120,7 @@
             if (!el) return;
             el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
             try {
-                var monthDates = buildMonthDates(24);
+                var monthDates = buildMonthDates(12);
                 var labels = monthDatesToLabels(monthDates);
                 var lines = {}, yoy = {};
 
@@ -3148,7 +3148,7 @@
             if (!el) return;
             el.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
             try {
-                var monthDates = buildMonthDates(24);
+                var monthDates = buildMonthDates(12);
                 var labels = monthDatesToLabels(monthDates);
                 var lines = {}, yoy = {};
 
