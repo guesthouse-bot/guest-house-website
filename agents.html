@@ -22,7 +22,7 @@
     });
     </script>
 
-    <meta name="description" content="Guest House is the listing prep platform for real estate agents. Staging, photography, and prep coordinated in days — agents who use Guest House sell faster and for more.">
+    <meta name="description" content="Guest House for Real Estate Agents - Win more listings by promising sellers their home will be listed faster. Staging, photography, and prep coordinated in days, not weeks.">
     <title>For Agents | Guest House</title>
     <style>
         @font-face {
@@ -1889,7 +1889,6 @@
             background: var(--color-border);
             color: var(--color-text-secondary);
             transition: all 0.2s;
-            overflow: hidden;
         }
 
         .social-link:hover {
@@ -1898,9 +1897,8 @@
         }
 
         .social-link svg {
-            width: 20px !important;
-            height: 20px !important;
-            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
         }
 
         /* Responsive */
@@ -2079,274 +2077,6 @@
 
         .demo-modal-overlay.active {
             display: flex;
-        }
-
-        /* Case Studies Section */
-        .case-studies-section {
-            padding: 80px 3rem;
-            background: var(--color-mist);
-        }
-
-        .case-studies-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .case-studies-header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .case-studies-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            color: var(--color-onyx);
-        }
-
-        .case-studies-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .case-study-card {
-            background: white;
-            border-radius: 16px;
-            padding: 28px 28px 24px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--color-border);
-            transition: box-shadow 0.2s ease, transform 0.2s ease;
-        }
-
-        .case-study-card:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        .case-study-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 4px;
-        }
-
-        .case-study-address {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--color-onyx);
-            line-height: 1.3;
-        }
-
-        .case-study-actions {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-            margin-left: 12px;
-        }
-
-        .case-study-action-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.15s ease, border-color 0.15s ease;
-            text-decoration: none;
-            color: var(--color-text-secondary);
-        }
-
-        .case-study-action-btn:hover {
-            background: var(--color-mist);
-            border-color: var(--color-text-secondary);
-            color: var(--color-onyx);
-        }
-
-        .case-study-action-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .case-study-meta {
-            font-size: 0.8125rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-            line-height: 1.5;
-        }
-
-        .case-study-metric-row {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-paper);
-            padding: 6px 14px;
-            border-radius: 100px;
-            margin-bottom: 16px;
-            align-self: flex-start;
-        }
-
-        .case-study-metric-value {
-            font-size: 0.9375rem;
-            font-weight: 700;
-            color: var(--color-onyx);
-        }
-
-        .case-study-services {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .case-study-service-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: var(--color-mist);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .case-study-service-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--color-text-secondary);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .case-study-quote {
-            font-size: 0.9375rem;
-            line-height: 1.6;
-            color: var(--color-text-secondary);
-            margin-bottom: 20px;
-            flex-grow: 1;
-            font-style: italic;
-        }
-
-        .case-study-footer {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .case-study-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--color-deep);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 0.8125rem;
-            flex-shrink: 0;
-        }
-
-        .case-study-footer-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-
-        .case-study-agent {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--color-onyx);
-        }
-
-        .case-study-brokerage {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-        }
-
-        @media (max-width: 768px) {
-            .case-studies-section {
-                padding: 60px 1.5rem;
-            }
-
-            .case-studies-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ROI / The Math Section */
-        .roi-section {
-            padding: 80px 3rem;
-            background: var(--color-paper);
-        }
-
-        .roi-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .roi-header {
-            margin-bottom: 48px;
-        }
-
-        .roi-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            color: var(--color-onyx);
-        }
-
-        .roi-math {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr auto 1fr;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .roi-block {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .roi-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-onyx);
-            line-height: 1.1;
-        }
-
-        .roi-label {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-        }
-
-        .roi-operator {
-            font-size: 2rem;
-            font-weight: 300;
-            color: var(--color-text-secondary);
-        }
-
-        @media (max-width: 768px) {
-            .roi-section {
-                padding: 60px 1.5rem;
-            }
-
-            .roi-math {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .roi-operator {
-                font-size: 1.5rem;
-            }
         }
 
         .demo-modal {
@@ -2609,7 +2339,7 @@
                                     <span class="dropdown-desc">Get expert guidance on-demand</span>
                                 </div>
                             </a>
-                            <a href="styling.html" class="dropdown-item">
+                            <a href="style-for-you.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
@@ -2622,7 +2352,7 @@
                                     <span class="dropdown-desc">Pro styling with your furnishings</span>
                                 </div>
                             </a>
-                            <a href="home-staging.html" class="dropdown-item">
+                            <a href="full-service-staging.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -2798,8 +2528,8 @@
                     <h3 class="dropdown-header">Prep a home</h3>
                     <div class="dropdown-grid">
                         <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
-                        <a href="styling.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
-                        <a href="home-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
+                        <a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
+                        <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
                     </div>
                 </div>
             </li>
@@ -2842,28 +2572,27 @@
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
-                The listing prep platform
+                Win more listings
             </div>
-            <h1>Agents who use Guest House sell faster and for more</h1>
+            <h1>List and sell homes<br>faster than anyone</h1>
             <p class="hero-subtitle">
-                Most agents lose listings because they can't show sellers a clear plan. Guest House is the platform that gives you instant prep plans, coordinates every vendor, and gets homes market-ready in days — so you win the listing and sell for top dollar.
+                Walk into every listing appointment with a concrete plan. Guest House gets homes staged, photographed, and market-ready in days — so sellers choose you over agents who can't move as fast.
             </p>
             <div class="hero-cta">
-                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">See it in action</a>
-                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-secondary btn-large">Get your quote</a>
+                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-value">$75K</span>
-                    <span class="stat-label">Over asking, 836 Carlsbad St</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">3 days</span>
-                    <span class="stat-label">On market, 3640 Lipan St</span>
-                </div>
-                <div class="stat">
                     <span class="stat-value">2,500+</span>
-                    <span class="stat-label">Listings prepped & sold</span>
+                    <span class="stat-label">Listings prepped & live</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">Days</span>
+                    <span class="stat-label">From signed to market-ready</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Happiness guaranteed</span>
                 </div>
             </div>
             <div class="hero-logos">
@@ -2896,8 +2625,8 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                 </div>
-                <h3>Win the listing appointment</h3>
-                <p>Show up with an instant prep plan and real pricing. Sellers sign with the agent who already has everything figured out.</p>
+                <h3>Walk in with a plan</h3>
+                <p>Pull up instant quotes for staging, cleaning, and photos right in the listing appointment. Sellers sign when they see you already have everything figured out.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2907,7 +2636,17 @@
                     </svg>
                 </div>
                 <h3>Listed in days, not weeks</h3>
-                <p>Our average listing goes from signed to MLS-live in 5 days. That speed wins sellers — and gets you to closing faster.</p>
+                <p>Promise sellers a faster timeline — and deliver. Homes go from signed listing to live on MLS in days, not the weeks other agents need.</p>
+            </div>
+            <div class="value-prop">
+                <div class="value-prop-icon">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>Stand out in every pitch</h3>
+                <p>Show sellers a polished prep plan with real pricing before other agents even return their call. That's how you win the listing.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2916,26 +2655,14 @@
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>Sell above asking price</h3>
-                <p>Staged homes prepped by Guest House sell for an average of $63K over asking. The ROI speaks for itself.</p>
-            </div>
-            <div class="value-prop">
-                <div class="value-prop-icon">
-                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                </div>
-                <h3>Earn more referrals</h3>
-                <p>Deliver a premium seller experience that drives word-of-mouth. When sellers rave about how smooth the process was, your name comes up first.</p>
+                <h3>Sellers remember this</h3>
+                <p>Deliver a premium, organized experience that earns referrals. When sellers tell friends how smooth the process was, your name comes up first.</p>
             </div>
         </div>
     </section>
 
     <section class="section-headline" style="padding-bottom: 2rem;">
-        <h2>One platform. Every vendor.<br>Zero coordination headaches.</h2>
+        <h2>Everything you need to list faster,<br>all in one place</h2>
     </section>
     <section class="deliverable-section" id="services">
         <div class="service-tiles">
@@ -2954,7 +2681,7 @@
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Expert Design Advice</h3>
-                    <p class="tile-desc">Get a personalized prep plan from our design team — walk into the listing appointment with a strategy that wins.</p>
+                    <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan tailored to your listing.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
                 <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
@@ -2964,20 +2691,20 @@
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">In-Person Styling</h3>
-                    <p class="tile-desc">A pro stylist transforms the home using existing furnishings — listing-ready in hours, not days.</p>
+                    <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
-                <a href="styling.html" class="tile-sub-cta">See how In-Person Styling works</a>
+                <a href="style-for-you.html" class="tile-sub-cta">See how In-Person Styling works</a>
             </div>
             <div class="service-tile">
                 <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" fetchpriority="high" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Full-Service Staging</h3>
-                    <p class="tile-desc">We bring the furniture, design the layout, and handle everything. Staged homes sell for an avg of $63K over asking.</p>
+                    <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
-                <a href="home-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
+                <a href="full-service-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
             </div>
         </div>
         <div class="more-services">
@@ -3007,50 +2734,16 @@
         </div>
     </section>
 
-    <section class="case-studies-section">
-        <div class="case-studies-inner">
-            <div class="case-studies-header">
-                <h2>Real agents. Real results.</h2>
-            </div>
-            <div class="case-studies-grid">
-                <div class="case-study-card">
-                    <span class="case-study-metric">$75K over asking</span>
-                    <span class="case-study-property">836 Carlsbad St — 8 days on market</span>
-                    <p class="case-study-quote">"Guest House staged my listing and we sold for $75K over asking in just 8 days. The process was seamless from start to finish."</p>
-                    <span class="case-study-agent">Cody Stamm</span>
-                    <span class="case-study-brokerage">eXp Realty</span>
-                    <a href="836-carlsbad.html" class="case-study-link">Read the full story</a>
-                </div>
-                <div class="case-study-card">
-                    <span class="case-study-metric">3 days on market</span>
-                    <span class="case-study-property">3640 Lipan St — $1M sale</span>
-                    <p class="case-study-quote">"We listed on a Thursday and had a full-price offer by Saturday. Guest House got us market-ready faster than I thought possible."</p>
-                    <span class="case-study-agent">Connor Cole</span>
-                    <span class="case-study-brokerage">The Agency</span>
-                    <a href="3640-lipan.html" class="case-study-link">Read the full story</a>
-                </div>
-                <div class="case-study-card">
-                    <span class="case-study-metric">Sold day 1</span>
-                    <span class="case-study-property">500 Manhattan Dr</span>
-                    <p class="case-study-quote">"The staging was so well done that we had an offer the same day we went live. Guest House made my sellers incredibly happy."</p>
-                    <span class="case-study-agent">Dorothy Pacheco</span>
-                    <span class="case-study-brokerage">Compass</span>
-                    <a href="500-manhattan.html" class="case-study-link">Read the full story</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="benefits-section">
         <div class="benefits-inner">
-            <h2 class="benefits-headline">Everything that makes you look like a closer</h2>
+            <h2 class="benefits-headline">Give sellers more support, automatically</h2>
 
             <div class="benefits-grid">
                 <!-- Large featured card -->
                 <div class="benefit-card benefit-card-large">
                     <div class="benefit-card-content">
                         <h3>Your listing timeline, locked in</h3>
-                        <p>The moment you sign a listing, your prep schedule is set. Cleaning, staging, and photography happen in sequence — so you can tell sellers the exact go-live date upfront.</p>
+                        <p>The moment you sign a listing, your prep schedule is set. Cleaning, staging, and photography happen in sequence — so you can tell sellers exactly when they'll be live.</p>
                     </div>
                     <div class="benefit-card-visual">
                         <div class="visual-timeline">
@@ -3082,7 +2775,7 @@
                 <div class="benefit-card benefit-card-small">
                     <div class="benefit-card-content">
                         <h3>Sellers pay in one click</h3>
-                        <p>Send a professional invoice and sellers pay online instantly. No awkward money conversations — a polished experience that sets you apart.</p>
+                        <p>Send a professional invoice and sellers pay online instantly. No awkward money conversations — just a smooth experience that builds trust.</p>
                     </div>
                     <div class="benefit-card-visual-small">
                         <div class="invoice-preview">
@@ -3098,7 +2791,7 @@
                 <div class="benefit-card benefit-card-small">
                     <div class="benefit-card-content">
                         <h3>Keep sellers in the loop</h3>
-                        <p>Share real-time progress updates so sellers see every step. That transparency is how you earn referrals before the home even sells.</p>
+                        <p>Sellers love knowing exactly where things stand. Share real-time progress updates so they see firsthand how fast you're getting their home to market.</p>
                     </div>
                     <div class="benefit-card-visual-small">
                         <div class="status-updates">
@@ -3124,33 +2817,9 @@
         </div>
     </section>
 
-    <section class="roi-section">
-        <div class="roi-inner">
-            <div class="roi-header">
-                <h2>The math</h2>
-            </div>
-            <div class="roi-math">
-                <div class="roi-block">
-                    <span class="roi-value">$3,500</span>
-                    <span class="roi-label">Avg. staging investment</span>
-                </div>
-                <span class="roi-operator">→</span>
-                <div class="roi-block">
-                    <span class="roi-value">$63K</span>
-                    <span class="roi-label">Avg. over asking price</span>
-                </div>
-                <span class="roi-operator">=</span>
-                <div class="roi-block">
-                    <span class="roi-value">18x</span>
-                    <span class="roi-label">Return on investment</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="testimonials-scroll-section">
         <div class="testimonials-scroll-header">
-            <h2>Don't take our word for it</h2>
+            <h2>How top agents win more listings with Guest House</h2>
         </div>
         <div class="testimonials-scroll-container">
             <div class="testimonials-scroll-track">
@@ -3254,7 +2923,7 @@
             </div>
             <div class="steps">
                 <div class="step">
-                    <h3>Get your prep plan in minutes</h3>
+                    <h3>Build your listing plan</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -3262,7 +2931,7 @@
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Get a tailored plan with real pricing
+                            Get a tailored prep plan with pricing
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -3271,7 +2940,7 @@
                     </ul>
                 </div>
                 <div class="step">
-                    <h3>We prep the home, you focus on selling</h3>
+                    <h3>We prep the home fast</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -3279,7 +2948,7 @@
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Every vendor coordinated in the right order
+                            Everything coordinated in the right order
                         </li>
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -3288,7 +2957,7 @@
                     </ul>
                 </div>
                 <div class="step">
-                    <h3>Go live fast, sell for more</h3>
+                    <h3>Go live and sell fast</h3>
                     <ul class="step-checklist">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -3309,12 +2978,9 @@
     </section>
 
     <section class="cta-section">
-        <h2>Your next listing could sell in days, not weeks</h2>
-        <p>Join thousands of agents who sell faster and for more with Guest House.</p>
-        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
-            <a href="#" class="btn btn-secondary" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
-        </div>
+        <h2>Win more listings. Get them live faster.</h2>
+        <p>Join thousands of agents who close more deals by getting sellers to market in days, not weeks.</p>
+        <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
     </section>
 
     <footer>
@@ -3333,8 +2999,8 @@
                 <h4>Prep a Home</h4>
                 <ul>
                     <li><a href="design-advice.html">Expert Design Advice</a></li>
-                    <li><a href="styling.html">In-Person Styling</a></li>
-                    <li><a href="home-staging.html">Full-Service Staging</a></li>
+                    <li><a href="style-for-you.html">In-Person Styling</a></li>
+                    <li><a href="full-service-staging.html">Full-Service Staging</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -3351,9 +3017,10 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
+
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
-                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
                     <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
                 </ul>
