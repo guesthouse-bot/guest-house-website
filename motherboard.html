@@ -3476,10 +3476,7 @@
 
             clearAllComparisons();
 
-            // Fire market trend charts immediately (they're independent)
-            fetchBookingsByMarket();
-            fetchRevenueByMarket();
-            fetchActiveAgentsByMarket();
+            // Market trend charts deferred to after main KPIs load
 
             // Stagger fetches to prevent concurrent HubSpot rate limiting
             // Wave 1: Stripe + GA4 + non-HubSpot sources
@@ -3538,7 +3535,10 @@
             }
             await Promise.all(wave4);
 
-            // Market trend charts already fired above
+            // Fire market trend charts after all main KPIs are loaded
+            fetchBookingsByMarket();
+            fetchActiveAgentsByMarket();
+            fetchRevenueByMarket();
 
             // Render sparklines (always, they show daily trends)
             renderAllSparklines();
