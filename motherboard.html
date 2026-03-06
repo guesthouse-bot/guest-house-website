@@ -2612,9 +2612,19 @@
             if (!isCompare) setLoading(ids);
             try {
                 var params = buildParams(filters);
-                var response = await fetch('/api/stripe-kpis?' + params.toString());
-                if (!response.ok) throw new Error('API error');
-                var data = await response.json();
+                // Fetch Stripe and Notable in parallel
+                var [stripeRes, notableRes] = await Promise.all([
+                    fetch('/api/stripe-kpis?' + params.toString()),
+                    fetch('/api/notable-kpis?' + params.toString()),
+                ]);
+                if (!stripeRes.ok) throw new Error('API error');
+                var data = await stripeRes.json();
+                var notableData = notableRes.ok ? await notableRes.json() : { total: 0 };
+
+                // Add Notable revenue to bookings revenue and total revenue
+                data.bookings_revenue += notableData.total || 0;
+                data.revenue += notableData.total || 0;
+                data.notable_revenue = notableData.total || 0;
 
                 if (isCompare) {
                     compareData.stripe = data;
