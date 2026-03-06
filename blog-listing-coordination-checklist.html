@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="address=no">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href*="guesthouseshop.com/smart-quote"]');
+        if (link && typeof gtag === 'function') {
+            gtag('event', 'quote_start', {
+                event_category: 'engagement',
+                event_label: link.href,
+            });
+        }
+    });
+    </script>
+    <meta name="description" content="The definitive pre-listing checklist for real estate agents. From repairs to staging to photography — every step to prepare a home for market.">
+    <title>The complete listing coordination checklist | Guest House Blog</title>
+    <style>
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype'); font-weight: 500; font-style: normal; }
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-onyx: #080808; --color-charcoal: #343434; --color-text: #666666;
+            --color-div: #DDDDDD; --color-white: #FFFFFF; --color-mist: #F7F7F7;
+            --color-deep: #4F6066; --color-lake: #97B2BB; --color-moss: #888578;
+            --color-bone: #E9E6E3; --color-paper: #EEECEA; --color-error: #C4544C;
+            --color-sunflower: #D69B43; --color-golden: #EBBC76; --color-beige: #E1D7C3;
+            --color-rain: #CCD5D6; --color-primary: #080808; --color-text-primary: #080808;
+            --color-text-secondary: #666666; --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7; --color-border: #DDDDDD;
+        }
+        body { font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.5; color: var(--color-text-primary); background: var(--color-surface); }
+        .announcement-bar { background: #F2F2F2; color: #080808; text-align: center; padding: 10px 1.5rem; font-size: 0.8125rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
+        .announcement-bar a { color: #080808; text-decoration: underline; margin-left: 6px; font-weight: 600; }
+        .announcement-bar a:hover { opacity: 0.8; }
+        header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        nav { width: 100%; padding: 0.75rem 3rem; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .logo { display: flex; align-items: center; flex-shrink: 0; text-decoration: none; }
+        .logo svg { height: 24px; width: auto; }
+        .logo svg path { fill: #080808; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-links li { position: relative; }
+        .nav-links a { color: var(--color-text-primary); text-decoration: none; font-size: 1rem; font-weight: 400; transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .nav-links a:hover { color: var(--color-text-secondary); }
+        .nav-links a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); margin-top: -3px; }
+        .nav-links a.no-dropdown::after { content: none; }
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); margin-top: 0.5rem; background: white; border: 1px solid var(--color-border); border-radius: 1rem; padding: 1.5rem 2rem; min-width: 520px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 1000; }
+        .nav-links li:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-header { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; }
+        .dropdown-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .dropdown-grid-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+        .dropdown-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.625rem; border-radius: 0.625rem; text-decoration: none; transition: background 0.2s; }
+        .dropdown-item:hover { background: var(--color-surface-secondary); }
+        .dropdown-item::after { content: none !important; }
+        .dropdown-icon { width: 48px; height: 48px; background: var(--color-surface-secondary); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .dropdown-icon svg { width: 24px; height: 24px; stroke: var(--color-text-primary); fill: none; }
+        .dropdown-text { display: flex; flex-direction: column; gap: 0.125rem; }
+        .dropdown-title { font-size: 0.875rem; font-weight: 500; color: var(--color-text-primary) !important; }
+        .dropdown-desc { font-size: 0.75rem; color: var(--color-text-secondary) !important; line-height: 1.4; }
+        .dropdown-resources-layout { display: flex; gap: 1.5rem; }
+        .dropdown-resources-left { flex: 1; min-width: 0; }
+        .dropdown-featured { flex: 0 0 220px; max-width: 220px; padding-left: 1.5rem; }
+        .dropdown-featured-label { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); display: block; margin-bottom: 1rem; }
+        .dropdown-featured-card { display: flex !important; flex-direction: column !important; text-decoration: none !important; max-width: 196px; }
+        .dropdown-featured-card:hover .dropdown-featured-img { transform: scale(1.02); }
+        .dropdown-featured-card::after { content: none !important; display: none !important; }
+        .dropdown-featured-img { width: 196px; max-width: 196px; height: auto; border-radius: 12px; margin-bottom: 0.75rem; display: block !important; transition: transform 0.2s ease; }
+        .dropdown-featured-title { font-size: 0.875rem; font-weight: 500; color: var(--color-text-primary) !important; display: block !important; margin-bottom: 0.25rem; white-space: normal; width: 100%; }
+        .dropdown-featured-desc { font-size: 0.75rem; color: var(--color-text-secondary) !important; line-height: 1.5; white-space: normal; display: block !important; width: 100%; }
+        .dropdown-connect { width: 220px; flex-shrink: 0; padding-left: 1.5rem; }
+        .dropdown-connect-header { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); display: block; margin-bottom: 1.25rem; }
+        .dropdown-connect-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.625rem; border-radius: 0.625rem; text-decoration: none; transition: background 0.2s; }
+        .dropdown-connect-item:hover { background: transparent; }
+        .dropdown-connect-item::after { content: none !important; display: none !important; }
+        .nav-actions { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
+        .hamburger { display: none; }
+        .mobile-menu-modal { display: none !important; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 16px 28px; border-radius: 30px; font-weight: 600; font-size: 0.9375rem; text-decoration: none; transition: all 0.3s ease-in-out; border: none; cursor: pointer; font-family: inherit; line-height: 1; }
+        .btn-primary { background: var(--color-golden); color: var(--color-onyx); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .btn-primary:hover { background: #D4A85E; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(235,188,118,0.4); }
+        .btn-secondary { background: var(--color-white); color: var(--color-onyx); border: 1px solid var(--color-border); }
+        .btn-secondary:hover { background: var(--color-surface-secondary); }
+        .btn-large { padding: 20px 40px; font-size: 1rem; }
+
+        /* Article Styles */
+        .article-hero { width: 100%; aspect-ratio: 21/9; overflow: hidden; margin-top: 60px; }
+        .article-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .article-header { max-width: 760px; margin: 0 auto; padding: 48px 3rem 0; }
+        .article-tag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 16px; display: inline-block; }
+        .article-header h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 24px; color: var(--color-onyx); }
+        .article-meta { display: flex; align-items: center; gap: 12px; padding-bottom: 32px; border-bottom: 1px solid var(--color-border); margin-bottom: 48px; }
+        .article-meta-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .article-meta-info { display: flex; flex-direction: column; }
+        .article-meta-name { font-size: 0.9375rem; font-weight: 500; color: var(--color-text-primary); }
+        .article-meta-date { font-size: 0.8125rem; color: var(--color-text-secondary); }
+        .article-body { max-width: 760px; margin: 0 auto; padding: 0 3rem 80px; }
+        .article-body h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 500; letter-spacing: -0.02em; margin: 48px 0 20px; color: var(--color-onyx); }
+        .article-body h3 { font-size: 1.25rem; font-weight: 500; margin: 32px 0 12px; color: var(--color-onyx); }
+        .article-body p { font-size: 1.0625rem; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 24px; }
+        .article-body ul, .article-body ol { margin: 0 0 24px 24px; color: var(--color-text-secondary); }
+        .article-body li { font-size: 1.0625rem; line-height: 1.8; margin-bottom: 8px; }
+        .article-body a { color: var(--color-onyx); text-decoration: underline; text-underline-offset: 2px; }
+        .article-body a:hover { color: var(--color-text-secondary); }
+        .article-body strong { color: var(--color-onyx); font-weight: 600; }
+        .article-pullquote { border-left: 3px solid var(--color-golden); padding: 8px 0 8px 24px; margin: 40px 0; }
+        .article-pullquote p { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: var(--color-onyx); margin-bottom: 0; }
+        .article-divider { width: 48px; height: 2px; background: var(--color-golden); margin: 48px 0; }
+        .article-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 40px 0; padding: 32px; background: var(--color-mist); border-radius: 16px; }
+        .article-stat { text-align: center; }
+        .article-stat-value { font-size: 1.75rem; font-weight: 600; color: var(--color-onyx); margin-bottom: 4px; }
+        .article-stat-label { font-size: 0.8125rem; color: var(--color-text-secondary); }
+
+        /* Back to blog link */
+        .article-back { display: inline-flex; align-items: center; gap: 8px; padding: 24px 3rem; max-width: 760px; margin: 60px auto 0; width: 100%; font-size: 0.9375rem; color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .article-back:hover { color: var(--color-text-primary); }
+        .article-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+        /* Related Posts */
+        .related-posts { max-width: 1280px; margin: 0 auto; padding: 80px 3rem 0; }
+        .related-posts h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500; letter-spacing: -0.02em; margin-bottom: 32px; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .related-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+        .related-card-image { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; margin-bottom: 16px; background: var(--color-surface-secondary); }
+        .related-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .related-card:hover img { transform: scale(1.03); }
+        .related-card-tag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); }
+        .related-card-title { font-size: 1.125rem; font-weight: 500; line-height: 1.35; margin-top: 8px; color: var(--color-text-primary); }
+
+        /* CTA Section */
+        .cta-section { padding: 120px 3rem; text-align: center; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('cta-background.jpg'); background-size: cover; background-position: center 70%; color: white; margin-top: 80px; }
+        .cta-inner { max-width: 700px; margin: 0 auto; }
+        .cta-section h2 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em; }
+        .cta-section p { font-size: 1.125rem; opacity: 0.9; margin-bottom: 40px; }
+        .cta-section .btn-primary { background: var(--color-white); color: var(--color-primary); }
+        .cta-section .btn-primary:hover { background: var(--color-bone); }
+
+        /* Footer */
+        footer { padding: 3rem 2rem; background: var(--color-surface-secondary); border-top: 1px solid var(--color-border); }
+        .footer-content { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 2rem; }
+        .footer-section h4 { font-size: 0.875rem; margin-bottom: 1rem; color: var(--color-text-primary); font-weight: 700; }
+        .footer-section ul { list-style: none; }
+        .footer-section li { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem; }
+        .footer-section a { color: var(--color-text-secondary); text-decoration: none; font-size: 0.875rem; display: block; margin-bottom: 0.5rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--color-text-primary); }
+        .social-links { display: flex; gap: 16px; margin-top: 8px; }
+        .social-link { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--color-border); color: var(--color-text-secondary); transition: all 0.2s; overflow: hidden; }
+        .social-link:hover { background: var(--color-bone); color: var(--color-text-primary); }
+        .social-link svg { width: 20px !important; height: 20px !important; flex-shrink: 0; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+            .article-stats { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 0.75rem 1.5rem; }
+            .nav-links, .nav-actions { display: none; }
+            .hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 32px; height: 32px; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; }
+            .hamburger span { display: block; width: 100%; height: 2px; background: var(--color-text-primary); border-radius: 2px; }
+            .mobile-menu-modal { display: none !important; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 99999; flex-direction: column; padding: 1rem 1.5rem; padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 1rem); overflow: hidden; box-sizing: border-box; }
+            .mobile-menu-modal.active { display: flex !important; }
+            .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); margin-bottom: 1rem; }
+            .mobile-menu-logo svg { height: 27px; width: auto; }
+            .mobile-menu-close { background: none; border: none; padding: 0.5rem; cursor: pointer; color: var(--color-onyx); }
+            .mobile-menu-nav { list-style: none; flex: 1; overflow-y: auto; min-height: 0; }
+            .mobile-menu-nav li { border-bottom: 1px solid var(--color-border); }
+            .mobile-menu-nav > li > a { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; font-size: 1.125rem; color: var(--color-onyx); text-decoration: none; font-weight: 500; }
+            .mobile-menu-nav > li > a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid var(--color-onyx); border-bottom: 1.5px solid var(--color-onyx); transform: rotate(45deg); transition: transform 0.2s; }
+            .mobile-menu-nav li.dropdown-open > a::after { transform: rotate(-135deg); }
+            .mobile-menu-nav .dropdown { display: none !important; position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; box-shadow: none !important; border: none !important; min-width: 0 !important; background: var(--color-mist) !important; padding: 1rem !important; margin-bottom: 0.5rem !important; }
+            .mobile-menu-nav li.dropdown-open .dropdown { display: block !important; }
+            .mobile-menu-nav .dropdown-header { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 1rem; font-weight: 500; }
+            .mobile-menu-nav .dropdown-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+            .mobile-menu-nav .dropdown-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; text-decoration: none; }
+            .mobile-menu-nav .dropdown-icon { width: 40px; height: 40px; background: var(--color-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+            .mobile-menu-nav .dropdown-icon svg { width: 20px; height: 20px; stroke: var(--color-onyx); fill: none; }
+            .mobile-menu-nav .dropdown-title { color: var(--color-onyx); font-weight: 500; font-size: 1rem; line-height: 1.3; }
+            .mobile-menu-nav .dropdown-desc { color: var(--color-text-secondary); font-size: 0.875rem; }
+            .mobile-menu-actions { display: flex; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-border); margin-top: auto; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+            .mobile-menu-actions .btn { flex: 1; justify-content: center; padding: 1rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; }
+            .mobile-menu-actions .btn-primary { background: var(--color-golden); color: var(--color-onyx); }
+            .mobile-menu-actions .btn-secondary { background: var(--color-onyx); color: #FFFFFF; }
+            .article-hero { aspect-ratio: 16/9; margin-top: 50px; }
+            .article-header { padding: 32px 1.5rem 0; }
+            .article-body { padding: 0 1.5rem 60px; }
+            .article-back { padding: 20px 1.5rem; margin-top: 50px; }
+            .article-stats { grid-template-columns: 1fr; gap: 16px; }
+            .related-posts { padding: 60px 1.5rem 0; }
+            .related-grid { grid-template-columns: 1fr; }
+            .cta-section { padding: 80px 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+    <div class="announcement-bar">
+        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    </div>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_logo)"><path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/><path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/><path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/><path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/><path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/><path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/><path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/><path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/><path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/><path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/><path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/><path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/><path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/></g><defs><clipPath id="clip0_logo"><rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/></clipPath></defs></svg>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#">Prep a home</a><div class="dropdown"><h3 class="dropdown-header">Prep a home</h3><div class="dropdown-grid"><a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design<br>Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a><a href="styling.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person<br>Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a><a href="home-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service<br>Staging</span><span class="dropdown-desc">We handle everything</span></div></a></div></div></li>
+                <li><a href="#">Customers</a><div class="dropdown"><h3 class="dropdown-header">Customers</h3><div class="dropdown-grid-2col"><a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a><a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a></div></div></li>
+                <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
+                <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
+                <li><a href="#">Resources</a><div class="dropdown" style="min-width: 780px;"><div class="dropdown-resources-layout"><div class="dropdown-resources-left"><h3 class="dropdown-header">Resources</h3><div class="dropdown-grid" style="grid-template-columns: 1fr;"><a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a><a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a></div></div><div class="dropdown-connect"><span class="dropdown-connect-header">Help Center</span><a href="support.html" class="dropdown-connect-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a><a href="deinstall.html" class="dropdown-connect-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Request Deinstall</span><span class="dropdown-desc">Schedule staging removal</span></div></a></div><div class="dropdown-featured"><span class="dropdown-featured-label">Featured</span><a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card"><img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img"><span class="dropdown-featured-title">Smart Quotes</span><span class="dropdown-featured-desc">Get instant pricing and advice for prepping your listings</span></a></div></div></div></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
+                <a href="https://app.guesthouseshop.com/" class="btn btn-secondary">Login</a>
+            </div>
+            <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </nav>
+    </header>
+
+    <div class="mobile-menu-modal" id="mobileMenuModal">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="mobile-menu-logo"><svg width="180" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_mobile)"><path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/><path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/><path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/><path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/><path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/><path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/><path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/><path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/><path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/><path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/><path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/><path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/><path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/></g><defs><clipPath id="clip0_mobile"><rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/></clipPath></defs></svg></a>
+            <button class="mobile-menu-close" aria-label="Close menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="mobile-menu-nav">
+            <li><a href="#">Prep a home</a><div class="dropdown"><h3 class="dropdown-header">Prep a home</h3><div class="dropdown-grid"><a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a><a href="styling.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a><a href="home-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a></div></div></li>
+            <li><a href="#">Customers</a><div class="dropdown"><h3 class="dropdown-header">Customers</h3><div class="dropdown-grid"><a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a><a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a></div></div></li>
+            <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
+            <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
+            <li><a href="#">Resources</a><div class="dropdown"><h3 class="dropdown-header">Resources</h3><div class="dropdown-grid"><a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close (Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a><a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close (Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a><a href="support.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a></div></div></li>
+        </ul>
+        <div class="mobile-menu-actions">
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
+            <a href="https://app.guesthouseshop.com/" class="btn btn-secondary">Login</a>
+        </div>
+    </div>
+
+    <a href="blog.html" class="article-back">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to blog
+    </a>
+
+    <div class="article-hero">
+        <img src="images/959-eldorado.jpg" alt="Beautifully staged home interior with professional lighting and design details ready for listing">
+    </div>
+
+    <div class="article-header">
+        <span class="article-tag">Listing Coordination &mdash; 12 min read</span>
+        <h1>The complete listing coordination checklist</h1>
+        <div class="article-meta">
+            <img src="images/carol-powers.jpg" alt="Alex Ryden" class="article-meta-avatar">
+            <div class="article-meta-info">
+                <span class="article-meta-name">Alex Ryden</span>
+                <span class="article-meta-date">March 26, 2025</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-body">
+
+        <p>Listing coordination is where great agents separate themselves from good ones. The difference between a home that sells in 5 days at asking price and one that lingers for 45 days with two price reductions often comes down to <strong>preparation</strong> — not pricing, not marketing, not luck. It's the systematic, detail-oriented work that happens in the 4–6 weeks before a listing goes live.</p>
+
+        <p>This checklist represents the complete listing coordination process used by top-producing agents across Denver, San Diego, Phoenix, Scottsdale, Orange County, and Los Angeles. It's organized chronologically so you can work through it as a timeline, checking off each item as you go. Whether you manage listing prep yourself or delegate to a listing coordinator, this is the playbook.</p>
+
+        <div class="article-pullquote">
+          <p>"The listing agents who consistently outperform don't have better marketing or lower commission rates. They have better preparation processes."</p>
+        </div>
+
+        <div class="article-divider"></div>
+
+        <h2>Phase 1: Initial consultation (6–8 weeks before listing)</h2>
+
+        <p>The preparation process begins the moment you sign the listing agreement — and ideally, before that. The initial walkthrough sets the foundation for everything that follows.</p>
+
+        <h3>Property assessment</h3>
+        <ul>
+          <li><strong>Walk every room with the seller.</strong> Take notes and photos. Identify condition issues, deferred maintenance, and areas that need attention before listing.</li>
+          <li><strong>Evaluate curb appeal.</strong> Stand at the street and assess the exterior through a buyer's eyes. What needs to be addressed? (See our <a href="blog-curb-appeal-tips.html">curb appeal guide</a> for specific recommendations.)</li>
+          <li><strong>Assess staging needs.</strong> Will the home be vacant, occupied, or partially furnished? Each scenario requires a different approach. Request a <a href="https://guesthouseshop.com/smart-quote">Smart Quote</a> to get staging recommendations and pricing within hours.</li>
+          <li><strong>Review comparable sales.</strong> Pull comps for a preliminary pricing discussion. This informs how much to invest in pre-listing preparation — a home priced at $400K may not justify the same staging budget as a $1.2M property.</li>
+          <li><strong>Establish the timeline.</strong> Work backward from the target listing date to create a preparation schedule with clear milestones.</li>
+        </ul>
+
+        <h3>Seller homework</h3>
+        <ul>
+          <li><strong>Provide seller disclosures.</strong> The sooner these are completed, the fewer surprises during escrow.</li>
+          <li><strong>Gather documentation:</strong> warranties, permits for any work done, HOA documents, utility cost history, recent appraisals or surveys.</li>
+          <li><strong>Begin decluttering.</strong> Share our <a href="blog-declutter-checklist.html">room-by-room decluttering checklist</a> as a starting point. Recommend renting a storage unit if needed.</li>
+          <li><strong>Identify personal property vs. fixtures.</strong> Clarify what stays and what goes before listing to avoid conflicts.</li>
+        </ul>
+
+        <h2>Phase 2: Repairs and improvements (4–6 weeks before listing)</h2>
+
+        <p>This is the phase where you invest strategically in the property's condition. Not every repair is worth making — the goal is to address issues that will either kill deals in inspection or cause buyers to discount their offers.</p>
+
+        <h3>Priority repairs (must-do)</h3>
+        <ul>
+          <li><strong>Fix all safety issues:</strong> Missing handrails, non-functioning smoke detectors, exposed wiring, trip hazards. These are non-negotiable.</li>
+          <li><strong>Address water damage:</strong> Stains on ceilings or walls, soft spots in flooring near tubs/sinks, musty smells in basements. Buyers (and inspectors) are hyper-sensitive to water issues.</li>
+          <li><strong>Repair or replace broken fixtures:</strong> Leaky faucets, cracked light switches, broken door handles, non-latching doors. These small items signal deferred maintenance.</li>
+          <li><strong>HVAC service:</strong> Have the system professionally serviced and keep the receipt. This is one of the first things buyers ask about, especially in Phoenix and Denver where climate control is critical.</li>
+          <li><strong>Roof inspection:</strong> If the roof is 15+ years old, a pre-listing roof inspection ($200–$400) gives you the option to address issues proactively rather than reactively during buyer negotiations.</li>
+        </ul>
+
+        <h3>High-ROI improvements</h3>
+        <ul>
+          <li><strong>Fresh paint:</strong> As detailed in our <a href="blog-paint-colors-that-sell.html">paint colors guide</a>, the right neutral palette is one of the highest-ROI pre-listing investments, returning an average of 107%.</li>
+          <li><strong>Kitchen hardware:</strong> Replacing dated cabinet hardware with modern pulls ($3–$5 per pull) transforms the look of an entire kitchen for under $100.</li>
+          <li><strong>Light fixtures:</strong> Replacing builder-grade "boob lights" with modern flush-mounts ($25–$60 each) is one of the most impactful inexpensive upgrades.</li>
+          <li><strong>Professional deep cleaning:</strong> Hire a cleaning crew for a thorough, top-to-bottom deep clean. Windows (inside and out), baseboards, grout, appliances, light fixtures, ceiling fans — everything.</li>
+          <li><strong>Carpet cleaning or replacement:</strong> If carpet is in reasonable condition, professional cleaning ($150–$300) is sufficient. If it's stained, worn, or dated, replacement ($3–$6/sq ft installed) is a strong investment.</li>
+          <li><strong>Landscaping refresh:</strong> Fresh mulch, edging, and seasonal color. Budget $100–$200 for a meaningful improvement.</li>
+        </ul>
+
+        <div class="article-stats">
+          <div class="article-stat">
+            <div class="article-stat-value">107%</div>
+            <div class="article-stat-label">Average ROI on pre-listing paint</div>
+          </div>
+          <div class="article-stat">
+            <div class="article-stat-value">$100</div>
+            <div class="article-stat-label">Cabinet hardware refresh cost</div>
+          </div>
+          <div class="article-stat">
+            <div class="article-stat-value">15+</div>
+            <div class="article-stat-label">Roof age (years) that triggers inspection</div>
+          </div>
+        </div>
+
+        <h2>Phase 3: Staging and styling (2–3 weeks before listing)</h2>
+
+        <p>With repairs complete and the home decluttered and clean, it's time to bring in the staging team. This is where the property transforms from "prepared" to "compelling."</p>
+
+        <h3>For vacant homes</h3>
+        <ul>
+          <li><strong>Schedule <a href="home-staging.html">full-service staging</a>.</strong> Professional staging of a vacant home typically takes 1–2 days for furniture delivery and installation. Plan for this to happen 5–7 days before listing, allowing time for photography afterward.</li>
+          <li><strong>Confirm staging scope.</strong> At minimum, stage the living room, kitchen/dining area, primary bedroom, and one additional room. Budget allowing, stage every room that will be photographed.</li>
+          <li><strong>Coordinate access.</strong> Ensure the staging team has lockbox codes, garage access, and parking arrangements — especially important in urban markets like downtown Denver or San Diego.</li>
+        </ul>
+
+        <h3>For occupied homes</h3>
+        <ul>
+          <li><strong>Schedule an <a href="styling.html">in-person styling consultation</a>.</strong> A professional designer will walk the home with the seller, create a room-by-room plan using existing furnishings, and recommend rental pieces or accessories to fill gaps.</li>
+          <li><strong>Coordinate rental furniture delivery.</strong> If supplemental pieces are needed, arrange delivery and placement before photography day.</li>
+          <li><strong>Prepare the seller for ongoing showing readiness.</strong> Provide a "15-minute showing prep" checklist they can follow each time a showing is scheduled.</li>
+        </ul>
+
+        <h3>For agents who need design direction</h3>
+        <ul>
+          <li><strong>Use <a href="design-advice.html">expert design advice</a></strong> for remote consultations that provide specific, actionable recommendations. This is ideal for out-of-market listings or properties where full staging isn't in the budget.</li>
+        </ul>
+
+        <div class="article-divider"></div>
+
+        <h2>Phase 4: Marketing preparation (1–2 weeks before listing)</h2>
+
+        <p>With the home staged and showing-ready, it's time to create the marketing assets that will generate buyer interest.</p>
+
+        <h3>Photography</h3>
+        <ul>
+          <li><strong>Hire a professional real estate photographer.</strong> This is not optional. Professional photos generate 118% more online views than amateur photos (according to Redfin). Budget $200–$500 depending on property size and market.</li>
+          <li><strong>Schedule the shoot for optimal light.</strong> Typically late morning to early afternoon for interior shots. Golden hour (1–2 hours before sunset) for exterior shots.</li>
+          <li><strong>Stage the shoot:</strong> Open all blinds, turn on all lights (all bulbs matching in color temperature), remove all cars from the driveway, turn off all screens/TVs, ensure every room is in showing condition.</li>
+          <li><strong>Order twilight shots</strong> for luxury listings or homes with dramatic exterior lighting.</li>
+        </ul>
+
+        <h3>Video and virtual tours</h3>
+        <ul>
+          <li><strong>Video walkthrough:</strong> A 60–90 second property video for social media and listing sites. This is increasingly expected by buyers in all markets.</li>
+          <li><strong>3D virtual tour:</strong> Matterport or similar technology creates an interactive floor plan that allows remote buyers to "walk" the home. Essential for attracting out-of-state buyers in relocation markets like Denver and Phoenix.</li>
+          <li><strong>Drone photography/video:</strong> For properties with significant lots, views, or proximity to amenities. Particularly effective in mountain and coastal markets like Boulder, San Diego, and Orange County.</li>
+        </ul>
+
+        <h3>Written materials</h3>
+        <ul>
+          <li><strong>Write a compelling listing description.</strong> Lead with the lifestyle, not the specs. "Wake up to mountain views from your primary suite" outperforms "4BR/3BA with mountain views" every time.</li>
+          <li><strong>Prepare a property feature sheet.</strong> A professionally designed PDF highlighting key features, recent upgrades, and neighborhood amenities.</li>
+          <li><strong>Compile neighborhood data:</strong> Walk score, school ratings, proximity to parks/trails/shopping, upcoming development that might affect value positively.</li>
+        </ul>
+
+        <h2>Phase 5: Pre-launch (3–5 days before listing)</h2>
+
+        <ul>
+          <li><strong>Final walkthrough.</strong> Walk the property one more time with fresh eyes. Check for any items missed during preparation.</li>
+          <li><strong>Verify all utilities are on</strong> and functioning (especially important for vacant properties).</li>
+          <li><strong>Install lockbox and verify access codes.</strong></li>
+          <li><strong>Set up showing management</strong> through your preferred platform (ShowingTime, Calendly, etc.).</li>
+          <li><strong>Prepare showing instructions</strong> for buyer's agents: parking, entry protocol, any restricted areas, pet considerations.</li>
+          <li><strong>Stock showing supplies:</strong> Fresh flowers on the entry table, subtle scent (diffuser or candle), bottled water for agents, property brochures, business cards.</li>
+          <li><strong>Schedule open houses</strong> for the first weekend after listing. Alert your agent network.</li>
+        </ul>
+
+        <h2>Phase 6: Launch day</h2>
+
+        <ul>
+          <li><strong>Verify the listing is live</strong> on MLS and syndicating correctly to Zillow, Realtor.com, Redfin, and Homes.com.</li>
+          <li><strong>Publish social media content:</strong> Instagram carousel, Facebook listing post, email blast to your buyer database.</li>
+          <li><strong>Send "just listed" mailers</strong> to the neighborhood (optional but effective in tight-inventory markets).</li>
+          <li><strong>Confirm first-weekend showing schedule</strong> and ensure the home is in pristine condition for early showings.</li>
+          <li><strong>Collect and relay feedback</strong> from each showing to the seller within 24 hours.</li>
+        </ul>
+
+        <div class="article-pullquote">
+          <p>"Launch day shouldn't be stressful — it should be the natural result of 4–6 weeks of systematic preparation. If you've followed the checklist, the home is ready."</p>
+        </div>
+
+        <div class="article-divider"></div>
+
+        <h2>Downloadable checklist</h2>
+
+        <p>Want to keep this checklist handy for every listing? We've created a downloadable PDF version that you can print and use for each new listing. It includes checkboxes, space for notes, and timeline planning grids.</p>
+
+        <p>For listings where you want hands-on support with any phase of this process, Guest House provides comprehensive listing coordination support — from <a href="home-staging.html">staging</a> and <a href="styling.html">styling</a> to <a href="design-advice.html">design consultation</a>. Our team works with top agents in Denver, Boulder, San Diego, Phoenix, Scottsdale, Orange County, and Los Angeles to ensure every listing launches at its full potential.</p>
+
+        <p><a href="https://guesthouseshop.com/smart-quote">Get a Smart Quote</a> to see what's recommended for your next listing — it takes less than two minutes, and the staging recommendation is customized to the property's specific needs.</p>
+      
+    </div>
+
+    <section class="related-posts">
+        <h2>Related articles</h2>
+        <div class="related-grid">
+            <a href="blog-faster-listing-prep.html" class="related-card">
+                <div class="related-card-image"><img src="images/2530-chase.jpg" alt="Professional staging in progress with team preparing a home for market"></div>
+                <span class="related-card-tag">Article</span>
+                <h3 class="related-card-title">How to shave 2 weeks off your average listing prep timeline</h3>
+            </a>
+            <a href="blog-declutter-checklist.html" class="related-card">
+                <div class="related-card-image"><img src="images/7400-genoa.jpg" alt="Clean, organized kitchen space ready for showings"></div>
+                <span class="related-card-tag">Article</span>
+                <h3 class="related-card-title">Declutter like a pro: the 30-minute room-by-room checklist</h3>
+            </a>
+            <a href="blog-staged-homes-sell-faster.html" class="related-card">
+                <div class="related-card-image"><img src="images/836-carlsbad.webp" alt="Staged coastal living room demonstrating professional staging impact"></div>
+                <span class="related-card-tag">Article</span>
+                <h3 class="related-card-title">Why staged homes sell 73% faster than empty listings</h3>
+            </a>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Ready to prep your next listing?</h2>
+            <p>Get a free, instant staging recommendation tailored to your property.</p>
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section"><h4>Company</h4><ul><li><a href="case-studies.html">Case Studies</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="vendor-partnerships.html">Vendor Partnerships</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div>
+            <div class="footer-section"><h4>Prep a Home</h4><ul><li><a href="design-advice.html">Expert Design Advice</a></li><li><a href="styling.html">In-Person Styling</a></li><li><a href="home-staging.html">Full-Service Staging</a></li></ul></div>
+            <div class="footer-section"><h4>In-Person Locations</h4><ul><li>Denver</li><li>Boulder</li><li>San Diego</li><li>Orange County</li><li>Phoenix</li><li>Scottsdale</li></ul></div>
+            <div class="footer-section"><h4>Resources</h4><ul><li><a href="support.html">Support</a></li><li><a href="deinstall.html">Request Deinstall</a></li><li><a href="blog.html">Blog</a></li><li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li><li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li></ul></div>
+            <div class="footer-section"><h4>Customers</h4><ul><li><a href="agents.html">Agents</a></li><li><a href="homeowners.html">Homeowners</a></li></ul><h4 style="margin-top: 24px;">Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul></div>
+            <div class="footer-section"><h4>Follow Us</h4><div class="social-links"><a href="https://www.instagram.com/guesthousestaging" class="social-link" aria-label="Instagram" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a><a href="https://www.linkedin.com/company/guest-house-staging" class="social-link" aria-label="LinkedIn" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></div></div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenuModal = document.getElementById('mobileMenuModal');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        hamburger.addEventListener('click', () => { mobileMenuModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        mobileMenuClose.addEventListener('click', () => { mobileMenuModal.classList.remove('active'); document.body.style.overflow = ''; });
+        document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => { if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) { link.addEventListener('click', (e) => { e.preventDefault(); link.parentElement.classList.toggle('dropdown-open'); }); } });
+    </script>
+</body>
+</html>
