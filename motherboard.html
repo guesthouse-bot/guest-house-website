@@ -1501,6 +1501,7 @@
                     <option value="previous_period">Previous period</option>
                     <option value="previous_month">Previous month</option>
                     <option value="previous_year" selected>Previous year</option>
+                    <option value="plan_2026">2026 Plan</option>
                     <option value="custom">Custom</option>
                 </select>
                 <div class="filter-group" id="compareCustomRange" style="display: none;">
@@ -1647,6 +1648,7 @@
                             <option value="previous_period">Previous period</option>
                             <option value="previous_month">Previous month</option>
                             <option value="previous_year" selected>Previous year</option>
+                            <option value="plan_2026">2026 Plan</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
@@ -1845,6 +1847,7 @@
                             <option value="previous_period">Previous period</option>
                             <option value="previous_month">Previous month</option>
                             <option value="previous_year" selected>Previous year</option>
+                            <option value="plan_2026">2026 Plan</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
@@ -2445,7 +2448,7 @@
             var prevEl = document.getElementById(baseId + '-prev');
             if (!changeEl || !prevEl) return;
 
-            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', custom: 'comparison' };
+            var modeLabels = { previous_period: 'previous period', previous_month: 'previous month', previous_year: 'previous year', plan_2026: '2026 plan', custom: 'comparison' };
             var modeLabel = modeLabels[compareMode.value] || 'previous period';
 
             // Handle null/undefined: show "N/A" instead of hiding comparison
@@ -2718,6 +2721,45 @@
                 return null;
             } finally {
                 if (!isCompare) clearLoading(['kpi-accounts', 'kpi-active-agents', 'kpi-bookings-per-agent']);
+            }
+        }
+
+        async function fetchPlanKPIs() {
+            try {
+                var r = await fetch('/api/scorecard-kpis?metric=plan');
+                if (!r.ok) return;
+                var plan = await r.json();
+                // Map plan values into compareData stores so renderAllComparisons works
+                compareData.hubspot = {
+                    quotes_requested: plan.quotes_requested,
+                    bookings: plan.bookings,
+                    booking_revenue: plan.staging_revenue,
+                    aov_at_close: plan.aov_at_close,
+                    sales_cycle_days: null,
+                };
+                compareData.stripe = {
+                    revenue: plan.total_revenue,
+                    bookings_revenue: plan.staging_revenue,
+                    renewal_revenue: null,
+                };
+                compareData.ops = {
+                    installs: (plan.co_installs || 0) + (plan.ca_installs || 0),
+                    deinstalls: (plan.co_deinstalls || 0) + (plan.ca_deinstalls || 0),
+                    renewals: null,
+                    markets: null,
+                    active_vendors: null,
+                };
+                compareData.firebase = {
+                    accounts_created: null,
+                    active_agents: null,
+                    bookings_per_agent: null,
+                };
+                // Store plan for cross-source comparisons
+                compareRevenue = plan.total_revenue;
+                compareBookings = plan.bookings;
+                compareQuotes = plan.quotes_requested;
+            } catch (err) {
+                console.error('Plan KPIs error:', err);
             }
         }
 
@@ -3461,7 +3503,9 @@
             ];
             var wave3 = [];
 
-            if (compareToggle.checked) {
+            var isPlanCompare = compareToggle.checked && compareMode.value === 'plan_2026';
+
+            if (compareToggle.checked && !isPlanCompare) {
                 var cmpDates = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
                 var cmpFilters = {
                     market: filters.market,
@@ -3479,13 +3523,18 @@
                 wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
 
+            // Fetch plan data alongside wave1 if plan compare is active
+            if (isPlanCompare) {
+                wave1.push(fetchPlanKPIs());
+            }
+
             await Promise.all(wave1);
             await Promise.all(wave2);
             if (wave3.length > 0) await Promise.all(wave3);
 
             // Wave 4: Firebase (heavy HubSpot usage for active agents — run after all other HubSpot calls)
             var wave4 = [fetchFirebaseKPIs(filters, false)];
-            if (compareToggle.checked) {
+            if (compareToggle.checked && !isPlanCompare) {
                 var cmpDates2 = getComparisonDates(filters.period, filters.dateFrom, filters.dateTo, compareMode.value);
                 wave4.push(fetchFirebaseKPIs({ market: filters.market, period: 'custom', dateFrom: cmpDates2.dateFrom, dateTo: cmpDates2.dateTo }, true));
             }
