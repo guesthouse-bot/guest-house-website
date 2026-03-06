@@ -287,8 +287,10 @@ module.exports = async function handler(req, res) {
         return false;
       }
 
-      var t12Start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()).getTime();
-      var t12End = now.getTime();
+      // Use the period's end date as anchor for trailing 12-month window
+      var anchorDate = new Date(endDate);
+      var t12Start = new Date(anchorDate.getFullYear() - 1, anchorDate.getMonth(), anchorDate.getDate()).getTime();
+      var t12End = anchorDate.getTime();
       var activeContactIds = new Set();
 
       // Step 1: Collect closedwon deals in trailing 12 months

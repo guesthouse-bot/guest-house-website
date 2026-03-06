@@ -3169,6 +3169,8 @@
             if (dfb && cf) {
                 setComparison('kpi-accounts', dfb.accounts_created, cf.accounts_created, formatNumber, false);
                 setComparison('kpi-active-agents', dfb.active_agents, cf.active_agents, formatNumber, false);
+                setComparison('kpi-bookings-per-agent', dfb.bookings_per_agent, cf.bookings_per_agent,
+                    function(v) { return v !== null ? v.toFixed(2) : '\u2014'; }, false);
             }
             // Customer comparisons
             if (dc && cc) {
