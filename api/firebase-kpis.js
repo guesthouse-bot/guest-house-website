@@ -361,9 +361,12 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    var bookingsPerAgent = activeAgents > 0 ? Math.round((allDealIds.length / activeAgents) * 100) / 100 : null;
+
     var result = {
       accounts_created: accountsCreated,
       active_agents: activeAgents,
+      bookings_per_agent: bookingsPerAgent,
       period: { start: startDate, end: endDate },
       market: market || 'all',
     };

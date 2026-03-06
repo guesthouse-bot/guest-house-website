@@ -90,6 +90,7 @@ module.exports = async function handler(req, res) {
     const marketToStates = {
       colorado: ['CO'],
       california: ['CA'],
+      arizona: ['AZ'],
     };
 
     // Known addresses without state in description → state code
@@ -163,7 +164,7 @@ module.exports = async function handler(req, res) {
     // "colorado"/"california" = only that state
     let filtered = allCharges;
     if (market === 'nationwide') {
-      var excludeStates = ['CO', 'CA'];
+      var excludeStates = ['CO', 'CA', 'AZ'];
       filtered = allCharges.filter(function(charge) {
         var state = getChargeState(charge);
         return !state || excludeStates.indexOf(state) === -1;
