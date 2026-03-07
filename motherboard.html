@@ -1645,7 +1645,7 @@
                     <div class="kpi-sparkline" id="kpi-fr-bpa-chart"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">AOV</div>
+                    <div class="kpi-label">AOV (total)</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-fr-aov">&mdash;</span>
                         <span class="kpi-change" id="kpi-fr-aov-change"></span>
@@ -3602,28 +3602,26 @@
                     var hData = hubspotResults[i];
                     var moRev = (sData ? sData.revenue : 0) + (nData ? nData.total : 0);
                     var moBook = hData ? hData.bookings : 0;
-                    var moAov = hData ? hData.aov_at_close : 0;
                     cumRevenue += moRev;
                     cumBookings += moBook;
                     revCum.push(cumRevenue);
                     bookCum.push(cumBookings);
-                    aovVals.push(moAov);
+                    aovVals.push(cumBookings > 0 ? cumRevenue / cumBookings : 0);
                 }
 
                 // Process monthly data — prior year
                 var prevCumRevenue = 0, prevCumBookings = 0;
-                var prevAovVals = [];
                 for (var j = 0; j < prevMonths.length; j++) {
                     var psData = prevStripeResults[j];
                     var pnData = prevNotableResults[j];
                     var phData = prevHubspotResults[j];
                     prevCumRevenue += (psData ? psData.revenue : 0) + (pnData ? pnData.total : 0);
                     prevCumBookings += (phData ? phData.bookings : 0);
-                    prevAovVals.push(phData ? phData.aov_at_close : 0);
                 }
 
-                var ytdAov = aovVals.length > 0 ? aovVals.reduce(function(a, b) { return a + b; }, 0) / (aovVals.filter(function(v) { return v > 0; }).length || 1) : 0;
-                var prevYtdAov = prevAovVals.length > 0 ? prevAovVals.reduce(function(a, b) { return a + b; }, 0) / (prevAovVals.filter(function(v) { return v > 0; }).length || 1) : 0;
+                // AOV (total) = total revenue / total bookings (matches Customer KPIs section)
+                var ytdAov = cumBookings > 0 ? cumRevenue / cumBookings : 0;
+                var prevYtdAov = prevCumBookings > 0 ? prevCumRevenue / prevCumBookings : 0;
                 var activeAgents = fbData ? fbData.active_agents : 0;
                 var prevActiveAgents = prevFbData ? prevFbData.active_agents : 0;
                 var bpa = fbData ? fbData.bookings_per_agent : null;
