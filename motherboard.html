@@ -1609,7 +1609,7 @@
             </div>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-label">Revenue YTD</div>
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-fr-revenue">&mdash;</span>
                         <span class="kpi-change" id="kpi-fr-revenue-change"></span>
@@ -1672,7 +1672,7 @@
                     <div class="kpi-sparkline" id="kpi-fr-gm-chart"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">Cumulative Market Revenue</div>
+                    <div class="kpi-label">Market Revenue</div>
                     <div id="kpi-fr-market-revenue" class="kpi-market-trend">&mdash;</div>
                 </div>
                 <div class="kpi-card">
@@ -3671,11 +3671,14 @@
                     renderFRChart('kpi-fr-arpu-chart', labels, labels.map(function() { return arpu; }), 'currency');
                 }
 
-                // Market Revenue (cumulative by market)
+                // Market Revenue (cumulative by market — nationwide rolled into arizona)
                 var frMarketEl = document.getElementById('kpi-fr-market-revenue');
                 if (frMarketEl) {
                     frMarketEl.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
                     var frMarketSeries = {};
+                    var frMarketKeys = ['colorado', 'california', 'arizona'];
+                    // Fetch all markets including nationwide
+                    var allFrMktData = {};
                     for (var mi2 = 0; mi2 < marketKeys.length; mi2++) {
                         var mk = marketKeys[mi2];
                         var mkPromises = months.map(function(mo) {
@@ -3683,10 +3686,16 @@
                                 .then(function(r) { return r.ok ? r.json() : null; });
                         });
                         var mkResults = await Promise.all(mkPromises);
-                        var mkVals = mkResults.map(function(r) { return r ? r.revenue : 0; });
-                        frMarketSeries[mk] = toCumulative(mkVals);
-                        renderMarketSVG('kpi-fr-market-revenue', frMarketSeries, labels, function(v) { return formatCurrency(v); });
+                        allFrMktData[mk] = mkResults.map(function(r) { return r ? r.revenue : 0; });
                     }
+                    // Merge nationwide into arizona
+                    var azVals = allFrMktData['arizona'] || months.map(function() { return 0; });
+                    var nwVals = allFrMktData['nationwide'] || months.map(function() { return 0; });
+                    var mergedAz = azVals.map(function(v, idx) { return v + (nwVals[idx] || 0); });
+                    frMarketSeries['colorado'] = toCumulative(allFrMktData['colorado'] || months.map(function() { return 0; }));
+                    frMarketSeries['california'] = toCumulative(allFrMktData['california'] || months.map(function() { return 0; }));
+                    frMarketSeries['arizona'] = toCumulative(mergedAz);
+                    renderMarketSVG('kpi-fr-market-revenue', frMarketSeries, labels, function(v) { return formatCurrency(v); });
                 }
 
                 // Active Agents by Market
