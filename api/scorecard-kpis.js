@@ -89,6 +89,8 @@ module.exports = async function handler(req, res) {
     var tokData = await tokRes.json();
     var wToken = tokData.access_token;
 
+    // Return SA email so user can grant access, then create tab
+    if (req.query.debug === 'email') return res.status(200).json({ email: sa.client_email });
     // Step 1: Create the sheet tab
     var targetSheet = RENEWAL_SHEET_ID.trim();
     var addRes = await fetch('https://sheets.googleapis.com/v4/spreadsheets/' + targetSheet + ':batchUpdate', {
