@@ -1450,6 +1450,7 @@
         <p class="hero-subtitle">Guest House internal dashboard</p>
         <nav class="section-nav">
             <a href="#section-company" class="section-nav-link active">Company</a>
+            <a href="#section-fundraising" class="section-nav-link">Fundraising</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
             <a href="#section-customer" class="section-nav-link">Customer</a>
             <a href="#section-operations" class="section-nav-link">Operations</a>
@@ -1595,6 +1596,88 @@
                     <div class="kpi-value-row">
                         <span class="kpi-value" id="kpi-runway">&mdash;</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fundraising KPIs -->
+    <section id="section-fundraising" class="kpi-section-grey">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Fundraising KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-revenue">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-revenue-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-revenue-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-revenue-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Bookings</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-bookings">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-bookings-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-bookings-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-bookings-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Active Agents</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-active-agents">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-active-agents-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-active-agents-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-agents-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Annual Bookings / Agent (12-Month Trailing)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-bookings-per-agent">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-bookings-per-agent-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-bookings-per-agent-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-bpa-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">AOV</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-aov">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-aov-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-aov-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-aov-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">ARPU (Annual Bookings / Agent × AOV)</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-arpu">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-arpu-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-arpu-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-arpu-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Gross Margin %</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-gross-margin">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-gross-margin-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-gross-margin-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fr-gm-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Cumulative Market Revenue</div>
+                    <div id="kpi-fr-market-revenue" class="kpi-market-trend">&mdash;</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Active Agents / Market</div>
+                    <div id="kpi-fr-market-agents" class="kpi-market-trend">&mdash;</div>
                 </div>
             </div>
         </div>
@@ -3356,6 +3439,299 @@
         }
 
         // ---- Main fetch orchestrator ----
+        // ---- Fundraising KPIs (always YTD with cumulative growth charts) ----
+        function renderFRChart(containerId, monthLabels, values, unit) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+            if (!values || values.length < 1) { container.innerHTML = ''; return; }
+            container.classList.add('visible');
+
+            var chartW = 300, chartH = 160, padRight = 55, padTop = 8, padBot = 20;
+            var innerW = chartW - padRight, innerH = chartH - padTop - padBot;
+            var maxVal = Math.max.apply(null, values) || 1;
+            var minVal = Math.min.apply(null, values.concat([0]));
+            var range = maxVal - minVal || 1;
+
+            var svg = '<svg viewBox="0 0 ' + chartW + ' ' + chartH + '" preserveAspectRatio="none" style="width:100%;height:160px;">';
+            // Grid lines
+            var numTicks = 4;
+            for (var t = 0; t <= numTicks; t++) {
+                var tickVal = minVal + (range * t / numTicks);
+                var y = padTop + innerH - ((tickVal - minVal) / range) * innerH;
+                svg += '<line x1="0" y1="' + y.toFixed(1) + '" x2="' + innerW + '" y2="' + y.toFixed(1) + '" stroke="#eee" stroke-width="1"/>';
+                var label = unit === 'currency' ? '$' + (tickVal >= 1000 ? (tickVal / 1000).toFixed(0) + 'k' : tickVal.toFixed(0)) :
+                    unit === 'pct' ? tickVal.toFixed(0) + '%' : tickVal.toFixed(0);
+                svg += '<text x="' + (innerW + 4) + '" y="' + (y + 3.5).toFixed(1) + '" font-size="9" fill="#999" font-family="Circular,sans-serif">' + label + '</text>';
+            }
+            // X labels
+            for (var xi = 0; xi < monthLabels.length; xi++) {
+                var lx = values.length === 1 ? innerW / 2 : (xi / (values.length - 1)) * innerW;
+                svg += '<text x="' + lx.toFixed(1) + '" y="' + (chartH - 2) + '" font-size="8" fill="#999" text-anchor="middle" font-family="Circular,sans-serif">' + monthLabels[xi] + '</text>';
+            }
+            // Area + line
+            var points = [];
+            for (var pi = 0; pi < values.length; pi++) {
+                var px = values.length === 1 ? innerW / 2 : (pi / (values.length - 1)) * innerW;
+                var py = padTop + innerH - ((values[pi] - minVal) / range) * innerH;
+                points.push(px.toFixed(1) + ',' + py.toFixed(1));
+            }
+            var baseY = padTop + innerH;
+            svg += '<polygon points="' + points[0].split(',')[0] + ',' + baseY + ' ' + points.join(' ') + ' ' + points[points.length - 1].split(',')[0] + ',' + baseY + '" fill="rgba(79,96,102,0.08)"/>';
+            svg += '<polyline points="' + points.join(' ') + '" fill="none" stroke="var(--color-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+            // Dot on last point
+            var lastPt = points[points.length - 1].split(',');
+            svg += '<circle cx="' + lastPt[0] + '" cy="' + lastPt[1] + '" r="3" fill="var(--color-deep)"/>';
+            svg += '</svg>';
+            container.innerHTML = svg;
+        }
+
+        // Fundraising-specific comparison: always shows "vs prior year"
+        function setFRComparison(baseId, currentVal, prevVal, formatter, invertColors) {
+            var changeEl = document.getElementById(baseId + '-change');
+            var prevEl = document.getElementById(baseId + '-prev');
+            if (!changeEl || !prevEl) return;
+            if (currentVal === null || currentVal === undefined) {
+                changeEl.className = 'kpi-change'; changeEl.textContent = '';
+                prevEl.className = 'kpi-prev'; prevEl.textContent = '';
+                return;
+            }
+            if (prevVal === null || prevVal === undefined) {
+                changeEl.className = 'kpi-change neutral'; changeEl.textContent = 'N/A';
+                prevEl.className = 'kpi-prev visible'; prevEl.textContent = 'no data prior year';
+                return;
+            }
+            var pctChange;
+            if (prevVal === 0) { pctChange = currentVal > 0 ? 100 : (currentVal < 0 ? -100 : 0); }
+            else { pctChange = ((currentVal - prevVal) / Math.abs(prevVal)) * 100; }
+            var sign = pctChange > 0 ? '+' : '';
+            var isPositive = pctChange > 0;
+            var isNegative = pctChange < 0;
+            if (invertColors) { var tmp = isPositive; isPositive = isNegative; isNegative = tmp; }
+            changeEl.className = 'kpi-change ' + (Math.abs(pctChange) < 0.1 ? 'neutral' : (isPositive ? 'positive' : 'negative'));
+            changeEl.textContent = sign + pctChange.toFixed(1) + '%';
+            prevEl.className = 'kpi-prev visible';
+            prevEl.textContent = formatter(prevVal) + ' prior year';
+        }
+
+        async function fetchFundraisingKPIs() {
+            var frIds = ['kpi-fr-revenue', 'kpi-fr-bookings', 'kpi-fr-active-agents', 'kpi-fr-bookings-per-agent', 'kpi-fr-aov', 'kpi-fr-arpu', 'kpi-fr-gross-margin'];
+            setLoading(frIds);
+
+            var now = new Date();
+            var curMonth = now.getMonth(); // 0-indexed, current month
+            var curYear = now.getFullYear();
+            // Build month ranges from Jan to current month (current year + prior year)
+            var months = [], prevMonths = [];
+            for (var m = 0; m <= curMonth; m++) {
+                var start = new Date(curYear, m, 1);
+                var end = m === curMonth ? now : new Date(curYear, m + 1, 0);
+                months.push({
+                    from: start.toISOString().slice(0, 10),
+                    to: end.toISOString().slice(0, 10),
+                    label: start.toLocaleString('default', { month: 'short' }),
+                });
+                // Prior year same months
+                var pStart = new Date(curYear - 1, m, 1);
+                var pEnd = m === curMonth ? new Date(curYear - 1, m, now.getDate()) : new Date(curYear - 1, m + 1, 0);
+                prevMonths.push({
+                    from: pStart.toISOString().slice(0, 10),
+                    to: pEnd.toISOString().slice(0, 10),
+                });
+            }
+
+            try {
+                // Fetch monthly data for each month: HubSpot (bookings, AOV), Stripe (revenue), Firebase (agents, bpa)
+                // --- Current Year ---
+                var hubspotPromises = months.map(function(mo) {
+                    return fetch('/api/hubspot-kpis?market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+                var stripePromises = months.map(function(mo) {
+                    return fetch('/api/stripe-kpis?market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+                var notablePromises = months.map(function(mo) {
+                    return fetch('/api/scorecard-kpis?metric=notable&market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+
+                // --- Prior Year ---
+                var prevStripePromises = prevMonths.map(function(mo) {
+                    return fetch('/api/stripe-kpis?market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+                var prevNotablePromises = prevMonths.map(function(mo) {
+                    return fetch('/api/scorecard-kpis?metric=notable&market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+
+                // Stagger: stripe+notable first, then hubspot
+                var [stripeResults, notableResults, prevStripeResults, prevNotableResults] = await Promise.all([
+                    Promise.all(stripePromises),
+                    Promise.all(notablePromises),
+                    Promise.all(prevStripePromises),
+                    Promise.all(prevNotablePromises),
+                ]);
+                var hubspotResults = await Promise.all(hubspotPromises);
+
+                // Prior year HubSpot
+                var prevHubspotPromises = prevMonths.map(function(mo) {
+                    return fetch('/api/hubspot-kpis?market=all&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                        .then(function(r) { return r.ok ? r.json() : null; });
+                });
+                var prevHubspotResults = await Promise.all(prevHubspotPromises);
+
+                // Firebase: current YTD + prior year YTD
+                var prevYtdFrom = (curYear - 1) + '-01-01';
+                var prevYtdTo = (curYear - 1) + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+                var [fbRes, prevFbRes] = await Promise.all([
+                    fetch('/api/firebase-kpis?market=all&period=ytd&daily=false'),
+                    fetch('/api/firebase-kpis?market=all&period=custom&dateFrom=' + prevYtdFrom + '&dateTo=' + prevYtdTo),
+                ]);
+                var fbData = fbRes.ok ? await fbRes.json() : null;
+                var prevFbData = prevFbRes.ok ? await prevFbRes.json() : null;
+
+                // Process monthly data — current year
+                var cumRevenue = 0, cumBookings = 0;
+                var labels = [];
+                var revCum = [], bookCum = [], aovVals = [];
+                for (var i = 0; i < months.length; i++) {
+                    labels.push(months[i].label);
+                    var sData = stripeResults[i];
+                    var nData = notableResults[i];
+                    var hData = hubspotResults[i];
+                    var moRev = (sData ? sData.revenue : 0) + (nData ? nData.total : 0);
+                    var moBook = hData ? hData.bookings : 0;
+                    var moAov = hData ? hData.aov_at_close : 0;
+                    cumRevenue += moRev;
+                    cumBookings += moBook;
+                    revCum.push(cumRevenue);
+                    bookCum.push(cumBookings);
+                    aovVals.push(moAov);
+                }
+
+                // Process monthly data — prior year
+                var prevCumRevenue = 0, prevCumBookings = 0;
+                var prevAovVals = [];
+                for (var j = 0; j < prevMonths.length; j++) {
+                    var psData = prevStripeResults[j];
+                    var pnData = prevNotableResults[j];
+                    var phData = prevHubspotResults[j];
+                    prevCumRevenue += (psData ? psData.revenue : 0) + (pnData ? pnData.total : 0);
+                    prevCumBookings += (phData ? phData.bookings : 0);
+                    prevAovVals.push(phData ? phData.aov_at_close : 0);
+                }
+
+                var ytdAov = aovVals.length > 0 ? aovVals.reduce(function(a, b) { return a + b; }, 0) / (aovVals.filter(function(v) { return v > 0; }).length || 1) : 0;
+                var prevYtdAov = prevAovVals.length > 0 ? prevAovVals.reduce(function(a, b) { return a + b; }, 0) / (prevAovVals.filter(function(v) { return v > 0; }).length || 1) : 0;
+                var activeAgents = fbData ? fbData.active_agents : 0;
+                var prevActiveAgents = prevFbData ? prevFbData.active_agents : 0;
+                var bpa = fbData ? fbData.bookings_per_agent : null;
+                var prevBpa = prevFbData ? prevFbData.bookings_per_agent : null;
+                var arpu = (bpa && ytdAov) ? bpa * ytdAov : null;
+                var prevArpu = (prevBpa && prevYtdAov) ? prevBpa * prevYtdAov : null;
+                var grossMarginPct = cumRevenue > 0 ? 75 : 0; // 75% GM assumption
+                var prevGrossMarginPct = prevCumRevenue > 0 ? 75 : 0;
+
+                // Set KPI values
+                setKPI('kpi-fr-revenue', formatCurrency(cumRevenue));
+                setKPI('kpi-fr-bookings', formatNumber(cumBookings));
+                setKPI('kpi-fr-active-agents', formatNumber(activeAgents));
+                setKPI('kpi-fr-bookings-per-agent', bpa !== null ? bpa.toFixed(2) : '\u2014');
+                setKPI('kpi-fr-aov', formatCurrency(ytdAov));
+                setKPI('kpi-fr-arpu', arpu !== null ? formatCurrency(arpu) : '\u2014');
+                setKPI('kpi-fr-gross-margin', grossMarginPct.toFixed(0) + '%');
+
+                // Set YoY comparisons
+                setFRComparison('kpi-fr-revenue', cumRevenue, prevCumRevenue, formatCurrency);
+                setFRComparison('kpi-fr-bookings', cumBookings, prevCumBookings, formatNumber);
+                setFRComparison('kpi-fr-active-agents', activeAgents, prevActiveAgents, formatNumber);
+                setFRComparison('kpi-fr-bookings-per-agent', bpa, prevBpa, function(v) { return v !== null ? v.toFixed(2) : '\u2014'; });
+                setFRComparison('kpi-fr-aov', ytdAov, prevYtdAov, formatCurrency);
+                setFRComparison('kpi-fr-arpu', arpu, prevArpu, formatCurrency);
+                setFRComparison('kpi-fr-gross-margin', grossMarginPct, prevGrossMarginPct, function(v) { return v.toFixed(0) + '%'; });
+
+                // Render cumulative growth charts
+                renderFRChart('kpi-fr-revenue-chart', labels, revCum, 'currency');
+                renderFRChart('kpi-fr-bookings-chart', labels, bookCum, 'count');
+
+                // AOV chart (monthly, not cumulative)
+                renderFRChart('kpi-fr-aov-chart', labels, aovVals, 'currency');
+
+                // GM chart (monthly — 75% flat for now, could be computed per month)
+                var gmVals = aovVals.map(function() { return grossMarginPct; });
+                renderFRChart('kpi-fr-gm-chart', labels, gmVals, 'pct');
+
+                // Active agents / BPA / ARPU — single value, show as flat line with dot
+                if (activeAgents > 0) {
+                    renderFRChart('kpi-fr-agents-chart', labels, labels.map(function() { return activeAgents; }), 'count');
+                }
+                if (bpa !== null) {
+                    renderFRChart('kpi-fr-bpa-chart', labels, labels.map(function() { return bpa; }), 'count');
+                }
+                if (arpu !== null) {
+                    renderFRChart('kpi-fr-arpu-chart', labels, labels.map(function() { return arpu; }), 'currency');
+                }
+
+                // Market Revenue (cumulative by market)
+                var frMarketEl = document.getElementById('kpi-fr-market-revenue');
+                if (frMarketEl) {
+                    frMarketEl.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+                    var frMarketSeries = {};
+                    for (var mi2 = 0; mi2 < marketKeys.length; mi2++) {
+                        var mk = marketKeys[mi2];
+                        var mkPromises = months.map(function(mo) {
+                            return fetch('/api/stripe-kpis?market=' + mk + '&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                                .then(function(r) { return r.ok ? r.json() : null; });
+                        });
+                        var mkResults = await Promise.all(mkPromises);
+                        var mkVals = mkResults.map(function(r) { return r ? r.revenue : 0; });
+                        frMarketSeries[mk] = toCumulative(mkVals);
+                        renderMarketSVG('kpi-fr-market-revenue', frMarketSeries, labels, function(v) { return formatCurrency(v); });
+                    }
+                }
+
+                // Active Agents by Market
+                var frAgentsMktEl = document.getElementById('kpi-fr-market-agents');
+                if (frAgentsMktEl) {
+                    frAgentsMktEl.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+                    var agentsByMarket = {};
+                    var agentMktPromises = marketKeys.map(function(mk) {
+                        return fetch('/api/firebase-kpis?market=' + mk + '&period=ytd&daily=false')
+                            .then(function(r) { return r.ok ? r.json() : null; });
+                    });
+                    var agentMktResults = await Promise.all(agentMktPromises);
+                    // Render as horizontal bar
+                    var totalAgents = 0;
+                    var agentBars = [];
+                    marketKeys.forEach(function(mk, idx) {
+                        var r = agentMktResults[idx];
+                        var count = r ? r.active_agents : 0;
+                        totalAgents += count;
+                        agentBars.push({ market: mk, count: count });
+                    });
+                    var barHtml = '<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">';
+                    agentBars.forEach(function(bar) {
+                        var pct = totalAgents > 0 ? (bar.count / totalAgents * 100) : 0;
+                        barHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+                        barHtml += '<span style="width:36px;font-size:0.75rem;font-weight:500;color:#666;">' + marketLabels[bar.market] + '</span>';
+                        barHtml += '<div style="flex:1;height:16px;background:#f0f0f0;border-radius:3px;overflow:hidden;">';
+                        barHtml += '<div style="height:100%;width:' + pct.toFixed(1) + '%;background:' + marketColors[bar.market] + ';border-radius:3px;"></div></div>';
+                        barHtml += '<span style="font-size:0.75rem;font-weight:600;min-width:28px;text-align:right;">' + bar.count + '</span>';
+                        barHtml += '</div>';
+                    });
+                    barHtml += '</div>';
+                    frAgentsMktEl.innerHTML = barHtml;
+                }
+
+            } catch (err) {
+                console.error('Fundraising KPI error:', err);
+                frIds.forEach(function(id) { setKPI(id, 'Error'); });
+            } finally {
+                clearLoading(frIds);
+            }
+        }
+
         async function fetchPlanKPIs(filters) {
             try {
                 // Determine which months to fetch based on the selected period
@@ -3531,8 +3907,10 @@
         });
 
         // Auto-load on page load with default filters (after auth)
+        var fundraisingLoaded = false;
         function loadDashboard() {
             fetchAllKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
+            if (!fundraisingLoaded) { fundraisingLoaded = true; fetchFundraisingKPIs(); }
         }
         if (sessionStorage.getItem('mb_auth') === '1') {
             loadDashboard();
@@ -3544,8 +3922,10 @@
             var navLinks = document.querySelectorAll('.section-nav-link');
             var sections = [
                 { id: 'section-company', link: navLinks[0] },
-                { id: 'section-sales', link: navLinks[1] },
-                { id: 'section-operations', link: navLinks[2] },
+                { id: 'section-fundraising', link: navLinks[1] },
+                { id: 'section-sales', link: navLinks[2] },
+                { id: 'section-customer', link: navLinks[3] },
+                { id: 'section-operations', link: navLinks[4] },
             ];
 
             navLinks.forEach(function(link) {
