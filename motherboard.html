@@ -1676,6 +1676,10 @@
                     <div id="kpi-fr-market-revenue" class="kpi-market-trend">&mdash;</div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">Bookings / Market</div>
+                    <div id="kpi-fr-market-bookings" class="kpi-market-trend">&mdash;</div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Active Agents / Market</div>
                     <div id="kpi-fr-market-agents" class="kpi-market-trend">&mdash;</div>
                 </div>
@@ -3696,6 +3700,32 @@
                     frMarketSeries['california'] = toCumulative(allFrMktData['california'] || months.map(function() { return 0; }));
                     frMarketSeries['arizona'] = toCumulative(mergedAz);
                     renderMarketSVG('kpi-fr-market-revenue', frMarketSeries, labels, function(v) { return formatCurrency(v); });
+                }
+
+                // Bookings by Market (cumulative)
+                var frBookMktEl = document.getElementById('kpi-fr-market-bookings');
+                if (frBookMktEl) {
+                    frBookMktEl.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
+                    var frBookMktSeries = {};
+                    var frBookMktKeys = ['colorado', 'california', 'arizona'];
+                    var allFrBookMktData = {};
+                    for (var mi3 = 0; mi3 < marketKeys.length; mi3++) {
+                        var bmk = marketKeys[mi3];
+                        var bmkPromises = months.map(function(mo) {
+                            return fetch('/api/hubspot-kpis?market=' + bmk + '&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to)
+                                .then(function(r) { return r.ok ? r.json() : null; });
+                        });
+                        var bmkResults = await Promise.all(bmkPromises);
+                        allFrBookMktData[bmk] = bmkResults.map(function(r) { return r ? r.bookings : 0; });
+                    }
+                    // Merge nationwide into arizona
+                    var bazVals = allFrBookMktData['arizona'] || months.map(function() { return 0; });
+                    var bnwVals = allFrBookMktData['nationwide'] || months.map(function() { return 0; });
+                    var bMergedAz = bazVals.map(function(v, idx) { return v + (bnwVals[idx] || 0); });
+                    frBookMktSeries['colorado'] = toCumulative(allFrBookMktData['colorado'] || months.map(function() { return 0; }));
+                    frBookMktSeries['california'] = toCumulative(allFrBookMktData['california'] || months.map(function() { return 0; }));
+                    frBookMktSeries['arizona'] = toCumulative(bMergedAz);
+                    renderMarketSVG('kpi-fr-market-bookings', frBookMktSeries, labels, function(v) { return formatNumber(v); });
                 }
 
                 // Active Agents by Market
