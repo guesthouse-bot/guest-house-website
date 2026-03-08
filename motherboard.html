@@ -1672,6 +1672,30 @@
                     <div class="kpi-sparkline" id="kpi-fr-gm-chart"></div>
                 </div>
                 <div class="kpi-card">
+                    <div class="kpi-label">3-Year LTV</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-ltv">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-ltv-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-ltv-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">CAC</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-cac">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-cac-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-cac-prev"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">LTV:CAC</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fr-ltv-cac">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fr-ltv-cac-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fr-ltv-cac-prev"></div>
+                </div>
+                <div class="kpi-card">
                     <div class="kpi-label">Market Revenue</div>
                     <div id="kpi-fr-market-revenue" class="kpi-market-trend">&mdash;</div>
                 </div>
@@ -3518,7 +3542,7 @@
         }
 
         async function fetchFundraisingKPIs() {
-            var frIds = ['kpi-fr-revenue', 'kpi-fr-bookings', 'kpi-fr-active-agents', 'kpi-fr-bookings-per-agent', 'kpi-fr-aov', 'kpi-fr-arpu', 'kpi-fr-gross-margin'];
+            var frIds = ['kpi-fr-revenue', 'kpi-fr-bookings', 'kpi-fr-active-agents', 'kpi-fr-bookings-per-agent', 'kpi-fr-aov', 'kpi-fr-arpu', 'kpi-fr-gross-margin', 'kpi-fr-ltv', 'kpi-fr-cac', 'kpi-fr-ltv-cac'];
             setLoading(frIds);
 
             var now = new Date();
@@ -3588,12 +3612,14 @@
                 // Firebase: current YTD + prior year YTD
                 var prevYtdFrom = (curYear - 1) + '-01-01';
                 var prevYtdTo = (curYear - 1) + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-                var [fbRes, prevFbRes] = await Promise.all([
+                var [fbRes, prevFbRes, opexRes] = await Promise.all([
                     fetch('/api/firebase-kpis?market=all&period=ytd&daily=false'),
                     fetch('/api/firebase-kpis?market=all&period=custom&dateFrom=' + prevYtdFrom + '&dateTo=' + prevYtdTo),
+                    fetch('/api/scorecard-kpis?metric=opex_ytd'),
                 ]);
                 var fbData = fbRes.ok ? await fbRes.json() : null;
                 var prevFbData = prevFbRes.ok ? await prevFbRes.json() : null;
+                var opexData = opexRes.ok ? await opexRes.json() : null;
 
                 // Process monthly data — current year
                 var cumRevenue = 0, cumBookings = 0;
@@ -3644,6 +3670,22 @@
                 setKPI('kpi-fr-arpu', arpu !== null ? formatCurrency(arpu) : '\u2014');
                 setKPI('kpi-fr-gross-margin', grossMarginPct.toFixed(0) + '%');
 
+                // 3-Year LTV = Gross Margin % × Annual Bookings/Agent × AOV × 3
+                var ltv = (bpa && ytdAov) ? (grossMarginPct / 100) * bpa * ytdAov * 3 : null;
+                var prevLtv = (prevBpa && prevYtdAov) ? (prevGrossMarginPct / 100) * prevBpa * prevYtdAov * 3 : null;
+                setKPI('kpi-fr-ltv', ltv !== null ? formatCurrency(ltv) : '\u2014');
+
+                // CAC = Total OpEx YTD / New Agent Signups YTD
+                var newAgents = fbData ? fbData.accounts_created : 0;
+                var prevNewAgents = prevFbData ? prevFbData.accounts_created : 0;
+                var totalOpex = opexData ? Math.abs(opexData.total) : 0;
+                var cac = (totalOpex > 0 && newAgents > 0) ? totalOpex / newAgents : null;
+                setKPI('kpi-fr-cac', cac !== null ? formatCurrency(cac) : '\u2014');
+
+                // LTV:CAC ratio
+                var ltvCac = (ltv && cac && cac > 0) ? ltv / cac : null;
+                setKPI('kpi-fr-ltv-cac', ltvCac !== null ? ltvCac.toFixed(1) + 'x' : '\u2014');
+
                 // Set YoY comparisons
                 setFRComparison('kpi-fr-revenue', cumRevenue, prevCumRevenue, formatCurrency);
                 setFRComparison('kpi-fr-bookings', cumBookings, prevCumBookings, formatNumber);
@@ -3652,6 +3694,10 @@
                 setFRComparison('kpi-fr-aov', ytdAov, prevYtdAov, formatCurrency);
                 setFRComparison('kpi-fr-arpu', arpu, prevArpu, formatCurrency);
                 setFRComparison('kpi-fr-gross-margin', grossMarginPct, prevGrossMarginPct, function(v) { return v.toFixed(0) + '%'; });
+                setFRComparison('kpi-fr-ltv', ltv, prevLtv, formatCurrency);
+                // CAC: lower is better, so invert colors
+                setFRComparison('kpi-fr-cac', cac, null, formatCurrency, true); // no prior year opex data yet
+                setFRComparison('kpi-fr-ltv-cac', ltvCac, null, function(v) { return v.toFixed(1) + 'x'; });
 
                 // Render cumulative growth charts
                 renderFRChart('kpi-fr-revenue-chart', labels, revCum, 'currency');

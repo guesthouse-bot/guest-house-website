@@ -136,6 +136,44 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  // YTD Total Corporate Expenses from Actuals (2026)
+  // Row 172 in Actuals (2026), columns Z=Jan ... AK=Dec
+  if (req.query.metric === 'opex_ytd') {
+    var serviceAccountOpex = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
+    var tokenOpex = await getAccessToken(serviceAccountOpex);
+    var curMonth = new Date().getMonth() + 1; // 1-indexed
+    var opexRanges = [];
+    for (var om = 1; om <= curMonth; om++) {
+      var oCol = colToLetter(25 + om);
+      opexRanges.push("'Actuals (2026)'!" + oCol + "172");
+    }
+    var encodedOpex = opexRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
+    var opexUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedOpex + '&valueRenderOption=UNFORMATTED_VALUE';
+    try {
+      var opexRes = await fetch(opexUrl, { headers: { 'Authorization': 'Bearer ' + tokenOpex } });
+      if (!opexRes.ok) {
+        var opexErr = await opexRes.json();
+        return res.status(opexRes.status).json({ error: opexErr.error ? opexErr.error.message : 'Sheets API error' });
+      }
+      var opexData = await opexRes.json();
+      var opexVr = opexData.valueRanges || [];
+      var totalOpex = 0;
+      var monthlyOpex = [];
+      for (var oi = 0; oi < opexVr.length; oi++) {
+        var val = 0;
+        if (opexVr[oi] && opexVr[oi].values && opexVr[oi].values[0]) {
+          var rawVal = opexVr[oi].values[0][0];
+          val = typeof rawVal === 'number' ? rawVal : parseFloat(String(rawVal).replace(/[$,]/g, '')) || 0;
+        }
+        monthlyOpex.push(val);
+        totalOpex += val;
+      }
+      return res.status(200).json({ total: totalOpex, monthly: monthlyOpex });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
   // Notable Payments: read from "Notable Payments" tab in Renewal Tracker sheet
   if (req.query.metric === 'notable') {
     var serviceAccount3 = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
