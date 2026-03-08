@@ -3798,37 +3798,27 @@
                     renderMarketSVG('kpi-fr-market-bookings', frBookMktSeries, labels, function(v) { return formatNumber(v); });
                 }
 
-                // Active Agents by Market
+                // Active Agents by Market (cumulative chart — monthly snapshots)
                 var frAgentsMktEl = document.getElementById('kpi-fr-market-agents');
                 if (frAgentsMktEl) {
                     frAgentsMktEl.innerHTML = '<span style="opacity:0.4;font-size:0.8rem;">Loading...</span>';
-                    var agentsByMarket = {};
-                    var agentMktPromises = marketKeys.map(function(mk) {
-                        return fetch('/api/firebase-kpis?market=' + mk + '&period=ytd&daily=false')
-                            .then(function(r) { return r.ok ? r.json() : null; });
+                    var frAgentMktSeries = {};
+                    var frAgentMktKeys = ['colorado', 'california', 'arizona'];
+                    var allFrAgentMktData = {};
+                    // Fetch active agents per market per month (use month-end as dateTo)
+                    for (var mi4 = 0; mi4 < frAgentMktKeys.length; mi4++) {
+                        var amk = frAgentMktKeys[mi4];
+                        var amkPromises = months.map(function(mo) {
+                            return fetch('/api/firebase-kpis?market=' + amk + '&period=custom&dateFrom=' + mo.from + '&dateTo=' + mo.to + '&daily=false')
+                                .then(function(r) { return r.ok ? r.json() : null; });
+                        });
+                        var amkResults = await Promise.all(amkPromises);
+                        allFrAgentMktData[amk] = amkResults.map(function(r) { return r ? r.active_agents : 0; });
+                    }
+                    frAgentMktKeys.forEach(function(mk) {
+                        frAgentMktSeries[mk] = allFrAgentMktData[mk] || months.map(function() { return 0; });
                     });
-                    var agentMktResults = await Promise.all(agentMktPromises);
-                    // Render as horizontal bar
-                    var totalAgents = 0;
-                    var agentBars = [];
-                    marketKeys.forEach(function(mk, idx) {
-                        var r = agentMktResults[idx];
-                        var count = r ? r.active_agents : 0;
-                        totalAgents += count;
-                        agentBars.push({ market: mk, count: count });
-                    });
-                    var barHtml = '<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">';
-                    agentBars.forEach(function(bar) {
-                        var pct = totalAgents > 0 ? (bar.count / totalAgents * 100) : 0;
-                        barHtml += '<div style="display:flex;align-items:center;gap:8px;">';
-                        barHtml += '<span style="width:36px;font-size:0.75rem;font-weight:500;color:#666;">' + marketLabels[bar.market] + '</span>';
-                        barHtml += '<div style="flex:1;height:16px;background:#f0f0f0;border-radius:3px;overflow:hidden;">';
-                        barHtml += '<div style="height:100%;width:' + pct.toFixed(1) + '%;background:' + marketColors[bar.market] + ';border-radius:3px;"></div></div>';
-                        barHtml += '<span style="font-size:0.75rem;font-weight:600;min-width:28px;text-align:right;">' + bar.count + '</span>';
-                        barHtml += '</div>';
-                    });
-                    barHtml += '</div>';
-                    frAgentsMktEl.innerHTML = barHtml;
+                    renderMarketSVG('kpi-fr-market-agents', frAgentMktSeries, labels, function(v) { return formatNumber(v); });
                 }
 
             } catch (err) {
