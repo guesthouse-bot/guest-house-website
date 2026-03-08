@@ -148,27 +148,8 @@ module.exports = async function handler(req, res) {
 
   try {
     // Look up Alex Ryden's owner ID to exclude his quotes
-    var excludeOwnerIds = [];
-    var allOwnerNames = [];
-    var ownerDebug = '';
-    try {
-      var ownersRes = await fetch('https://api.hubapi.com/crm/v3/owners?limit=100', {
-        headers: { 'Authorization': 'Bearer ' + TOKEN },
-      });
-      ownerDebug = 'status=' + ownersRes.status;
-      if (ownersRes.ok) {
-        var ownersData = await ownersRes.json();
-        ownerDebug += ' results=' + (ownersData.results || []).length;
-        (ownersData.results || []).forEach(function(owner) {
-          var name = ((owner.firstName || '') + ' ' + (owner.lastName || '')).trim().toLowerCase();
-          allOwnerNames.push({ id: String(owner.id), name: name, email: owner.email || '' });
-          if (name === 'alex ryden') excludeOwnerIds.push(String(owner.id));
-        });
-      } else {
-        var errBody = await ownersRes.text();
-        ownerDebug += ' err=' + errBody.slice(0, 200);
-      }
-    } catch (e) { ownerDebug = 'exception: ' + e.message; }
+    // Exclude Alex Ryden's deals from quote counts (owner ID 51464986)
+    var excludeOwnerIds = ['51464986'];
 
     // Search for deals in Sales Pipeline created in date range
     let allDeals = [];
@@ -391,18 +372,10 @@ module.exports = async function handler(req, res) {
           amount: d.properties.amount, market: d.properties.market,
         });
       });
-      // Temp: show all owner IDs on deals for debugging
-      var ownerIdSet = {};
-      filtered.forEach(function(d) { var oid = (d.properties || {}).hubspot_owner_id; if (oid) ownerIdSet[oid] = (ownerIdSet[oid] || 0) + 1; });
       result.debug = {
         total_deals_in_pipeline: allDeals.length,
-        total_after_market_filter: filtered.length,
         quotes_after_owner_exclusion: quotesRequested,
-        excluded_owner_ids: excludeOwnerIds,
         deals_excluded_by_owner: filtered.length - filteredForQuotes.length,
-        deal_owner_ids: ownerIdSet,
-        all_owners: allOwnerNames,
-        owner_debug: ownerDebug,
         deal_stages: stageCounts,
         deals_by_stage: dealsByStage,
         closed_won_count: filteredCW.length,
