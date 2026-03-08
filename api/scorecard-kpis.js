@@ -136,39 +136,63 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // YTD Total Corporate Expenses from Actuals (2026)
-  // Row 172 in Actuals (2026), columns Z=Jan ... AK=Dec
-  if (req.query.metric === 'opex_ytd') {
-    var serviceAccountOpex = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
-    var tokenOpex = await getAccessToken(serviceAccountOpex);
-    var curMonth = new Date().getMonth() + 1; // 1-indexed
-    var opexRanges = [];
-    for (var om = 1; om <= curMonth; om++) {
-      var oCol = colToLetter(25 + om);
-      opexRanges.push("'Actuals (2026)'!" + oCol + "172");
+  // CAC data: Sales team expenses (CO + CA) + Commission YTD from Actuals (2026)
+  // Also supports debug mode to discover row labels
+  if (req.query.metric === 'cac_data') {
+    var serviceAccountCac = JSON.parse(Buffer.from(saB64, 'base64').toString('utf-8'));
+    var tokenCac = await getAccessToken(serviceAccountCac);
+
+    // Debug mode: read row labels to find sales team / commission rows
+    if (req.query.debug === 'rows') {
+      // Read labels from column Y (row labels) for rows 1-178
+      var labelRange = encodeURIComponent("'Actuals (2026)'!Y1:Y178");
+      var labelUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + labelRange + '?valueRenderOption=UNFORMATTED_VALUE';
+      try {
+        var labelRes = await fetch(labelUrl, { headers: { 'Authorization': 'Bearer ' + tokenCac } });
+        var labelData = await labelRes.json();
+        var rows = (labelData.values || []).map(function(r, i) { return { row: i + 1, label: r[0] || '' }; }).filter(function(r) { return r.label; });
+        return res.status(200).json({ rows: rows });
+      } catch (err) {
+        return res.status(500).json({ error: err.message });
+      }
     }
-    var encodedOpex = opexRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
-    var opexUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedOpex + '&valueRenderOption=UNFORMATTED_VALUE';
+
+    // Read sales team expenses + commission for each month YTD
+    // Row numbers will be configured after debug discovery
+    var coSalesRow = req.query.co_sales_row || '51';
+    var caSalesRow = req.query.ca_sales_row || '104';
+    var commissionRow = req.query.commission_row || '18';
+    var curMonth = new Date().getMonth() + 1;
+    var cacRanges = [];
+    for (var cm = 1; cm <= curMonth; cm++) {
+      var cCol = colToLetter(25 + cm);
+      cacRanges.push("'Actuals (2026)'!" + cCol + coSalesRow);
+      cacRanges.push("'Actuals (2026)'!" + cCol + caSalesRow);
+      cacRanges.push("'Actuals (2026)'!" + cCol + commissionRow);
+    }
+    var encodedCac = cacRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
+    var cacUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedCac + '&valueRenderOption=UNFORMATTED_VALUE';
     try {
-      var opexRes = await fetch(opexUrl, { headers: { 'Authorization': 'Bearer ' + tokenOpex } });
-      if (!opexRes.ok) {
-        var opexErr = await opexRes.json();
-        return res.status(opexRes.status).json({ error: opexErr.error ? opexErr.error.message : 'Sheets API error' });
+      var cacRes = await fetch(cacUrl, { headers: { 'Authorization': 'Bearer ' + tokenCac } });
+      if (!cacRes.ok) {
+        var cacErr = await cacRes.json();
+        return res.status(cacRes.status).json({ error: cacErr.error ? cacErr.error.message : 'Sheets API error' });
       }
-      var opexData = await opexRes.json();
-      var opexVr = opexData.valueRanges || [];
-      var totalOpex = 0;
-      var monthlyOpex = [];
-      for (var oi = 0; oi < opexVr.length; oi++) {
-        var val = 0;
-        if (opexVr[oi] && opexVr[oi].values && opexVr[oi].values[0]) {
-          var rawVal = opexVr[oi].values[0][0];
-          val = typeof rawVal === 'number' ? rawVal : parseFloat(String(rawVal).replace(/[$,]/g, '')) || 0;
+      var cacData = await cacRes.json();
+      var cacVr = cacData.valueRanges || [];
+      function cacVal(idx) {
+        if (cacVr[idx] && cacVr[idx].values && cacVr[idx].values[0]) {
+          var raw = cacVr[idx].values[0][0];
+          return typeof raw === 'number' ? raw : parseFloat(String(raw).replace(/[$,]/g, '')) || 0;
         }
-        monthlyOpex.push(val);
-        totalOpex += val;
+        return 0;
       }
-      return res.status(200).json({ total: totalOpex, monthly: monthlyOpex });
+      var totalSales = 0, totalCommission = 0;
+      for (var ci = 0; ci < curMonth; ci++) {
+        totalSales += Math.abs(cacVal(ci * 3)) + Math.abs(cacVal(ci * 3 + 1));
+        totalCommission += Math.abs(cacVal(ci * 3 + 2));
+      }
+      return res.status(200).json({ sales_expenses: totalSales, commission: totalCommission, total: totalSales + totalCommission });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
