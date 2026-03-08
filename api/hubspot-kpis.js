@@ -385,6 +385,10 @@ module.exports = async function handler(req, res) {
       });
       result.debug = {
         total_deals_in_pipeline: allDeals.length,
+        total_after_market_filter: filtered.length,
+        quotes_after_owner_exclusion: quotesRequested,
+        excluded_owner_ids: excludeOwnerIds,
+        deals_excluded_by_owner: filtered.length - filteredForQuotes.length,
         deal_stages: stageCounts,
         deals_by_stage: dealsByStage,
         closed_won_count: filteredCW.length,
