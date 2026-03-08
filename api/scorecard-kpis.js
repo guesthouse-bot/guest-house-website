@@ -145,7 +145,7 @@ module.exports = async function handler(req, res) {
     // Debug mode: read row labels to find sales team / commission rows
     if (req.query.debug === 'rows') {
       // Read labels from column Y (row labels) for rows 1-178
-      var labelRange = encodeURIComponent("'Actuals (2026)'!Y1:Y178");
+      var labelRange = encodeURIComponent("'Actuals (2026)'!A1:A178");
       var labelUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + labelRange + '?valueRenderOption=UNFORMATTED_VALUE';
       try {
         var labelRes = await fetch(labelUrl, { headers: { 'Authorization': 'Bearer ' + tokenCac } });
