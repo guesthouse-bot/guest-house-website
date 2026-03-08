@@ -147,6 +147,21 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // Look up Alex Ryden's owner ID to exclude his quotes
+    var excludeOwnerIds = [];
+    try {
+      var ownersRes = await fetchWithRetry('https://api.hubapi.com/crm/v3/owners', {
+        headers: { 'Authorization': 'Bearer ' + TOKEN },
+      });
+      if (ownersRes.ok) {
+        var ownersData = await ownersRes.json();
+        (ownersData.results || []).forEach(function(owner) {
+          var name = ((owner.firstName || '') + ' ' + (owner.lastName || '')).trim().toLowerCase();
+          if (name === 'alex ryden') excludeOwnerIds.push(String(owner.id));
+        });
+      }
+    } catch (e) { /* proceed without exclusion */ }
+
     // Search for deals in Sales Pipeline created in date range
     let allDeals = [];
     let after = 0;
@@ -161,7 +176,7 @@ module.exports = async function handler(req, res) {
             { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
           ]
         }],
-        properties: ['dealname', 'dealstage', 'createdate', 'amount', 'market'],
+        properties: ['dealname', 'dealstage', 'createdate', 'amount', 'market', 'hubspot_owner_id'],
         limit: 100,
         after: after,
       };
@@ -210,7 +225,15 @@ module.exports = async function handler(req, res) {
     }
 
     // Count quotes requested = all deals in the Sales Pipeline (they all start at Quote Requested)
-    var quotesRequested = filtered.length;
+    // Exclude deals owned by Alex Ryden from quote counts
+    var filteredForQuotes = filtered;
+    if (excludeOwnerIds.length > 0) {
+      filteredForQuotes = filtered.filter(function(deal) {
+        var ownerId = String((deal.properties || {}).hubspot_owner_id || '');
+        return excludeOwnerIds.indexOf(ownerId) === -1;
+      });
+    }
+    var quotesRequested = filteredForQuotes.length;
 
     // Fetch booked deals in date range (closedwon + legacy stage 13174420)
     let closedWonDeals = [];
