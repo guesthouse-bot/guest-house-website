@@ -3468,16 +3468,18 @@
 
         // ---- Main fetch orchestrator ----
         // ---- Fundraising KPIs (always YTD with cumulative growth charts) ----
-        function renderFRChart(containerId, monthLabels, values, unit) {
+        function renderFRChart(containerId, monthLabels, values, unit, prevValues) {
             var container = document.getElementById(containerId);
             if (!container) return;
             if (!values || values.length < 1) { container.innerHTML = ''; return; }
             container.classList.add('visible');
 
-            var chartW = 300, chartH = 160, padRight = 55, padTop = 8, padBot = 20;
+            var chartW = 300, chartH = 160, padRight = 55, padTop = 8, padBot = 28;
             var innerW = chartW - padRight, innerH = chartH - padTop - padBot;
-            var maxVal = Math.max.apply(null, values) || 1;
-            var minVal = Math.min.apply(null, values.concat([0]));
+            // Compute range across both series
+            var allVals = values.concat(prevValues || []).concat([0]);
+            var maxVal = Math.max.apply(null, allVals) || 1;
+            var minVal = Math.min.apply(null, allVals);
             var range = maxVal - minVal || 1;
 
             var svg = '<svg viewBox="0 0 ' + chartW + ' ' + chartH + '" preserveAspectRatio="none" style="width:100%;height:160px;">';
@@ -3494,9 +3496,21 @@
             // X labels
             for (var xi = 0; xi < monthLabels.length; xi++) {
                 var lx = values.length === 1 ? innerW / 2 : (xi / (values.length - 1)) * innerW;
-                svg += '<text x="' + lx.toFixed(1) + '" y="' + (chartH - 2) + '" font-size="8" fill="#999" text-anchor="middle" font-family="Circular,sans-serif">' + monthLabels[xi] + '</text>';
+                svg += '<text x="' + lx.toFixed(1) + '" y="' + (chartH - 12) + '" font-size="8" fill="#999" text-anchor="middle" font-family="Circular,sans-serif">' + monthLabels[xi] + '</text>';
             }
-            // Area + line
+            // Prior year line (dashed, lighter)
+            if (prevValues && prevValues.length > 0) {
+                var prevPoints = [];
+                for (var pp = 0; pp < prevValues.length; pp++) {
+                    var ppx = prevValues.length === 1 ? innerW / 2 : (pp / (prevValues.length - 1)) * innerW;
+                    var ppy = padTop + innerH - ((prevValues[pp] - minVal) / range) * innerH;
+                    prevPoints.push(ppx.toFixed(1) + ',' + ppy.toFixed(1));
+                }
+                svg += '<polyline points="' + prevPoints.join(' ') + '" fill="none" stroke="#ccc" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round" stroke-linejoin="round"/>';
+                var prevLastPt = prevPoints[prevPoints.length - 1].split(',');
+                svg += '<circle cx="' + prevLastPt[0] + '" cy="' + prevLastPt[1] + '" r="2.5" fill="#ccc"/>';
+            }
+            // Current year area + line
             var points = [];
             for (var pi = 0; pi < values.length; pi++) {
                 var px = values.length === 1 ? innerW / 2 : (pi / (values.length - 1)) * innerW;
@@ -3509,6 +3523,13 @@
             // Dot on last point
             var lastPt = points[points.length - 1].split(',');
             svg += '<circle cx="' + lastPt[0] + '" cy="' + lastPt[1] + '" r="3" fill="var(--color-deep)"/>';
+            // Legend
+            if (prevValues && prevValues.length > 0) {
+                var now = new Date();
+                svg += '<text x="0" y="' + (chartH - 1) + '" font-size="7.5" fill="var(--color-deep)" font-family="Circular,sans-serif" font-weight="600">' + now.getFullYear() + '</text>';
+                svg += '<line x1="28" y1="' + (chartH - 3) + '" x2="42" y2="' + (chartH - 3) + '" stroke="#ccc" stroke-width="1.5" stroke-dasharray="3,2"/>';
+                svg += '<text x="45" y="' + (chartH - 1) + '" font-size="7.5" fill="#999" font-family="Circular,sans-serif">' + (now.getFullYear() - 1) + '</text>';
+            }
             svg += '</svg>';
             container.innerHTML = svg;
         }
@@ -3639,14 +3660,18 @@
                     aovVals.push(cumBookings > 0 ? cumRevenue / cumBookings : 0);
                 }
 
-                // Process monthly data — prior year
+                // Process monthly data — prior year (with cumulative arrays for charts)
                 var prevCumRevenue = 0, prevCumBookings = 0;
+                var prevRevCum = [], prevBookCum = [], prevAovVals = [];
                 for (var j = 0; j < prevMonths.length; j++) {
                     var psData = prevStripeResults[j];
                     var pnData = prevNotableResults[j];
                     var phData = prevHubspotResults[j];
                     prevCumRevenue += (psData ? psData.revenue : 0) + (pnData ? pnData.total : 0);
                     prevCumBookings += (phData ? phData.bookings : 0);
+                    prevRevCum.push(prevCumRevenue);
+                    prevBookCum.push(prevCumBookings);
+                    prevAovVals.push(prevCumBookings > 0 ? prevCumRevenue / prevCumBookings : 0);
                 }
 
                 // AOV (total) = total revenue / total bookings (matches Customer KPIs section)
@@ -3697,26 +3722,27 @@
                 setFRComparison('kpi-fr-cac', cac, null, formatCurrency, true); // no prior year opex data yet
                 setFRComparison('kpi-fr-ltv-cac', ltvCac, null, function(v) { return v.toFixed(1) + 'x'; });
 
-                // Render cumulative growth charts
-                renderFRChart('kpi-fr-revenue-chart', labels, revCum, 'currency');
-                renderFRChart('kpi-fr-bookings-chart', labels, bookCum, 'count');
+                // Render cumulative growth charts with prior year comparison
+                renderFRChart('kpi-fr-revenue-chart', labels, revCum, 'currency', prevRevCum);
+                renderFRChart('kpi-fr-bookings-chart', labels, bookCum, 'count', prevBookCum);
 
-                // AOV chart (monthly, not cumulative)
-                renderFRChart('kpi-fr-aov-chart', labels, aovVals, 'currency');
+                // AOV chart (running AOV = cumRevenue/cumBookings per month)
+                renderFRChart('kpi-fr-aov-chart', labels, aovVals, 'currency', prevAovVals);
 
-                // GM chart (monthly — 75% flat for now, could be computed per month)
+                // GM chart (75% flat for now)
                 var gmVals = aovVals.map(function() { return grossMarginPct; });
-                renderFRChart('kpi-fr-gm-chart', labels, gmVals, 'pct');
+                var prevGmVals = prevAovVals.map(function() { return prevGrossMarginPct; });
+                renderFRChart('kpi-fr-gm-chart', labels, gmVals, 'pct', prevGmVals);
 
-                // Active agents / BPA / ARPU — single value, show as flat line with dot
-                if (activeAgents > 0) {
-                    renderFRChart('kpi-fr-agents-chart', labels, labels.map(function() { return activeAgents; }), 'count');
+                // Active agents / BPA / ARPU — single value lines with prior year
+                if (activeAgents > 0 || prevActiveAgents > 0) {
+                    renderFRChart('kpi-fr-agents-chart', labels, labels.map(function() { return activeAgents; }), 'count', labels.map(function() { return prevActiveAgents; }));
                 }
-                if (bpa !== null) {
-                    renderFRChart('kpi-fr-bpa-chart', labels, labels.map(function() { return bpa; }), 'count');
+                if (bpa !== null || prevBpa !== null) {
+                    renderFRChart('kpi-fr-bpa-chart', labels, labels.map(function() { return bpa || 0; }), 'count', labels.map(function() { return prevBpa || 0; }));
                 }
-                if (arpu !== null) {
-                    renderFRChart('kpi-fr-arpu-chart', labels, labels.map(function() { return arpu; }), 'currency');
+                if (arpu !== null || prevArpu !== null) {
+                    renderFRChart('kpi-fr-arpu-chart', labels, labels.map(function() { return arpu || 0; }), 'currency', labels.map(function() { return prevArpu || 0; }));
                 }
 
                 // Market Revenue (cumulative by market — nationwide rolled into arizona)
