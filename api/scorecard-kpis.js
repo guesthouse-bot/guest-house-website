@@ -158,17 +158,16 @@ module.exports = async function handler(req, res) {
     }
 
     // Read sales team expenses + commission for each month YTD
-    // Row numbers will be configured after debug discovery
-    var coSalesRow = req.query.co_sales_row || '51';
-    var caSalesRow = req.query.ca_sales_row || '104';
-    var commissionRow = req.query.commission_row || '18';
+    // CO Sales Team: row 61, CO Commission: row 62
+    // CA Sales Team: row 113, CA Commission: row 114
     var curMonth = new Date().getMonth() + 1;
     var cacRanges = [];
     for (var cm = 1; cm <= curMonth; cm++) {
       var cCol = colToLetter(25 + cm);
-      cacRanges.push("'Actuals (2026)'!" + cCol + coSalesRow);
-      cacRanges.push("'Actuals (2026)'!" + cCol + caSalesRow);
-      cacRanges.push("'Actuals (2026)'!" + cCol + commissionRow);
+      cacRanges.push("'Actuals (2026)'!" + cCol + "61");   // CO Sales Team
+      cacRanges.push("'Actuals (2026)'!" + cCol + "62");   // CO Commission
+      cacRanges.push("'Actuals (2026)'!" + cCol + "113");  // CA Sales Team
+      cacRanges.push("'Actuals (2026)'!" + cCol + "114");  // CA Commission
     }
     var encodedCac = cacRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
     var cacUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedCac + '&valueRenderOption=UNFORMATTED_VALUE';
@@ -189,8 +188,9 @@ module.exports = async function handler(req, res) {
       }
       var totalSales = 0, totalCommission = 0;
       for (var ci = 0; ci < curMonth; ci++) {
-        totalSales += Math.abs(cacVal(ci * 3)) + Math.abs(cacVal(ci * 3 + 1));
-        totalCommission += Math.abs(cacVal(ci * 3 + 2));
+        var base = ci * 4;
+        totalSales += Math.abs(cacVal(base)) + Math.abs(cacVal(base + 2));       // CO + CA sales team
+        totalCommission += Math.abs(cacVal(base + 1)) + Math.abs(cacVal(base + 3)); // CO + CA commission
       }
       return res.status(200).json({ sales_expenses: totalSales, commission: totalCommission, total: totalSales + totalCommission });
     } catch (err) {
