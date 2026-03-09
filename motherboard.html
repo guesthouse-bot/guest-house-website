@@ -1452,7 +1452,7 @@
             <a href="#section-company" class="section-nav-link active">Company</a>
             <a href="#section-fundraising" class="section-nav-link">Fundraising</a>
             <a href="#section-sales" class="section-nav-link">Sales</a>
-            <a href="#section-customer" class="section-nav-link">Customer</a>
+
             <a href="#section-operations" class="section-nav-link">Operations</a>
         </nav>
     </section>
@@ -1827,68 +1827,6 @@
                     </div>
                     <div class="kpi-prev" id="kpi-sales-cycle-prev"></div>
                     <div class="kpi-sparkline" id="kpi-sales-cycle-sparkline"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Customer KPIs -->
-    <section id="section-customer" class="kpi-section-grey">
-        <div class="kpi-section">
-            <div class="kpi-section-header">
-                <h2>Customer KPIs</h2>
-            </div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">New Agent Signups</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-accounts">&mdash;</span>
-                        <span class="kpi-change" id="kpi-accounts-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-accounts-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-accounts-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Total Active Agents (Trailing 12-Months)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-active-agents">&mdash;</span>
-                        <span class="kpi-change" id="kpi-active-agents-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-active-agents-prev"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bookings / Agent (12-Month)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-bookings-per-agent">&mdash;</span>
-                        <span class="kpi-change" id="kpi-bookings-per-agent-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-bookings-per-agent-prev"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">AOV (at close)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-aov-close">&mdash;</span>
-                        <span class="kpi-change" id="kpi-aov-close-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-aov-close-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-aov-close-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">AOV (total)</div>
-                    <div class="kpi-value-row">
-                        <span class="kpi-value" id="kpi-aov-total">&mdash;</span>
-                        <span class="kpi-change" id="kpi-aov-total-change"></span>
-                    </div>
-                    <div class="kpi-prev" id="kpi-aov-total-prev"></div>
-                    <div class="kpi-sparkline" id="kpi-aov-total-sparkline"></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Bookings by Market (12-Mo Cumulative)</div>
-                    <div id="kpi-bookings-by-market" class="kpi-market-trend">&mdash;</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Revenue by Market (12-Mo Cumulative)</div>
-                    <div id="kpi-revenue-by-market" class="kpi-market-trend">&mdash;</div>
                 </div>
             </div>
         </div>
@@ -3293,16 +3231,6 @@
                 setComparison('kpi-bookings-per-agent', dfb.bookings_per_agent, cf.bookings_per_agent,
                     function(v) { return v !== null ? v.toFixed(2) : '\u2014'; }, false);
             }
-            // Customer comparisons
-            if (dc && cc) {
-                setComparison('kpi-active-users', dc.active_users, cc.active_users, formatNumber, false);
-                setComparison('kpi-quotes-user', dc.quotes_per_user, cc.quotes_per_user,
-                    function(v) { return v.toFixed(1); }, false);
-                setComparison('kpi-bookings-user', dc.bookings_per_user, cc.bookings_per_user,
-                    function(v) { return v.toFixed(2); }, false);
-                setComparison('kpi-rev-user', dc.revenue_per_user, cc.revenue_per_user, formatCurrency, false);
-                setComparison('kpi-arpu', dc.arpu, cc.arpu, formatCurrency, false);
-            }
             // Vendor comparisons
             var dv = currentData.vendor;
             var cv = compareData.vendor;
@@ -3943,7 +3871,6 @@
             ];
             var wave2 = [
                 fetchHubSpotKPIs(filters, false),
-                fetchCustomerKPIs(filters, false),
             ];
             var wave3 = [];
 
@@ -3963,7 +3890,6 @@
                 wave1.push(fetchOpsKpis(cmpFilters, true));
                 wave1.push(fetchGA4KPIs(cmpFilters, true));
                 wave3.push(fetchHubSpotKPIs(cmpFilters, true));
-                wave3.push(fetchCustomerKPIs(cmpFilters, true));
             }
             if (isPlan) {
                 wave1.push(fetchPlanKPIs(filters));
@@ -3989,9 +3915,6 @@
                 renderAllComparisons();
             }
 
-            // Deferred: market trend charts (after main KPIs to avoid overloading Vercel)
-            fetchBookingsByMarket();
-            fetchRevenueByMarket();
         }
 
         document.getElementById('applyFilters').addEventListener('click', function() {
@@ -4021,8 +3944,7 @@
                 { id: 'section-company', link: navLinks[0] },
                 { id: 'section-fundraising', link: navLinks[1] },
                 { id: 'section-sales', link: navLinks[2] },
-                { id: 'section-customer', link: navLinks[3] },
-                { id: 'section-operations', link: navLinks[4] },
+                { id: 'section-operations', link: navLinks[3] },
             ];
 
             navLinks.forEach(function(link) {
@@ -4145,15 +4067,6 @@
                     kpiRow('Bookings Revenue', 'kpi-bookings-rev'),
                     kpiRow('Renewal Revenue', 'kpi-renewal-rev'),
                     kpiRow('Sales Cycle', 'kpi-sales-cycle'),
-                ]) +
-
-                // Customer KPIs
-                sectionBlock('Customer KPIs', [
-                    kpiRow('New Agent Signups', 'kpi-accounts'),
-                    kpiRow('Total Active Agents (Trailing 12-Months)', 'kpi-active-agents'),
-                    kpiRow('Bookings / Agent (12-Month)', 'kpi-bookings-per-agent'),
-                    kpiRow('AOV (at close)', 'kpi-aov-close'),
-                    kpiRow('AOV (total)', 'kpi-aov-total'),
                 ]) +
 
                 // Ops KPIs
