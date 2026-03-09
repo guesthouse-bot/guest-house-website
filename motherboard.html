@@ -2538,15 +2538,19 @@
         }
 
         function clearAllComparisons() {
+            var frSection = document.getElementById('section-fundraising');
             document.querySelectorAll('.kpi-change').forEach(function(el) {
+                if (frSection && frSection.contains(el)) return;
                 el.className = 'kpi-change';
                 el.textContent = '';
             });
             document.querySelectorAll('.kpi-prev').forEach(function(el) {
+                if (frSection && frSection.contains(el)) return;
                 el.className = 'kpi-prev';
                 el.textContent = '';
             });
             document.querySelectorAll('.kpi-sparkline').forEach(function(el) {
+                if (frSection && frSection.contains(el)) return;
                 el.innerHTML = '';
                 el.classList.remove('visible');
             });
