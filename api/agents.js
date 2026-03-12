@@ -44,6 +44,7 @@ module.exports = async function handler(req, res) {
     case 'create-project': return handleCreateProject(req, res);
     case 'get-project': return handleGetProject(req, res);
     case 'update-project-stage': return handleUpdateProjectStage(req, res);
+    case 'design-advice-booking': return handleDesignAdviceBooking(req, res);
     default: return res.status(400).json({ error: 'Unknown action: ' + action });
   }
 };
@@ -708,4 +709,136 @@ async function sendStageEmail(project, stage, updates, accessToken) {
   content += '<a href="https://guesthouseprep.com/dashboard" style="display:inline-block;background:#080808;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;">View Dashboard</a>';
 
   await fb.sendEmail(agentEmail, subject, emailWrap(content));
+}
+
+// === DESIGN ADVICE BOOKING ===
+var DA_OWNER_MAP = { CO: 'Sarah', CA: 'Ashleigh' };
+
+async function resolveDAOwners(hsHeaders) {
+  var ids = { Sarah: null, Ashleigh: null };
+  try {
+    var resp = await fetch('https://api.hubapi.com/crm/v3/owners?limit=100', { method: 'GET', headers: hsHeaders });
+    if (!resp.ok) return ids;
+    var data = await resp.json();
+    (data.results || []).forEach(function(o) {
+      var first = (o.firstName || '').toLowerCase();
+      if (first === 'sarah') ids.Sarah = o.id;
+      if (first === 'ashleigh') ids.Ashleigh = o.id;
+    });
+  } catch (e) { console.log('Owner lookup failed:', e.message); }
+  return ids;
+}
+
+function detectDAState(address) {
+  if (!address) return null;
+  var upper = address.toUpperCase();
+  if (/\b(CO|COLORADO)\b/.test(upper)) return 'CO';
+  if (/\b(CA|CALIFORNIA)\b/.test(upper)) return 'CA';
+  var coCities = ['DENVER','BOULDER','AURORA','LAKEWOOD','LITTLETON','FORT COLLINS','COLORADO SPRINGS','ARVADA','BROOMFIELD','LONGMONT','LOVELAND','THORNTON','WESTMINSTER','CASTLE ROCK','PARKER','HIGHLANDS RANCH','GOLDEN','ERIE','WARD'];
+  var caCities = ['SAN DIEGO','LA JOLLA','CARLSBAD','ENCINITAS','OCEANSIDE','ESCONDIDO','CHULA VISTA','ORANGE COUNTY','IRVINE','NEWPORT BEACH','HUNTINGTON BEACH','COSTA MESA','LAGUNA','ANAHEIM','SANTA ANA','LOS ANGELES','SAN FRANCISCO'];
+  var azCities = ['PHOENIX','SCOTTSDALE','TEMPE','MESA','CHANDLER','GILBERT','GLENDALE','PEORIA'];
+  for (var i = 0; i < coCities.length; i++) { if (upper.indexOf(coCities[i]) !== -1) return 'CO'; }
+  for (var j = 0; j < caCities.length; j++) { if (upper.indexOf(caCities[j]) !== -1) return 'CA'; }
+  for (var k = 0; k < azCities.length; k++) { if (upper.indexOf(azCities[k]) !== -1) return 'CA'; }
+  return null;
+}
+
+async function handleDesignAdviceBooking(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  var body = req.body || {};
+  var name = (body.name || '').trim();
+  var email = (body.email || '').trim();
+  var phone = (body.phone || '').trim();
+  var date = (body.date || '').trim();
+  var time = (body.time || '').trim();
+  var address = (body.address || '').trim();
+  var listingAgreement = body.listingAgreement || '';
+
+  if (!name || !email || !address) {
+    return res.status(400).json({ error: 'Name, email, and address are required.' });
+  }
+
+  var hsToken = process.env.HUBSPOT_ACCESS_TOKEN;
+  var hsHeaders = hsToken ? { 'Authorization': 'Bearer ' + hsToken, 'Content-Type': 'application/json' } : null;
+
+  var state = detectDAState(address);
+  var ownerIds = hsHeaders ? await resolveDAOwners(hsHeaders) : {};
+  var ownerName = (state && DA_OWNER_MAP[state]) || 'Team';
+  var ownerId = ownerIds[ownerName] || null;
+
+  // Create HubSpot contact
+  var contactId = null;
+  if (hsHeaders) {
+    try {
+      var firstName = name.split(' ')[0];
+      var lastName = name.split(' ').slice(1).join(' ') || '';
+      var contactResp = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
+        method: 'POST', headers: hsHeaders,
+        body: JSON.stringify({ properties: { firstname: firstName, lastname: lastName, email: email, phone: phone, address: address } }),
+      });
+      if (contactResp.ok) {
+        contactId = (await contactResp.json()).id;
+      } else if (contactResp.status === 409) {
+        var conflict = await contactResp.json();
+        var idMatch = conflict.message && conflict.message.match(/ID: (\d+)/);
+        contactId = idMatch ? idMatch[1] : null;
+      }
+    } catch (e) { console.log('HubSpot contact error:', e.message); }
+  }
+
+  // Create HubSpot deal in "Lead Captured"
+  var dealId = null;
+  if (hsHeaders) {
+    try {
+      var stagesResp = await fetch('https://api.hubapi.com/crm/v3/pipelines/deals/default/stages', { method: 'GET', headers: hsHeaders });
+      var stageId = null;
+      if (stagesResp.ok) {
+        var stages = (await stagesResp.json()).results || [];
+        for (var i = 0; i < stages.length; i++) {
+          if ((stages[i].label || '').toLowerCase().trim() === 'lead captured') { stageId = stages[i].id; break; }
+        }
+      }
+
+      var dealProps = {
+        dealname: 'Design Advice — ' + address,
+        pipeline: 'default',
+        description: 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nPreferred Date: ' + date + '\nPreferred Time: ' + time + '\nAddress: ' + address + '\nListing Agreement: ' + (listingAgreement || 'Not specified') + '\nSource: Design Advice Page',
+      };
+      if (stageId) dealProps.dealstage = stageId;
+      if (ownerId) dealProps.hubspot_owner_id = ownerId;
+
+      var dealBody = { properties: dealProps };
+      if (contactId) {
+        dealBody.associations = [{ to: { id: contactId }, types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 3 }] }];
+      }
+
+      var dealResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals', { method: 'POST', headers: hsHeaders, body: JSON.stringify(dealBody) });
+      if (dealResp.ok) {
+        dealId = (await dealResp.json()).id;
+      } else {
+        console.log('HubSpot deal error:', dealResp.status, await dealResp.text());
+      }
+    } catch (e) { console.log('HubSpot deal error:', e.message); }
+  }
+
+  // Email notification
+  try {
+    await fb.sendEmail('ashley@guesthouseshop.com', 'New Design Advice Booking — ' + name, emailWrap(
+      '<h2 style="font-size:22px;font-weight:600;color:#080808;margin-bottom:16px;">New design advice booking</h2>' +
+      '<div style="background:#f7f7f7;border-radius:12px;padding:20px 24px;margin-bottom:24px;">' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Name:</strong> <span style="color:#666;">' + name + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Email:</strong> <span style="color:#666;">' + email + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Phone:</strong> <span style="color:#666;">' + phone + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Preferred Date:</strong> <span style="color:#666;">' + date + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Preferred Time:</strong> <span style="color:#666;">' + time + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Address:</strong> <span style="color:#666;">' + address + '</span></div>' +
+        '<div style="margin-bottom:8px;"><strong style="color:#343434;">Listing Agreement:</strong> <span style="color:#666;">' + (listingAgreement || 'Not specified') + '</span></div>' +
+        '<div><strong style="color:#343434;">Assigned to:</strong> <span style="color:#666;">' + ownerName + '</span></div>' +
+      '</div>' +
+      (dealId ? '<p style="color:#999;font-size:13px;">HubSpot Deal ID: ' + dealId + '</p>' : '')
+    ));
+  } catch (e) { console.log('Email notification failed:', e.message); }
+
+  return res.status(200).json({ ok: true, dealId: dealId });
 }

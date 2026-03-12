@@ -2028,6 +2028,14 @@
                         <label for="bookingAddress">Property address</label>
                         <input type="text" id="bookingAddress" name="address" placeholder="123 Main St, Denver, CO" required>
                     </div>
+                    <div class="modal-form-group">
+                        <label for="bookingListing">Listing agreement signed? <span style="font-weight:400;color:var(--color-text-secondary);">(optional)</span></label>
+                        <select id="bookingListing" name="listingAgreement">
+                            <option value="" selected>Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
                     <button type="submit" class="modal-submit">Submit</button>
                 </form>
                 <p class="modal-note">We'll follow up to confirm the time works on our calendar and send you a video call link.</p>
@@ -2104,6 +2112,7 @@
                 date: form.date.value,
                 time: form.time.value,
                 address: form.address.value,
+                listingAgreement: form.listingAgreement.value,
             };
 
             // GA4 event
@@ -2114,7 +2123,7 @@
                 });
             }
 
-            fetch('/api/design-advice-booking', {
+            fetch('/api/agents?action=design-advice-booking', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
