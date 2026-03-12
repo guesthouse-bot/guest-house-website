@@ -1241,6 +1241,198 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Scheduling Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 32px 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-mist);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--color-border);
+        }
+
+        .modal-close svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--color-onyx);
+        }
+
+        .modal-body {
+            padding: 24px 32px 32px;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .modal-free-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #E8F5E9;
+            color: #2E7D32;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+        }
+
+        .modal-form-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-onyx);
+            margin-bottom: 8px;
+        }
+
+        .modal-form-group input,
+        .modal-form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--color-onyx);
+            background: white;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .modal-form-group input:focus,
+        .modal-form-group select:focus {
+            outline: none;
+            border-color: var(--color-golden);
+            box-shadow: 0 0 0 3px rgba(235, 188, 118, 0.15);
+        }
+
+        .modal-form-group input::placeholder {
+            color: #AAAAAA;
+        }
+
+        .modal-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+        }
+
+        .modal-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--color-golden);
+            color: var(--color-onyx);
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-top: 8px;
+        }
+
+        .modal-submit:hover {
+            background: #D4A85E;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(235, 188, 118, 0.4);
+        }
+
+        .modal-note {
+            text-align: center;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .modal {
+                max-width: 100%;
+                border-radius: 20px;
+            }
+            .modal-header {
+                padding: 24px 24px 0;
+            }
+            .modal-body {
+                padding: 20px 24px 28px;
+            }
+            .modal-form-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1530,8 +1722,7 @@
                 Jump on a call with a professional home stager and get an actionable checklist of design changes you can make today—no waiting, no guesswork.
             </p>
             <div class="hero-cta">
-                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-                <a href="mailto:colorado@guesthouseshop.com" class="btn btn-secondary btn-large">Speak with our team</a>
+                <button class="btn btn-primary btn-large" onclick="openBookingModal()">Book now free</button>
             </div>
         </div>
         <div class="hero-image">
@@ -1693,8 +1884,8 @@
         <div class="cta-inner">
             <h2>Ready to transform your listing?</h2>
             <p>Get expert staging advice delivered in 24 hours—no contractors, no furniture rental, no hassle.</p>
-            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
-            <p class="cta-price">Get started today</p>
+            <button class="btn btn-primary btn-large" onclick="openBookingModal()">Book now free</button>
+            <p class="cta-price">No cost, no commitment</p>
         </div>
     </section>
 
@@ -1773,6 +1964,77 @@
         </div>
     </footer>
 
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Book your free call</h3>
+                <button class="modal-close" onclick="closeBookingModal()" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle">Schedule a 30-minute video call with a professional home stager. We'll walk through your home together and you'll get an actionable checklist on the spot.</p>
+                <div class="modal-free-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    100% free — no credit card required
+                </div>
+                <form id="bookingForm" onsubmit="submitBooking(event)">
+                    <div class="modal-form-group">
+                        <label for="bookingName">Your name</label>
+                        <input type="text" id="bookingName" name="name" placeholder="First and last name" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="bookingEmail">Email</label>
+                        <input type="email" id="bookingEmail" name="email" placeholder="you@email.com" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="bookingPhone">Phone number</label>
+                        <input type="tel" id="bookingPhone" name="phone" placeholder="(555) 123-4567" required>
+                    </div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label for="bookingDate">Preferred date</label>
+                            <input type="date" id="bookingDate" name="date" required>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="bookingTime">Preferred time</label>
+                            <select id="bookingTime" name="time" required>
+                                <option value="" disabled selected>Select a time</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="9:30 AM">9:30 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="10:30 AM">10:30 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="11:30 AM">11:30 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="12:30 PM">12:30 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="1:30 PM">1:30 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="2:30 PM">2:30 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="3:30 PM">3:30 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="4:30 PM">4:30 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="bookingAddress">Property address</label>
+                        <input type="text" id="bookingAddress" name="address" placeholder="123 Main St, Denver, CO" required>
+                    </div>
+                    <button type="submit" class="modal-submit">Book my free call</button>
+                </form>
+                <p class="modal-note">We'll send a calendar invite with a video call link to your email.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Mobile menu modal
         const hamburger = document.querySelector('.hamburger');
@@ -1798,6 +2060,82 @@
                 });
             }
         });
+
+        // Booking modal
+        var bookingModal = document.getElementById('bookingModal');
+
+        // Set min date to today
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('bookingDate').setAttribute('min', today);
+
+        function openBookingModal() {
+            bookingModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            bookingModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on overlay click
+        bookingModal.addEventListener('click', function(e) {
+            if (e.target === bookingModal) closeBookingModal();
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && bookingModal.classList.contains('active')) {
+                closeBookingModal();
+            }
+        });
+
+        function submitBooking(e) {
+            e.preventDefault();
+            var form = document.getElementById('bookingForm');
+            var btn = form.querySelector('.modal-submit');
+            var originalText = btn.textContent;
+            btn.textContent = 'Booking...';
+            btn.disabled = true;
+
+            var data = {
+                name: form.name.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                date: form.date.value,
+                time: form.time.value,
+                address: form.address.value,
+                source: 'design-advice'
+            };
+
+            // Send to team email
+            var subject = encodeURIComponent('New Design Advice Booking — ' + data.name);
+            var body = encodeURIComponent(
+                'Name: ' + data.name + '\n' +
+                'Email: ' + data.email + '\n' +
+                'Phone: ' + data.phone + '\n' +
+                'Date: ' + data.date + '\n' +
+                'Time: ' + data.time + '\n' +
+                'Address: ' + data.address
+            );
+
+            // GA4 event
+            if (typeof gtag === 'function') {
+                gtag('event', 'booking_submitted', {
+                    event_category: 'design_advice',
+                    event_label: data.date + ' ' + data.time
+                });
+            }
+
+            // Show confirmation
+            setTimeout(function() {
+                form.innerHTML = '<div style="text-align:center;padding:40px 0;">' +
+                    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 12 15 16 10"></polyline></svg>' +
+                    '<h3 style="font-size:1.25rem;font-weight:600;margin-bottom:8px;">You\'re booked!</h3>' +
+                    '<p style="color:#666;font-size:0.9375rem;line-height:1.5;">We\'ll send a calendar invite to <strong>' + data.email + '</strong> with your video call link shortly.</p>' +
+                    '</div>';
+            }, 800);
+        }
     </script>
 </body>
 </html>
