@@ -2028,9 +2028,9 @@
                         <label for="bookingAddress">Property address</label>
                         <input type="text" id="bookingAddress" name="address" placeholder="123 Main St, Denver, CO" required>
                     </div>
-                    <button type="submit" class="modal-submit">Book my free call</button>
+                    <button type="submit" class="modal-submit">Submit</button>
                 </form>
-                <p class="modal-note">We'll send a calendar invite with a video call link to your email.</p>
+                <p class="modal-note">We'll follow up to confirm the time works on our calendar and send you a video call link.</p>
             </div>
         </div>
     </div>
@@ -2094,8 +2094,7 @@
             e.preventDefault();
             var form = document.getElementById('bookingForm');
             var btn = form.querySelector('.modal-submit');
-            var originalText = btn.textContent;
-            btn.textContent = 'Booking...';
+            btn.textContent = 'Submitting...';
             btn.disabled = true;
 
             var data = {
@@ -2105,19 +2104,7 @@
                 date: form.date.value,
                 time: form.time.value,
                 address: form.address.value,
-                source: 'design-advice'
             };
-
-            // Send to team email
-            var subject = encodeURIComponent('New Design Advice Booking — ' + data.name);
-            var body = encodeURIComponent(
-                'Name: ' + data.name + '\n' +
-                'Email: ' + data.email + '\n' +
-                'Phone: ' + data.phone + '\n' +
-                'Date: ' + data.date + '\n' +
-                'Time: ' + data.time + '\n' +
-                'Address: ' + data.address
-            );
 
             // GA4 event
             if (typeof gtag === 'function') {
@@ -2127,14 +2114,24 @@
                 });
             }
 
-            // Show confirmation
-            setTimeout(function() {
+            fetch('/api/design-advice-booking', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(function(resp) { return resp.json(); })
+            .then(function() {
                 form.innerHTML = '<div style="text-align:center;padding:40px 0;">' +
                     '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 12 15 16 10"></polyline></svg>' +
                     '<h3 style="font-size:1.25rem;font-weight:600;margin-bottom:8px;">You\'re booked!</h3>' +
-                    '<p style="color:#666;font-size:0.9375rem;line-height:1.5;">We\'ll send a calendar invite to <strong>' + data.email + '</strong> with your video call link shortly.</p>' +
+                    '<p style="color:#666;font-size:0.9375rem;line-height:1.5;">We\'ll follow up at <strong>' + data.email + '</strong> to confirm the time works and send your video call link.</p>' +
                     '</div>';
-            }, 800);
+            })
+            .catch(function() {
+                btn.textContent = 'Submit';
+                btn.disabled = false;
+                alert('Something went wrong. Please try again or email colorado@guesthouseshop.com.');
+            });
         }
     </script>
 </body>
