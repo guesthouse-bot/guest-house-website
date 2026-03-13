@@ -1418,6 +1418,36 @@
             margin-top: 16px;
         }
 
+        .address-autocomplete-wrapper {
+            position: relative;
+        }
+
+        .address-suggestions {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            z-index: 9999;
+            overflow: hidden;
+            display: none;
+        }
+
+        .address-suggestion-item {
+            padding: 10px 14px;
+            font-size: 0.875rem;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .address-suggestion-item:hover {
+            background: var(--color-mist);
+        }
+
         @media (max-width: 768px) {
             .modal {
                 max-width: 100%;
@@ -1438,7 +1468,7 @@
 <body>
     <header>
     <div class="announcement-bar">
-        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+        Free design consult — limited time only. Get expert staging advice for your listing at no cost.<a href="https://guesthouseprep.com/design-advice">Learn more</a>
     </div>
         <nav>
             <a href="index.html" class="logo">
@@ -2025,8 +2055,70 @@
                         </div>
                     </div>
                     <div class="modal-form-group">
-                        <label for="bookingAddress">Property address</label>
-                        <input type="text" id="bookingAddress" name="address" placeholder="123 Main St, Denver, CO" required>
+                        <label for="bookingStreet">Property address</label>
+                        <input type="text" id="bookingStreet" name="street" placeholder="123 Main St" required>
+                    </div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label for="bookingCity">City</label>
+                            <input type="text" id="bookingCity" name="city" placeholder="Denver" required>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="bookingState">State</label>
+                            <select id="bookingState" name="state" required>
+                                <option value="" selected>Select</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-form-group">
                         <label for="bookingListing">Listing agreement signed? <span style="font-weight:400;color:var(--color-text-secondary);">(optional)</span></label>
@@ -2037,8 +2129,8 @@
                         </select>
                     </div>
                     <button type="submit" class="modal-submit">Submit</button>
+                    <p class="modal-note">We'll follow up to confirm the time works on our calendar and send you a video call link.</p>
                 </form>
-                <p class="modal-note">We'll follow up to confirm the time works on our calendar and send you a video call link.</p>
             </div>
         </div>
     </div>
@@ -2098,7 +2190,7 @@
             }
         });
 
-        function submitBooking(e) {
+function submitBooking(e) {
             e.preventDefault();
             var form = document.getElementById('bookingForm');
             var btn = form.querySelector('.modal-submit');
@@ -2111,7 +2203,7 @@
                 phone: form.phone.value,
                 date: form.date.value,
                 time: form.time.value,
-                address: form.address.value,
+                address: form.street.value.trim() + ', ' + form.city.value.trim() + ', ' + form.state.value,
                 listingAgreement: form.listingAgreement.value,
             };
 
