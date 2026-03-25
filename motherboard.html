@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="Guest House internal dashboard and KPI tracking hub.">
+    <meta property="og:title" content="Motherboard | Guest House">
+    <meta property="og:description" content="Guest House internal dashboard and KPI tracking hub.">
+    <meta property="og:image" content="https://guesthouseprep.com/og-image.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://guesthouseprep.com/motherboard">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Motherboard | Guest House">
+    <meta name="twitter:image" content="https://guesthouseprep.com/og-image.jpg">
     <title>Motherboard | Guest House</title>
     <style>
         @font-face {
@@ -1158,7 +1166,7 @@
 <body>
     <header>
     <div class="announcement-bar">
-        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+        Free design consult — limited time only. Get expert staging advice for your listing at no cost.<a href="https://guesthouseprep.com/design-advice">Learn more</a>
     </div>
         <nav>
             <a href="index.html" class="logo">
@@ -1454,6 +1462,7 @@
             <a href="#section-sales" class="section-nav-link">Sales</a>
 
             <a href="#section-operations" class="section-nav-link">Operations</a>
+            <a href="#section-market" class="section-nav-link">Market</a>
         </nav>
     </section>
 
@@ -1981,6 +1990,152 @@
                     </div>
                     <div class="kpi-prev" id="kpi-nps-prev"></div>
                     <div class="kpi-sparkline" id="kpi-nps-sparkline"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market KPIs -->
+    <section id="section-market">
+        <div class="kpi-section">
+            <div class="kpi-section-header">
+                <h2>Market KPIs</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Market Share</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-market-share">&mdash;</span>
+                        <span class="kpi-change" id="kpi-market-share-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-market-share-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-market-share-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Denver / Boulder Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-co-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-co-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-co-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-co-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Denver / Boulder Market Share</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-co-market-share">&mdash;</span>
+                        <span class="kpi-change" id="kpi-co-market-share-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-co-market-share-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-co-market-share-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">San Diego Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ca-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ca-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ca-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ca-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">San Diego Market Share</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ca-market-share">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ca-market-share-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ca-market-share-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ca-market-share-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Phoenix Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-az-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-az-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-az-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-az-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Phoenix Market Share</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-az-market-share">&mdash;</span>
+                        <span class="kpi-change" id="kpi-az-market-share-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-az-market-share-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-az-market-share-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Los Angeles Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-tx-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-tx-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-tx-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-tx-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Boston Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-fl-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-fl-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-fl-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-fl-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Portland Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-nc-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-nc-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-nc-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-nc-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nashville Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-tn-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-tn-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-tn-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-tn-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Washington DC Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-ga-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-ga-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-ga-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-ga-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Seattle Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-wa-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-wa-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-wa-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-wa-listing-volume-chart"></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Sacramento Listing Volume</div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value" id="kpi-nv-listing-volume">&mdash;</span>
+                        <span class="kpi-change" id="kpi-nv-listing-volume-change"></span>
+                    </div>
+                    <div class="kpi-prev" id="kpi-nv-listing-volume-prev"></div>
+                    <div class="kpi-sparkline" id="kpi-nv-listing-volume-chart"></div>
                 </div>
             </div>
         </div>
@@ -2539,18 +2694,22 @@
 
         function clearAllComparisons() {
             var frSection = document.getElementById('section-fundraising');
+            var mktSection = document.getElementById('section-market');
+            function isProtected(el) {
+                return (frSection && frSection.contains(el)) || (mktSection && mktSection.contains(el));
+            }
             document.querySelectorAll('.kpi-change').forEach(function(el) {
-                if (frSection && frSection.contains(el)) return;
+                if (isProtected(el)) return;
                 el.className = 'kpi-change';
                 el.textContent = '';
             });
             document.querySelectorAll('.kpi-prev').forEach(function(el) {
-                if (frSection && frSection.contains(el)) return;
+                if (isProtected(el)) return;
                 el.className = 'kpi-prev';
                 el.textContent = '';
             });
             document.querySelectorAll('.kpi-sparkline').forEach(function(el) {
-                if (frSection && frSection.contains(el)) return;
+                if (isProtected(el)) return;
                 el.innerHTML = '';
                 el.classList.remove('visible');
             });
@@ -2665,19 +2824,27 @@
             if (!isCompare) setLoading(ids);
             try {
                 var params = buildParams(filters);
-                // Fetch Stripe and Notable in parallel
-                var [stripeRes, notableRes] = await Promise.all([
+                // Fetch Stripe, Notable, and Affirm in parallel
+                var [stripeRes, notableRes, affirmRes] = await Promise.all([
                     fetch('/api/stripe-kpis?' + params.toString()),
                     fetch('/api/scorecard-kpis?metric=notable&' + params.toString()),
+                    fetch('/api/affirm-kpis?' + params.toString()),
                 ]);
                 if (!stripeRes.ok) throw new Error('API error');
                 var data = await stripeRes.json();
                 var notableData = notableRes.ok ? await notableRes.json() : { total: 0 };
+                var affirmData = affirmRes.ok ? await affirmRes.json() : { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
 
                 // Add Notable revenue to bookings revenue and total revenue
                 data.bookings_revenue += notableData.total || 0;
                 data.revenue += notableData.total || 0;
                 data.notable_revenue = notableData.total || 0;
+
+                // Add Affirm revenue to totals
+                data.bookings_revenue += affirmData.bookings_revenue || 0;
+                data.renewal_revenue += affirmData.renewal_revenue || 0;
+                data.revenue += affirmData.revenue || 0;
+                data.affirm_revenue = affirmData.revenue || 0;
 
                 if (isCompare) {
                     compareData.stripe = data;
@@ -3422,7 +3589,8 @@
                 var y = padTop + innerH - ((tickVal - minVal) / range) * innerH;
                 svg += '<line x1="0" y1="' + y.toFixed(1) + '" x2="' + innerW + '" y2="' + y.toFixed(1) + '" stroke="#eee" stroke-width="1"/>';
                 var label = unit === 'currency' ? '$' + (tickVal >= 1000 ? (tickVal / 1000).toFixed(0) + 'k' : tickVal.toFixed(0)) :
-                    unit === 'pct' ? tickVal.toFixed(0) + '%' : tickVal.toFixed(0);
+                    unit === 'pct' ? tickVal.toFixed(0) + '%' :
+                    unit === 'pct_decimal' ? tickVal.toFixed(2) + '%' : tickVal.toFixed(0);
                 svg += '<text x="' + (innerW + 4) + '" y="' + (y + 3.5).toFixed(1) + '" font-size="9" fill="#999" font-family="Circular,sans-serif">' + label + '</text>';
             }
             // X labels
@@ -3761,6 +3929,174 @@
             }
         }
 
+        var marketSectionLoaded = false;
+        async function fetchMarketKPIs() {
+            // Active markets (have bookings data for market share)
+            var activeMarkets = ['colorado', 'california', 'arizona'];
+            // All markets (active + expansion for listing volume only)
+            var allMarketKeys = ['colorado', 'california', 'arizona', 'texas', 'florida', 'north_carolina', 'tennessee', 'georgia', 'washington', 'nevada'];
+            var stateAbbr = { colorado: 'co', california: 'ca', arizona: 'az', texas: 'tx', florida: 'fl', north_carolina: 'nc', tennessee: 'tn', georgia: 'ga', washington: 'wa', nevada: 'nv' };
+            var hbMarketParam = { colorado: 'colorado', california: 'california', arizona: 'arizona' };
+
+            var mktIds = ['kpi-listing-volume', 'kpi-market-share'];
+            allMarketKeys.forEach(function(mk) {
+                var abbr = stateAbbr[mk];
+                mktIds.push('kpi-' + abbr + '-listing-volume');
+                if (activeMarkets.indexOf(mk) !== -1) mktIds.push('kpi-' + abbr + '-market-share');
+            });
+            setLoading(mktIds);
+
+            var now = new Date();
+            var curYear = now.getFullYear();
+            var curMonth = now.getMonth(); // 0-indexed
+
+            try {
+                var fredRes = await fetch('/api/scorecard-kpis?metric=fred_listings&year=' + curYear);
+                var fredData = fredRes.ok ? await fredRes.json() : null;
+
+                if (!fredData) {
+                    mktIds.forEach(function(id) { setKPI(id, 'N/A'); });
+                    clearLoading(mktIds);
+                    return;
+                }
+
+                // Build month labels and per-state + total arrays (only months with data)
+                var monthLabels = [];
+                var dataMonthIndices = []; // actual 0-indexed month numbers with data
+                var listingByState = {}; var prevListingByState = {};
+                allMarketKeys.forEach(function(sk) { listingByState[sk] = []; prevListingByState[sk] = []; });
+                var totalListings = []; var prevTotalListings = [];
+
+                for (var m = 0; m <= curMonth; m++) {
+                    var moKey = curYear + '-' + String(m + 1).padStart(2, '0');
+                    var hasData = false;
+                    activeMarkets.forEach(function(mk) {
+                        if (fredData.markets[mk] && fredData.markets[mk][moKey]) hasData = true;
+                    });
+                    if (!hasData) continue;
+
+                    dataMonthIndices.push(m);
+                    monthLabels.push(new Date(curYear, m, 1).toLocaleString('default', { month: 'short' }));
+                    var prevMoKey = (curYear - 1) + '-' + String(m + 1).padStart(2, '0');
+                    var moTotal = 0; var prevMoTotal = 0;
+                    allMarketKeys.forEach(function(mk) {
+                        var val = (fredData.markets[mk] && fredData.markets[mk][moKey]) || 0;
+                        var prevVal = (fredData.prev_markets[mk] && fredData.prev_markets[mk][prevMoKey]) || 0;
+                        listingByState[mk].push(val);
+                        prevListingByState[mk].push(prevVal);
+                        moTotal += val;
+                        prevMoTotal += prevVal;
+                    });
+                    totalListings.push(moTotal);
+                    prevTotalListings.push(prevMoTotal);
+                }
+
+                // YTD totals
+                var ytdListings = totalListings.reduce(function(s, v) { return s + v; }, 0);
+                var prevYtdListings = prevTotalListings.reduce(function(s, v) { return s + v; }, 0);
+                setKPI('kpi-listing-volume', formatNumber(Math.round(ytdListings)));
+                setFRComparison('kpi-listing-volume', ytdListings, prevYtdListings, function(v) { return formatNumber(Math.round(v)); });
+                renderFRChart('kpi-listing-volume-chart', monthLabels, totalListings, 'count', prevTotalListings);
+
+                // Per-state listing volume
+                allMarketKeys.forEach(function(sk) {
+                    var abbr = stateAbbr[sk];
+                    var ytd = listingByState[sk].reduce(function(s, v) { return s + v; }, 0);
+                    var prevYtd = prevListingByState[sk].reduce(function(s, v) { return s + v; }, 0);
+                    setKPI('kpi-' + abbr + '-listing-volume', formatNumber(Math.round(ytd)));
+                    setFRComparison('kpi-' + abbr + '-listing-volume', ytd, prevYtd, function(v) { return formatNumber(Math.round(v)); });
+                    renderFRChart('kpi-' + abbr + '-listing-volume-chart', monthLabels, listingByState[sk], 'count', prevListingByState[sk]);
+                });
+
+                // Fetch monthly bookings per market (current + prior year)
+                var ytdTo = now.toISOString().slice(0, 10);
+                var bookingData = {}; // { market: { cur: [...], prev: [...] } }
+
+                // Build per-market + all monthly booking fetches
+                var allBookFetches = {};
+                var fetchTargets = ['all'].concat(activeMarkets);
+                fetchTargets.forEach(function(mk) {
+                    var hbMk = mk === 'all' ? 'all' : hbMarketParam[mk];
+                    var curPromises = dataMonthIndices.map(function(mi) {
+                        var from = curYear + '-' + String(mi + 1).padStart(2, '0') + '-01';
+                        var to = mi === curMonth ? ytdTo : new Date(curYear, mi + 1, 0).toISOString().slice(0, 10);
+                        return fetch('/api/hubspot-kpis?market=' + hbMk + '&period=custom&dateFrom=' + from + '&dateTo=' + to)
+                            .then(function(r) { return r.ok ? r.json() : null; });
+                    });
+                    var prevPromises = dataMonthIndices.map(function(mi) {
+                        var from = (curYear - 1) + '-' + String(mi + 1).padStart(2, '0') + '-01';
+                        var to = new Date(curYear - 1, mi + 1, 0).toISOString().slice(0, 10);
+                        return fetch('/api/hubspot-kpis?market=' + hbMk + '&period=custom&dateFrom=' + from + '&dateTo=' + to)
+                            .then(function(r) { return r.ok ? r.json() : null; });
+                    });
+                    allBookFetches[mk] = { curP: curPromises, prevP: prevPromises };
+                });
+
+                // Execute all in parallel
+                var allPromises = [];
+                var promiseMap = [];
+                fetchTargets.forEach(function(mk) {
+                    allPromises.push(Promise.all(allBookFetches[mk].curP));
+                    promiseMap.push({ mk: mk, type: 'cur' });
+                    allPromises.push(Promise.all(allBookFetches[mk].prevP));
+                    promiseMap.push({ mk: mk, type: 'prev' });
+                });
+                var allResults = await Promise.all(allPromises);
+                fetchTargets.forEach(function(mk) { bookingData[mk] = { cur: [], prev: [] }; });
+                for (var ri = 0; ri < allResults.length; ri++) {
+                    var pm = promiseMap[ri];
+                    bookingData[pm.mk][pm.type] = allResults[ri].map(function(r) { return r ? r.bookings : 0; });
+                }
+
+                // Total Market Share
+                var ytdBookings = bookingData['all'].cur.reduce(function(s, v) { return s + v; }, 0);
+                var prevYtdBookings = bookingData['all'].prev.reduce(function(s, v) { return s + v; }, 0);
+                var shareVal = ytdListings > 0 ? (ytdBookings / ytdListings) * 100 : 0;
+                var prevShareVal = prevYtdListings > 0 ? (prevYtdBookings / prevYtdListings) * 100 : 0;
+                setKPI('kpi-market-share', shareVal.toFixed(3) + '%');
+                setFRComparison('kpi-market-share', shareVal, prevShareVal, function(v) { return v.toFixed(3) + '%'; });
+
+                // Total market share monthly chart
+                var shareMonthly = []; var prevShareMonthly = [];
+                for (var ms = 0; ms < monthLabels.length; ms++) {
+                    shareMonthly.push(totalListings[ms] > 0 ? (bookingData['all'].cur[ms] / totalListings[ms]) * 100 : 0);
+                    prevShareMonthly.push(prevTotalListings[ms] > 0 ? (bookingData['all'].prev[ms] / prevTotalListings[ms]) * 100 : 0);
+                }
+                renderFRChart('kpi-market-share-chart', monthLabels, shareMonthly, 'pct_decimal', prevShareMonthly);
+
+                // Per-state Market Share (active markets only)
+                activeMarkets.forEach(function(sk) {
+                    var abbr = stateAbbr[sk];
+                    var stYtdList = listingByState[sk].reduce(function(s, v) { return s + v; }, 0);
+                    var stPrevYtdList = prevListingByState[sk].reduce(function(s, v) { return s + v; }, 0);
+                    var stYtdBook = bookingData[sk].cur.reduce(function(s, v) { return s + v; }, 0);
+                    var stPrevYtdBook = bookingData[sk].prev.reduce(function(s, v) { return s + v; }, 0);
+                    var stShare = stYtdList > 0 ? (stYtdBook / stYtdList) * 100 : 0;
+                    var stPrevShare = stPrevYtdList > 0 ? (stPrevYtdBook / stPrevYtdList) * 100 : 0;
+                    setKPI('kpi-' + abbr + '-market-share', stShare.toFixed(3) + '%');
+                    setFRComparison('kpi-' + abbr + '-market-share', stShare, stPrevShare, function(v) { return v.toFixed(3) + '%'; });
+
+                    // Monthly share chart per state
+                    var stShareMo = []; var stPrevShareMo = [];
+                    for (var sms = 0; sms < monthLabels.length; sms++) {
+                        var sList = listingByState[sk][sms] || 0;
+                        var sBook = bookingData[sk].cur[sms] || 0;
+                        stShareMo.push(sList > 0 ? (sBook / sList) * 100 : 0);
+                        var spList = prevListingByState[sk][sms] || 0;
+                        var spBook = bookingData[sk].prev[sms] || 0;
+                        stPrevShareMo.push(spList > 0 ? (spBook / spList) * 100 : 0);
+                    }
+                    renderFRChart('kpi-' + abbr + '-market-share-chart', monthLabels, stShareMo, 'pct_decimal', stPrevShareMo);
+                });
+
+            } catch (err) {
+                console.error('Market KPI error:', err);
+                mktIds.forEach(function(id) { setKPI(id, 'Error'); });
+            } finally {
+                clearLoading(mktIds);
+            }
+        }
+
         async function fetchPlanKPIs(filters) {
             try {
                 // Determine which months to fetch based on the selected period
@@ -3935,6 +4271,7 @@
         function loadDashboard() {
             fetchAllKPIs({ market: 'all', period: 'mtd', dateFrom: '', dateTo: '' });
             if (!fundraisingLoaded) { fundraisingLoaded = true; fetchFundraisingKPIs(); }
+            if (!marketSectionLoaded) { marketSectionLoaded = true; fetchMarketKPIs(); }
         }
         if (sessionStorage.getItem('mb_auth') === '1') {
             loadDashboard();
@@ -3949,6 +4286,7 @@
                 { id: 'section-fundraising', link: navLinks[1] },
                 { id: 'section-sales', link: navLinks[2] },
                 { id: 'section-operations', link: navLinks[3] },
+                { id: 'section-market', link: navLinks[4] },
             ];
 
             navLinks.forEach(function(link) {
@@ -4085,6 +4423,25 @@
                     kpiRow('Cost / Home', 'kpi-cost-home'),
                     kpiRow('Margin / Home', 'kpi-margin-home'),
                     kpiRow('NPS', 'kpi-nps'),
+                ]) +
+
+                // Market KPIs
+                sectionBlock('Market KPIs', [
+                    kpiRow('Total Listing Volume', 'kpi-listing-volume'),
+                    kpiRow('Total Market Share', 'kpi-market-share'),
+                    kpiRow('Denver / Boulder Listing Volume', 'kpi-co-listing-volume'),
+                    kpiRow('Denver / Boulder Market Share', 'kpi-co-market-share'),
+                    kpiRow('San Diego Listing Volume', 'kpi-ca-listing-volume'),
+                    kpiRow('San Diego Market Share', 'kpi-ca-market-share'),
+                    kpiRow('Phoenix Listing Volume', 'kpi-az-listing-volume'),
+                    kpiRow('Phoenix Market Share', 'kpi-az-market-share'),
+                    kpiRow('Los Angeles Listing Volume', 'kpi-tx-listing-volume'),
+                    kpiRow('Boston Listing Volume', 'kpi-fl-listing-volume'),
+                    kpiRow('Portland Listing Volume', 'kpi-nc-listing-volume'),
+                    kpiRow('Nashville Listing Volume', 'kpi-tn-listing-volume'),
+                    kpiRow('Washington DC Listing Volume', 'kpi-ga-listing-volume'),
+                    kpiRow('Seattle Listing Volume', 'kpi-wa-listing-volume'),
+                    kpiRow('Sacramento Listing Volume', 'kpi-nv-listing-volume'),
                 ]) +
 
                 // Footer
