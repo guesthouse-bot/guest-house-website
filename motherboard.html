@@ -2824,27 +2824,19 @@
             if (!isCompare) setLoading(ids);
             try {
                 var params = buildParams(filters);
-                // Fetch Stripe, Notable, and Affirm in parallel
-                var [stripeRes, notableRes, affirmRes] = await Promise.all([
+                // Fetch Stripe (includes Affirm) and Notable in parallel
+                var [stripeRes, notableRes] = await Promise.all([
                     fetch('/api/stripe-kpis?' + params.toString()),
                     fetch('/api/scorecard-kpis?metric=notable&' + params.toString()),
-                    fetch('/api/affirm-kpis?' + params.toString()),
                 ]);
                 if (!stripeRes.ok) throw new Error('API error');
                 var data = await stripeRes.json();
                 var notableData = notableRes.ok ? await notableRes.json() : { total: 0 };
-                var affirmData = affirmRes.ok ? await affirmRes.json() : { revenue: 0, bookings_revenue: 0, renewal_revenue: 0 };
 
                 // Add Notable revenue to bookings revenue and total revenue
                 data.bookings_revenue += notableData.total || 0;
                 data.revenue += notableData.total || 0;
                 data.notable_revenue = notableData.total || 0;
-
-                // Add Affirm revenue to totals
-                data.bookings_revenue += affirmData.bookings_revenue || 0;
-                data.renewal_revenue += affirmData.renewal_revenue || 0;
-                data.revenue += affirmData.revenue || 0;
-                data.affirm_revenue = affirmData.revenue || 0;
 
                 if (isCompare) {
                     compareData.stripe = data;

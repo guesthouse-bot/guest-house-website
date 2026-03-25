@@ -243,13 +243,116 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // --- Affirm revenue ---
+    var affirmRevenue = 0;
+    var affirmBookingsRevenue = 0;
+    var affirmRenewalRevenue = 0;
+
+    const AFFIRM_PUBLIC_KEY = process.env.AFFIRM_PUBLIC_KEY;
+    const AFFIRM_PRIVATE_KEY = process.env.AFFIRM_PRIVATE_KEY;
+
+    if (AFFIRM_PUBLIC_KEY && AFFIRM_PRIVATE_KEY) {
+      try {
+        var affirmAuth = Buffer.from(AFFIRM_PUBLIC_KEY + ':' + AFFIRM_PRIVATE_KEY).toString('base64');
+        var affirmStartISO = new Date(startDate * 1000).toISOString();
+        var affirmEndISO = new Date(endDate * 1000).toISOString();
+
+        var affirmCharges = [];
+        var affirmCursor = null;
+        var affirmHasMore = true;
+
+        while (affirmHasMore) {
+          var affirmParams = new URLSearchParams({
+            created_after: affirmStartISO,
+            created_before: affirmEndISO,
+            limit: '100',
+          });
+          if (affirmCursor) affirmParams.set('cursor', affirmCursor);
+
+          var affirmRes = await fetch('https://api.affirm.com/api/v2/charges?' + affirmParams, {
+            headers: { 'Authorization': 'Basic ' + affirmAuth },
+          });
+
+          if (affirmRes.ok) {
+            var affirmData = await affirmRes.json();
+            var affirmItems = affirmData.data || affirmData.items || [];
+            affirmCharges = affirmCharges.concat(affirmItems);
+            var nextCursor = affirmData.next_page_token || affirmData.cursor || (affirmData.paging && affirmData.paging.cursor);
+            affirmHasMore = !!(nextCursor && affirmItems.length > 0);
+            affirmCursor = nextCursor || null;
+          } else {
+            affirmHasMore = false;
+          }
+        }
+
+        // Only captured charges
+        var affirmCaptured = affirmCharges.filter(function(c) {
+          return c.status === 'captured' || c.status === 'charge.succeeded';
+        });
+
+        // State detection for Affirm: metadata values, order_id, item names, then address fields
+        function getAffirmState(charge) {
+          var meta = charge.metadata || {};
+          var metaTexts = Object.values(meta).filter(function(v) { return typeof v === 'string'; });
+          var refs = [charge.order_id || '', charge.merchant_external_reference || ''];
+          var itemTexts = (charge.items || []).map(function(i) { return (i.display_name || '') + ' ' + (i.sku || ''); });
+          var allTexts = metaTexts.concat(refs).concat(itemTexts);
+          for (var i = 0; i < allTexts.length; i++) {
+            var parsed = extractState(allTexts[i]);
+            if (parsed) return parsed;
+          }
+          var metaState = (meta.state || meta.State || meta.market || meta.Market || '').toUpperCase();
+          if (metaState) return metaState;
+          var ship = charge.shipping_address || {};
+          var shipState = (ship.state || ship.region || '').toUpperCase();
+          if (shipState) return shipState;
+          var bill = charge.billing_address || {};
+          return (bill.state || bill.region || '').toUpperCase();
+        }
+
+        // Apply same market filter
+        var affirmFiltered = affirmCaptured;
+        if (market === 'nationwide') {
+          affirmFiltered = affirmCaptured.filter(function(c) {
+            var s = getAffirmState(c);
+            return !s || (s !== 'CO' && s !== 'CA');
+          });
+        } else if (market && market !== 'all') {
+          var affirmStateCodes = marketToStates[market.toLowerCase()] || [];
+          affirmFiltered = affirmCaptured.filter(function(c) {
+            var s = getAffirmState(c);
+            return s && affirmStateCodes.indexOf(s) !== -1;
+          });
+        }
+
+        affirmFiltered.forEach(function(c) {
+          var amt = (c.amount || c.amount_cents || 0) / 100;
+          affirmRevenue += amt;
+          var ref = [
+            c.order_id || '',
+            c.merchant_external_reference || '',
+            ((c.metadata || {}).type) || '',
+            ((c.metadata || {}).order_type) || '',
+          ].join(' ').toLowerCase();
+          if (ref.indexOf('renewal') !== -1) {
+            affirmRenewalRevenue += amt;
+          } else {
+            affirmBookingsRevenue += amt;
+          }
+        });
+      } catch (affirmErr) {
+        console.error('Affirm fetch error:', affirmErr.message);
+      }
+    }
+
     var result = {
-      revenue: totalRevenue,
-      bookings_revenue: bookingsRevenue,
-      renewal_revenue: renewalRevenue,
+      revenue: totalRevenue + affirmRevenue,
+      bookings_revenue: bookingsRevenue + affirmBookingsRevenue,
+      renewal_revenue: renewalRevenue + affirmRenewalRevenue,
       renewal_count: renewalCount,
       arpu: arpu,
       unique_accounts: uniqueAccounts,
+      affirm_revenue: affirmRevenue,
       period: { start: startDate, end: endDate },
       market: market || 'all',
     };
