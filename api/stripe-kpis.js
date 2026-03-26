@@ -264,8 +264,8 @@ module.exports = async function handler(req, res) {
 
         while (affirmHasMore) {
           var affirmParams = new URLSearchParams({
-            created_after: affirmStartISO,
-            created_before: affirmEndISO,
+            'created[gte]': affirmStartISO,
+            'created[lte]': affirmEndISO,
             limit: '100',
           });
           if (affirmCursor) affirmParams.set('cursor', affirmCursor);
@@ -277,9 +277,9 @@ module.exports = async function handler(req, res) {
           var affirmRawBody = await affirmRes.text();
           if (affirmRes.ok) {
             var affirmData = JSON.parse(affirmRawBody);
-            var affirmItems = affirmData.data || affirmData.items || [];
+            var affirmItems = affirmData.entries || affirmData.data || affirmData.items || [];
             affirmCharges = affirmCharges.concat(affirmItems);
-            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, keys: Object.keys(affirmData), item_count: affirmItems.length, sample: affirmItems.slice(0, 2) };
+            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, all_keys: Object.keys(affirmData), item_count: affirmItems.length, sample: affirmItems.slice(0, 2), pagination_keys: { next_page_token: affirmData.next_page_token, cursor: affirmData.cursor, paging: affirmData.paging } };
             var nextCursor = affirmData.next_page_token || affirmData.cursor || (affirmData.paging && affirmData.paging.cursor);
             affirmHasMore = !!(nextCursor && affirmItems.length > 0);
             affirmCursor = nextCursor || null;
