@@ -289,8 +289,14 @@ module.exports = async function handler(req, res) {
           }
         }
 
+        // Filter by date client-side (Affirm API may ignore date params)
+        var affirmInRange = affirmCharges.filter(function(c) {
+          var created = new Date(c.created).getTime() / 1000;
+          return created >= startDate && created <= endDate;
+        });
+
         // Include authorized and captured charges (Affirm may not settle immediately)
-        var affirmCaptured = affirmCharges.filter(function(c) {
+        var affirmCaptured = affirmInRange.filter(function(c) {
           return c.status === 'captured' || c.status === 'authorized' || c.status === 'charge.succeeded';
         });
 
