@@ -279,7 +279,7 @@ module.exports = async function handler(req, res) {
             var affirmData = JSON.parse(affirmRawBody);
             var affirmItems = affirmData.entries || affirmData.data || affirmData.items || [];
             affirmCharges = affirmCharges.concat(affirmItems);
-            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, all_keys: Object.keys(affirmData), item_count: affirmItems.length, sample: affirmItems.slice(0, 2), pagination_keys: { next_page_token: affirmData.next_page_token, cursor: affirmData.cursor, paging: affirmData.paging } };
+            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, all_keys: Object.keys(affirmData), item_count: affirmItems.length, sample: affirmItems.slice(0, 1), pagination_keys: { next_page_token: affirmData.next_page_token, cursor: affirmData.cursor, paging: affirmData.paging } };
             var nextCursor = affirmData.next_page_token || affirmData.cursor || (affirmData.paging && affirmData.paging.cursor);
             affirmHasMore = !!(nextCursor && affirmItems.length > 0);
             affirmCursor = nextCursor || null;
@@ -295,11 +295,15 @@ module.exports = async function handler(req, res) {
         });
 
         // State detection for Affirm: metadata values, order_id, item names, then address fields
+        // Note: Affirm nests items/metadata under charge.details
         function getAffirmState(charge) {
-          var meta = charge.metadata || {};
+          var details = charge.details || {};
+          var meta = details.metadata || charge.metadata || {};
           var metaTexts = Object.values(meta).filter(function(v) { return typeof v === 'string'; });
           var refs = [charge.order_id || '', charge.merchant_external_reference || ''];
-          var itemTexts = (charge.items || []).map(function(i) { return (i.display_name || '') + ' ' + (i.sku || ''); });
+          // items is an object keyed by sku in Affirm, not an array
+          var detailItems = details.items || charge.items || {};
+          var itemTexts = Object.values(detailItems).map(function(i) { return (i.display_name || '') + ' ' + (i.sku || ''); });
           var allTexts = metaTexts.concat(refs).concat(itemTexts);
           for (var i = 0; i < allTexts.length; i++) {
             var parsed = extractState(allTexts[i]);
@@ -332,11 +336,12 @@ module.exports = async function handler(req, res) {
         affirmFiltered.forEach(function(c) {
           var amt = (c.amount || c.amount_cents || 0) / 100;
           affirmRevenue += amt;
+          var detailsMeta = ((c.details || {}).metadata || c.metadata || {});
           var ref = [
             c.order_id || '',
             c.merchant_external_reference || '',
-            ((c.metadata || {}).type) || '',
-            ((c.metadata || {}).order_type) || '',
+            detailsMeta.type || '',
+            detailsMeta.order_type || '',
           ].join(' ').toLowerCase();
           if (ref.indexOf('renewal') !== -1) {
             affirmRenewalRevenue += amt;
@@ -346,6 +351,7 @@ module.exports = async function handler(req, res) {
         });
       } catch (affirmErr) {
         console.error('Affirm fetch error:', affirmErr.message);
+        if (req.query.debug === 'true') affirmDebugInfo = Object.assign(affirmDebugInfo || {}, { caught_error: affirmErr.message, stack: affirmErr.stack });
       }
     }
 
