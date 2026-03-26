@@ -281,13 +281,16 @@ module.exports = async function handler(req, res) {
             affirmHasMore = !!(nextCursor && affirmItems.length > 0);
             affirmCursor = nextCursor || null;
           } else {
+            if (req.query.debug === 'true') console.error('Affirm API error:', affirmRes.status, await affirmRes.text().catch(() => ''));
             affirmHasMore = false;
           }
         }
 
-        // Only captured charges
+        if (req.query.debug === 'true') console.log('Affirm raw charges:', JSON.stringify(affirmCharges.slice(0, 3)));
+
+        // Include authorized and captured charges (Affirm may not settle immediately)
         var affirmCaptured = affirmCharges.filter(function(c) {
-          return c.status === 'captured' || c.status === 'charge.succeeded';
+          return c.status === 'captured' || c.status === 'authorized' || c.status === 'charge.succeeded';
         });
 
         // State detection for Affirm: metadata values, order_id, item names, then address fields
