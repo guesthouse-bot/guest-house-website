@@ -260,6 +260,7 @@ module.exports = async function handler(req, res) {
         var affirmCharges = [];
         var affirmCursor = null;
         var affirmHasMore = true;
+        var affirmDebugInfo = null;
 
         while (affirmHasMore) {
           var affirmParams = new URLSearchParams({
@@ -273,20 +274,20 @@ module.exports = async function handler(req, res) {
             headers: { 'Authorization': 'Basic ' + affirmAuth },
           });
 
+          var affirmRawBody = await affirmRes.text();
           if (affirmRes.ok) {
-            var affirmData = await affirmRes.json();
+            var affirmData = JSON.parse(affirmRawBody);
             var affirmItems = affirmData.data || affirmData.items || [];
             affirmCharges = affirmCharges.concat(affirmItems);
+            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, keys: Object.keys(affirmData), item_count: affirmItems.length, sample: affirmItems.slice(0, 2) };
             var nextCursor = affirmData.next_page_token || affirmData.cursor || (affirmData.paging && affirmData.paging.cursor);
             affirmHasMore = !!(nextCursor && affirmItems.length > 0);
             affirmCursor = nextCursor || null;
           } else {
-            if (req.query.debug === 'true') console.error('Affirm API error:', affirmRes.status, await affirmRes.text().catch(() => ''));
+            if (req.query.debug === 'true') affirmDebugInfo = { status: affirmRes.status, error: affirmRawBody };
             affirmHasMore = false;
           }
         }
-
-        if (req.query.debug === 'true') console.log('Affirm raw charges:', JSON.stringify(affirmCharges.slice(0, 3)));
 
         // Include authorized and captured charges (Affirm may not settle immediately)
         var affirmCaptured = affirmCharges.filter(function(c) {
@@ -361,6 +362,7 @@ module.exports = async function handler(req, res) {
     };
     if (req.query.daily === 'true') result.daily = daily;
     if (req.query.debug === 'true') {
+      result.affirm_debug = affirmDebugInfo;
       result.charges = filtered.map(function(c) {
         return {
           id: c.id,
