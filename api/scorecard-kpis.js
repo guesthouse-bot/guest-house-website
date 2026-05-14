@@ -39,6 +39,28 @@ function colToLetter(col) {
   return result;
 }
 
+// Parse FRED API observation response into { "YYYY-MM": value } map
+function parseFredObs(data) {
+  var byMonth = {};
+  if (!data || !data.observations) return byMonth;
+  data.observations.forEach(function(obs) {
+    if (obs.value === '.') return;
+    byMonth[obs.date.slice(0, 7)] = parseFloat(obs.value) || 0;
+  });
+  return byMonth;
+}
+
+// Merge multiple FRED observation maps by summing values per month
+function mergeFredObs(obsArrays) {
+  var merged = {};
+  obsArrays.forEach(function(obs) {
+    Object.keys(obs).forEach(function(mo) {
+      merged[mo] = (merged[mo] || 0) + obs[mo];
+    });
+  });
+  return merged;
+}
+
 // Get the cell reference for a given year/month's net income
 // Actuals (2026): row 178, Z=Jan, AA=Feb, ... AK=Dec (column = 25 + month)
 // Actuals (2023 - 2025): row 638, B=Jan 2023, ... AK=Dec 2025 (column = 2 + (year-2023)*12 + (month-1))
@@ -59,6 +81,94 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
+  // FRED listing volume data (no Firebase/Sheets credentials needed)
+  if (req.query.metric === 'fred_listings') {
+    var FRED_KEY = process.env.FRED_API_KEY;
+    if (!FRED_KEY) return res.status(500).json({ error: 'FRED API key not configured' });
+
+    var targetYear = parseInt(req.query.year) || new Date().getFullYear();
+    // Metro-level FRED series (CBSA or county). Arrays = sum multiple series.
+    var seriesMap = {
+      colorado: ['NEWLISCOU19740', 'NEWLISCOU8013'],       // Denver-Aurora-Lakewood + Boulder County
+      california: ['NEWLISCOU41740'],                       // San Diego-Carlsbad
+      arizona: ['NEWLISCOU38060'],                          // Phoenix-Mesa-Scottsdale
+      texas: ['NEWLISCOU31080'],                            // Los Angeles-Long Beach-Anaheim
+      florida: ['NEWLISCOU14460'],                          // Boston-Cambridge-Newton
+      north_carolina: ['NEWLISCOU38900'],                   // Portland-Vancouver-Hillsboro
+      tennessee: ['NEWLISCOU34980'],                        // Nashville-Davidson-Murfreesboro-Franklin
+      georgia: ['NEWLISCOU47900'],                          // Washington-Arlington-Alexandria
+      washington: ['NEWLISCOU42660'],                       // Seattle-Tacoma-Bellevue
+      nevada: ['NEWLISCOU40900'],                           // Sacramento-Roseville-Arden-Arcade
+    };
+    var marketsToFetch = Object.keys(seriesMap);
+
+    var startDate = targetYear + '-01-01';
+    var endDate = targetYear + '-12-31';
+    var prevStartDate = (targetYear - 1) + '-01-01';
+    var prevEndDate = (targetYear - 1) + '-12-31';
+
+    try {
+      var fredResults = {};
+      var fredPrevResults = {};
+      var fredFetches = [];
+
+      for (var fi = 0; fi < marketsToFetch.length; fi++) {
+        (function(mk) {
+          var seriesIds = seriesMap[mk]; // array of series to sum
+          // Current year: fetch all series for this market, then merge
+          fredFetches.push(
+            Promise.all(seriesIds.map(function(sid) {
+              return fetch('https://api.stlouisfed.org/fred/series/observations?series_id=' + sid +
+                '&api_key=' + FRED_KEY + '&file_type=json' +
+                '&observation_start=' + startDate + '&observation_end=' + endDate + '&frequency=m')
+                .then(function(r) { return r.ok ? r.json() : null; })
+                .then(function(data) { return parseFredObs(data); });
+            })).then(function(results) {
+              fredResults[mk] = mergeFredObs(results);
+            })
+          );
+          // Prior year
+          fredFetches.push(
+            Promise.all(seriesIds.map(function(sid) {
+              return fetch('https://api.stlouisfed.org/fred/series/observations?series_id=' + sid +
+                '&api_key=' + FRED_KEY + '&file_type=json' +
+                '&observation_start=' + prevStartDate + '&observation_end=' + prevEndDate + '&frequency=m')
+                .then(function(r) { return r.ok ? r.json() : null; })
+                .then(function(data) { return parseFredObs(data); });
+            })).then(function(results) {
+              fredPrevResults[mk] = mergeFredObs(results);
+            })
+          );
+        })(marketsToFetch[fi]);
+      }
+
+      await Promise.all(fredFetches);
+
+      var totalByMonth = {};
+      var prevTotalByMonth = {};
+      Object.keys(fredResults).forEach(function(mk) {
+        Object.keys(fredResults[mk]).forEach(function(mo) {
+          totalByMonth[mo] = (totalByMonth[mo] || 0) + fredResults[mk][mo];
+        });
+      });
+      Object.keys(fredPrevResults).forEach(function(mk) {
+        Object.keys(fredPrevResults[mk]).forEach(function(mo) {
+          prevTotalByMonth[mo] = (prevTotalByMonth[mo] || 0) + fredPrevResults[mk][mo];
+        });
+      });
+
+      return res.status(200).json({
+        year: targetYear,
+        markets: fredResults,
+        prev_markets: fredPrevResults,
+        total: totalByMonth,
+        prev_total: prevTotalByMonth,
+      });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
   var saB64 = process.env.FIREBASE_SERVICE_ACCOUNT_B64;
   if (!saB64) return res.status(500).json({ error: 'Firebase service account not configured' });
 
@@ -76,23 +186,23 @@ module.exports = async function handler(req, res) {
     var month = req.query.month ? parseInt(req.query.month, 10) : (new Date().getMonth() + 1);
     var col = colToLetter(25 + month);
     var planRanges = [
-      "'Financial Model (2026)'!" + col + "13",  // Quotes Created (total)
-      "'Financial Model (2026)'!" + col + "14",  // Homes Booked (total)
-      "'Financial Model (2026)'!" + col + "15",  // Staging Revenue (total)
-      "'Financial Model (2026)'!" + col + "16",  // Total Revenue
-      "'Financial Model (2026)'!" + col + "21",  // AOV Per Home
-      "'Financial Model (2026)'!" + col + "27",  // CO Homes Booked
-      "'Financial Model (2026)'!" + col + "28",  // CO Installs
-      "'Financial Model (2026)'!" + col + "29",  // CO Deinstalls
-      "'Financial Model (2026)'!" + col + "31",  // CO Bookings Revenue
-      "'Financial Model (2026)'!" + col + "33",  // CO Total Staging Revenue
-      "'Financial Model (2026)'!" + col + "80",  // CA Homes Booked
-      "'Financial Model (2026)'!" + col + "81",  // CA Installs
-      "'Financial Model (2026)'!" + col + "82",  // CA Deinstalls
-      "'Financial Model (2026)'!" + col + "84",  // CA Bookings Revenue
-      "'Financial Model (2026)'!" + col + "85",  // CA Total Staging Revenue
-      "'Financial Model (2026)'!" + col + "172", // Total Corporate Expenses
-      "'Financial Model (2026)'!" + col + "173", // Net Income
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "13",  // Quotes Created (total)
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "14",  // Homes Booked (total)
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "15",  // Staging Revenue (total)
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "16",  // Total Revenue
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "21",  // AOV Per Home
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "27",  // CO Homes Booked
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "28",  // CO Installs
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "29",  // CO Deinstalls
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "31",  // CO Bookings Revenue
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "33",  // CO Total Staging Revenue
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "80",  // CA Homes Booked
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "81",  // CA Installs
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "82",  // CA Deinstalls
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "84",  // CA Bookings Revenue
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "85",  // CA Total Staging Revenue
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "172", // Total Corporate Expenses
+      "'Financial Model 3+9 (4/22 Plan)'!" + col + "173", // Net Income
     ];
     var encodedPlan = planRanges.map(function(r) { return 'ranges=' + encodeURIComponent(r); }).join('&');
     var planUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values:batchGet?' + encodedPlan + '&valueRenderOption=UNFORMATTED_VALUE';
@@ -294,16 +404,17 @@ module.exports = async function handler(req, res) {
     var trail2Cell = getNetIncomeCell(trail2Year, trail2Month);
     var trail3Cell = getNetIncomeCell(trail3Year, trail3Month);
 
-    // Cash on hand: use most recent completed month's column in Actuals (2026) row 179
+    // Cash on hand: row 179 in Actuals (2026). Walk back from previous month to find last entered value.
     // Column mapping: Z=Jan, AA=Feb, ... AK=Dec (column = 25 + month)
-    var cashCol = colToLetter(25 + trail1Month);
-    var cashOnHandRange = "'Actuals (2026)'!" + cashCol + "179";
+    var cashMonthsToCheck = [];
+    for (var cm = trail1Month; cm >= 1; cm--) {
+      cashMonthsToCheck.push("'Actuals (2026)'!" + colToLetter(25 + cm) + "179");
+    }
 
-    // Batch read from financial model: expenses, cash on hand, trailing net income
+    // Batch read from financial model: expenses, cash on hand candidates, trailing net income
     var ranges = [
-      "'Financial Model (2026)'!AL62",
-      cashOnHandRange,
-    ];
+      "'Financial Model 3+9 (4/22 Plan)'!AL62",
+    ].concat(cashMonthsToCheck);
     if (trail1Cell) ranges.push(trail1Cell);
     if (trail2Cell) ranges.push(trail2Cell);
     if (trail3Cell) ranges.push(trail3Cell);
@@ -338,16 +449,20 @@ module.exports = async function handler(req, res) {
       expenses = typeof raw === 'number' ? raw : parseFloat(String(raw).replace(/[$,]/g, '')) || 0;
     }
 
-    // Parse cash on hand (Actuals (2026) row 179, most recent month)
+    // Parse cash on hand (Actuals (2026) row 165) — use first non-zero month walking back from previous month
     var cashOnHand = 0;
-    if (valueRanges[1] && valueRanges[1].values && valueRanges[1].values[0]) {
-      var raw2 = valueRanges[1].values[0][0];
-      cashOnHand = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
+    for (var ci2 = 1; ci2 <= cashMonthsToCheck.length; ci2++) {
+      if (valueRanges[ci2] && valueRanges[ci2].values && valueRanges[ci2].values[0]) {
+        var raw2 = valueRanges[ci2].values[0][0];
+        var candidate = typeof raw2 === 'number' ? raw2 : parseFloat(String(raw2).replace(/[$,]/g, '')) || 0;
+        if (candidate !== 0) { cashOnHand = candidate; break; }
+      }
     }
 
-    // Parse trailing net income from actuals (indexes 2, 3, 4 in valueRanges)
+    // Parse trailing net income from actuals (indexes after cash months)
+    var niStartIdx = 1 + cashMonthsToCheck.length;
     var trailingNetIncome = [];
-    for (var ti = 2; ti <= 4; ti++) {
+    for (var ti = niStartIdx; ti <= niStartIdx + 2; ti++) {
       if (valueRanges[ti] && valueRanges[ti].values && valueRanges[ti].values[0]) {
         var rawNI = valueRanges[ti].values[0][0];
         var ni = typeof rawNI === 'number' ? rawNI : parseFloat(String(rawNI).replace(/[$,]/g, '')) || 0;
@@ -407,11 +522,61 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // HubSpot weighted pipeline forecast
+    var bookingsForecast = 0;
+    var hsToken = process.env.HUBSPOT_ACCESS_TOKEN;
+    if (hsToken) {
+      try {
+        var hsHeaders = { 'Authorization': 'Bearer ' + hsToken, 'Content-Type': 'application/json' };
+
+        var stagesResp = await fetch('https://api.hubapi.com/crm/v3/pipelines/deals/default/stages', { headers: hsHeaders });
+        if (stagesResp.ok) {
+          var stagesData = await stagesResp.json();
+          var stageProbs = {};
+          (stagesData.results || stagesData).forEach(function(s) {
+            stageProbs[s.id] = parseFloat((s.metadata || {}).probability || 0);
+          });
+
+          var allDeals = [];
+          var after = 0;
+          var hasMore = true;
+          while (hasMore) {
+            var body = {
+              filterGroups: [{ filters: [
+                { propertyName: 'pipeline', operator: 'EQ', value: 'default' },
+                { propertyName: 'hs_is_closed', operator: 'EQ', value: 'false' },
+              ]}],
+              properties: ['dealstage', 'amount'],
+              limit: 100,
+              after: after,
+            };
+            var dealsResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals/search', {
+              method: 'POST', headers: hsHeaders, body: JSON.stringify(body),
+            });
+            if (!dealsResp.ok) break;
+            var dealsData = await dealsResp.json();
+            allDeals = allDeals.concat(dealsData.results || []);
+            after = (dealsData.paging && dealsData.paging.next && dealsData.paging.next.after) || null;
+            hasMore = !!after;
+          }
+
+          allDeals.forEach(function(deal) {
+            var props = deal.properties || {};
+            var amt = parseFloat(props.amount || 0);
+            var prob = stageProbs[props.dealstage] || 0;
+            if (!isNaN(amt)) bookingsForecast += amt * prob;
+          });
+          bookingsForecast = Math.round(bookingsForecast * 100) / 100;
+        }
+      } catch (e) { /* non-fatal */ }
+    }
+
     return res.status(200).json({
       gross_margin_pct: 0.8,
       monthly_expenses: expenses,
       cash_on_hand: cashOnHand,
       renewal_forecast: renewalForecast,
+      bookings_forecast: bookingsForecast,
       trailing_net_income: trailingNetIncome,
     });
 
