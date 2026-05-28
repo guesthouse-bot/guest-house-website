@@ -3,6 +3,13 @@
   "git": {
     "deploymentEnabled": false
   },
+  "redirects": [
+    {
+      "source": "/pay-at-close-agents",
+      "destination": "/pay-at-close",
+      "permanent": true
+    }
+  ],
   "crons": [
     {
       "path": "/api/bidding?action=check-deadlines&secret=${CRON_SECRET}",

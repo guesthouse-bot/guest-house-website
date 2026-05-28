@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon-new.ico"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
@@ -142,11 +142,12 @@
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 1.5rem;
             list-style: none;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            white-space: nowrap;
         }
 
         .nav-links li {
@@ -156,7 +157,8 @@
         .nav-links a {
             color: var(--color-text-primary);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.9375rem;
+            white-space: nowrap;
             font-weight: 400;
             transition: color 0.2s;
             display: flex;
@@ -760,7 +762,7 @@
         /* Scrolling Testimonials */
         .testimonials-scroll-section {
             padding: 100px 0;
-            background: var(--color-mist);
+            background: var(--color-paper);
             overflow: hidden;
         }
 
@@ -1333,7 +1335,7 @@
         /* Benefits Section */
         .benefits-section {
             padding: 0 3rem 100px;
-            background: var(--color-surface);
+            background: var(--color-mist);
         }
 
         .benefits-inner {
@@ -1569,6 +1571,91 @@
             margin-top: 48px;
         }
 
+        /* Pay at Close section */
+        .pay-at-close-section {
+            padding: 6rem 3rem;
+            background: var(--color-bone);
+        }
+        .pay-at-close-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .pay-at-close-text h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+        }
+        .pay-at-close-text p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .pay-at-close-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+        .pay-at-close-list li {
+            font-size: 0.9375rem;
+            color: var(--color-charcoal);
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        .pay-at-close-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-deep);
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        .pay-at-close-section .learn-more-link {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-onyx);
+            text-decoration: none;
+            border-bottom: 1.5px solid var(--color-onyx);
+            padding-bottom: 2px;
+            transition: opacity 0.2s;
+        }
+        .pay-at-close-section .learn-more-link:hover {
+            opacity: 0.65;
+        }
+        .pay-at-close-image {
+            border-radius: 1.25rem;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+        .pay-at-close-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        @media (max-width: 900px) {
+            .pay-at-close-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .pay-at-close-section {
+                padding: 4rem 1.5rem;
+            }
+            .pay-at-close-image {
+                order: -1;
+            }
+        }
+
         @media (max-width: 768px) {
             .benefits-section {
                 padding: 60px 1.5rem;
@@ -1616,6 +1703,18 @@
             letter-spacing: -0.02em;
             color: var(--color-text-primary);
         }
+
+        /* Comparison section */
+        .how-it-works-content { max-width: 900px; margin: 0 auto; }
+        .comparison-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .comparison-column { background: white; border-radius: 16px; padding: 2rem; }
+        .comparison-column h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 1.25rem; }
+        .comparison-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.875rem; }
+        .comparison-list li { display: flex; align-items: flex-start; gap: 0.625rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-charcoal); }
+        .comparison-list li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+        .old-way .comparison-list li svg { stroke: #ef4444; }
+        .new-way .comparison-list li svg { stroke: #22c55e; }
+        @media (max-width: 768px) { .comparison-container { grid-template-columns: 1fr; } }
 
         /* Timeline Pills Row */
         .timeline-pills {
@@ -2315,43 +2414,51 @@
 .modal-submit:hover{background:#D4A85E;transform:translateY(-1px);box-shadow:0 4px 12px rgba(235,188,118,0.4)}
 .modal-note{text-align:center;font-size:.8125rem;color:var(--color-text-secondary);margin-top:16px}
 @media(max-width:768px){.modal{max-width:100%;border-radius:20px}.modal-header{padding:24px 24px 0}.modal-body{padding:20px 24px 28px}.modal-form-row{grid-template-columns:1fr}}
+        @media (max-width: 768px) {
+            .cta-section h2 { font-size: 1.75rem; }
+            .cta-section p { font-size: 1rem; }
+            .section-headline { padding: 3rem 1.5rem 2rem; }
+            .features { padding: 3rem 1.5rem; }
+            .announcement-bar { font-size: 0.75rem; padding: 8px 1rem; line-height: 1.4; }
+        }
     </style>
 </head>
 <body>
     <header>
-    <div class="announcement-bar">
-        The National Association of Realtors recently invested in Guest House <a href="https://www.nar.realtor/newsroom/second-century-ventures-announces-8-companies-for-2025-reach-scale-up-program" target="_blank" rel="noopener">Read more here</a>
+    <div class="announcement-bar" id="announcementBar">
+        <span class="announcement-slide active">Pay-at-close available — stage now, pay from your proceeds at closing.&nbsp;<a href="pay-at-close.html">Learn more →</a></span>
     </div>
         <nav>
             <a href="index.html" class="logo">
                 <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_logo)">
-                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
-                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
-                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
-                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
-                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
-                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
-                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
-                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
-                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
-                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
-                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
-                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
-                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"></path>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"></path>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"></path>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"></path>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"></path>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"></path>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"></path>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"></path>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"></path>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"></path>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"></path>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"></path>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"></path>
                     </g>
                     <defs>
-                        <clipPath id="clip0_logo">
-                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
-                        </clipPath>
+                        <clippath id="clip0_logo">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"></rect>
+                        </clippath>
                     </defs>
                 </svg>
             </a>
-                        <ul class="nav-links">
+            <ul class="nav-links">
+                
                 <li>
-                    <a href="#">Prep a home</a>
+                    <a href="#products">Stage a home</a>
                     <div class="dropdown">
-                        <h3 class="dropdown-header">Prep a home</h3>
+                        <h3 class="dropdown-header">Stage a home</h3>
                         <div class="dropdown-grid">
                             <a href="design-advice.html" class="dropdown-item">
                                 <div class="dropdown-icon">
@@ -2364,7 +2471,7 @@
                                     <span class="dropdown-desc">Get expert guidance on-demand</span>
                                 </div>
                             </a>
-                            <a href="style-for-you.html" class="dropdown-item">
+                            <a href="styling.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
@@ -2377,7 +2484,7 @@
                                     <span class="dropdown-desc">Pro styling with your furnishings</span>
                                 </div>
                             </a>
-                            <a href="full-service-staging.html" class="dropdown-item">
+                            <a href="home-staging.html" class="dropdown-item">
                                 <div class="dropdown-icon">
                                     <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -2389,6 +2496,56 @@
                                     <span class="dropdown-desc">We handle everything</span>
                                 </div>
                             </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Locations</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Locations</h3>
+                        <div style="display:grid;grid-template-columns:1fr;gap:0.5rem;">
+                            <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                                <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);padding:0 0.625rem;margin-bottom:0.25rem;">Colorado</span>
+                                <a href="home-staging-denver.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Denver</span>
+                                        <span class="dropdown-desc">Denver staging</span>
+                                    </div>
+                                </a>
+                                <a href="home-staging-boulder.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Boulder</span>
+                                        <span class="dropdown-desc">Boulder staging</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+                                <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);padding:0 0.625rem;margin-bottom:0.25rem;">California</span>
+                                <a href="home-staging-san-diego.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                                <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">San Diego</span>
+                                        <span class="dropdown-desc">San Diego staging</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -2406,7 +2563,7 @@
                                 </div>
                                 <div class="dropdown-text">
                                     <span class="dropdown-title">Agents</span>
-                                    <span class="dropdown-desc">Tools for individual agents</span>
+                                    <span class="dropdown-desc">Staging for top agents</span>
                                 </div>
                             </a>
                             <a href="homeowners.html" class="dropdown-item">
@@ -2418,7 +2575,7 @@
                                 </div>
                                 <div class="dropdown-text">
                                     <span class="dropdown-title">Homeowners</span>
-                                    <span class="dropdown-desc">Prep your own home</span>
+                                    <span class="dropdown-desc">Staging for homeowners</span>
                                 </div>
                             </a>
                         </div>
@@ -2427,7 +2584,7 @@
                 <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
                 <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
                 <li>
-                    <a href="#">Resources</a>
+                    <a href="#resources">Resources</a>
                     <div class="dropdown" style="min-width: 780px;">
                         <div class="dropdown-resources-layout">
                             <div class="dropdown-resources-left">
@@ -2442,20 +2599,8 @@
                                     </svg>
                                 </div>
                                 <div class="dropdown-text">
-                                    <span class="dropdown-title">Pay At Close<br>(Homeowners)</span>
+                                    <span class="dropdown-title">Pay At Close</span>
                                     <span class="dropdown-desc">Stage now, pay at closing</span>
-                                </div>
-                            </a>
-                            <a href="pay-at-close-agents.html" class="dropdown-item">
-                                <div class="dropdown-icon">
-                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
-                                        <line x1="2" y1="10" x2="22" y2="10"/>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-text">
-                                    <span class="dropdown-title">Pay At Close<br>(Agents)</span>
-                                    <span class="dropdown-desc">Flexible monthly payments</span>
                                 </div>
                             </a>
                                                     </div>
@@ -2515,7 +2660,7 @@
     <!-- Mobile Menu Modal -->
     <div class="mobile-menu-modal" id="mobileMenuModal">
         <div class="mobile-menu-header">
-            <a href="index.html" class="mobile-menu-logo">
+            <a href="#" class="mobile-menu-logo">
                 <svg width="180" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_mobile_menu)">
                         <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
@@ -2547,14 +2692,92 @@
             </button>
         </div>
         <ul class="mobile-menu-nav">
+            
             <li>
-                <a href="#">Prep a home</a>
+                <a href="#products">Stage a home</a>
                 <div class="dropdown">
-                    <h3 class="dropdown-header">Prep a home</h3>
+                    <h3 class="dropdown-header">Stage a home</h3>
                     <div class="dropdown-grid">
-                        <a href="design-advice.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Expert Design Advice</span><span class="dropdown-desc">Get expert guidance on-demand</span></div></a>
-                        <a href="style-for-you.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div><div class="dropdown-text"><span class="dropdown-title">In-Person Styling</span><span class="dropdown-desc">Pro styling with your furnishings</span></div></a>
-                        <a href="full-service-staging.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Full-Service Staging</span><span class="dropdown-desc">We handle everything</span></div></a>
+                        <a href="design-advice.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Expert Design Advice</span>
+                                <span class="dropdown-desc">Get expert guidance on-demand</span>
+                            </div>
+                        </a>
+                        <a href="styling.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                    <line x1="16" y1="8" x2="2" y2="22"/>
+                                    <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">In-Person Styling</span>
+                                <span class="dropdown-desc">Pro styling with your furnishings</span>
+                            </div>
+                        </a>
+                        <a href="home-staging.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Full-Service Staging</span>
+                                <span class="dropdown-desc">We handle everything</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">Locations</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Locations</h3>
+                    <div class="dropdown-grid">
+                        <a href="home-staging-denver.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Denver</span>
+                                <span class="dropdown-desc">Denver staging</span>
+                            </div>
+                        </a>
+                        <a href="home-staging-boulder.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Boulder</span>
+                                <span class="dropdown-desc">Boulder staging</span>
+                            </div>
+                        </a>
+                                <a href="home-staging-san-diego.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                        <span class="dropdown-title">San Diego</span>
+                                        <span class="dropdown-desc">San Diego staging</span>
+                                </div>
+                                </a>
                     </div>
                 </div>
             </li>
@@ -2563,20 +2786,52 @@
                 <div class="dropdown">
                     <h3 class="dropdown-header">Customers</h3>
                     <div class="dropdown-grid">
-                        <a href="agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Agents</span><span class="dropdown-desc">Tools for individual agents</span></div></a>
-                        <a href="homeowners.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Homeowners</span><span class="dropdown-desc">Prep your own home</span></div></a>
+                        <a href="agents.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Agents</span>
+                                <span class="dropdown-desc">Staging for top agents</span>
+                            </div>
+                        </a>
+                        <a href="homeowners.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Homeowners</span>
+                                <span class="dropdown-desc">Staging for homeowners</span>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </li>
             <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
             <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
             <li>
-                <a href="#">Resources</a>
+                <a href="#resources">Resources</a>
                 <div class="dropdown">
                     <h3 class="dropdown-header">Resources</h3>
                     <div class="dropdown-grid">
-                        <a href="pay-at-close.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Homeowners)</span><span class="dropdown-desc">Stage now, pay at closing</span></div></a>
-                        <a href="pay-at-close-agents.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Pay At Close<br>(Agents)</span><span class="dropdown-desc">Flexible monthly payments</span></div></a>
+                        <a href="pay-at-close.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                    <line x1="2" y1="10" x2="22" y2="10"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Pay At Close</span>
+                                <span class="dropdown-desc">Stage now, pay at closing</span>
+                            </div>
+                        </a>
                         <a href="support.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a>
                         <a href="deinstall.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Request Deinstall</span><span class="dropdown-desc">Schedule staging removal</span></div></a>
                         <a href="https://guesthouseshop.com/smart-quote" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Smart Quotes</span><span class="dropdown-desc">Get instant pricing and advice</span></div></a>
@@ -2597,36 +2852,40 @@
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
-                Win more listings
+                The staging partner top agents trust
             </div>
-            <h1>List and sell homes<br>faster than anyone</h1>
+            <div class="hero-rating-bar" style="margin-bottom: 1rem; font-size: 0.875rem; color: var(--color-text-secondary);">4.7/5 from 2,500+ homes staged</div>
+            <h1>List Faster. Sell for More. Without the Chaos.</h1>
             <p class="hero-subtitle">
-                Walk into every listing appointment with a concrete plan. Guest House gets homes staged, photographed, and market-ready in days — so sellers choose you over agents who can't move as fast.
+                Stage, photograph, and prep your listings in days — not weeks. Pay-at-close flexibility, one booking, no vendor chaos. Trusted by top agents at Compass, Sotheby's, and Douglas Elliman.
             </p>
             <div class="hero-cta">
-                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your instant quote →</a>
+                <a href="#" class="btn btn-secondary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Speak with our team</a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
+                    <span class="stat-value">20+</span>
+                    <span class="stat-label">Hours saved per listing</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">$50K</span>
+                    <span class="stat-label">More at closing — on average</span>
+                </div>
+                <div class="stat">
                     <span class="stat-value">2,500+</span>
-                    <span class="stat-label">Listings prepped & live</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">Days</span>
-                    <span class="stat-label">From signed to market-ready</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">100%</span>
-                    <span class="stat-label">Happiness guaranteed</span>
+                    <span class="stat-label">Homes staged and counting</span>
                 </div>
             </div>
             <div class="hero-logos">
-                <span class="hero-logos-label">Trusted by industry leaders</span>
+                <span class="hero-logos-label">Trusted by the agents who can't afford to get it wrong</span>
                 <div class="hero-logos-row">
                     <img src="compass-logo.webp" alt="Compass" class="logo-img">
                     <img src="exp-realty-logo.webp" alt="eXp Realty" class="logo-img">
                     <img src="agency-logo.png" alt="The Agency" class="logo-img logo-agency">
                     <img src="douglas-elliman-logo.webp" alt="Douglas Elliman" class="logo-img">
+                    <img src="sothebys-logo.webp" alt="Sotheby's" class="logo-img">
+                    <img src="berkshire-logo.webp" alt="Berkshire Hathaway HomeServices" class="logo-img">
                 </div>
             </div>
         </div>
@@ -2638,7 +2897,7 @@
                 <span class="slider-label before">Before</span>
                 <span class="slider-label after">After</span>
             </div>
-            <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 12px;">4224 Tonopah Ave, San Diego, CA</p>
+            <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 12px;">4224 Tonopah Ave, Denver, CO</p>
         </div>
     </section>
 
@@ -2650,8 +2909,8 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                 </div>
-                <h3>Walk in with a plan</h3>
-                <p>Pull up instant quotes for staging, cleaning, and photos right in the listing appointment. Sellers sign when they see you already have everything figured out.</p>
+                <h3>Walk in with a plan. Walk out with the listing.</h3>
+                <p>Pull up instant quotes for staging, cleaning, and photos right in the listing appointment. Sellers sign when they see you already have everything figured out — pricing, timeline, and all.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2660,8 +2919,8 @@
                         <path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h3>Listed in days, not weeks</h3>
-                <p>Promise sellers a faster timeline — and deliver. Homes go from signed listing to live on MLS in days, not the weeks other agents need.</p>
+                <h3>From signed to market-ready in days.</h3>
+                <p>Promise sellers a faster timeline — and deliver. Guest House gets homes staged and live on MLS in days, not the weeks your competition needs. That speed is your competitive edge.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2670,8 +2929,8 @@
                         <path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h3>Stand out in every pitch</h3>
-                <p>Show sellers a polished prep plan with real pricing before other agents even return their call. That's how you win the listing.</p>
+                <h3>Stand out before the appointment ends.</h3>
+                <p>Show up with real pricing and a polished prep plan before other agents even return their call. That's how you win listings on the spot.</p>
             </div>
             <div class="value-prop">
                 <div class="value-prop-icon">
@@ -2680,14 +2939,15 @@
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>Sellers remember this</h3>
-                <p>Deliver a premium, organized experience that earns referrals. When sellers tell friends how smooth the process was, your name comes up first.</p>
+                <h3>Staging that earns you referrals.</h3>
+                <p>Deliver a premium, seamless prep experience that sellers rave about. When their friends ask who their agent was — and how everything went so smoothly — your name comes up first.</p>
             </div>
         </div>
     </section>
 
     <section class="section-headline" style="padding-bottom: 2rem;">
-        <h2>Everything you need to list faster,<br>all in one place</h2>
+        <h2>Every service your listing needs. One place to book it all.</h2>
+        <p style="max-width: 640px; margin: 0.75rem auto 0; color: var(--color-text-secondary); font-size: 1.0625rem; line-height: 1.6;">Whether your listing needs a full staging transformation, a quick styling refresh, or expert design guidance — Guest House handles it all, automatically sequenced so you never manage a single vendor.</p>
     </section>
     <section class="deliverable-section" id="services">
         <div class="service-tiles">
@@ -2706,9 +2966,8 @@
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Expert Design Advice</h3>
-                    <p class="tile-desc">Schedule a call with our design team and get a personalized prep plan tailored to your listing.</p>
                 </div>
-                <button class="tile-cta btn btn-primary" onclick="openBookingModal()">Book now</button>
+                <button class="tile-cta btn btn-primary" onclick="openBookingModal()">Book Now</button>
                 <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
             </div>
             <div class="service-tile">
@@ -2716,20 +2975,18 @@
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">In-Person Styling</h3>
-                    <p class="tile-desc">A professional stylist comes to you and transforms your space using your existing furnishings.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
-                <a href="style-for-you.html" class="tile-sub-cta">See how In-Person Styling works</a>
+                <a href="styling.html" class="tile-sub-cta">See how In-Person Styling works</a>
             </div>
             <div class="service-tile">
                 <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" fetchpriority="high" width="384" height="440">
                 <div class="tile-overlay"></div>
                 <div class="tile-content">
                     <h3 class="tile-name">Full-Service Staging</h3>
-                    <p class="tile-desc">We bring the furniture, design the layout, and handle everything — you just hand us the keys.</p>
                 </div>
                 <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
-                <a href="full-service-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
+                <a href="home-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
             </div>
         </div>
         <div class="more-services">
@@ -2761,7 +3018,7 @@
 
     <section class="benefits-section">
         <div class="benefits-inner">
-            <h2 class="benefits-headline">Give sellers more support, automatically</h2>
+            <h2 class="benefits-headline">20+ hours back per listing. Here's how.</h2>
 
             <div class="benefits-grid">
                 <!-- Large featured card -->
@@ -2837,14 +3094,60 @@
                 </div>
             </div>
             <div class="benefits-cta">
-                <a href="#" class="btn btn-primary btn-large" onclick="document.getElementById('demoModal').classList.add('active');document.body.style.overflow='hidden';return false;">Book a demo</a>
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your instant quote →</a>
             </div>
         </div>
     </section>
 
+    <section class="pay-at-close-section">
+        <div class="pay-at-close-content">
+            <div class="pay-at-close-text">
+                <h2>Turn "we can't afford staging" into "when do we start?"</h2>
+                <p>Stage now, pay nothing until closing — the fee comes out of proceeds, so there's no upfront cost for sellers.</p>
+                <a href="pay-at-close.html" class="learn-more-link">Learn how pay-at-close works →</a>
+            </div>
+            <div class="pay-at-close-image">
+                <img src="pay-at-close-tile.jpg" alt="Staged home interior">
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="old-new-section" style="background: var(--color-surface);">
+        <div class="testimonials-header" style="text-align: center; padding-bottom: 0;">
+            <h2>Skip the busy work.</h2>
+        </div>
+        <div class="how-it-works-content">
+            <div class="comparison-container">
+                <div class="comparison-column old-way">
+                    <h3>The Old Way 😴</h3>
+                    <ul class="comparison-list">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Call multiple stagers — wait days for a quote</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Coordinate the photographer yourself</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Chase updates from every vendor separately</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Seller hesitates on the upfront cost</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Generic furniture that doesn't photograph well</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>Weeks from listing to market-ready</li>
+                    </ul>
+                </div>
+                <div class="comparison-column new-way">
+                    <h3>The Guest House Way 🚀</h3>
+                    <ul class="comparison-list">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Instant pricing in seconds — book immediately</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>We sequence all vendors automatically via Prept</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Real-time dashboard — every milestone tracked</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Pay-at-close option — nothing due until closing</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Designer-curated inventory proven to command a higher price</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Days from quote to stunning listing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <section class="testimonials-scroll-section">
         <div class="testimonials-scroll-header">
-            <h2>How top agents win more listings with Guest House</h2>
+            <h2>What top agents say about Guest House.</h2>
         </div>
         <div class="testimonials-scroll-container">
             <div class="testimonials-scroll-track">
@@ -2933,79 +3236,11 @@
         </div>
     </section>
 
-    <section class="how-it-works" id="how-it-works">
-        <div class="how-it-works-inner">
-            <h2>How it works</h2>
-            <div class="timeline-pills">
-                <span class="timeline-pill">1</span>
-                <span class="timeline-pill">2</span>
-                <span class="timeline-pill">3</span>
-            </div>
-            <div class="timeline-line">
-                <div class="timeline-line-bar">
-                    <span class="timeline-dot-middle"></span>
-                </div>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <h3>Build your listing plan</h3>
-                    <ul class="step-checklist">
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Enter your listing details
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Get a tailored prep plan with pricing
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Share with sellers to win the listing
-                        </li>
-                    </ul>
-                </div>
-                <div class="step">
-                    <h3>We prep the home fast</h3>
-                    <ul class="step-checklist">
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Cleaning, staging, and photos scheduled automatically
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Everything coordinated in the right order
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Sellers see progress in real time
-                        </li>
-                    </ul>
-                </div>
-                <div class="step">
-                    <h3>Go live and sell fast</h3>
-                    <ul class="step-checklist">
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            MLS-ready photos delivered
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Listing goes live ahead of schedule
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                            Sellers refer you to everyone they know
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="cta-section">
-        <h2>Win more listings. Get them live faster.</h2>
-        <p>Join thousands of agents who close more deals by getting sellers to market in days, not weeks.</p>
+        <h2>Sell for more. List faster. Start with a quote.</h2>
+        <p>Join thousands of agents who get listings market-ready and beautiful — without the chaos.</p>
         <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-secondary);">Pay-at-close available · Backed by the National Association of Realtors · 4.7/5 from 2,500+ staged homes</p>
     </section>
 
     <footer>
@@ -3015,13 +3250,12 @@
                 <ul>
                     <li><a href="case-studies.html">Case Studies</a></li>
                     <li><a href="reviews.html">Reviews</a></li>
-                    <li><a href="vendor-partnerships.html">Vendor Partnerships</a></li>
-                    <li><a href="careers.html">Careers</a></li>
                     <li><a href="press.html">Press</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Prep a Home</h4>
+                <h4>Stage a Home</h4>
                 <ul>
                     <li><a href="design-advice.html">Expert Design Advice</a></li>
                     <li><a href="style-for-you.html">In-Person Styling</a></li>
@@ -3029,14 +3263,10 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>In-Person Locations</h4>
+                <h4>Locations</h4>
                 <ul>
                     <li>Denver</li>
                     <li>Boulder</li>
-                    <li>San Diego</li>
-                    <li>Orange County</li>
-                    <li>Phoenix</li>
-                    <li>Scottsdale</li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -3046,8 +3276,7 @@
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="deinstall.html">Request Deinstall</a></li>
-                    <li><a href="pay-at-close.html">Pay At Close (Homeowners)</a></li>
-                    <li><a href="pay-at-close-agents.html">Pay At Close (Agents)</a></li>
+                    <li><a href="pay-at-close.html">Pay At Close</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -3098,16 +3327,6 @@
                 <p>Pick your market below to book time with the right person.</p>
             </div>
             <div class="demo-modal-cards">
-                <div class="demo-market-card">
-                    <div class="demo-market-icon">
-                        <img src="images/team-california.jpg" alt="California team">
-                    </div>
-                    <div class="demo-card-content">
-                        <h3>California</h3>
-                        <p class="demo-market-locations">San Diego, Orange County, Los Angeles &amp; surrounding areas</p>
-                        <a href="https://meetings-na2.hubspot.com/ashleigh-stumler" class="btn btn-primary" target="_blank">Schedule a call</a>
-                    </div>
-                </div>
                 <div class="demo-market-card">
                     <div class="demo-market-icon">
                         <img src="images/team-colorado.jpg" alt="Colorado team">
@@ -3230,7 +3449,7 @@
 <div class="modal-overlay" id="bookingModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>Book your free call</h3>
+            <h3>Book your expert design session</h3>
             <button class="modal-close" onclick="closeBookingModal()" aria-label="Close">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -3239,11 +3458,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <p class="modal-subtitle">Schedule a 30-minute video call with a professional home stager. We'll walk through your home together and you'll get an actionable checklist on the spot.</p>
-            <div class="modal-free-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                100% free — no credit card required
-            </div>
+            <p class="modal-subtitle">Book your consultation with a professional home stager — in-person or virtually. You'll walk away with a prioritized checklist of actionable design changes. $249 flat.</p>
             <form id="bookingForm" onsubmit="submitBooking(event)">
                 <div class="modal-form-group">
                     <label for="bookingName">Your name</label>
@@ -3300,7 +3515,7 @@
                 </div>
                 <button type="submit" class="modal-submit">Submit</button>
             </form>
-            <p class="modal-note">We'll follow up to confirm the time works on our calendar and send you a video call link.</p>
+            <p class="modal-note">We'll follow up to confirm your time and send session details.</p>
         </div>
     </div>
 </div>
@@ -3322,7 +3537,7 @@ function submitBooking(e){
   fetch('/api/agents?action=design-advice-booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
   .then(function(r){return r.json();})
   .then(function(){
-    form.innerHTML='<div style="text-align:center;padding:40px 0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 12 15 16 10"></polyline></svg><h3 style="font-size:1.25rem;font-weight:600;margin-bottom:8px;">Received!</h3><p style="color:#666;font-size:0.9375rem;line-height:1.5;">We\'ll follow up at <strong>'+data.email+'</strong> to confirm the time works and send your video call link.</p></div>';
+    form.innerHTML='<div style="text-align:center;padding:40px 0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 12 15 16 10"></polyline></svg><h3 style="font-size:1.25rem;font-weight:600;margin-bottom:8px;">Received!</h3><p style="color:#666;font-size:0.9375rem;line-height:1.5;">We\'ll follow up at <strong>'+data.email+'</strong> to confirm your time and send session details.</p></div>';
   })
   .catch(function(){btn.textContent='Submit';btn.disabled=false;alert('Something went wrong. Please try again or email colorado@guesthouseshop.com.');});
 }

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon-new.ico"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <title>Home Staging San Diego | Guest House — List Faster, Sell for More</title>
+    <meta name="description" content="San Diego's premium home staging company. Designer furniture, full coordination &amp; pay-at-close. Get your quote — ready in days.">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href*="guesthouseshop.com/smart-quote"]');
+        if (link && typeof gtag === 'function') {
+            gtag('event', 'quote_start', { event_category: 'engagement', event_label: link.href });
+        }
+    });
+    </script>
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "name": "Guest House — Home Staging San Diego",
+          "description": "San Diego's premium home staging company. Designer-curated furniture, full coordination, and pay-at-close flexibility.",
+          "url": "https://guesthouseprep.com/home-staging-san-diego",
+          "telephone": "+1-619-000-0000",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "San Diego",
+            "addressRegion": "CA",
+            "addressCountry": "US"
+          },
+          "areaServed": ["La Jolla", "Pacific Beach", "Mission Hills", "Del Mar", "Carlsbad"],
+          "priceRange": "$$"
+        },
+        {
+          "@type": "Service",
+          "name": "Full-Service Home Staging San Diego",
+          "provider": { "@type": "LocalBusiness", "name": "Guest House" },
+          "areaServed": "San Diego, CA",
+          "description": "Complete furniture delivery, installation, and design for vacant San Diego listings."
+        },
+        {
+          "@type": "AggregateRating",
+          "ratingValue": "4.7",
+          "reviewCount": "2500",
+          "bestRating": "5"
+        }
+      ]
+    }
+    </script>
+    <style>
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Book.otf') format('opentype'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Medium.otf') format('opentype'); font-weight: 500; font-style: normal; }
+        @font-face { font-family: 'Circular'; src: url('Guest House fonts/Circular/Circular-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-onyx: #080808;
+            --color-charcoal: #343434;
+            --color-text: #666666;
+            --color-div: #DDDDDD;
+            --color-white: #FFFFFF;
+            --color-mist: #F7F7F7;
+            --color-deep: #4F6066;
+            --color-lake: #97B2BB;
+            --color-moss: #888578;
+            --color-bone: #E9E6E3;
+            --color-paper: #EEECEA;
+            --color-golden: #EBBC76;
+            --color-primary: #080808;
+            --color-text-primary: #080808;
+            --color-text-secondary: #666666;
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F7F7F7;
+            --color-border: #DDDDDD;
+        }
+
+        body { font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.5; color: var(--color-text-primary); background: var(--color-surface); }
+
+        /* ── Announcement bar ── */
+        .announcement-bar { background: #F2F2F2; color: #080808; text-align: center; padding: 10px 1.5rem; font-size: 0.8125rem; font-weight: 500; letter-spacing: -0.01em; }
+        .announcement-bar a { color: #080808; text-decoration: underline; margin-left: 6px; font-weight: 600; }
+
+        /* ── Header / Nav ── */
+        header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        nav { width: 100%; padding: 0.75rem 3rem; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .logo { display: flex; align-items: center; flex-shrink: 0; text-decoration: none; }
+        .logo svg { height: 24px; width: auto; }
+        .logo svg path { fill: #080808; }
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%);
+            white-space: nowrap; white-space: nowrap; }
+        .nav-links li { position: relative; }
+        .nav-links a { color: var(--color-text-primary); text-decoration: none; font-size: 0.9375rem; font-weight: 400; transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; white-space: nowrap; }
+        .nav-links a:hover { color: var(--color-text-secondary); }
+        .nav-links a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); margin-top: -3px; }
+        .nav-links a.no-dropdown::after { content: none; }
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); margin-top: 0.5rem; background: white; border: 1px solid var(--color-border); border-radius: 1rem; padding: 1.5rem 2rem; min-width: 520px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 1000; }
+        .nav-links li:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-header { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; }
+        .dropdown-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .dropdown-grid-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+        .dropdown-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.625rem; border-radius: 0.625rem; text-decoration: none; transition: background 0.2s; }
+        .dropdown-item:hover { background: var(--color-surface-secondary); }
+        .dropdown-item::after { content: none !important; }
+        .dropdown-icon { width: 48px; height: 48px; background: var(--color-surface-secondary); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .dropdown-icon svg { width: 24px; height: 24px; stroke: var(--color-text-primary); fill: none; }
+        .dropdown-text { display: flex; flex-direction: column; gap: 0.125rem; }
+        .dropdown-title { font-size: 0.875rem; font-weight: 500; color: var(--color-text-primary) !important; }
+        .dropdown-desc { font-size: 0.75rem; color: var(--color-text-secondary) !important; line-height: 1.4; }
+        .dropdown-resources-layout { display: flex; gap: 1.5rem; }
+        .dropdown-resources-left { flex: 1; min-width: 0; }
+        .dropdown-featured { flex: 0 0 220px; max-width: 220px; padding-left: 1.5rem; }
+        .dropdown-featured-label { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); display: block; margin-bottom: 1rem; }
+        .dropdown-featured-card { display: flex !important; flex-direction: column !important; text-decoration: none !important; max-width: 196px; }
+        .dropdown-featured-card::after { content: none !important; display: none !important; }
+        .dropdown-featured-img { width: 196px; max-width: 196px; height: auto; border-radius: 8px; margin-bottom: 0.75rem; display: block !important; transition: transform 0.2s ease; }
+        .dropdown-featured-title { font-size: 0.875rem; font-weight: 500; color: var(--color-text-primary) !important; display: block !important; margin-bottom: 0.25rem; }
+        .dropdown-featured-desc { font-size: 0.75rem; color: var(--color-text-secondary) !important; line-height: 1.5; display: block !important; }
+        .dropdown-connect { width: 220px; flex-shrink: 0; padding-left: 1.5rem; }
+        .dropdown-connect-header { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); display: block; margin-bottom: 1.25rem; }
+        .dropdown-connect-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.625rem; border-radius: 0.625rem; text-decoration: none; transition: background 0.2s; }
+        .dropdown-connect-item::after { content: none !important; display: none !important; }
+        .nav-actions { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
+        .hamburger { display: none; }
+        .mobile-menu-modal { display: none !important; }
+
+        /* ── Buttons ── */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 16px 28px; border-radius: 30px; font-weight: 600; font-size: 0.9375rem; text-decoration: none; transition: all 0.3s ease-in-out; border: none; cursor: pointer; font-family: inherit; line-height: 1; }
+        .btn-primary { background: var(--color-golden); color: var(--color-onyx); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .btn-primary:hover { background: #D4A85E; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(235,188,118,0.4); }
+        .btn-secondary { background: var(--color-white); color: var(--color-onyx); border: 1px solid var(--color-border); }
+        .btn-secondary:hover { background: var(--color-surface-secondary); }
+        .btn-large { padding: 20px 40px; font-size: 1rem; }
+
+        /* ── Hero ── */
+        .hero { padding: 160px 3rem 80px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 60px; }
+        .hero-content { flex: 1; min-width: 0; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--color-paper); padding: 8px 16px; border-radius: 100px; font-size: 0.875rem; font-weight: 500; color: var(--color-deep); margin-bottom: 24px; }
+        .hero h1 { font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px; }
+        .hero-opening { font-size: 1.125rem; color: var(--color-text-secondary); max-width: 560px; line-height: 1.7; margin-bottom: 40px; }
+        .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+        .hero-image { flex: 1; min-width: 0; }
+        .hero-image img { width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+        .hero-image-caption { text-align: center; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 12px; }
+
+        /* ── Stat bar ── */
+        .stat-bar { background: var(--color-mist); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: 2.5rem 3rem; }
+        .stat-bar-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center; }
+        .stat-bar-value { font-size: 2rem; font-weight: 700; color: var(--color-onyx); letter-spacing: -0.03em; display: block; }
+        .stat-bar-label { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 4px; display: block; }
+
+        /* ── Services ── */
+        .services-section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+        .section-header p { font-size: 1.0625rem; color: var(--color-text-secondary); max-width: 560px; margin: 0 auto; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .service-card { background: var(--color-mist); border-radius: 1rem; padding: 2rem; }
+        .service-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .service-card p { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+        .service-card ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.375rem; }
+        .service-card ul li { font-size: 0.875rem; color: var(--color-text-secondary); padding-left: 1.25rem; position: relative; }
+        .service-card ul li::before { content: '·'; position: absolute; left: 0; color: var(--color-moss); font-weight: 700; }
+        .service-card .best-for { font-size: 0.8125rem; color: var(--color-text-secondary); border-top: 1px solid var(--color-border); padding-top: 0.75rem; margin-top: 1rem; font-style: italic; }
+
+        /* ── How It Works ── */
+        .how-it-works { padding: 5rem 3rem; background: var(--color-mist); }
+        .how-it-works-inner { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .how-it-works h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 3rem; }
+        .timeline-pills { display: flex; justify-content: space-between; position: relative; margin-bottom: 0; padding: 0 60px; }
+        .timeline-pill { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 100px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; font-weight: 500; color: var(--color-text-primary); z-index: 2; }
+        .timeline-line { position: relative; height: 40px; display: flex; align-items: center; padding: 0 60px; }
+        .timeline-line-bar { width: 100%; height: 2px; background: var(--color-border); position: relative; }
+        .timeline-line-bar::before, .timeline-line-bar::after, .timeline-dot-mid1, .timeline-dot-mid2 { content: ''; position: absolute; width: 10px; height: 10px; background: var(--color-white); border: 2px solid var(--color-border); border-radius: 50%; top: 50%; transform: translateY(-50%); }
+        .timeline-line-bar::before { left: 0; transform: translate(-50%, -50%); }
+        .timeline-line-bar::after { right: 0; transform: translate(50%, -50%); background: var(--color-onyx); border-color: var(--color-onyx); }
+        .timeline-dot-mid1 { left: 33.33%; transform: translate(-50%, -50%); }
+        .timeline-dot-mid2 { left: 66.66%; transform: translate(-50%, -50%); }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 0; }
+        .step { text-align: left; background: var(--color-white); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.75rem; }
+        .step h3 { font-size: 1.125rem; margin-bottom: 1.25rem; font-weight: 600; color: var(--color-text-primary); }
+        .step-checklist { list-style: none; padding: 0; margin: 0; }
+        .step-checklist li { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.5; margin-bottom: 0.75rem; }
+        .step-checklist li:last-child { margin-bottom: 0; }
+        .step-checklist li svg { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; color: var(--color-text-secondary); }
+
+        /* ── Pay at Close ── */
+        .pac-section { padding: 6rem 3rem; background: var(--color-surface); }
+        .pac-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .pac-content h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1.25rem; }
+        .pac-content p { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+        .pac-img-wrap { border-radius: 1.25rem; overflow: hidden; aspect-ratio: 4/3; }
+        .pac-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .pac-learn-more { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-weight: 600; color: var(--color-onyx); text-decoration: none; transition: gap 0.2s ease; }
+        .pac-learn-more:hover { gap: 0.75rem; }
+
+        /* ── Case Study ── */
+        .case-study-section { padding: 5rem 3rem; background: var(--color-mist); }
+        .case-study-inner { max-width: 1200px; margin: 0 auto; }
+        .case-study-inner h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 2rem; }
+        .case-study-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+        .case-study-card { background: white; border-radius: 1rem; padding: 2.5rem; }
+        .case-study-img { border-radius: 1rem; overflow: hidden; height: 100%; }
+        .case-study-img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 1rem; }
+        .case-study-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .cs-field label { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+        .cs-field span { font-size: 1rem; font-weight: 500; color: var(--color-onyx); }
+        .cs-quote { font-size: 1.0625rem; font-style: italic; color: var(--color-charcoal); line-height: 1.65; border-left: 3px solid var(--color-golden); padding-left: 1.25rem; margin-bottom: 1.5rem; }
+        .cs-quote cite { display: block; font-style: normal; font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 0.5rem; }
+
+        /* ── Testimonials ── */
+        .testimonials-section { padding: 5rem 3rem; max-width: 1000px; margin: 0 auto; }
+        .testimonials-section h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 2.5rem; text-align: center; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+        .testimonial-card { background: var(--color-surface-secondary); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.5rem; }
+        .testimonial-stars { display: flex; gap: 2px; margin-bottom: 0.75rem; }
+        .testimonial-stars svg { width: 18px; height: 18px; fill: var(--color-deep); }
+        .testimonial-author { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .testimonial-author .name { font-size: 1rem; font-weight: 600; color: var(--color-text-primary); }
+        .testimonial-author .location { font-size: 0.875rem; color: var(--color-text-secondary); }
+        .testimonial-text { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+        /* ── Neighborhoods ── */
+        .neighborhoods-section { padding: 5rem 3rem; background: var(--color-mist); }
+        .neighborhoods-inner { max-width: 1100px; margin: 0 auto; }
+        .neighborhoods-inner h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+        .neighborhoods-inner .intro { font-size: 1.0625rem; color: var(--color-text-secondary); margin-bottom: 2.5rem; }
+        .neighborhoods-columns { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; }
+        .neighborhoods-column-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 1rem; }
+        .neighborhood-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .neighborhood-pill { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 100px; padding: 0.375rem 0.875rem; font-size: 0.875rem; color: var(--color-charcoal); }
+        .neighborhoods-inner .note { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 2rem; }
+
+        /* ── FAQ ── */
+        .faq-section { padding: 5rem 3rem; }
+        .faq-section-inner { max-width: 780px; margin: 0 auto; }
+        .faq-section h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 2rem; }
+        .faq-item { border-top: 1px solid var(--color-border); }
+        .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; font-size: 1.0625rem; font-weight: 600; color: var(--color-text-primary); gap: 16px; }
+        .faq-question:hover { color: var(--color-text-secondary); }
+        .faq-icon { flex-shrink: 0; width: 20px; height: 20px; transition: transform 0.3s; }
+        .faq-item.open .faq-icon { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
+        .faq-item.open .faq-answer { max-height: 600px; padding-bottom: 24px; }
+        .faq-answer p { color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7; }
+
+        /* ── CTA Section ── */
+        .cta-section { padding: 5rem 3rem; text-align: center; background: var(--color-mist); }
+        .cta-section h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+        .cta-section p { font-size: 1.0625rem; color: var(--color-text-secondary); margin-bottom: 2rem; }
+        .cta-trust { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 1rem; }
+
+        /* ── Footer ── */
+        footer { background: var(--color-onyx); color: var(--color-white); padding: 4rem 3rem 2rem; margin-top: 0; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 2rem; margin-bottom: 3rem; }
+        .footer-section h4 { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .footer-section ul li a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9375rem; transition: color 0.2s; }
+        .footer-section ul li a:hover { color: white; }
+        .footer-section ul li { color: rgba(255,255,255,0.8); font-size: 0.9375rem; }
+        .social-links { display: flex; gap: 1rem; margin-top: 0.5rem; }
+        .social-link { color: rgba(255,255,255,0.6); transition: color 0.2s; }
+        .social-link:hover { color: white; }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            nav { padding: 0.75rem 1.5rem; }
+            .nav-links, .nav-actions { display: none; }
+            .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; }
+            .hamburger span { width: 24px; height: 2px; background: var(--color-onyx); border-radius: 2px; transition: all 0.3s; }
+            .mobile-menu-modal { display: flex !important; position: fixed; inset: 0; background: white; z-index: 2000; flex-direction: column; transform: translateX(100%); transition: transform 0.3s ease; }
+            .mobile-menu-modal.active { transform: translateX(0); }
+            .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--color-border); }
+            .mobile-menu-close { background: none; border: none; cursor: pointer; padding: 4px; }
+            .mobile-menu-nav { list-style: none; flex: 1; overflow-y: auto; min-height: 0; padding: 0 1.5rem; }
+            .mobile-menu-nav li { border-bottom: 1px solid var(--color-border); }
+            .mobile-menu-nav > li > a { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; font-size: 1.125rem; color: var(--color-onyx); text-decoration: none; font-weight: 500; }
+            .mobile-menu-nav > li > a::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 1.5px solid var(--color-onyx); border-bottom: 1.5px solid var(--color-onyx); transform: rotate(45deg); transition: transform 0.2s; }
+            .mobile-menu-nav > li > a.no-dropdown::after { content: none; }
+            .mobile-menu-nav li.dropdown-open > a::after { transform: rotate(-135deg); }
+            .mobile-menu-nav .dropdown { display: none !important; position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; box-shadow: none !important; border: none !important; min-width: 0 !important; background: var(--color-mist) !important; padding: 1rem !important; margin-bottom: 0.5rem !important; }
+            .mobile-menu-nav li.dropdown-open .dropdown { display: block !important; }
+            .mobile-menu-nav .dropdown-header { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 1rem; font-weight: 500; }
+            .mobile-menu-nav .dropdown-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+            .mobile-menu-nav .dropdown-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; text-decoration: none; }
+            .mobile-menu-nav .dropdown-icon { width: 40px; height: 40px; background: var(--color-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+            .mobile-menu-nav .dropdown-icon svg { width: 20px; height: 20px; stroke: var(--color-onyx); fill: none; }
+            .mobile-menu-nav .dropdown-title { color: var(--color-onyx); font-weight: 500; font-size: 1rem; line-height: 1.3; }
+            .mobile-menu-nav .dropdown-desc { color: var(--color-text-secondary); font-size: 0.875rem; }
+            .mobile-menu-actions { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--color-border); }
+            .mobile-menu-actions .btn { width: 100%; justify-content: center; }
+            .hero { padding: 120px 1.5rem 60px; flex-direction: column; }
+            .hero-image { width: 100%; }
+            .stat-bar { padding: 2rem 1.5rem; }
+            .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
+            .services-section, .testimonials-section, .faq-section { padding: 3.5rem 1.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; }
+            .how-it-works { padding: 3.5rem 1.5rem; }
+            .pac-section { padding: 4rem 1.5rem; }
+            .pac-content { grid-template-columns: 1fr; gap: 2.5rem; }
+            .pac-img-wrap { order: -1; }
+            .timeline-pills { padding: 0 20px; }
+            .timeline-line { padding: 0 20px; }
+            .case-study-section, .neighborhoods-section, .cta-section { padding: 3.5rem 1.5rem; }
+            .neighborhoods-columns { grid-template-columns: 1fr; gap: 2rem; }
+            .case-study-layout { grid-template-columns: 1fr; }
+            .case-study-meta { grid-template-columns: 1fr; gap: 1rem; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Services section */
+        .section-headline { text-align: center; padding: 6rem 3rem 80px; max-width: 900px; margin: 0 auto; }
+        .section-headline h2 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+        .deliverable-section { padding: 0 3rem 6rem; max-width: 1200px; margin: 0 auto; }
+        .service-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .service-tile { position: relative; border-radius: 20px; overflow: hidden; text-decoration: none; color: white; display: flex; flex-direction: column; justify-content: flex-end; contain: layout style paint; min-height: 440px; }
+        .service-tile.tile-call { background: #4A4540; color: white; justify-content: space-between; }
+        .tile-call-visual { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 40px 32px 0; }
+        .tile-call-ring { width: 180px; height: 180px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: relative; }
+        .tile-call-ring img { width: 168px; height: 168px; border-radius: 50%; object-fit: cover; object-position: center top; }
+        .tile-call-badge { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); background: white; color: #080808; font-size: 0.75rem; font-weight: 600; padding: 6px 16px; border-radius: 100px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .tile-call-ui { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 32px; }
+        .tile-call-ui-dot { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .tile-call-ui-dot.accept { background: #22c55e; }
+        .tile-call-ui-dot.mute, .tile-call-ui-dot.video { background: rgba(255,255,255,0.15); }
+        .tile-call-ui-dot svg { width: 20px; height: 20px; stroke: white; fill: none; stroke-width: 2; }
+        .tile-call .tile-overlay { display: none; }
+        .tile-call .tile-content { padding: 32px; }
+        .tile-call .tile-name { color: white; }
+        .service-tile .tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .service-tile .tile-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.0) 100%); }
+        .service-tile .tile-content { position: relative; z-index: 1; padding: 32px; text-align: center; }
+        .service-tile .tile-name { font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; line-height: 1.2; }
+        .tile-cta { position: relative; z-index: 1; margin: 0 28px 0; align-self: center; text-decoration: none; }
+        .tile-sub-cta { position: relative; z-index: 1; color: white; font-size: 0.9375rem; font-weight: 700; text-decoration: none; margin: 12px 0 28px; align-self: center; }
+        .tile-sub-cta:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .more-services { margin-top: 3rem; text-align: center; }
+        .more-services-label { font-size: 1.5rem; font-weight: 700; color: #080808; line-height: 1.2; margin-bottom: 1.25rem; }
+        .more-services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 700px; margin: 0 auto; }
+        .more-service-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 100px; border: 1px solid #e5e5e5; background: white; color: #333; font-size: 0.9rem; font-weight: 500; }
+        .more-service-chip svg { width: 18px; height: 18px; flex-shrink: 0; }
+        @media (max-width: 768px) {
+            .section-headline { padding: 3.5rem 1.5rem 2rem; }
+            .section-headline h2 { font-size: 1.75rem; }
+            .deliverable-section { padding: 0 1.5rem 4rem; }
+            .service-tiles { grid-template-columns: 1fr; }
+            .service-tile { min-height: 300px; }
+            .service-tile .tile-content { padding: 20px; }
+            .steps { grid-template-columns: 1fr; }
+            .announcement-bar { font-size: 0.75rem; padding: 8px 1rem; line-height: 1.4; }
+            .stat-bar-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+    <div class="announcement-bar" id="announcementBar">
+        <span class="announcement-slide active">Pay-at-close available — stage now, pay from your proceeds at closing.&nbsp;<a href="pay-at-close.html">Learn more →</a></span>
+    </div>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="240" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_logo)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"></path>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"></path>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"></path>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"></path>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"></path>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"></path>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"></path>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"></path>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"></path>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"></path>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"></path>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"></path>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"></path>
+                    </g>
+                    <defs>
+                        <clippath id="clip0_logo">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"></rect>
+                        </clippath>
+                    </defs>
+                </svg>
+            </a>
+            <ul class="nav-links">
+                
+                <li>
+                    <a href="#products">Stage a home</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Stage a home</h3>
+                        <div class="dropdown-grid">
+                            <a href="design-advice.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Expert Design<br>Advice</span>
+                                    <span class="dropdown-desc">Get expert guidance on-demand</span>
+                                </div>
+                            </a>
+                            <a href="styling.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                        <line x1="16" y1="8" x2="2" y2="22"/>
+                                        <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">In-Person<br>Styling</span>
+                                    <span class="dropdown-desc">Pro styling with your furnishings</span>
+                                </div>
+                            </a>
+                            <a href="home-staging.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Full-Service<br>Staging</span>
+                                    <span class="dropdown-desc">We handle everything</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Locations</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Locations</h3>
+                        <div style="display:grid;grid-template-columns:1fr;gap:0.5rem;">
+                            <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                                <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);padding:0 0.625rem;margin-bottom:0.25rem;">Colorado</span>
+                                <a href="home-staging-denver.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Denver</span>
+                                        <span class="dropdown-desc">Denver staging</span>
+                                    </div>
+                                </a>
+                                <a href="home-staging-boulder.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Boulder</span>
+                                        <span class="dropdown-desc">Boulder staging</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+                                <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);padding:0 0.625rem;margin-bottom:0.25rem;">California</span>
+                                <a href="home-staging-san-diego.html" class="dropdown-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">San Diego</span>
+                                        <span class="dropdown-desc">San Diego staging</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Customers</a>
+                    <div class="dropdown">
+                        <h3 class="dropdown-header">Customers</h3>
+                        <div class="dropdown-grid-2col">
+                            <a href="agents.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Agents</span>
+                                    <span class="dropdown-desc">Staging for top agents</span>
+                                </div>
+                            </a>
+                            <a href="homeowners.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Homeowners</span>
+                                    <span class="dropdown-desc">Staging for homeowners</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
+                <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
+                <li>
+                    <a href="#resources">Resources</a>
+                    <div class="dropdown" style="min-width: 780px;">
+                        <div class="dropdown-resources-layout">
+                            <div class="dropdown-resources-left">
+                                <h3 class="dropdown-header">Resources</h3>
+                                <div class="dropdown-grid" style="grid-template-columns: 1fr;">
+
+                            <a href="pay-at-close.html" class="dropdown-item">
+                                <div class="dropdown-icon">
+                                    <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">Pay At Close</span>
+                                    <span class="dropdown-desc">Stage now, pay at closing</span>
+                                </div>
+                            </a>
+                                                    </div>
+                            </div>
+                            <div class="dropdown-connect">
+                                <span class="dropdown-connect-header">Help Center</span>
+                                <a href="support.html" class="dropdown-connect-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Support</span>
+                                        <span class="dropdown-desc">Get help from our team</span>
+                                    </div>
+                                </a>
+                                <a href="deinstall.html" class="dropdown-connect-item">
+                                    <div class="dropdown-icon">
+                                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                            <polyline points="9 22 9 12 15 12 15 22"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-text">
+                                        <span class="dropdown-title">Request Deinstall</span>
+                                        <span class="dropdown-desc">Schedule staging removal</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dropdown-featured">
+                                <span class="dropdown-featured-label">Featured</span>
+                                <a href="https://guesthouseshop.com/smart-quote" class="dropdown-featured-card">
+                                    <img src="images/smart-quote-preview.png" alt="Smart quotes preview" class="dropdown-featured-img">
+                                    <span class="dropdown-featured-title">Smart Quotes</span>
+                                    <span class="dropdown-featured-desc">Get instant pricing and advice for prepping your listings</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
+                <a href="https://app.guesthouseshop.com/" class="btn btn-secondary">Login</a>
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+<!-- Mobile Menu -->
+    <div class="mobile-menu-modal" id="mobileMenuModal">
+        <div class="mobile-menu-header">
+            <a href="#" class="mobile-menu-logo">
+                <svg width="180" height="27" viewBox="0 0 240 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_mobile_menu)">
+                        <path d="M92.1756 8.61499C87.8683 8.61499 83.876 12.1862 83.876 17.579C83.876 23.3585 87.9743 26.7207 92.5967 26.7207C96.695 26.7207 99.3898 24.3035 100.301 21.328L96.8697 20.2426C96.3083 21.9237 95.0482 23.2181 92.5967 23.2181C90.1451 23.2181 88.0429 21.3623 87.94 18.7704H100.407C100.441 18.7018 100.513 18.1404 100.513 17.476C100.513 12.0833 97.4311 8.61499 92.1787 8.61499H92.1756ZM88.0429 15.7949C88.1833 13.9734 89.6523 12.0116 92.2099 12.0116C95.0108 12.0116 96.3426 13.7988 96.4112 15.7949H88.0398H88.0429Z" fill="#080808"/>
+                        <path d="M111.944 16.0725L109.352 15.5485C108.301 15.3395 107.636 14.6721 107.636 13.7613C107.636 12.7102 108.653 11.7995 110.088 11.7995C112.365 11.7995 113.101 13.3746 113.241 14.357L116.672 13.3777C116.391 11.6966 114.851 8.61499 110.088 8.61499C106.551 8.61499 103.819 11.1351 103.819 14.1138C103.819 16.4592 105.394 18.4211 108.407 19.0854L110.927 19.6469C112.293 19.9276 112.923 20.6262 112.923 21.537C112.923 22.5881 112.047 23.4988 110.366 23.4988C108.195 23.4988 107.038 22.1327 106.897 20.5919L103.36 21.5713C103.569 23.4988 105.463 26.7207 110.4 26.7207C114.742 26.7207 116.844 23.8481 116.844 21.2563C116.844 18.6644 115.163 16.7743 111.941 16.0725H111.944Z" fill="#080808"/>
+                        <path d="M126.519 20.9757V13.0597H130.056V9.45103H126.519V4.23608H122.841V6.79366C122.841 8.30013 122.037 9.45415 120.215 9.45415H119.339V13.0628H122.492V21.6432C122.492 24.8308 124.454 26.7209 127.604 26.7209C129.076 26.7209 129.847 26.4402 130.09 26.3341V22.9719C129.915 23.0062 129.251 23.1122 128.69 23.1122C127.183 23.1122 126.519 22.4822 126.519 20.9757Z" fill="#080808"/>
+                        <path d="M160.042 12.1519H148.38V1.89038H144.175V26.7207H148.38V16.1099H160.042V26.7207H164.277V1.89038H160.042V12.1519Z" fill="#080808"/>
+                        <path d="M176.71 8.61499C171.632 8.61499 167.883 12.4326 167.883 17.6507C167.883 22.8688 171.629 26.7207 176.71 26.7207C181.79 26.7207 185.571 22.9031 185.571 17.6507C185.571 12.3983 181.825 8.61499 176.71 8.61499ZM176.71 23.0777C174.224 23.0777 171.947 21.1876 171.947 17.6507C171.947 14.1138 174.224 12.2923 176.71 12.2923C179.195 12.2923 181.472 14.1138 181.472 17.6507C181.472 21.1876 179.23 23.0777 176.71 23.0777Z" fill="#080808"/>
+                        <path d="M215.672 16.0725L213.08 15.5485C212.029 15.3395 211.365 14.6721 211.365 13.7613C211.365 12.7102 212.381 11.7995 213.816 11.7995C216.093 11.7995 216.829 13.3746 216.969 14.357L220.4 13.3777C220.12 11.6966 218.579 8.61499 213.816 8.61499C210.279 8.61499 207.547 11.1351 207.547 14.1138C207.547 16.4592 209.122 18.4211 212.135 19.0854L214.655 19.6469C216.021 19.9276 216.651 20.6262 216.651 21.537C216.651 22.5881 215.775 23.4988 214.094 23.4988C211.923 23.4988 210.766 22.1327 210.625 20.5919L207.088 21.5713C207.297 23.4988 209.191 26.7207 214.128 26.7207C218.47 26.7207 220.572 23.8481 220.572 21.2563C220.572 18.6644 218.891 16.7743 215.669 16.0725H215.672Z" fill="#080808"/>
+                        <path d="M240 17.4729C240 12.0801 236.918 8.61182 231.666 8.61182C227.359 8.61182 223.366 12.1831 223.366 17.5758C223.366 23.3553 227.465 26.7175 232.087 26.7175C236.185 26.7175 238.88 24.3003 239.791 21.3248L236.36 20.2394C235.799 21.9205 234.539 23.2149 232.087 23.2149C229.636 23.2149 227.533 21.3591 227.43 18.7672H239.897C239.931 18.6986 240.003 18.1372 240.003 17.4729H240ZM227.533 15.7917C227.674 13.9702 229.143 12.0084 231.7 12.0084C234.501 12.0084 235.833 13.7956 235.902 15.7917H227.53H227.533Z" fill="#080808"/>
+                        <path d="M200.052 19.232C200.052 21.7459 198.673 23.0715 196.403 23.0715C194.132 23.0715 192.782 21.7459 192.782 19.232V9.19507H189.051V19.5033C189.051 24.2068 192.323 26.7207 196.403 26.7207C200.482 26.7207 203.782 24.2068 203.782 19.5033V9.19507H200.052V19.232Z" fill="#080808"/>
+                        <path d="M77.0173 19.232C77.0173 21.7459 75.6387 23.0715 73.3681 23.0715C71.0974 23.0715 69.7469 21.7459 69.7469 19.232V9.19507H66.0166V19.5033C66.0166 24.2068 69.2884 26.7207 73.3681 26.7207C77.4477 26.7207 80.7476 24.2068 80.7476 19.5033V9.19507H77.0173V19.232Z" fill="#080808"/>
+                        <path d="M51.0112 4.72562C54.9692 4.72562 57.4207 7.10852 58.2597 9.90938L62.2177 8.40291C60.8859 4.30767 57.0339 0.839355 51.0112 0.839355C44.5673 0.839355 38.5103 5.60205 38.5103 13.7613C38.5103 21.9206 44.2523 26.7176 50.7336 26.7176C50.7585 26.7176 50.7804 26.7176 50.8022 26.7176C64.0236 26.7176 62.1148 13.621 62.1148 13.621H49.8977V17.2983H58.0913C57.8823 19.4348 55.9891 22.8657 50.9831 22.8657C46.7101 22.8657 42.7895 19.8184 42.7895 13.7613C42.7895 7.70425 46.9908 4.72562 51.0205 4.72562H51.0112Z" fill="#080808"/>
+                        <path d="M19.2994 10.4102C21.9466 9.78536 23.5861 7.13288 22.9613 4.48568C22.3365 1.83847 19.684 0.198986 17.0368 0.823783C14.3896 1.44858 12.7502 4.10106 13.3749 6.74827C13.9997 9.39547 16.6522 11.035 19.2994 10.4102Z" fill="#080808"/>
+                        <path d="M0 8.4591V19.1385C0 23.3429 4.32292 26.7925 9.66575 26.9079V0.689697C4.32292 0.8051 0 4.2547 0 8.4591Z" fill="#080808"/>
+                        <path d="M13.4023 26.9081C18.7421 26.7927 23.0681 23.3431 23.0681 19.1387V14.4165H13.4023V26.9081Z" fill="#080808"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_mobile_menu">
+                            <rect width="240" height="26.2182" fill="white" transform="translate(0 0.689697)"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </a>
+            <button class="mobile-menu-close" aria-label="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <ul class="mobile-menu-nav">
+            
+            <li>
+                <a href="#products">Stage a home</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Stage a home</h3>
+                    <div class="dropdown-grid">
+                        <a href="design-advice.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Expert Design Advice</span>
+                                <span class="dropdown-desc">Get expert guidance on-demand</span>
+                            </div>
+                        </a>
+                        <a href="styling.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                                    <line x1="16" y1="8" x2="2" y2="22"/>
+                                    <line x1="17.5" y1="15" x2="9" y2="15"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">In-Person Styling</span>
+                                <span class="dropdown-desc">Pro styling with your furnishings</span>
+                            </div>
+                        </a>
+                        <a href="home-staging.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Full-Service Staging</span>
+                                <span class="dropdown-desc">We handle everything</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">Locations</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Locations</h3>
+                    <div class="dropdown-grid">
+                        <a href="home-staging-denver.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Denver</span>
+                                <span class="dropdown-desc">Denver staging</span>
+                            </div>
+                        </a>
+                        <a href="home-staging-boulder.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Boulder</span>
+                                <span class="dropdown-desc">Boulder staging</span>
+                            </div>
+                        </a>
+                        <a href="home-staging-san-diego.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">San Diego</span>
+                                <span class="dropdown-desc">San Diego staging</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">Customers</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Customers</h3>
+                    <div class="dropdown-grid">
+                        <a href="agents.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Agents</span>
+                                <span class="dropdown-desc">Staging for top agents</span>
+                            </div>
+                        </a>
+                        <a href="homeowners.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Homeowners</span>
+                                <span class="dropdown-desc">Staging for homeowners</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li><a href="reviews.html" class="no-dropdown">Reviews</a></li>
+            <li><a href="case-studies.html" class="no-dropdown">Case Studies</a></li>
+            <li>
+                <a href="#resources">Resources</a>
+                <div class="dropdown">
+                    <h3 class="dropdown-header">Resources</h3>
+                    <div class="dropdown-grid">
+                        <a href="pay-at-close.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                    <line x1="2" y1="10" x2="22" y2="10"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-text">
+                                <span class="dropdown-title">Pay At Close</span>
+                                <span class="dropdown-desc">Stage now, pay at closing</span>
+                            </div>
+                        </a>
+                        <a href="support.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Support</span><span class="dropdown-desc">Get help from our team</span></div></a>
+                        <a href="deinstall.html" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Request Deinstall</span><span class="dropdown-desc">Schedule staging removal</span></div></a>
+                        <a href="https://guesthouseshop.com/smart-quote" class="dropdown-item"><div class="dropdown-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="dropdown-text"><span class="dropdown-title">Smart Quotes</span><span class="dropdown-desc">Get instant pricing and advice</span></div></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="mobile-menu-actions">
+            <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get your quote</a>
+            <a href="https://app.guesthouseshop.com/" class="btn btn-secondary">Login</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">California's Premium Home Staging Company</div>
+            <h1>San Diego Home Staging — Premium. Fast. Full-Service.</h1>
+            <p class="hero-opening">San Diego's real estate market moves fast. Whether you're listing in La Jolla, Pacific Beach, Mission Hills or Del Mar, the home that shows best wins. Guest House delivers designer-curated staging, full-service coordination, and pay-at-close options — so you can have a standout listing market-ready in days, not weeks.</p>
+            <div class="hero-cta">
+                <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote</a>
+                <a href="support.html" class="btn btn-secondary btn-large">Speak with our team</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="836-carlsbad-living.jpg" alt="Staged living room at 836 Carlsbad Village Dr">
+            <p class="hero-image-caption">836 Carlsbad Village Dr, Carlsbad, CA</p>
+        </div>
+    </section>
+
+    <div class="stat-bar">
+        <div class="stat-bar-inner">
+            <div>
+                <span class="stat-bar-value">300+</span>
+                <span class="stat-bar-label">California Homes Staged</span>
+            </div>
+            <div>
+                <span class="stat-bar-value">$55K</span>
+                <span class="stat-bar-label">More at Closing, on Average</span>
+            </div>
+            <div>
+                <span class="stat-bar-value">73%</span>
+                <span class="stat-bar-label">Faster to Market</span>
+            </div>
+            <div>
+                <span class="stat-bar-value">4.7/5</span>
+                <span class="stat-bar-label">Agent Rating</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-headline" style="padding-bottom: 2rem;">
+        <h2>Every service your listing needs — one place to book it all.</h2>
+        <p style="max-width: 640px; margin: 0.75rem auto 0; color: var(--color-text-secondary, #666); font-size: 1.0625rem; line-height: 1.6;">Whether your listing needs a full staging transformation, a quick styling refresh, or the full pre-listing package — Guest House handles it all.</p>
+    </section>
+    <section class="deliverable-section" id="services">
+        <div class="service-tiles">
+            <div class="service-tile tile-call">
+                <div class="tile-call-visual">
+                    <div class="tile-call-ring">
+                        <img src="design-advisor-headshot.png" alt="Guest House design advisor">
+                        <div class="tile-call-badge">Designer</div>
+                    </div>
+                </div>
+                <div class="tile-call-ui">
+                    <div class="tile-call-ui-dot mute"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+                    <div class="tile-call-ui-dot accept"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                    <div class="tile-call-ui-dot video"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                </div>
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">Expert Design Advice</h3>
+                </div>
+                <button class="tile-cta btn btn-primary" onclick="openBookingModal()">Book Now</button>
+                <a href="design-advice.html" class="tile-sub-cta">See how Expert Design Advice works</a>
+            </div>
+            <div class="service-tile">
+                <img src="in-person-styling-tile.jpg" alt="In-person styling" class="tile-bg" width="384" height="440" style="object-position: center center;">
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">In-Person Styling</h3>
+                </div>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="styling.html" class="tile-sub-cta">See how In-Person Styling works</a>
+            </div>
+            <div class="service-tile">
+                <img src="moving-services.jpg" alt="Full-service staging" class="tile-bg" width="384" height="440">
+                <div class="tile-overlay"></div>
+                <div class="tile-content">
+                    <h3 class="tile-name">Full-Service Staging</h3>
+                </div>
+                <a href="https://guesthouseshop.com/smart-quote" class="tile-cta btn btn-primary">Get your quote</a>
+                <a href="home-staging.html" class="tile-sub-cta">See how Full-Service Staging works</a>
+            </div>
+        </div>
+        <div class="more-services">
+            <p class="more-services-label">Plus, easily book:</p>
+            <div class="more-services-grid">
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Deep Cleaning
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 22 4 22 16 16 12 16 8"/></svg>
+                    Listing Photos & Video
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    Matterport & 3D Tours
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><polygon points="12 15 17 21 7 21 12 15"/></svg>
+                    Drone Photos & Video
+                </span>
+                <span class="more-service-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M12 6v12"/><path d="M1 12h22"/></svg>
+                    Moving
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="how-it-works-inner">
+            <h2>From quote to California listing in days</h2>
+            <div class="timeline-pills">
+                <span class="timeline-pill">1</span>
+                <span class="timeline-pill">2</span>
+                <span class="timeline-pill">3</span>
+                <span class="timeline-pill">4</span>
+            </div>
+            <div class="timeline-line">
+                <div class="timeline-line-bar">
+                    <span class="timeline-dot-mid1"></span>
+                    <span class="timeline-dot-mid2"></span>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <h3>Get your instant quote</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Enter your San Diego address
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Get smart service recommendations
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            See firm pricing in seconds
+                        </li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h3>Book online in minutes</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Choose staging, photos, cleaning
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Book everything in one place
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Schedule confirmed immediately
+                        </li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h3>We handle every detail</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Local crew delivers and installs
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Vendors sequenced automatically
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Real-time updates throughout
+                        </li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h3>Your listing goes live</h3>
+                    <ul class="step-checklist">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            MLS-ready photos delivered
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            More showings, stronger offers
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                            Faster close for more money
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pac-section">
+        <div class="pac-content">
+            <div class="pac-img-wrap">
+                <img src="pay-at-close-tile.jpg" alt="Staged home interior">
+            </div>
+            <div class="pac-text">
+                <h2>No upfront cost, more money at close</h2>
+                <p>Stage now, pay nothing until closing — the fee comes out of your proceeds. No out-of-pocket cost today. On a $900K San Diego home, even a modest 3% premium adds $27,000 in net proceeds.</p>
+                <a href="pay-at-close.html" class="pac-learn-more">Learn how pay-at-close works →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="case-study-section">
+        <div class="case-study-inner">
+            <h2>See what Guest House did for this Carlsbad listing</h2>
+            <div class="case-study-layout">
+                <div class="case-study-card">
+                    <div class="case-study-meta">
+                        <div class="cs-field">
+                            <label>Property</label>
+                            <span>836 Carlsbad Village Dr, Carlsbad, CA</span>
+                        </div>
+                        <div class="cs-field">
+                            <label>Sale Price</label>
+                            <span>$75K over asking</span>
+                        </div>
+                        <div class="cs-field">
+                            <label>Days on Market</label>
+                            <span>8 days</span>
+                        </div>
+                    </div>
+                    <blockquote class="cs-quote">
+                        "The home shows great and the team absolutely hit the mark on what my vision was."
+                        <cite>— Cody Stamm, Listing Agent</cite>
+                    </blockquote>
+                    <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary">Get a quote for your listing →</a>
+                </div>
+                <div class="case-study-img">
+                    <img src="836-carlsbad-living.jpg" alt="Staged living room at 836 Carlsbad Village Dr">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <h2>What San Diego agents and sellers say:</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="testimonial-author">
+                    <span class="name">Sarah M.</span>
+                    <span class="location">La Jolla, CA</span>
+                </div>
+                <p class="testimonial-text">Guest House was incredible from start to finish. The staging transformed our La Jolla listing and we had multiple offers within the first week.</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="testimonial-author">
+                    <span class="name">James K.</span>
+                    <span class="location">Carlsbad, CA</span>
+                </div>
+                <p class="testimonial-text">Professional, efficient, and the design was beautiful. Our home sold for well over asking. Would absolutely use Guest House again.</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="testimonial-author">
+                    <span class="name">Rachel T.</span>
+                    <span class="location">Del Mar, CA</span>
+                </div>
+                <p class="testimonial-text">The team communicated perfectly throughout the whole process. The staging made our home look like a model home and it sold in 4 days.</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="testimonial-author">
+                    <span class="name">David L.</span>
+                    <span class="location">San Diego, CA</span>
+                </div>
+                <p class="testimonial-text">Staging with Guest House was the best decision we made for our listing. The ROI was incredible — totally worth every penny.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="neighborhoods-section">
+        <div class="neighborhoods-inner">
+            <h2>Serving San Diego and North County</h2>
+            <p class="intro">Guest House stages homes across San Diego and the surrounding region.</p>
+            <div class="neighborhoods-columns">
+                <div>
+                    <p class="neighborhoods-column-label">San Diego</p>
+                    <div class="neighborhood-pills">
+                        <span class="neighborhood-pill">La Jolla</span>
+                        <span class="neighborhood-pill">Pacific Beach</span>
+                        <span class="neighborhood-pill">Mission Hills</span>
+                        <span class="neighborhood-pill">Hillcrest</span>
+                        <span class="neighborhood-pill">North Park</span>
+                        <span class="neighborhood-pill">South Park</span>
+                        <span class="neighborhood-pill">Point Loma</span>
+                        <span class="neighborhood-pill">Ocean Beach</span>
+                        <span class="neighborhood-pill">Mission Valley</span>
+                        <span class="neighborhood-pill">Kensington</span>
+                        <span class="neighborhood-pill">Normal Heights</span>
+                        <span class="neighborhood-pill">Downtown San Diego</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="neighborhoods-column-label">North County</p>
+                    <div class="neighborhood-pills">
+                        <span class="neighborhood-pill">Carlsbad</span>
+                        <span class="neighborhood-pill">Del Mar</span>
+                        <span class="neighborhood-pill">Encinitas</span>
+                        <span class="neighborhood-pill">Solana Beach</span>
+                        <span class="neighborhood-pill">Rancho Santa Fe</span>
+                        <span class="neighborhood-pill">Escondido</span>
+                        <span class="neighborhood-pill">Vista</span>
+                        <span class="neighborhood-pill">San Marcos</span>
+                        <span class="neighborhood-pill">Poway</span>
+                        <span class="neighborhood-pill">Chula Vista</span>
+                    </div>
+                </div>
+            </div>
+            <p class="note">Not sure if we cover your neighborhood? Get a quote — if we stage there, we'll tell you instantly.</p>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="faq-section-inner">
+            <h2>San Diego Home Staging — Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <button class="faq-question">
+                    How quickly can Guest House stage my San Diego listing?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Most California stagings are installed within 3–5 business days of booking. Rush installs may be available — ask our team.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    How much does home staging cost in San Diego?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Pricing depends on the size of the home and services selected. Get your quote — no callbacks required.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Do I have to pay for staging upfront?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We offer the option to pay-at-close — the fee is deducted from sale proceeds at closing, nothing due today.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    What if my listing doesn't sell within the staging period?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>We offer flexible 30, 60, and 90-day terms. Extend anytime. We work with you — not against you.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Can Guest House handle photography and cleaning too?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. We coordinate photography, deep cleaning, and other pre-listing services — all in one booking.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Does Guest House serve North County San Diego?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. Carlsbad, Del Mar, Encinitas, Solana Beach, Rancho Santa Fe, and surrounding North County communities are all covered. Get a quote to confirm coverage for your specific address.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Is Guest House more expensive than other San Diego stagers?
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Our pricing is competitive for the design and service level we deliver. And because sellers who stage with us take home an average of $55,000 more at closing, Guest House consistently delivers ROI that far exceeds our fees.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to stage your California listing?</h2>
+        <p>Get instant pricing in seconds. Our local California team is ready.</p>
+        <a href="https://guesthouseshop.com/smart-quote" class="btn btn-primary btn-large">Get your quote →</a>
+        <p class="cta-trust">Pay-at-Close Available · Local California Team · Design-Quality Staging</p>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="press.html">Press</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Stage a Home</h4>
+                <ul>
+                    <li><a href="design-advice.html">Expert Design Advice</a></li>
+                    <li><a href="styling.html">In-Person Styling</a></li>
+                    <li><a href="home-staging.html">Full-Service Staging</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Locations</h4>
+                <ul>
+                    <li>Denver</li>
+                    <li>Boulder</li>
+                    <li>San Diego</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="deinstall.html">Request Deinstall</a></li>
+                    <li><a href="pay-at-close.html">Pay At Close</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customers</h4>
+                <ul>
+                    <li><a href="agents.html">Agents</a></li>
+                    <li><a href="homeowners.html">Homeowners</a></li>
+                </ul>
+                <h4 style="margin-top: 24px;">Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/guesthousestaging" class="social-link" aria-label="Instagram" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/guest-house-staging" class="social-link" aria-label="LinkedIn" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    const hamburger = document.querySelector('.hamburger');
+    const mobileMenuModal = document.getElementById('mobileMenuModal');
+    const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    hamburger.addEventListener('click', () => { mobileMenuModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+    mobileMenuClose.addEventListener('click', () => { mobileMenuModal.classList.remove('active'); document.body.style.overflow = ''; });
+    document.querySelectorAll('.mobile-menu-nav > li > a').forEach(link => {
+        if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown')) {
+            link.addEventListener('click', (e) => { e.preventDefault(); link.parentElement.classList.toggle('dropdown-open'); });
+        }
+    });
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const item = button.parentElement;
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        });
+    });
+</script>
+</body>
+</html>
